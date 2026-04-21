@@ -5,6 +5,7 @@ import heroImg from "./assets/hero.png";
 import "./App.css";
 import Sidebar from "./components/Sidebar";
 import { Route, Routes } from "react-router-dom";
+import LandingPage from "./Pages/LandingPage";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -12,7 +13,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Sidebar />} />
+        <Route path="/" element={<LandingPage />} />
       </Routes>
     </>
   );

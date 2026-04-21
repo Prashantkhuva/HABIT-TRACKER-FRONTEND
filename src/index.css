@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Manrope:wght@200..800&display=swap");
 @import "tailwindcss";
 
-
 @theme {
   --font-heading: "Epilogue", sans-serif;
   --font-body: "Manrope", sans-serif;
@@ -10,4 +9,8 @@
   --color-deep: #1a1a1a;
   --color-mint: #c8e6df;
   --color-yellow: #f5e9b8;
+}
+
+* {
+  cursor: none !important;
 }

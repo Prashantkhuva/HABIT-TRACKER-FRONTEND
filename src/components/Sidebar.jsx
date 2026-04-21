@@ -44,7 +44,7 @@ export default function Sidebar() {
           className="text-2xl font-medium tracking-tight"
           style={{ fontFamily: "Epilogue, sans-serif", color: "#1A1A1A" }}
         >
-          habitFlow
+          habitflow
         </h1>
         <p
           className="text-xs tracking-widest mt-1"
