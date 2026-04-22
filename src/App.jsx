@@ -6,6 +6,9 @@ import "./App.css";
 import Sidebar from "./components/Sidebar";
 import { Route, Routes } from "react-router-dom";
 import LandingPage from "./Pages/LandingPage";
+import Signup from "./components/Signup";
+import Singin from "./components/Signin";
+import Signin from "./components/Signin";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -13,7 +16,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<Signin />} />
       </Routes>
     </>
   );
