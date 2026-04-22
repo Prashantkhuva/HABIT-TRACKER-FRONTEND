@@ -14,23 +14,29 @@ export default function CustomCursor() {
     const leave = () => setVisible(false);
     const enter = () => setVisible(true);
 
+    // ✅ IMPORTANT: event delegation (React friendly)
+    const handleMouseOver = (e) => {
+      const target = e.target.closest("button, a");
+      if (target) {
+        setHovered(true);
+      } else {
+        setHovered(false);
+      }
+    };
+
     window.addEventListener("mousemove", move);
     document.addEventListener("mouseleave", leave);
     document.addEventListener("mouseenter", enter);
+    document.addEventListener("mouseover", handleMouseOver);
 
-    const targets = document.querySelectorAll("a, button");
-
-    targets.forEach((el) => {
-      el.addEventListener("mouseenter", () => setHovered(true));
-      el.addEventListener("mouseleave", () => setHovered(false));
-    });
-
+    // hide default cursor
     document.body.style.cursor = "none";
 
     return () => {
       window.removeEventListener("mousemove", move);
       document.removeEventListener("mouseleave", leave);
       document.removeEventListener("mouseenter", enter);
+      document.removeEventListener("mouseover", handleMouseOver);
       document.body.style.cursor = "default";
     };
   }, []);
@@ -48,12 +54,12 @@ export default function CustomCursor() {
       }}
     >
       {hovered ? (
-        // 👉 HAND POINTER (tera diya hua SVG)
+        // 👉 HAND POINTER
         <svg
-          width="25"
-          height="25"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
-          style={{ transform: "translate(-8px, -6px)" }} // 👈 adjust hotspot
+          style={{ transform: "translate(-8px, -6px)" }}
         >
           <path
             fill="#FFF"
@@ -64,12 +70,12 @@ export default function CustomCursor() {
           />
         </svg>
       ) : (
-        // 👉 ARROW POINTER (tera diya hua SVG)
+        // 👉 ARROW POINTER
         <svg
-          width="22"
-          height="22"
+          width="20"
+          height="20"
           viewBox="0 0 24 24"
-          style={{ transform: "translate(-4px, -2px)" }} // 👈 hotspot fix
+          style={{ transform: "translate(-4px, -2px)" }}
         >
           <path
             fill="#FFF"

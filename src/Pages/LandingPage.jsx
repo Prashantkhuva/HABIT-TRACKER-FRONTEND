@@ -2,6 +2,8 @@ import { nav } from 'framer-motion/client'
 import React from 'react'
 import { Bell } from 'lucide-react'
 import { motion } from 'framer-motion'
+import Button from '../components/Button'
+import { Link } from 'react-router-dom'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -27,12 +29,14 @@ function Content() {
         style={{ background: "#FAFAF5", borderBottom: "1px solid #E8E4DC" }}
       >
         {/* Logo */}
-        <h1
-          className="text-2xl font-bold tracking-tight"
-          style={{ fontFamily: "Epilogue, sans-serif", color: "#1A1A1A" }}
-        >
-          habitflow
-        </h1>
+        <Link to={"/"}>
+          <h1
+            className="text-2xl font-bold tracking-tight"
+            style={{ fontFamily: "Epilogue, sans-serif", color: "#1A1A1A" }}
+          >
+            habitflow
+          </h1>
+        </Link>
 
         {/* Nav Links */}
         <div className="flex items-center gap-10">
@@ -63,14 +67,11 @@ function Content() {
             <Bell size={16} color="#1A1A1A" />
           </motion.button>
 
-          <motion.button
-            whileHover={{ opacity: 0.8, scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
-            className="px-6 py-2.5 rounded-full text-xs font-thin tracking-widest"
-            style={{ background: "#1A1A1A", color: "#FFFFFF", fontFamily: "Manrope, sans-serif" }}
+          <Button
+            className="bg-[#1A1A1A] text-[#FFFFFF]"
           >
             UPGRADE
-          </motion.button>
+          </Button>
         </div>
       </motion.nav>
 
@@ -80,7 +81,7 @@ function Content() {
         style={{ background: "#FAFAF5", fontFamily: "Manrope, sans-serif", color: "#1A1A1A" }}
       >
         {/* ── HERO ── */}
-        <section className="min-h-[92vh] grid grid-cols-1 lg:grid-cols-2 gap-10 px-6 lg:px-18 pt-14 pb-10 items-center">
+        <section className="min-h-[92vh] grid grid-cols-1 lg:grid-cols-2 gap-10 px-6 lg:px-18 pt-8 lg:pt-10 pb-10 items-center">
 
           {/* Left */}
           <div className="max-w-xl"> {/* 👈 control width */}
@@ -114,19 +115,19 @@ function Content() {
               variants={fadeUp} initial="hidden" animate="show" custom={3}
               className="flex items-center gap-4"
             >
-              <button
-                className="px-6 py-3 rounded-full text-sm font-semibold tracking-wide transition-all hover:opacity-80"
-                style={{ background: "#1A1A1A", color: "#FAFAF5" }}
-              >
-                GET STARTED
-              </button>
+              <Link to={"/signin"}>
+                <Button
+                  variant="primary"
+                  className="curs bg-[#1A1A1A] text-[#FAFAF5]">GET STARTED</Button>
+              </Link>
 
-              <button
-                className="px-6 py-3 rounded-full text-sm font-medium tracking-wide border transition-all hover:bg-black/5"
-                style={{ border: "1.5px solid #1A1A1A", color: "#1A1A1A" }}
+              <Button
+                variant="outline"
+                className='curs bg-[#E8E8E3] text-[#1A1C19] border border-solid'
               >
                 WATCH STORY
-              </button>
+              </Button>
+
             </motion.div>
           </div>
 
@@ -320,12 +321,14 @@ function Content() {
         >
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
             <div>
-              <h3
-                className="text-2xl font-bold mb-1"
-                style={{ fontFamily: "Epilogue, sans-serif" }}
-              >
-                habitflow
-              </h3>
+              <Link to={"/"}>
+                <h3
+                  className="text-2xl font-bold mb-1"
+                  style={{ fontFamily: "Epilogue, sans-serif" }}
+                >
+                  habitflow
+                </h3>
+              </Link>
               <p className="text-xs tracking-widest" style={{ color: "#9A9A8A" }}>
                 The premium editorial tracking experience for rhythmic living.
               </p>
@@ -349,7 +352,7 @@ function Content() {
             className="mt-10 pt-6 border-t flex justify-between text-xs"
             style={{ borderColor: "#E8E4DC", color: "#9A9A8A" }}
           >
-            <span>© 2024 HABITFLOW STUDIO. ALL RIGHTS RESERVED.</span>
+            <span>© 2026 HABITFLOW STUDIO. ALL RIGHTS RESERVED.</span>
             <span>MADE WITH INTENTION</span>
           </div>
         </footer>
