@@ -15,7 +15,7 @@ function Button({
   return (
     <motion.button
       type={type}
-      className={`px-6 py-3 inline-flex items-center justify-center gap-2 rounded-full font-semibold text-xs tracking-widest transition-all duration-300 font-body ${variants[variant]} ${className}`}
+      className={`px-6 py-3 inline-flex items-center justify-center gap-2 rounded-full font-thin text-sm tracking-widest transition-all duration-300 font-body ${variants[variant]} ${className}`}
       whileHover={{ opacity: 0.8, scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
       {...props}

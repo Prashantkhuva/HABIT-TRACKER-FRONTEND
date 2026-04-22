@@ -81,98 +81,112 @@ function Content() {
         style={{ background: "#FAFAF5", fontFamily: "Manrope, sans-serif", color: "#1A1A1A" }}
       >
         {/* ── HERO ── */}
-        <section className="min-h-[92vh] grid grid-cols-1 lg:grid-cols-2 gap-10 px-6 lg:px-18 pt-8 lg:pt-10 pb-10 items-center">
+        <section className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-16 px-8 lg:px-24 items-center">
 
-          {/* Left */}
-          <div className="max-w-xl"> {/* 👈 control width */}
+          {/* LEFT */}
+          <div className="max-w-[520px]">
 
             <motion.p
-              variants={fadeUp} initial="hidden" animate="show" custom={0}
-              className="text-xs tracking-widest mb-5"
-              style={{ color: "#9A9A8A" }}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={0}
+              className="text-[11px] tracking-[0.25em] mb-6 text-[#9A9A8A]"
             >
               THE EDITORIAL TRACKER
             </motion.p>
 
             <motion.h1
-              variants={fadeUp} initial="hidden" animate="show" custom={1}
-              className="text-5xl lg:text-6xl font-bold leading-tight mb-6"
-              style={{ fontFamily: "Epilogue, sans-serif", letterSpacing: "-0.04em" }}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={1}
+              className="text-[64px] leading-[1.05] tracking-[-0.04em] mb-6"
+              style={{ fontFamily: "Epilogue, sans-serif" }}
             >
               build habits<br />that stick
             </motion.h1>
 
             <motion.p
-              variants={fadeUp} initial="hidden" animate="show" custom={2}
-              className="text-base leading-relaxed mb-8 max-w-sm"
-              style={{ color: "#6A6A5A" }}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={2}
+              className="text-[15px] leading-relaxed mb-10 max-w-[360px] text-[#6A6A5A]"
             >
               Designed for the intentional individual. A rhythmic workspace to
               cultivate your daily rituals with clarity and editorial elegance.
             </motion.p>
 
             <motion.div
-              variants={fadeUp} initial="hidden" animate="show" custom={3}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={3}
               className="flex items-center gap-4"
             >
               <Link to={"/signin"}>
-                <Button
-                  variant="primary"
-                  className="curs bg-[#1A1A1A] text-[#FAFAF5]">GET STARTED</Button>
+                <button className="bg-[#1A1A1A] text-white px-6 py-3 rounded-full text-sm">
+                  GET STARTED
+                </button>
               </Link>
 
-              <Button
-                variant="outline"
-                className='curs bg-[#E8E8E3] text-[#1A1C19] border border-solid'
-              >
+              <button className="px-6 py-3 rounded-full border text-sm text-[#1A1A1A] bg-[#E8E8E3]">
                 WATCH STORY
-              </Button>
-
+              </button>
             </motion.div>
           </div>
 
-          {/* Right — App Preview Card */}
-          <div className="relative flex justify-center lg:justify-center items-center -mt-6">
+          {/* RIGHT */}
+          <div className="relative flex justify-center items-center">
 
-            {/* Glow (thoda adjust) */}
-            <div className="absolute right-0 lg:right-10 top-0 w-95 h-95 bg-[#E8D9A8] rounded-full blur-[140px] opacity-50"></div>
+            {/* Glow */}
+            <div className="absolute right-0 top-10 w-[420px] h-[420px] bg-[#E8D9A8] rounded-full blur-[140px] opacity-40" />
 
+            {/* Card */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
               animate="show"
               custom={2}
-              className="relative w-120 h-100 bg-white rounded-[40px] border border-[#E8E4DC] shadow-xl p-8 mx-auto"
+              className="relative bg-white rounded-[40px] border border-[#E8E4DC] shadow-[0_20px_60px_rgba(0,0,0,0.08)] p-10 w-[520px] h-[660px] flex flex-col justify-start"
             >
 
               {/* Header */}
-              <div className="flex justify-between text-sm text-[#9A9A8A] mb-6">
+              <div className="flex justify-between items-center text-sm tracking-widest text-[#9A9A8A] mb-8">
                 <span>monday ritual</span>
-                <svg width="16" height="4" viewBox="0 0 16 4" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 4C1.45 4 0.979167 3.80417 0.5875 3.4125C0.195833 3.02083 0 2.55 0 2C0 1.45 0.195833 0.979167 0.5875 0.5875C0.979167 0.195833 1.45 0 2 0C2.55 0 3.02083 0.195833 3.4125 0.5875C3.80417 0.979167 4 1.45 4 2C4 2.55 3.80417 3.02083 3.4125 3.4125C3.02083 3.80417 2.55 4 2 4ZM8 4C7.45 4 6.97917 3.80417 6.5875 3.4125C6.19583 3.02083 6 2.55 6 2C6 1.45 6.19583 0.979167 6.5875 0.5875C6.97917 0.195833 7.45 0 8 0C8.55 0 9.02083 0.195833 9.4125 0.5875C9.80417 0.979167 10 1.45 10 2C10 2.55 9.80417 3.02083 9.4125 3.4125C9.02083 3.80417 8.55 4 8 4ZM14 4C13.45 4 12.9792 3.80417 12.5875 3.4125C12.1958 3.02083 12 2.55 12 2C12 1.45 12.1958 0.979167 12.5875 0.5875C12.9792 0.195833 13.45 0 14 0C14.55 0 15.0208 0.195833 15.4125 0.5875C15.8042 0.979167 16 1.45 16 2C16 2.55 15.8042 3.02083 15.4125 3.4125C15.0208 3.80417 14.55 4 14 4Z" fill="#1A1C19" />
-                </svg>
-
+                <svg width="18" height="4" viewBox="0 0 16 4" fill="none"> <path d="M2 4C1.45 4 0.979167 3.80417 0.5875 3.4125C0.195833 3.02083 0 2.55 0 2C0 1.45 0.195833 0.979167 0.5875 0.5875C0.979167 0.195833 1.45 0 2 0C2.55 0 3.02083 0.195833 3.4125 0.5875C3.80417 0.979167 4 1.45 4 2C4 2.55 3.80417 3.02083 3.4125 3.4125C3.02083 3.80417 2.55 4 2 4ZM8 4C7.45 4 6.97917 3.80417 6.5875 3.4125C6.19583 3.02083 6 2.55 6 2C6 1.45 6.19583 0.979167 6.5875 0.5875C6.97917 0.195833 7.45 0 8 0C8.55 0 9.02083 0.195833 9.4125 0.5875C9.80417 0.979167 10 1.45 10 2C10 2.55 9.80417 3.02083 9.4125 3.4125C9.02083 3.80417 8.55 4 8 4ZM14 4C13.45 4 12.9792 3.80417 12.5875 3.4125C12.1958 3.02083 12 2.55 12 2C12 1.45 12.1958 0.979167 12.5875 0.5875C12.9792 0.195833 13.45 0 14 0C14.55 0 15.0208 0.195833 15.4125 0.5875C15.8042 0.979167 16 1.45 16 2C16 2.55 15.8042 3.02083 15.4125 3.4125C15.0208 3.80417 14.55 4 14 4Z" fill="#1A1C19" /> </svg>
               </div>
 
-              {/* Habit Row */}
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[#C8E6DF]">
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Habit */}
+              <div className="flex items-center gap-4 mb-10">
+
+                {/* Circle + Icon */}
+                <div className="w-14 h-14 rounded-full bg-[#C8E6DF] flex items-center justify-center">
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
                     <path d="M18 8L16.75 5.25L14 4L16.75 2.75L18 0L19.25 2.75L22 4L19.25 5.25L18 8ZM18 22L16.75 19.25L14 18L16.75 16.75L18 14L19.25 16.75L22 18L19.25 19.25L18 22ZM8 19L5.5 13.5L0 11L5.5 8.5L8 3L10.5 8.5L16 11L10.5 13.5L8 19ZM8 14.15L9 12L11.15 11L9 10L8 7.85L7 10L4.85 11L7 12L8 14.15Z" fill="#4D6863" />
                   </svg>
                 </div>
-                <div>
-                  <p className="text-lg font-semibold">morning meditation</p>
-                  <p className="text-sm text-[#9A9A8A]">20 MINS • STREAK 14</p>
-                </div>
-              </div>
 
+                {/* Text */}
+                <div>
+                  <p
+                    className="text-[22px] font-medium tracking-tight"
+                    style={{ fontFamily: "Epilogue, sans-serif" }}
+                  >
+                    morning meditation
+                  </p>
+                  <p className="text-xs tracking-widest text-[#9A9A8A]">
+                    20 MINS • STREAK 14
+                  </p>
+                </div>
+
+              </div>
               {/* Dots */}
-              <div className="flex items-center gap-3 mb-8">
+              <div className="flex items-center gap-4 mb-10">
                 {[1, 2, 3, 4, 5, 6, 7].map((d) => (
-                  <div
-                    key={d}
-                    className="w-10 h-10 rounded-full"
+                  <div key={d}
+                    className="w-12 h-12 rounded-full"
                     style={{
                       background: d <= 5 ? "#4B6B63" : d === 6 ? "#FAFAF5" : "#E8E4DC",
                       border: d === 6 ? "2px solid #4B6B63" : "none"
@@ -182,20 +196,18 @@ function Content() {
               </div>
 
               {/* Chart */}
-              <div className="bg-[#F5F0E8] rounded-2xl p-5">
-                <p className="text-sm text-[#9A9A8A] mb-3">WEEKLY FLOW</p>
+              <div className="bg-[#F5F0E8] rounded-[24px] p-5">
+                <p className="text-xs tracking-widest text-[#9A9A8A] mb-3">
+                  WEEKLY FLOW
+                </p>
 
-                <div className="flex items-end gap-2 h-24">
+                <div className="flex items-end gap-2 h-28">
                   {[40, 55, 45, 70, 90, 65, 50].map((h, i) => (
-                    <div
-                      key={i}
-                      className="flex-1 rounded-lg"
+                    <div key={i}
+                      className="flex-1 rounded-[8px]"
                       style={{
                         height: `${h}%`,
-                        background:
-                          i === 4 ? "#4B6B63" :
-                            i === 5 ? "#C8E6DF" :
-                              "#D8D4CA"
+                        background: i === 4 ? "#4B6B63" : i === 5 ? "#C8E6DF" : "#D8D4CA"
                       }}
                     />
                   ))}
@@ -324,7 +336,7 @@ function Content() {
 
         {/* ── FOOTER ── */}
         <footer
-          className="px-8 lg:px-20 py-12 border-t"
+          className="px-8 lg:px-20 py-12 border-t bg-[#F4F4EF]"
           style={{ borderColor: "#E8E4DC" }}
         >
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
