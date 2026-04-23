@@ -23,7 +23,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/login",
+        path: "/signin",
         element: (
           <AuthLayout authentication={false}>
             <LoginPage />

@@ -58,7 +58,7 @@ const Signup = () => {
     <>
       <div className="relative min-h-screen bg-[#F3F1EA] overflow-hidden">
         {/* 🔥 Top Right Blur */}
-        <div className="absolute right-10 top-10 w-42.5 h-42.5 rounded-3xl overflow-hidden opacity-30 pointer-events-none">
+        <div className="absolute right-10 top-10 w-50 h-77.5 rounded-3xl overflow-hidden opacity-30 pointer-events-none">
           <img
             src="/authpage1.png"
             alt=""

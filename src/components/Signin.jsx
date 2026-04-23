@@ -57,19 +57,19 @@ const Signin = () => {
   return (
     <>
       <div className="relative min-h-screen bg-[#F3F1EA] overflow-hidden">
-        {/* 🔥 Top Right Blur */}
-        <div className="absolute right-10 top-10 w-50 h-77.5 rounded-3xl overflow-hidden opacity-30 pointer-events-none">
+        {/* 🔥 Bottom Left Blur */}
+        <div className="-rotate-4 absolute left-10 bottom-10 w-50 h-77.5 rounded-3xl overflow-hidden opacity-30 pointer-events-none">
           <img
-            src="/authpage1.png"
+            src="/signinbtm.png"
             alt=""
             className="w-full h-full object-cover scale-125 blur-[1px]"
           />
         </div>
 
-        {/* 🔥 Bottom Left Blur */}
-        <div className="absolute left-10 bottom-10 w-42.5 h-42.5 rounded-full overflow-hidden opacity-40 pointer-events-none">
+        {/* 🔥 Top Right Blur */}
+        <div className="absolute right-10 top-10 w-42.5 h-42.5 rounded-full overflow-hidden opacity-40 pointer-events-none">
           <img
-            src="/image.png"
+            src="/signintop.png"
             alt=""
             className="w-full h-full object-cover scale-125 blur-[3px]"
           />
@@ -109,11 +109,9 @@ const Signin = () => {
               animate="visible"
             >
               <div className="bg-white/80 backdrop-blur-md border border-[#E8E4DC] rounded-4xl p-8 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
-                <h2 className="text-2xl font-semibold mb-2">create account</h2>
+                <h2 className="text-2xl font-semibold mb-2">Welcome Back</h2>
 
-                <p className="text-sm text-[#6A6A5A] mb-6">
-                  begin your ritual journey.
-                </p>
+                <hr className="border-t-2 border-[#1A1A1A] w-16 mb-5 mt-7" />
 
                 {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 

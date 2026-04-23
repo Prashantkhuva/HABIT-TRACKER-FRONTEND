@@ -17,7 +17,7 @@ function App() {
 
   const location = useLocation();
 
-  const hideHeaderOn = ["/", "/login", "/signup", "/verify-email"];
+  const hideHeaderOn = ["/", "/signin", "/signup", "/verify-email"];
   const shouldHide = hideHeaderOn.includes(location.pathname);
 
   return (
