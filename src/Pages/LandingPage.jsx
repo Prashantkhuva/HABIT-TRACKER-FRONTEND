@@ -4,6 +4,8 @@ import { Bell } from "lucide-react";
 import { motion } from "framer-motion";
 import Button from "../components/Button";
 import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
+import LandNav from "../components/LandNav";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -14,61 +16,11 @@ const fadeUp = {
   }),
 };
 
-const navLinks = ["PHILOSOPHY", "FEATURES", "JOURNAL"];
-
-function Content() {
+function LandingPage() {
   return (
     <>
       {/* Nav */}
-      <motion.nav
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="flex items-center justify-between px-10 py-5 sticky top-0 z-50"
-        style={{ background: "#FAFAF5", borderBottom: "1px solid #E8E4DC" }}
-      >
-        {/* Logo */}
-        <Link to={"/"}>
-          <h1
-            className="text-2xl font-bold tracking-tight"
-            style={{ fontFamily: "Epilogue, sans-serif", color: "#1A1A1A" }}
-          >
-            habitflow
-          </h1>
-        </Link>
-
-        {/* Nav Links */}
-        <div className="flex items-center gap-10">
-          {navLinks.map((link, i) => (
-            <motion.a
-              key={link}
-              href="#"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 + 0.2, duration: 0.4 }}
-              whileHover={{ color: "#1A1A1A" }}
-              className="text-xs tracking-widest transition-colors"
-              style={{ fontFamily: "Manrope, sans-serif", color: "#1A1C19" }}
-            >
-              {link}
-            </motion.a>
-          ))}
-        </div>
-
-        {/* Right — Bell + Upgrade */}
-        <div className="flex items-center gap-5">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            className="p-2 rounded-full transition-all"
-            style={{ background: "#F0EDE5" }}
-          >
-            <Bell size={16} color="#1A1A1A" />
-          </motion.button>
-
-          <Button className="bg-[#1A1A1A] text-[#FFFFFF]">UPGRADE</Button>
-        </div>
-      </motion.nav>
+      <LandNav />
 
       {/* Main */}
       <div
@@ -82,7 +34,7 @@ function Content() {
         {/* ── HERO ── */}
         <section className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-16 px-8 lg:px-24 items-center">
           {/* LEFT */}
-          <div className="max-w-[520px]">
+          <div className="max-w-130">
             <motion.p
               variants={fadeUp}
               initial="hidden"
@@ -111,7 +63,7 @@ function Content() {
               initial="hidden"
               animate="show"
               custom={2}
-              className="text-[15px] leading-relaxed mb-10 max-w-[360px] text-[#6A6A5A]"
+              className="text-[15px] leading-relaxed mb-10 max-w-90 text-[#6A6A5A]"
             >
               Designed for the intentional individual. A rhythmic workspace to
               cultivate your daily rituals with clarity and editorial elegance.
@@ -130,7 +82,7 @@ function Content() {
                 </Button>
               </Link>
 
-              <Button className="px-6 py-3 rounded-full border text-sm text-[#1A1A1A] bg-[#E8E8E3]">
+              <Button variant="outline" className="">
                 WATCH STORY
               </Button>
             </motion.div>
@@ -139,7 +91,7 @@ function Content() {
           {/* RIGHT */}
           <div className="relative flex justify-center items-center">
             {/* Glow */}
-            <div className="absolute right-0 top-10 w-[420px] h-[420px] bg-[#E8D9A8] rounded-full blur-[140px] opacity-40" />
+            <div className="absolute right-0 top-10 w-105 h-105 bg-[#E8D9A8] rounded-full blur-[140px] opacity-40" />
 
             {/* Card */}
             <motion.div
@@ -147,7 +99,7 @@ function Content() {
               initial="hidden"
               animate="show"
               custom={2}
-              className="relative bg-white rounded-[40px] border border-[#E8E4DC] shadow-[0_20px_60px_rgba(0,0,0,0.08)] p-10 w-[520px] h-[660px] flex flex-col justify-start"
+              className="relative bg-white rounded-[40px] border border-[#E8E4DC] shadow-[0_20px_60px_rgba(0,0,0,0.08)] p-10 w-130 h-165 flex flex-col justify-start"
             >
               {/* Header */}
               <div className="flex justify-between items-center text-sm tracking-widest text-[#9A9A8A] mb-8">
@@ -202,7 +154,7 @@ function Content() {
               </div>
 
               {/* Chart */}
-              <div className="bg-[#F5F0E8] rounded-[24px] p-5">
+              <div className="bg-[#F5F0E8] rounded-3xl p-5">
                 <p className="text-xs tracking-widest text-[#9A9A8A] mb-3">
                   WEEKLY FLOW
                 </p>
@@ -211,7 +163,7 @@ function Content() {
                   {[40, 55, 45, 70, 90, 65, 50].map((h, i) => (
                     <div
                       key={i}
-                      className="flex-1 rounded-[8px]"
+                      className="flex-1 rounded-lg"
                       style={{
                         height: `${h}%`,
                         background:
@@ -227,7 +179,7 @@ function Content() {
 
         {/* ── FEATURES ── */}
         <section className="px-8 lg:px-20 py-20">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid  grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
                 icon: (
@@ -297,25 +249,27 @@ function Content() {
                 whileInView="show"
                 viewport={{ once: true }}
                 custom={i}
-                className="rounded-3xl p-8"
+                className="h-87 rounded-[50px] p-8 flex flex-col justify-between"
                 style={{ background: f.bg }}
               >
-                <span className="text-2xl mb-8 block">{f.icon}</span>
-                <h3
-                  className="text-2xl font-bold mb-3"
-                  style={{
-                    fontFamily: "Epilogue, sans-serif",
-                    color: f.accent,
-                  }}
-                >
-                  {f.title}
-                </h3>
-                <p
-                  className="text-sm leading-relaxed"
-                  style={{ color: "#6A6A5A" }}
-                >
-                  {f.desc}
-                </p>
+                <span className="text-2xl block">{f.icon}</span>
+                <div>
+                  <h3
+                    className="text-2xl  font-medium mb-3"
+                    style={{
+                      fontFamily: "Epilogue, sans-serif",
+                      color: f.accent,
+                    }}
+                  >
+                    {f.title}
+                  </h3>
+                  <p
+                    className="text-md leading-relaxed"
+                    style={{ color: "#6A6A5A" }}
+                  >
+                    {f.desc}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -401,63 +355,10 @@ function Content() {
         </section>
 
         {/* ── FOOTER ── */}
-        <footer
-          className="px-8 lg:px-20 py-12 border-t bg-[#F4F4EF]"
-          style={{ borderColor: "#E8E4DC" }}
-        >
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
-            <div>
-              <Link to={"/"}>
-                <h3
-                  className="text-2xl font-bold mb-1"
-                  style={{ fontFamily: "Epilogue, sans-serif" }}
-                >
-                  habitflow
-                </h3>
-              </Link>
-              <p
-                className="text-xs tracking-widest"
-                style={{ color: "#9A9A8A" }}
-              >
-                The premium editorial tracking experience for rhythmic living.
-              </p>
-            </div>
-            <div className="flex gap-12 text-sm" style={{ color: "#6A6A5A" }}>
-              <div className="flex flex-col gap-2">
-                <p
-                  className="text-xs tracking-widest font-bold"
-                  style={{ color: "#1A1A1A" }}
-                >
-                  PRODUCT
-                </p>
-                <span>Features</span>
-                <span>Premium</span>
-                <span>Journal</span>
-              </div>
-              <div className="flex flex-col gap-2">
-                <p
-                  className="text-xs tracking-widest font-bold"
-                  style={{ color: "#1A1A1A" }}
-                >
-                  COMPANY
-                </p>
-                <span>About</span>
-                <span>Privacy</span>
-                <span>Contact</span>
-              </div>
-            </div>
-          </div>
-          <div
-            className="mt-10 pt-6 border-t flex justify-between text-xs"
-            style={{ borderColor: "#E8E4DC", color: "#9A9A8A" }}
-          >
-            <span>© 2026 HABITFLOW STUDIO. ALL RIGHTS RESERVED.</span>
-            <span>MADE WITH INTENTION</span>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </>
   );
 }
 
-export default Content;
+export default LandingPage;
