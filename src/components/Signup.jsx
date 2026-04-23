@@ -5,8 +5,8 @@ import { Button, Input } from "./index";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { motion, setFeatureDefinitions } from "framer-motion";
-import { register, getCurrentUser } from "../api/auth-api";
-import { img } from "framer-motion/client";
+import { registerUser, getCurrentUser } from "../api/auth-api";
+import { toPlainData } from "../lib/post-utils";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const Signup = () => {
     setIsSubmitting(true);
 
     try {
-      const session = await register(data);
+      const session = await registerUser(data);
 
       if (session) {
         const userData = await getCurrentUser();
@@ -58,7 +58,7 @@ const Signup = () => {
     <>
       <div className="relative min-h-screen bg-[#F3F1EA] overflow-hidden">
         {/* 🔥 Top Right Blur */}
-        <div className="absolute right-10 top-10 w-[200px] h-[310px] rounded-3xl overflow-hidden opacity-30 pointer-events-none">
+        <div className="absolute right-10 top-10 w-42.5 h-42.5 rounded-3xl overflow-hidden opacity-30 pointer-events-none">
           <img
             src="/authpage1.png"
             alt=""
@@ -67,7 +67,7 @@ const Signup = () => {
         </div>
 
         {/* 🔥 Bottom Left Blur */}
-        <div className="absolute left-10 bottom-10 w-[170px] h-[170px] rounded-full overflow-hidden opacity-40 pointer-events-none">
+        <div className="absolute left-10 bottom-10 w-42.5 h-42.5 rounded-full overflow-hidden opacity-40 pointer-events-none">
           <img
             src="/image.png"
             alt=""
@@ -101,14 +101,14 @@ const Signup = () => {
           </div>
 
           {/* 🔹 Form Section */}
-          <div className="min-h-[75vh] flex items-center justify-center px-4">
+          <div className="min-h-[70vh] flex items-center justify-center px-4">
             <motion.div
               className="w-full max-w-md"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
             >
-              <div className="bg-white/80 backdrop-blur-md border border-[#E8E4DC] rounded-[32px] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
+              <div className="bg-white/80 backdrop-blur-md border border-[#E8E4DC] rounded-4xl p-8 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
                 <h2 className="text-2xl font-semibold mb-2">create account</h2>
 
                 <p className="text-sm text-[#6A6A5A] mb-6">
@@ -138,19 +138,19 @@ const Signup = () => {
                     {...register("password", { required: true })}
                   />
 
-                  <button
+                  <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-black text-white py-3 rounded-full mt-4"
+                    className="w-full mt-2"
                   >
                     {isSubmitting ? "Creating..." : "Sign Up"}
-                  </button>
+                  </Button>
                 </form>
 
                 <p className="text-center text-sm mt-6 text-[#6A6A5A]">
                   already have account?{" "}
-                  <Link to="/login" className="font-medium text-black">
-                    log in
+                  <Link to="/signin" className="font-medium text-black">
+                    Sign in
                   </Link>
                 </p>
               </div>

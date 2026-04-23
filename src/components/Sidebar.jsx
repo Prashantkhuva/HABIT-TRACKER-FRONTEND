@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { signout } from "../store/authSlice";
+import Button from "./Button";
 
 const navItems = [
   { to: "/rituals", icon: Sparkles, label: "RITUALS" },
@@ -47,7 +48,7 @@ export default function Sidebar() {
           habitflow
         </h1>
         <p
-          className="text-xs tracking-widest mt-1"
+          className="text-[10px] tracking-widest mt-1"
           style={{ fontFamily: "Manrope, sans-serif", color: "#9A9A8A" }}
         >
           PREMIUM EDITORIAL TRACKING
@@ -56,9 +57,9 @@ export default function Sidebar() {
 
       {/* New Ritual Button */}
       <div className="px-4 mb-6">
-        <button
+        <Button
           onClick={() => navigate("/rituals/new")}
-          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold tracking-widest transition-all"
+          className="w-full "
           style={{
             background: "#1A1A1A",
             color: "#FAFAF5",
@@ -66,7 +67,7 @@ export default function Sidebar() {
           }}
         >
           NEW RITUAL
-        </button>
+        </Button>
       </div>
 
       {/* Nav */}
@@ -108,7 +109,9 @@ export default function Sidebar() {
           className="w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all"
           style={{ color: "#9A9A8A" }}
           onMouseEnter={(e) => (e.currentTarget.style.background = "#EEEAE0")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.background = "transparent")
+          }
         >
           <HelpCircle size={16} />
           <span
@@ -125,7 +128,9 @@ export default function Sidebar() {
           className="w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all"
           style={{ color: "#9A9A8A" }}
           onMouseEnter={(e) => (e.currentTarget.style.background = "#EEEAE0")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.background = "transparent")
+          }
         >
           <LogOut size={16} />
           <span

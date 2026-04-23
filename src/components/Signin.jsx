@@ -5,7 +5,7 @@ import { Button, Input } from "./index";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { motion, setFeatureDefinitions } from "framer-motion";
-import { register, getCurrentUser, login } from "../api/auth-api";
+import { registerUser, getCurrentUser, login } from "../api/auth-api";
 import { img } from "framer-motion/client";
 
 const Signin = () => {
@@ -58,7 +58,7 @@ const Signin = () => {
     <>
       <div className="relative min-h-screen bg-[#F3F1EA] overflow-hidden">
         {/* 🔥 Top Right Blur */}
-        <div className="absolute right-10 top-10 w-[200px] h-[310px] rounded-3xl overflow-hidden opacity-30 pointer-events-none">
+        <div className="absolute right-10 top-10 w-50 h-77.5 rounded-3xl overflow-hidden opacity-30 pointer-events-none">
           <img
             src="/authpage1.png"
             alt=""
@@ -67,7 +67,7 @@ const Signin = () => {
         </div>
 
         {/* 🔥 Bottom Left Blur */}
-        <div className="absolute left-10 bottom-10 w-[170px] h-[170px] rounded-full overflow-hidden opacity-40 pointer-events-none">
+        <div className="absolute left-10 bottom-10 w-42.5 h-42.5 rounded-full overflow-hidden opacity-40 pointer-events-none">
           <img
             src="/image.png"
             alt=""
@@ -108,7 +108,7 @@ const Signin = () => {
               initial="hidden"
               animate="visible"
             >
-              <div className="bg-white/80 backdrop-blur-md border border-[#E8E4DC] rounded-[32px] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
+              <div className="bg-white/80 backdrop-blur-md border border-[#E8E4DC] rounded-4xl p-8 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
                 <h2 className="text-2xl font-semibold mb-2">create account</h2>
 
                 <p className="text-sm text-[#6A6A5A] mb-6">
@@ -132,19 +132,19 @@ const Signin = () => {
                     {...register("password", { required: true })}
                   />
 
-                  <button
+                  <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-black text-white py-3 rounded-full mt-4"
+                    className="w-full mt-2"
                   >
                     {isSubmitting ? "Creating..." : "Sign in"}
-                  </button>
+                  </Button>
                 </form>
 
                 <p className="text-center text-sm mt-6 text-[#6A6A5A]">
-                  already have account?{" "}
-                  <Link to="/login" className="font-medium text-black">
-                    log in
+                  Don't have account?{" "}
+                  <Link to="/signup" className="font-medium text-black">
+                    Sign up
                   </Link>
                 </p>
               </div>

@@ -6,17 +6,15 @@ import "./App.css";
 import Sidebar from "./components/Sidebar";
 import { Route, Routes } from "react-router-dom";
 import LandingPage from "./Pages/LandingPage";
-import Signup from "./components/Signup";
-import Singin from "./components/Signin";
-import Signin from "./components/Signin";
-
+import Signinpage from "./Pages/LoginPage";
+import Signuppage from "./Pages/SignupPage";
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
       <Routes>
-        <Route path="/" element={<Signin />} />
+        <Route path="/" element={<Signinpage />} />
       </Routes>
     </>
   );
