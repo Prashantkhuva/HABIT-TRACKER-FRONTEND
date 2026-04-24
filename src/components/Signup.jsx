@@ -5,7 +5,7 @@ import { Button, Input } from "./index";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { motion, setFeatureDefinitions } from "framer-motion";
-import { registerUser, getCurrentUser } from "../api/auth-api";
+import { registerUser, getCurrentUser, login } from "../api/auth-api";
 import { toPlainData } from "../lib/post-utils";
 
 const Signup = () => {
@@ -22,24 +22,33 @@ const Signup = () => {
     setIsSubmitting(true);
 
     try {
-      const session = await registerUser(data);
+      const response = await registerUser(data);
 
-      if (session) {
-        const userData = await getCurrentUser();
+      if (response.data) {
+        const loginResponse = await login({
+          email: data.email,
+          password: data.password,
+        });
 
-        if (userData) {
-          const safeUserData = toPlainData({
-            $id: userData.$id,
-            name: userData.name,
-            email: userData.email,
-          });
+        if (loginResponse.data) {
+          const user = loginResponse.data.data.user;
 
-          dispatch(authLogin({ userData: safeUserData }));
+          dispatch(
+            authLogin({
+              userData: {
+                _id: user._id,
+                fullname: user.fullname,
+                email: user.email,
+                username: user.username,
+              },
+            }),
+          );
+
+          navigate("/dashboard");
         }
-        navigate("/");
       }
     } catch (error) {
-      setError(error.message);
+      setError(error.response?.data?.message || error.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -119,9 +128,9 @@ const Signup = () => {
 
                 <form onSubmit={handleSubmit(create)} className="space-y-4">
                   <Input
-                    label="Full Name"
-                    placeholder="Julian Vane"
-                    {...register("name", { required: true })}
+                    label="Username"
+                    placeholder="julian_vane"
+                    {...register("username", { required: true, minLength: 3 })}
                   />
 
                   <Input

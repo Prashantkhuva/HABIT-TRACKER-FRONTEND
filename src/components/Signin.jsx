@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { signin as authLogin, signin } from "../store/authSlice";
+import { signin as authLogin } from "../store/authSlice";
 import { Button, Input } from "./index";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import { motion, setFeatureDefinitions } from "framer-motion";
+import { motion } from "framer-motion";
 import { registerUser, getCurrentUser, login } from "../api/auth-api";
-import { img } from "framer-motion/client";
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -17,29 +16,37 @@ const Signin = () => {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const create = async (data) => {
+  const handleLogin = async (data) => {
     setError("");
     setIsSubmitting(true);
 
     try {
-      const session = await register(data);
+      const response = await login(data);
+      console.log("RESPONSE 👉", response);
 
-      if (session) {
-        const userData = await getCurrentUser();
+      const user = response?.data?.data?.user;
 
-        if (userData) {
-          const safeUserData = toPlainData({
-            $id: userData.$id,
-            name: userData.name,
-            email: userData.email,
-          });
+      localStorage.setItem("user", JSON.stringify(user));
 
-          dispatch(authLogin({ userData: safeUserData }));
-        }
-        navigate("/");
+      if (user) {
+        dispatch(
+          authLogin({
+            userData: {
+              _id: user._id,
+              fullname: user.fullname,
+              email: user.email,
+              username: user.username,
+            },
+          }),
+        );
+
+        console.log("NAVIGATING...");
+        navigate("/dashboard");
+      } else {
+        setError("Login failed: user not found");
       }
     } catch (error) {
-      setError(error.message);
+      setError(error.response?.data?.message || error.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -115,7 +122,10 @@ const Signin = () => {
 
                 {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
-                <form onSubmit={handleSubmit(create)} className="space-y-4">
+                <form
+                  onSubmit={handleSubmit(handleLogin)}
+                  className="space-y-4"
+                >
                   <Input
                     type="email"
                     label="Email"

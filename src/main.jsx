@@ -2,12 +2,17 @@ import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
-import { BrowserRouter, createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  BrowserRouter,
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store/store.js";
 import CustomCursor from "./components/CustomCursor";
 import { LandingPage, LoginPage, SignupPage } from "./Pages/index.js";
 import AuthLayout from "./components/AuthLayout.jsx";
+import { DashPage } from "./pages/index.js";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +40,14 @@ const router = createBrowserRouter([
         element: (
           <AuthLayout authentication={false}>
             <SignupPage />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/dashboard",
+        element: (
+          <AuthLayout>
+            <DashPage />
           </AuthLayout>
         ),
       },
