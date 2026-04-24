@@ -13,6 +13,7 @@ import CustomCursor from "./components/CustomCursor";
 import { LandingPage, LoginPage, SignupPage } from "./Pages/index.js";
 import AuthLayout from "./components/AuthLayout.jsx";
 import { DashPage } from "./pages/index.js";
+import Create from "./components/Habit/Create.jsx";
 
 const router = createBrowserRouter([
   {
@@ -46,8 +47,16 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: (
-          <AuthLayout>
+          <AuthLayout authentication>
             <DashPage />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/create-habit",
+        element: (
+          <AuthLayout authentication>
+            <Create /> 
           </AuthLayout>
         ),
       },

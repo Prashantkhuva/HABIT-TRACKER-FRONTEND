@@ -19,26 +19,19 @@ import { AuthFormSkeleton } from "./loading/LoadingSkeletons";
 //   return isAuthorizedRoute ? <>{children}</> : <AuthFormSkeleton />;
 // }
 
+
 function AuthLayout({ children, authentication = true }) {
   const navigate = useNavigate();
-
-  const { status, isAuthChecked } = useSelector((state) => state.auth);
-
+  const authStatus = useSelector((state) => state.auth.status);
+  
   useEffect(() => {
-    if (!isAuthChecked) return; // 👈 WAIT
-
-    if (authentication && !status) {
+    if (authentication && !authStatus) {
       navigate("/signin");
-    } else if (!authentication && status) {
+    } else if (!authentication && authStatus) {
       navigate("/dashboard");
     }
-  }, [status, isAuthChecked, navigate, authentication]);
-
-  // 👇 jab tak check nahi hua, kuch mat dikhao ya skeleton
-  if (!isAuthChecked) {
-    return <div>Loading...</div>;
-  }
+  }, [authStatus, navigate, authentication]);
 
   return <>{children}</>;
 }
-export default AuthLayout;
+  export default AuthLayout;

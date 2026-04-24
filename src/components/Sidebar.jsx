@@ -58,7 +58,7 @@ export default function Sidebar() {
       {/* New Ritual Button */}
       <div className="px-4 mb-6">
         <Button
-          onClick={() => navigate("/rituals/new")}
+          onClick={() => navigate("/create-habit")}
           className="w-full "
           style={{
             background: "#1A1A1A",
