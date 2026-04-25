@@ -17,6 +17,7 @@ function Create({ onClose }) {
   const [color, setColor] = useState("#4F6F64");
   const [frequency, setFrequency] = useState("daily");
   const [loading, setLoading] = useState(false);
+  const [description, setDescription] = useState("");
 
   const colors = ["#4F6F64", "#C2B280", "#BFD8D2", "#E0DED9", "#000"];
 
@@ -28,14 +29,14 @@ function Create({ onClose }) {
 
       const createdHabit = await createHabit({
         title,
-        description: "",
+        description,
         frequency,
         category,
         color,
       });
 
       const newHabit = createdHabit?.data?.data;
-      
+
       if (newHabit) {
         dispatch(addReduxHabit(newHabit));
       }
@@ -59,7 +60,7 @@ function Create({ onClose }) {
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="w-[680px] h-[720px] rounded-[32px] overflow-hidden flex"
+        className="w-170 h-180 rounded-4xl overflow-hidden flex"
       >
         {/* LEFT PANEL */}
         <div className="w-[30%] bg-[#1A1A1A] text-white p-10 flex flex-col justify-between">
@@ -87,6 +88,18 @@ function Create({ onClose }) {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. morning meditation"
+              className="w-full border-b border-gray-300 bg-transparent outline-none py-2 text-sm"
+            />
+          </div>
+
+          {/* DESCRIPTION */}
+
+          <div className="flex flex-col gap-2">
+            <p className="text-xs text-gray-400 uppercase">Why this habit?</p>
+            <input
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="e.g. to calm my mind every morning"
               className="w-full border-b border-gray-300 bg-transparent outline-none py-2 text-sm"
             />
           </div>
