@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { motion, setFeatureDefinitions } from "framer-motion";
 import { registerUser, getCurrentUser, login } from "../api/auth-api";
-import { toPlainData } from "../lib/post-utils";
+import { toPlainData } from "../lib/habit-utils";
 
 const Signup = () => {
   const navigate = useNavigate();

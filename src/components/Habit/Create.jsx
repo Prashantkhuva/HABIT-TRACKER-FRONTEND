@@ -18,6 +18,7 @@ function Create({ onClose }) {
   const [frequency, setFrequency] = useState("daily");
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
+  const [habitType, setHabitType] = useState("boolean");
 
   const colors = ["#4F6F64", "#C2B280", "#BFD8D2", "#E0DED9", "#000"];
 
@@ -33,6 +34,7 @@ function Create({ onClose }) {
         frequency,
         category,
         color,
+        type: habitType,
       });
 
       const newHabit = createdHabit?.data?.data;
@@ -72,7 +74,7 @@ function Create({ onClose }) {
         </div>
 
         {/* RIGHT PANEL */}
-        <div className="w-[70%] bg-[#F5F3EE] p-12 relative flex flex-col gap-8">
+        <div className="w-[70%] bg-[#F5F3EE] p-12 relative flex flex-col gap-8 overflow-y-auto max-h-180 custom-scroll">
           {/* CLOSE */}
           <button onClick={handleClose} className="absolute right-6 top-6">
             <X />
@@ -199,6 +201,38 @@ function Create({ onClose }) {
               >
                 WEEKLY
               </button>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-xs text-gray-400 uppercase mb-3">Habit Type</p>
+            <div className="relative flex bg-[#E8E4DC] rounded-full p-1 w-fit">
+              {/* Animated Pill */}
+              <motion.div
+                layout
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                className="absolute top-1 bottom-1 rounded-full bg-white shadow"
+                style={{
+                  width: "90px",
+                  left:
+                    habitType === "boolean"
+                      ? "4px"
+                      : habitType === "streak"
+                        ? "98px"
+                        : "192px",
+                }}
+              />
+
+              {["boolean", "streak", "quantity"].map((type) => (
+                <button
+                  key={type}
+                  onClick={() => setHabitType(type)}
+                  className={`relative z-10 px-5 py-2 text-xs transition-all w-22.5 text-center
+          ${habitType === type ? "text-black scale-105 font-medium" : "text-gray-500"}`}
+                >
+                  {type.toUpperCase()}
+                </button>
+              ))}
             </div>
           </div>
 
