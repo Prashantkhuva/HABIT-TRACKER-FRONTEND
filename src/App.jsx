@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuthChecked, signin } from "./store/authSlice";
+import { getCurrentUser } from "./api/auth-api";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -21,15 +22,24 @@ function App() {
   const shouldHide = hideHeaderOn.includes(location.pathname);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const checkAuth = async () => {
+      try {
+        const res = await getCurrentUser();
 
-    if (user) {
-      dispatch(signin({ userData: user }));
-    } else {
-      dispatch(setAuthChecked());
-    }
+        const user = res?.data?.data;
+
+        if (user) {
+          dispatch(signin({ userData: user }));
+        } else {
+          dispatch(setAuthChecked());
+        }
+      } catch (error) {
+        dispatch(setAuthChecked());
+      }
+    };
+
+    checkAuth();
   }, [dispatch]);
-
   return (
     <div className="min-h-screen flex flex-col bg-bg">
       {!shouldHide && <Header />}

@@ -5,9 +5,12 @@ import { createHabit } from "../../api/habits-api";
 import { useNavigate } from "react-router-dom";
 import { categoryMap } from "./categoryMap";
 import Button from "../Button";
+import { useDispatch } from "react-redux";
+import { addReduxHabit } from "../../store/habitSlice";
 
 function Create({ onClose }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Productivity");
@@ -23,13 +26,19 @@ function Create({ onClose }) {
     try {
       setLoading(true);
 
-      await createHabit({
+      const createdHabit = await createHabit({
         title,
         description: "",
         frequency,
         category,
         color,
       });
+
+      const newHabit = createdHabit?.data?.data;
+      
+      if (newHabit) {
+        dispatch(addReduxHabit(newHabit));
+      }
 
       onClose?.();
       navigate("/dashboard");

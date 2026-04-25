@@ -12,7 +12,7 @@ import store from "./store/store.js";
 import CustomCursor from "./components/CustomCursor";
 import { LandingPage, LoginPage, SignupPage } from "./Pages/index.js";
 import AuthLayout from "./components/AuthLayout.jsx";
-import { DashPage } from "./pages/index.js";
+import { DashPage } from "./Pages/index.js";
 import Create from "./components/Habit/Create.jsx";
 
 const router = createBrowserRouter([

@@ -22,25 +22,16 @@ const Signin = () => {
 
     try {
       const response = await login(data);
-      console.log("RESPONSE 👉", response);
 
       const user = response?.data?.data?.user;
-
-      localStorage.setItem("user", JSON.stringify(user));
 
       if (user) {
         dispatch(
           authLogin({
-            userData: {
-              _id: user._id,
-              fullname: user.fullname,
-              email: user.email,
-              username: user.username,
-            },
+            userData: user,
           }),
         );
 
-        console.log("NAVIGATING...");
         navigate("/dashboard");
       } else {
         setError("Login failed: user not found");
