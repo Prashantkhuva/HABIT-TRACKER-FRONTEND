@@ -75,13 +75,12 @@ export default function Dashboard() {
 
   return (
     <div
-      className="min-h-screen px-8 py-10"
+      className="min-h-screen px-8 pt-10 pb-0 custom-scroll"
       style={{ background: "#FAFAF5", color: "#1A1A1A" }}
     >
       {activeHabits.length === 0 ? (
         /* ── EMPTY STATE ── */
-        <div className="flex flex-col items-center justify-center py-32 gap-6">
-  
+        <div className="flex flex-col items-center justify-center h-[60vh] gap-6 ">
           <div className="text-center">
             <p
               className="text-3xl font-semibold mb-2"
