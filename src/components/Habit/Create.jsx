@@ -95,11 +95,11 @@ function Create({ onClose }) {
           {/* DESCRIPTION */}
 
           <div className="flex flex-col gap-2">
-            <p className="text-xs text-gray-400 uppercase">Why this habit?</p>
+            <p className="text-xs text-gray-400 uppercase">RITUAL INTENTION</p>
             <input
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="e.g. to calm my mind every morning"
+              placeholder="e.g. read 10 pages every night"
               className="w-full border-b border-gray-300 bg-transparent outline-none py-2 text-sm"
             />
           </div>
