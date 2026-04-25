@@ -81,15 +81,10 @@ export default function Dashboard() {
       {activeHabits.length === 0 ? (
         /* ── EMPTY STATE ── */
         <div className="flex flex-col items-center justify-center py-32 gap-6">
-          <p
-            className="text-8xl font-bold"
-            style={{ color: "#E8E4DC", fontFamily: "Epilogue, sans-serif" }}
-          >
-            ○
-          </p>
+  
           <div className="text-center">
             <p
-              className="text-3xl font-bold mb-2"
+              className="text-3xl font-semibold mb-2"
               style={{ fontFamily: "Epilogue, sans-serif", color: "#1A1A1A" }}
             >
               no rituals yet.
