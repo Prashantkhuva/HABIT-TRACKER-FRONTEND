@@ -5,18 +5,11 @@ import { categoryMap } from "./categoryMap";
 import { getTextColor, getIconBg } from "../../lib/habit-utils";
 import { getHabitStreak as fetchStreak } from "../../api/habits-api";
 
-export default function StreakCard({
-  habit,
-  index,
-  onComplete,
-  completing,
-  isDone,
-}) {
+export default function StreakCard({ habit, index, onComplete, completing, isDone }) {
   const Icon = categoryMap[habit.category];
   const textColor = getTextColor(habit.color);
   const iconBg = getIconBg(habit.color);
-  const subColor =
-    textColor === "#FAFAF5" ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.4)";
+  const subColor = textColor === "#FAFAF5" ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.4)";
 
   const [streak, setStreak] = useState(0);
 
@@ -24,16 +17,16 @@ export default function StreakCard({
     const loadStreak = async () => {
       try {
         const res = await fetchStreak(habit._id);
-
-        console.log("streak response:", res.data); // ← yeh add karo
-
-        setStreak(res.data.data?.streak || res.data?.streak || 0);
+        const data = res.data.data;
+        // Backend dono return karta hai — currentStreak ya streak
+        const count = data?.currentStreak ?? data?.streak ?? 0;
+        setStreak(count);
       } catch (err) {
-        console.error(err);
+        console.error("streak error:", err);
       }
     };
     loadStreak();
-  }, [isDone]);
+  }, [isDone, habit._id]);
 
   return (
     <motion.div
@@ -64,14 +57,16 @@ export default function StreakCard({
         >
           {habit.title}
         </p>
+
         {/* Big streak number */}
         <p
-          className="text-5xl font-black leading-none"
+          className="text-6xl font-black leading-none"
           style={{ fontFamily: "Epilogue, sans-serif", color: textColor }}
         >
           {streak}
         </p>
-        <p className="text-xs tracking-widest mt-1" style={{ color: subColor }}>
+
+        <p className="text-xs tracking-widest mt-2" style={{ color: subColor }}>
           DAY STREAK
         </p>
       </div>

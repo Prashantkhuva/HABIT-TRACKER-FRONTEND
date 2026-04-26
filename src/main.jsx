@@ -10,7 +10,7 @@ import {
 import { Provider } from "react-redux";
 import store from "./store/store.js";
 import CustomCursor from "./components/CustomCursor";
-import { LandingPage, LoginPage, SignupPage } from "./Pages/index.js";
+import { LandingPage, LoginPage, SignupPage, HabitsPage } from "./Pages/index.js";
 import AuthLayout from "./components/AuthLayout.jsx";
 import { DashPage } from "./Pages/index.js";
 import Create from "./components/Habit/Create.jsx";
@@ -49,6 +49,14 @@ const router = createBrowserRouter([
         element: (
           <AuthLayout authentication>
             <DashPage />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/create-habit",
+        element: (
+          <AuthLayout authentication>
+            <Create /> 
           </AuthLayout>
         ),
       },

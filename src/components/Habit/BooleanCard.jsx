@@ -2,8 +2,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Check } from "lucide-react";
 import { categoryMap } from "./categoryMap";
 import { getTextColor, getIconBg } from "../../lib/habit-utils";
+import { useEffect, useState } from "react";
+import { getHabitLogs } from "../../api/habits-api";
 
-export default function HabitCard({
+export default function BooleanCard({
   habit,
   index,
   onComplete,
@@ -16,6 +18,21 @@ export default function HabitCard({
   const subColor =
     textColor === "#FAFAF5" ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.4)";
 
+  const [weeklyCount, setWeeklyCount] = useState(0);
+
+  useEffect(() => {
+    const fetchWeekly = async () => {
+      try {
+        const res = await getHabitLogs(habit._id, 1, 7);
+        const logs = res.data.data.logs;
+        setWeeklyCount(logs.filter((l) => l.completed).length);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchWeekly();
+  }, [isDone]);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -24,7 +41,7 @@ export default function HabitCard({
       className="relative min-w-75 h-55 rounded-[28px] p-6 flex flex-col justify-between shrink-0"
       style={{ background: habit.color || "#1A1A1A" }}
     >
-      {/* Top Row — Icon + HABIT 01 */}
+      {/* Top Row */}
       <div className="flex justify-between items-start">
         <div
           className="w-10 h-10 rounded-full flex items-center justify-center"
@@ -40,11 +57,12 @@ export default function HabitCard({
       {/* Content */}
       <div>
         <p
-          className="text-xl font-bold mb-1 leading-tight"
+          className="text-xl font-bold mb-3 leading-tight"
           style={{ fontFamily: "Epilogue, sans-serif", color: textColor }}
         >
           {habit.title}
         </p>
+
         <p
           className="text-xs tracking-widest uppercase"
           style={{ color: subColor }}
@@ -52,8 +70,6 @@ export default function HabitCard({
           {habit.frequency === "daily" ? "DAILY RITUAL" : "WEEKLY SESSIONS"}
         </p>
       </div>
-
-      {/* Complete Button */}
 
       {/* Complete Button */}
       <AnimatePresence mode="wait">

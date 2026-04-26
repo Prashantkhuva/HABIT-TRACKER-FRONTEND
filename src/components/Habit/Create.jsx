@@ -19,6 +19,7 @@ function Create({ onClose }) {
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
   const [habitType, setHabitType] = useState("boolean");
+  const [unit, setUnit] = useState("");
 
   const colors = ["#4F6F64", "#C2B280", "#BFD8D2", "#E0DED9", "#000"];
 
@@ -234,6 +235,33 @@ function Create({ onClose }) {
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* Type Description */}
+          <div className="rounded-2xl p-4" style={{ background: "#EEEAE0" }}>
+            {habitType === "boolean" && (
+              <p className="text-xs" style={{ color: "#6A6A5A" }}>
+                ✓ &nbsp; Simple yes/no habit — mark complete each day
+              </p>
+            )}
+            {habitType === "streak" && (
+              <p className="text-xs" style={{ color: "#6A6A5A" }}>
+                🔥 &nbsp; Track consecutive days — streak grows with consistency
+              </p>
+            )}
+            {habitType === "quantity" && (
+              <div className="flex flex-col gap-3">
+                <p className="text-xs" style={{ color: "#6A6A5A" }}>
+                  📊 &nbsp; Track a daily amount — water, pages, minutes, km
+                </p>
+                <input
+                  value={unit}
+                  onChange={(e) => setUnit(e.target.value)}
+                  placeholder="unit e.g. liters, pages, minutes"
+                  className="w-full border-b border-gray-300 bg-transparent outline-none py-2 text-xs"
+                />
+              </div>
+            )}
           </div>
 
           {/* BUTTONS */}

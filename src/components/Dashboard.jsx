@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getHabits, completeHabit, getHabitLogs } from "../api/habits-api";
+import { getDashboardStats, getWeeklyData } from "../api/dashboard-api";
 import { setReduxHabits } from "../store/habitSlice";
 import HabitCard from "./Habit/HabitCard";
 import CompletedHabit from "./Habit/CompletedHabit";
@@ -13,14 +14,25 @@ export default function Dashboard() {
   const habits = useSelector((state) => state.habit.habits);
   const [completing, setCompleting] = useState(null);
   const [completedIds, setCompletedIds] = useState([]);
+  const [stats, setStats] = useState(null);
+  const [weeklyData, setWeeklyData] = useState([]);
 
   useEffect(() => {
-    const fetchHabits = async () => {
+    const fetchAll = async () => {
       try {
         const res = await getHabits();
         const fetchedHabits = res.data.data;
         dispatch(setReduxHabits(fetchedHabits));
 
+        // Stats + Weekly parallel fetch
+        const [statsRes, weeklyRes] = await Promise.all([
+          getDashboardStats(),
+          getWeeklyData(),
+        ]);
+        setStats(statsRes.data.data);
+        setWeeklyData(weeklyRes.data.data);
+
+        // Aaj ke completed habits check
         const alreadyDoneIds = [];
         await Promise.all(
           fetchedHabits.map(async (habit) => {
@@ -47,7 +59,7 @@ export default function Dashboard() {
         console.error(err);
       }
     };
-    fetchHabits();
+    fetchAll();
   }, []);
 
   const handleComplete = async (habit) => {
@@ -56,6 +68,9 @@ export default function Dashboard() {
     try {
       await completeHabit(habit._id);
       setCompletedIds((prev) => [...prev, habit._id]);
+      // Stats refresh
+      const statsRes = await getDashboardStats();
+      setStats(statsRes.data.data);
     } catch (err) {
       const msg = err.response?.data?.message;
       if (msg === "Habit already completed today") {
@@ -73,14 +88,16 @@ export default function Dashboard() {
     completedIds.includes(h._id),
   );
 
+  const maxWeekly = Math.max(...weeklyData.map((d) => d.count), 1);
+
   return (
     <div
-      className="min-h-screen px-8 pt-10 pb-0 custom-scroll"
+      className="min-h-screen px-8 pt-10 pb-10 custom-scroll"
       style={{ background: "#FAFAF5", color: "#1A1A1A" }}
     >
       {activeHabits.length === 0 ? (
         /* ── EMPTY STATE ── */
-        <div className="flex flex-col items-center justify-center h-[60vh] gap-6 ">
+        <div className="flex flex-col items-center justify-center h-[60vh] gap-6">
           <div className="text-center">
             <p
               className="text-3xl font-semibold mb-2"
@@ -95,7 +112,6 @@ export default function Dashboard() {
           <Button onClick={() => navigate("/create-habit")}>NEW RITUAL</Button>
         </div>
       ) : (
-        /* ── HABITS ── */
         <>
           <p
             className="text-xs tracking-widest mb-2"
@@ -113,6 +129,7 @@ export default function Dashboard() {
             your habits
           </h1>
 
+          {/* ── HABIT CARDS ── */}
           <div className="flex gap-5 overflow-x-auto pb-4 custom-scroll-x">
             {activeHabits.map((habit, i) => (
               <HabitCard
@@ -126,6 +143,7 @@ export default function Dashboard() {
             ))}
           </div>
 
+          {/* ── COMPLETED ── */}
           {completedHabits.length > 0 && (
             <div className="mt-16">
               <div className="flex justify-between items-center mb-6">
