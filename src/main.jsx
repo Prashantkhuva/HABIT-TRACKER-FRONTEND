@@ -10,7 +10,13 @@ import {
 import { Provider } from "react-redux";
 import store from "./store/store.js";
 import CustomCursor from "./components/CustomCursor";
-import { LandingPage, LoginPage, SignupPage, HabitsPage } from "./Pages/index.js";
+import {
+  LandingPage,
+  LoginPage,
+  SignupPage,
+  HabitsPage,
+  HabitDetailPage,
+} from "./Pages/index.js";
 import AuthLayout from "./components/AuthLayout.jsx";
 import { DashPage } from "./Pages/index.js";
 import Create from "./components/Habit/Create.jsx";
@@ -56,7 +62,7 @@ const router = createBrowserRouter([
         path: "/create-habit",
         element: (
           <AuthLayout authentication>
-            <Create /> 
+            <Create />
           </AuthLayout>
         ),
       },
@@ -64,7 +70,31 @@ const router = createBrowserRouter([
         path: "/rituals",
         element: (
           <AuthLayout authentication>
-            <HabitsPage /> 
+            <HabitsPage />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/rituals/completed",
+        element: (
+          <AuthLayout authentication>
+            <HabitsPage />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/rituals/active",
+        element: (
+          <AuthLayout authentication>
+            <HabitsPage />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/rituals/:id",
+        element: (
+          <AuthLayout authentication>
+            <HabitDetailPage />
           </AuthLayout>
         ),
       },

@@ -2,16 +2,29 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { categoryMap } from "./categoryMap";
-import { getTextColor, getIconBg } from "../../lib/habit-utils";
+import { getTextColor } from "../../lib/habit-utils";
+import { useNavigate } from "react-router-dom";
 
 export default function QuantityCard({ habit, index }) {
   const Icon = categoryMap[habit.category];
+
   const textColor = getTextColor(habit.color);
-  const iconBg = getIconBg(habit.color);
-  const subColor =
-    textColor === "#FAFAF5" ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.4)";
+
+  // 🔥 detect dark / light background
+  const isDark = textColor === "#FAFAF5";
+
+  // 🔥 FIXED button colors (no more merging issue)
+  const plusBg = isDark ? "#FAFAF5" : "#1A1A1A";
+  const plusColor = isDark ? "#1A1A1A" : "#FAFAF5";
+
+  // 🔥 better icon background (no rgba dull issue)
+  const iconBg = isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.1)";
+
+  const subColor = isDark ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.4)";
 
   const [quantity, setQuantity] = useState(0);
+
+  const navigate = useNavigate()
 
   return (
     <motion.div
@@ -20,6 +33,7 @@ export default function QuantityCard({ habit, index }) {
       transition={{ delay: index * 0.1 }}
       className="relative min-w-75 h-55 rounded-[28px] p-6 flex flex-col justify-between shrink-0"
       style={{ background: habit.color || "#1A1A1A" }}
+      onClick={() => navigate(`/rituals/${habit._id}`)}
     >
       {/* Top Row */}
       <div className="flex justify-between items-start">
@@ -29,12 +43,12 @@ export default function QuantityCard({ habit, index }) {
         >
           {Icon && <Icon size={18} color={textColor} />}
         </div>
+
         <span className="text-xs tracking-widest" style={{ color: subColor }}>
           HABIT {String(index + 1).padStart(2, "0")}
         </span>
       </div>
 
-      {/* Content */}
       {/* Content */}
       <div>
         <p
@@ -44,7 +58,6 @@ export default function QuantityCard({ habit, index }) {
           {habit.title}
         </p>
 
-        {/* Big number */}
         <p
           className="text-5xl font-black leading-none"
           style={{ fontFamily: "Epilogue, sans-serif", color: textColor }}
@@ -65,10 +78,7 @@ export default function QuantityCard({ habit, index }) {
           onClick={() => setQuantity((prev) => Math.max(0, prev - 1))}
           className="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold"
           style={{
-            background:
-              subColor === "rgba(255,255,255,0.6)"
-                ? "rgba(255,255,255,0.2)"
-                : "rgba(0,0,0,0.1)",
+            background: isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.1)",
             color: textColor,
           }}
         >
@@ -80,7 +90,10 @@ export default function QuantityCard({ habit, index }) {
           whileTap={{ scale: 0.9 }}
           onClick={() => setQuantity((prev) => prev + 1)}
           className="w-10 h-10 rounded-full flex items-center justify-center"
-          style={{ background: textColor, color: habit.color }}
+          style={{
+            background: plusBg,
+            color: plusColor,
+          }}
         >
           <Plus size={18} />
         </motion.button>

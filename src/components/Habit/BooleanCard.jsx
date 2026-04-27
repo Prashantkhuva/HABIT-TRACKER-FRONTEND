@@ -1,9 +1,14 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Check } from "lucide-react";
 import { categoryMap } from "./categoryMap";
-import { getTextColor, getIconBg } from "../../lib/habit-utils";
+import {
+  getTextColor,
+  getIconBg,
+  getButtonColors,
+} from "../../lib/habit-utils";
 import { useEffect, useState } from "react";
 import { getHabitLogs } from "../../api/habits-api";
+import { useNavigate } from "react-router-dom";
 
 export default function BooleanCard({
   habit,
@@ -17,8 +22,10 @@ export default function BooleanCard({
   const iconBg = getIconBg(habit.color);
   const subColor =
     textColor === "#FAFAF5" ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.4)";
+  const { plusBg, plusIcon, checkBg, checkIcon } = getButtonColors(habit.color);
 
   const [weeklyCount, setWeeklyCount] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchWeekly = async () => {
@@ -40,6 +47,7 @@ export default function BooleanCard({
       transition={{ delay: index * 0.1 }}
       className="relative min-w-75 h-55 rounded-[28px] p-6 flex flex-col justify-between shrink-0"
       style={{ background: habit.color || "#1A1A1A" }}
+      onClick={() => navigate(`/rituals/${habit._id}`)}
     >
       {/* Top Row */}
       <div className="flex justify-between items-start">
@@ -83,8 +91,8 @@ export default function BooleanCard({
           onClick={() => !isDone && onComplete(habit)}
           className="absolute bottom-6 right-6 w-12 h-12 rounded-full flex items-center justify-center"
           style={{
-            background: isDone ? "#4B6B63" : textColor,
-            color: isDone ? "#FAFAF5" : habit.color,
+            background: isDone ? checkBg : plusBg,
+            color: isDone ? checkIcon : plusIcon,
           }}
         >
           {completing === habit._id ? (

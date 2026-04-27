@@ -159,6 +159,7 @@ export default function Dashboard() {
                 <button
                   className="text-xs tracking-widest"
                   style={{ color: "#9A9A8A" }}
+                  onClick={() => navigate("/rituals/completed")}
                 >
                   VIEW HISTORY →
                 </button>

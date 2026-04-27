@@ -13,6 +13,7 @@ import {
 import { useDispatch } from "react-redux";
 import { signout } from "../store/authSlice";
 import Button from "./Button";
+import { Link } from "react-router-dom";
 
 const navItems = [
   { to: "/rituals", icon: Sparkles, label: "RITUALS" },
@@ -41,12 +42,14 @@ export default function Sidebar() {
     >
       {/* Logo */}
       <div className="px-6 pt-8 pb-6">
-        <h1
-          className="text-2xl font-medium tracking-tight"
-          style={{ fontFamily: "Epilogue, sans-serif", color: "#1A1A1A" }}
-        >
-          habitflow
-        </h1>
+        <Link to={"/dashboard"}>
+          <h1
+            className="text-2xl font-medium tracking-tight"
+            style={{ fontFamily: "Epilogue, sans-serif", color: "#1A1A1A" }}
+          >
+            habitflow
+          </h1>
+        </Link>
         <p
           className="text-[10px] tracking-widest mt-1"
           style={{ fontFamily: "Manrope, sans-serif", color: "#9A9A8A" }}

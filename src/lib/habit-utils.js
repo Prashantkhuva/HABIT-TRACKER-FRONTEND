@@ -98,6 +98,28 @@ export const getWeeklyCount = async (habitId) => {
   }
 };
 
+function isDarkColor(hexColor) {
+  const hex = hexColor.replace("#", "");
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+  return brightness < 128;
+}
+
+function getButtonColors(habitColor) {
+  const textColor = getTextColor(habitColor);
+  const isDark = textColor === "#FAFAF5";
+
+  return {
+    plusBg: isDark ? "#FAFAF5" : "#1A1A1A",
+    plusIcon: isDark ? "#1A1A1A" : "#FAFAF5",
+
+    checkBg: isDark ? "#FAFAF5" : "#1A1A1A",
+    checkIcon: isDark ? "#1A1A1A" : "#FAFAF5",
+  };
+}
 // Category label
 
 export {
@@ -111,5 +133,6 @@ export {
   getTextColor,
   getIconBg,
   expandHex,
-  
+  isDarkColor,
+  getButtonColors
 };
