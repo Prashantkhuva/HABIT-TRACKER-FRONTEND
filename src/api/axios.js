@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: "/api/v1",
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });
@@ -28,12 +28,10 @@ api.interceptors.response.use(
     }
 
     err.message =
-      err.response?.data?.message ||
-      err.message ||
-      "Something went wrong";
+      err.response?.data?.message || err.message || "Something went wrong";
 
     return Promise.reject(err);
-  }
+  },
 );
 
 export default api;

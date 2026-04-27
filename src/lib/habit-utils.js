@@ -87,6 +87,17 @@ function getIconBg(hexColor = "#FAFAF5") {
   return brightness < 128 ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)";
 }
 
+export const getWeeklyCount = async (habitId) => {
+  try {
+    const res = await getHabitLogs(habitId, 1, 7);
+    const logs = res.data.data.logs;
+    return logs.length;
+  } catch (err) {
+    console.error(err);
+    return 0;
+  }
+};
+
 // Category label
 
 export {
@@ -99,5 +110,6 @@ export {
   getFrequencyLabel,
   getTextColor,
   getIconBg,
-  expandHex
+  expandHex,
+  
 };

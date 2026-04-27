@@ -61,10 +61,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/create-habit",
+        path: "/rituals",
         element: (
           <AuthLayout authentication>
-            <Create /> 
+            <HabitsPage /> 
           </AuthLayout>
         ),
       },
