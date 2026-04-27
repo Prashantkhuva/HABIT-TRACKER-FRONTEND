@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "/api/v1",
+  baseURL: "https://habit-tracker-t0o0.onrender.com/api/v1", // ✅ FIX
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });
