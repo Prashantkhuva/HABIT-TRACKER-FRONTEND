@@ -136,7 +136,7 @@ const Signin = () => {
                     disabled={isSubmitting}
                     className="w-full mt-2"
                   >
-                    {isSubmitting ? "Creating..." : "Sign in"}
+                    {isSubmitting ? "Signing in..." : "Sign in"}
                   </Button>
                 </form>
 
