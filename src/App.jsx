@@ -43,6 +43,7 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col bg-bg">
       {!shouldHide && <Header />}
+      
       <main className={`grow ${!shouldHide ? "pt-20 pl-56" : ""}`}>
         <Outlet />
       </main>

@@ -3,9 +3,26 @@ import { motion } from "framer-motion";
 import { Bell, User } from "lucide-react";
 import Button from "../Button";
 import { Link } from "react-router-dom";
-import SearchBar from "../SearchBar";
+import { useSelector } from "react-redux";
 
 function Header() {
+  const user = useSelector((state) => state.auth.userData);
+
+  // 🔥 greeting logic
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good Morning";
+    if (hour < 18) return "Good Afternoon";
+    return "Good Evening";
+  };
+
+  const getEmoji = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "🌅";
+    if (hour < 18) return "☀️";
+    return "🌙";
+  };
+
   return (
     <motion.nav
       initial={{ opacity: 0, y: -20 }}
@@ -17,12 +34,23 @@ function Header() {
         borderBottom: "1px solid #E8E4DC",
       }}
     >
-      {/* 🔍 Search */}
-      <div className="flex-1 max-w-xl">
-        <SearchBar />
+      {/* 🔥 LEFT — GREETING */}
+      <div>
+        <p className="text-xs tracking-widest text-[#9A9A8A]">DASHBOARD</p>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="text-lg font-semibold"
+          style={{ fontFamily: "Epilogue, sans-serif" }}
+        >
+          {getGreeting()}
+          {user?.username && `, ${user.username}`} {getEmoji()}
+        </motion.h1>
       </div>
 
-      {/* 🔔 Right Section */}
+      {/* 🔔 RIGHT */}
       <div className="flex items-center gap-4 ml-6">
         {/* Bell */}
         <motion.button
@@ -40,9 +68,9 @@ function Header() {
         <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}>
           <Link
             to="/profile"
-            className="flex items-center justify-center w-9 h-9 rounded-full bg-[#1A1A1A] hover:bg-[#333] transition-all"
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-[#1A1A1A] hover:bg-[#333] transition-all text-white text-sm font-semibold"
           >
-            <User size={16} className="text-white" />
+            {user?.username?.charAt(0)?.toUpperCase() || "U"}
           </Link>
         </motion.div>
       </div>

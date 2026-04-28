@@ -10,11 +10,16 @@ export default function HabitListCard({ habit, index, onEdit }) {
   const Icon = categoryMap[habit.category];
   const textColor = getTextColor(habit.color);
   const iconBg = getIconBg(habit.color);
-  const subColor =
-    textColor === "#FAFAF5" ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.4)";
+
+  const isDark = textColor === "#FAFAF5";
+  const subColor = isDark
+    ? "rgba(255,255,255,0.6)"
+    : "rgba(0,0,0,0.4)";
 
   const [weeklyCount, setWeeklyCount] = useState(0);
   const navigate = useNavigate();
+
+  const isActive = habit.status === "active";
 
   useEffect(() => {
     const fetchLogs = async () => {
@@ -27,18 +32,31 @@ export default function HabitListCard({ habit, index, onEdit }) {
       }
     };
     fetchLogs();
-  }, []);
+  }, [habit._id]);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="relative rounded-[28px] p-6 flex flex-col justify-between gap-4"
-      style={{ background: habit.color || "#1A1A1A", minHeight: "220px" }}
-      onClick={() => navigate(`/rituals/${habit._id}`)}
+      className="relative rounded-[28px] p-6 flex flex-col justify-between gap-4 cursor-pointer"
+      style={{
+        background: habit.color || "#1A1A1A",
+        minHeight: "220px",
+        opacity: isActive ? 1 : 0.6,
+        filter: habit.status === "archived" ? "grayscale(0.6)" : "none",
+      }}
+      onClick={() => navigate(`/rituals/${habit._id}`)} // ✅ always open
+      whileHover={isActive ? { scale: 1.02 } : {}}
     >
-      {/* Top Row */}
+      {/* STATUS BADGE */}
+      {habit.status !== "active" && (
+        <div className="absolute top-7 right-15 px-3 py-1 text-[10px] tracking-widest rounded-full bg-black/30 text-white">
+          {habit.status.toUpperCase()}
+        </div>
+      )}
+
+      {/* Top */}
       <div className="flex justify-between items-start">
         <div
           className="w-10 h-10 rounded-full flex items-center justify-center"
@@ -46,9 +64,14 @@ export default function HabitListCard({ habit, index, onEdit }) {
         >
           {Icon && <Icon size={18} color={textColor} />}
         </div>
+
         <button
-          onClick={() => onEdit?.(habit)}
-          className="p-2 rounded-full transition-all"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (!isActive) return;
+            onEdit?.(habit);
+          }}
+          className="p-2 rounded-full"
           style={{ background: iconBg }}
         >
           <Pencil size={13} color={textColor} />
@@ -58,33 +81,30 @@ export default function HabitListCard({ habit, index, onEdit }) {
       {/* Content */}
       <div>
         <p
-          className="text-xl font-bold mb-3 leading-tight"
-          style={{ fontFamily: "Epilogue, sans-serif", color: textColor }}
+          className="text-xl font-bold mb-3"
+          style={{ color: textColor }}
         >
           {habit.title}
         </p>
 
-        {/* Weekly Progress */}
         <div>
-          <div className="flex justify-between items-center mb-1.5">
-            <p className="text-xs tracking-widest" style={{ color: subColor }}>
+          <div className="flex justify-between mb-1">
+            <span className="text-xs" style={{ color: subColor }}>
               WEEKLY PROGRESS
-            </p>
-            <p
-              className="text-sm font-bold"
-              style={{ fontFamily: "Epilogue, sans-serif", color: textColor }}
-            >
+            </span>
+            <span className="text-sm font-bold" style={{ color: textColor }}>
               {weeklyCount}/7
-            </p>
+            </span>
           </div>
-          <div className="flex gap-1.5">
-            {[1, 2, 3, 4, 5, 6, 7].map((d) => (
+
+          <div className="flex gap-1">
+            {[1,2,3,4,5,6,7].map(d => (
               <div
                 key={d}
-                className="w-3 h-3 rounded-full transition-all"
+                className="w-3 h-3 rounded-full"
                 style={{
                   background: d <= weeklyCount ? textColor : subColor,
-                  opacity: d <= weeklyCount ? 1 : 0.3,
+                  opacity: d <= weeklyCount ? 1 : 0.3
                 }}
               />
             ))}

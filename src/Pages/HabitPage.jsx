@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { getHabits, getHabitLogs } from "../api/habits-api";
 import { setReduxHabits } from "../store/habitSlice";
 import HabitListCard from "../components/Habit/HabitListCard";
+import { Button } from "../components";
 
 const filters = ["ALL", "ACTIVE", "COMPLETED"];
 
@@ -53,7 +54,7 @@ export default function HabitsPage() {
             } catch (err) {
               console.error(err);
             }
-          })
+          }),
         );
 
         setCompletedIds(doneIds);
@@ -67,9 +68,12 @@ export default function HabitsPage() {
 
   // 🔥 Filter logic
   const filteredHabits = habits.filter((h) => {
-    if (activeFilter === "ALL") return h.status === "active";
+    if (activeFilter === "ALL") return true; // 🔥 sab dikhao
+
     if (activeFilter === "ACTIVE") return h.status === "active";
+
     if (activeFilter === "COMPLETED") return completedIds.includes(h._id);
+
     return true;
   });
 
@@ -81,7 +85,10 @@ export default function HabitsPage() {
       {/* Header */}
       <div className="flex justify-between items-start mb-8">
         <div>
-          <p className="text-xs tracking-widest mb-1" style={{ color: "#9A9A8A" }}>
+          <p
+            className="text-xs tracking-widest mb-1"
+            style={{ color: "#9A9A8A" }}
+          >
             OVERVIEW
           </p>
           <h1
@@ -143,25 +150,19 @@ export default function HabitsPage() {
 
       {/* Grid */}
       {filteredHabits.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-60 gap-4">
-          <p
-            className="text-2xl font-bold"
-            style={{ fontFamily: "Epilogue, sans-serif", color: "#E8E4DC" }}
-          >
-            {activeFilter === "COMPLETED"
-              ? "no habits completed today."
-              : "no habits yet."}
-          </p>
-
-          {activeFilter !== "COMPLETED" && (
-            <button
-              onClick={() => navigate("/create-habit")}
-              className="px-6 py-3 rounded-full text-xs font-bold tracking-widest"
-              style={{ background: "#1A1A1A", color: "#FAFAF5" }}
+        <div className="flex flex-col items-center justify-center h-[60vh] gap-6">
+          <div className="text-center">
+            <p
+              className="text-3xl font-semibold mb-2"
+              style={{ fontFamily: "Epilogue, sans-serif", color: "#1A1A1A" }}
             >
-              ADD NEW
-            </button>
-          )}
+              no rituals yet.
+            </p>
+            <p className="text-sm" style={{ color: "#9A9A8A" }}>
+              design your first daily rhythm.
+            </p>
+          </div>
+          <Button onClick={() => navigate("/create-habit")}>NEW RITUAL</Button>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

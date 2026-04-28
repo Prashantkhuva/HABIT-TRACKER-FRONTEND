@@ -19,7 +19,6 @@ const navItems = [
   { to: "/rituals", icon: Sparkles, label: "RITUALS" },
   { to: "/dashboard", icon: LayoutDashboard, label: "DASHBOARD" },
   { to: "/statistics", icon: BarChart2, label: "STATISTICS" },
-  { to: "/journal", icon: BookOpen, label: "JOURNAL" },
   { to: "/settings", icon: Settings, label: "SETTINGS" },
 ];
 
@@ -115,6 +114,7 @@ export default function Sidebar() {
           onMouseLeave={(e) =>
             (e.currentTarget.style.background = "transparent")
           }
+          onClick={() => navigate("/help")}
         >
           <HelpCircle size={16} />
           <span

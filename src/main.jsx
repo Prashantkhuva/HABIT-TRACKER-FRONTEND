@@ -16,10 +16,12 @@ import {
   SignupPage,
   HabitsPage,
   HabitDetailPage,
+  StatisticsPage,
 } from "./Pages/index.js";
 import AuthLayout from "./components/AuthLayout.jsx";
 import { DashPage } from "./Pages/index.js";
 import Create from "./components/Habit/Create.jsx";
+import HelpPage from "./Pages/HelpPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -95,6 +97,22 @@ const router = createBrowserRouter([
         element: (
           <AuthLayout authentication>
             <HabitDetailPage />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/statistics",
+        element: (
+          <AuthLayout authentication>
+            <StatisticsPage />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/help",
+        element: (
+          <AuthLayout authentication>
+            <HelpPage />
           </AuthLayout>
         ),
       },

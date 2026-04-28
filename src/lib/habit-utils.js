@@ -120,6 +120,138 @@ function getButtonColors(habitColor) {
     checkIcon: isDark ? "#1A1A1A" : "#FAFAF5",
   };
 }
+
+function getBestMonth(logs = []) {
+  if (!logs.length) {
+    return {
+      bestmonth: "—",
+      percentage: 0,
+    };
+  }
+
+  const monthMap = {};
+
+  logs.forEach((log) => {
+    if (!log?.date) return;
+
+    const date = new Date(log.date);
+    if (isNaN(date)) return;
+
+    const month = date.toLocaleString("en-US", { month: "long" });
+
+    if (!monthMap[month]) {
+      monthMap[month] = { completed: 0, total: 0 };
+    }
+
+    monthMap[month].total += 1;
+
+    if (log.completed) {
+      monthMap[month].completed += 1;
+    }
+  });
+
+  let bestMonth = null;
+  let bestRate = 0;
+
+  // 🔥 Dynamic threshold (smart handling small data)
+  const minRequired = Math.min(5, logs.length);
+
+  for (const month in monthMap) {
+    const { completed, total } = monthMap[month];
+
+    if (total < minRequired) continue;
+
+    const rate = (completed / total) * 100;
+
+    if (rate > bestRate) {
+      bestRate = rate;
+      bestMonth = month;
+    }
+  }
+
+  // 🔥 Fallback (agar sab months skip ho gaye)
+  if (!bestMonth) {
+    for (const month in monthMap) {
+      const { completed, total } = monthMap[month];
+      const rate = (completed / total) * 100;
+
+      if (rate > bestRate) {
+        bestRate = rate;
+        bestMonth = month;
+      }
+    }
+  }
+
+  return {
+    bestmonth: bestMonth || "—",
+    percentage: Math.round(bestRate),
+  };
+}
+
+function getTimeInsights(logs = []) {
+  let morning = 0;
+  let afternoon = 0;
+  let evening = 0;
+
+  logs.forEach((log) => {
+    if (!log.completed) return;
+
+    const hour = new Date(log.createdAt).getHours();
+
+    if (hour < 12) morning++;
+    else if (hour < 17) afternoon++;
+    else evening++;
+  });
+
+  const max = Math.max(morning, afternoon, evening);
+
+  if (max === 0) {
+    return {
+      title: "no pattern detected yet.",
+      description: "complete more habits to unlock insights.",
+      stats: { morning, afternoon, evening },
+    };
+  }
+
+  // 🔥 tie case
+  const isTie =
+    (morning === evening && morning === max) ||
+    (morning === afternoon && morning === max) ||
+    (afternoon === evening && afternoon === max);
+
+  if (isTie) {
+    return {
+      title: "your consistency is balanced.",
+      description:
+        "you complete habits evenly throughout the day. keep building this rhythm.",
+      stats: { morning, afternoon, evening },
+    };
+  }
+
+  if (max === morning) {
+    return {
+      title: "you're most consistent in the morning.",
+      description:
+        "your habit completion peaks before 12pm. anchor key rituals early.",
+      stats: { morning, afternoon, evening },
+    };
+  }
+
+  if (max === afternoon) {
+    return {
+      title: "your afternoons are strongest.",
+      description: "you perform best mid-day.",
+      stats: { morning, afternoon, evening },
+    };
+  }
+
+  return {
+    title: "your evenings are most productive.",
+    description: "you complete most habits later in the day.",
+    stats: { morning, afternoon, evening },
+  };
+}
+
 // Category label
 
 export {
@@ -134,5 +266,7 @@ export {
   getIconBg,
   expandHex,
   isDarkColor,
-  getButtonColors
+  getButtonColors,
+  getBestMonth,
+  getTimeInsights,
 };
