@@ -115,62 +115,59 @@ export default function StatisticsPage() {
       {/* CHART + AI */}
       <div className="grid grid-cols-3 gap-6 mb-6 items-stretch">
         {/* CHART */}
-        <div className="col-span-2 bg-[#F0EDE5] p-8 rounded-[32px] h-[320px] flex flex-col justify-end">
+        <div className="col-span-2 bg-[#F0EDE5] p-8 rounded-4xl h-80 flex flex-col justify-end">
           <WeeklyChart data={weekly} />
         </div>
 
         {/* AI CARD */}
 
-        <div className="bg-[#E8F0EE] p-8 rounded-[32px] h-[320px] flex flex-col">
+        <div className="bg-[#E8F0EE] p-8 rounded-4xl h-80 flex flex-col">
+          {/* TOP */}
+          <div>
+            <p className="text-xs mb-3 text-[#4F6F64] tracking-widest">
+              ✦ INSIGHTS
+            </p>
 
-  {/* TOP */}
-  <div>
-    <p className="text-xs mb-3 text-[#4F6F64] tracking-widest">
-      ✦ INSIGHTS
-    </p>
+            <h2 className="text-xl font-bold mb-3">{title}</h2>
 
-    <h2 className="text-xl font-bold mb-3">{title}</h2>
-
-    <p className="text-sm text-gray-600 leading-relaxed">
-      {description}
-    </p>
-  </div>
-
-  {/* BOTTOM AREA */}
-  <motion.div layout className="mt-auto flex flex-col gap-3">
-
-    {/* BUTTON */}
-    <motion.button
-      layout
-      transition={{ type: "spring", stiffness: 200, damping: 20 }}
-      onClick={() => setShowDetails(!showDetails)}
-      className="py-3 rounded-full bg-[#4F6F64] text-white text-xs font-semibold tracking-widest"
-    >
-      {showDetails ? "HIDE DETAILS" : "OPTIMIZE ROUTINE"}
-    </motion.button>
-
-    {/* DETAILS */}
-    <AnimatePresence mode="wait">
-      {showDetails && (
-        <motion.div
-          layout
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.3 }}
-          className="overflow-hidden"
-        >
-          <div className="p-4 rounded-xl bg-white text-xs text-gray-700 space-y-1">
-            <p>🌅 Morning: {timeStats.morning}</p>
-            <p>☀️ Afternoon: {timeStats.afternoon}</p>
-            <p>🌙 Evening: {timeStats.evening}</p>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              {description}
+            </p>
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
 
-  </motion.div>
-</div>
+          {/* BOTTOM AREA */}
+          <motion.div layout className="mt-auto flex flex-col gap-3">
+            {/* BUTTON */}
+            <motion.button
+              layout
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
+              onClick={() => setShowDetails(!showDetails)}
+              className="py-3 rounded-full bg-[#4F6F64] text-white text-xs font-semibold tracking-widest"
+            >
+              {showDetails ? "HIDE DETAILS" : "OPTIMIZE ROUTINE"}
+            </motion.button>
+
+            {/* DETAILS */}
+            <AnimatePresence mode="wait">
+              {showDetails && (
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="p-4 rounded-xl bg-white text-xs text-gray-700 space-y-1">
+                    <p>🌅 Morning: {timeStats.morning}</p>
+                    <p>☀️ Afternoon: {timeStats.afternoon}</p>
+                    <p>🌙 Evening: {timeStats.evening}</p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </div>
       </div>
 
       {/* Heatmap + Streaks */}
@@ -181,7 +178,7 @@ export default function StatisticsPage() {
           initial="hidden"
           animate="show"
           custom={7}
-          className="lg:col-span-2 rounded-[32px] p-8"
+          className="lg:col-span-2 rounded-4xl p-8"
           style={{ background: "#F0EDE5" }}
         >
           <div className="flex justify-between items-center mb-6">

@@ -190,7 +190,7 @@ export default function HabitDetailPage() {
 
   return (
     <>
-      <div className="p-10 grid grid-cols-3 gap-10 max-w-[1400px] mx-auto">
+      <div className="p-10 grid grid-cols-3 gap-10 max-w-350 mx-auto">
         {/* LEFT */}
         <div className="col-span-2 flex flex-col justify-center items-start">
           <h1 className="text-5xl font-bold mb-8">{habit.title}</h1>
