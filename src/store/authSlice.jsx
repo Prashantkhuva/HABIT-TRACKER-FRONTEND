@@ -23,6 +23,9 @@ export const authSlice = createSlice({
     resetAuthState: () => {
       return initialState;
     },
+    setUser: (state, action) => {
+      state.userData = action.payload;
+    },
     clearAuthState: (state) => {
       state.status = false;
       state.userData = null;
@@ -36,6 +39,7 @@ export const authSlice = createSlice({
 export const {
   signin,
   signout,
+  setUser,
   resetAuthState,
   clearAuthState,
   setAuthChecked,

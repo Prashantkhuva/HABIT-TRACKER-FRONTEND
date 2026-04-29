@@ -17,6 +17,8 @@ import {
   HabitsPage,
   HabitDetailPage,
   StatisticsPage,
+  Settings,
+  EditProfilePage,
 } from "./Pages/index.js";
 import AuthLayout from "./components/AuthLayout.jsx";
 import { DashPage } from "./Pages/index.js";
@@ -114,6 +116,22 @@ const router = createBrowserRouter([
         element: (
           <AuthLayout authentication>
             <HelpPage />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/settings",
+        element: (
+          <AuthLayout authentication>
+            <Settings />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/edit-profile",
+        element: (
+          <AuthLayout authentication>
+            <EditProfilePage />
           </AuthLayout>
         ),
       },

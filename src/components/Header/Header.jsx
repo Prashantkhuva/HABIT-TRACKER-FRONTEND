@@ -67,7 +67,7 @@ function Header() {
         {/* Profile */}
         <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}>
           <Link
-            to="/profile"
+            to="/settings"
             className="flex items-center justify-center w-9 h-9 rounded-full bg-[#1A1A1A] hover:bg-[#333] transition-all text-white text-sm font-semibold"
           >
             {user?.username?.charAt(0)?.toUpperCase() || "U"}

@@ -33,86 +33,53 @@ export default function Heatmap({ data }) {
   };
 
   return (
-    <div style={{ maxWidth: "420px" }}>
-      {/* Day labels */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(7, 1fr)",
-          gap: "0px",
-          marginBottom: "4px",
-        }}
-      >
-        {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
-          <div
-            key={i}
-            style={{
-              textAlign: "center",
-              fontSize: "10px",
-              color: "#9A9A8A",
-            }}
-          >
-            {d}
-          </div>
-        ))}
-      </div>
-
-      {/* Cells */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(7, 1fr)",
-          gap: "4px",
-        }}
-      >
-        {cells.map((day, i) => {
-          if (!day)
-            return <div key={`empty-${i}`} style={{ aspectRatio: "1" }} />;
-
-          const count = map[day] || 0;
-
-          return (
-            <div
-              key={day}
-              style={{ position: "relative" }}
-              onMouseEnter={() => setHovered({ day, count })}
-              onMouseLeave={() => setHovered(null)}
-            >
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                style={{
-                  aspectRatio: "1",
-                  borderRadius: "4px",
-                  background: getColor(count),
-                  cursor: "pointer",
-                  maxWidth: "40px",
-                  maxHeight: "40px",
-                }}
-              />
-
-              {/* 🔥 CUSTOM TOOLTIP */}
-              {hovered?.day === day && (
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: "110%",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    background: "#1A1A1A",
-                    color: "#FAFAF5",
-                    fontSize: "10px",
-                    padding: "6px 8px",
-                    borderRadius: "6px",
-                    whiteSpace: "nowrap",
-                    pointerEvents: "none",
-                  }}
-                >
-                  Day {day} — {count} habits
-                </div>
-              )}
+    <div className="flex justify-center w-full">
+      {/* 🔥 IMPORTANT: inline-grid instead of grid */}
+      <div className="inline-grid gap-1">
+        {/* Day labels */}
+        <div className="grid grid-cols-7 text-center text-[10px] text-[#9A9A8A] mb-1">
+          {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
+            <div key={i} className="w-8">
+              {d}
             </div>
-          );
-        })}
+          ))}
+        </div>
+
+        {/* Cells */}
+        <div className="grid grid-cols-7 gap-1">
+          {cells.map((day, i) => {
+            if (!day) return <div key={`empty-${i}`} className="w-8 h-8" />;
+
+            const count = map[day] || 0;
+
+            return (
+              <div
+                key={day}
+                className="relative"
+                onMouseEnter={() => setHovered({ day, count })}
+                onMouseLeave={() => setHovered(null)}
+              >
+                <motion.div
+                  whileHover={{ scale: 1.15 }}
+                  className="w-10 h-10 rounded-md cursor-pointer"
+                  style={{ background: getColor(count) }}
+                />
+
+                {/* Tooltip */}
+                {hovered?.day === day && (
+                  <div className="absolute bottom-[120%] left-1/2 -translate-x-1/2 bg-[#1A1A1A] text-[#FAFAF5] text-[10px] px-2 py-1 rounded-md whitespace-nowrap pointer-events-none">
+                    {new Date(year, month, day).toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}{" "}
+                    — {count} habits
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

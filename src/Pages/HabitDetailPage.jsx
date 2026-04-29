@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteReduxHabit } from "../store/habitSlice";
 import { useToast } from "../components/Toast/ToastProvider";
+import ConfirmModal from "../components/ConfirmModal";
 
 export default function HabitDetailPage() {
   const { id } = useParams();
@@ -303,35 +304,14 @@ export default function HabitDetailPage() {
         </div>
       </div>
 
-      {showDeleteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl p-6 w-[320px] shadow-xl">
-            <h2 className="text-lg font-semibold mb-2">Delete habit?</h2>
-
-            <p className="text-sm text-gray-500 mb-5">
-              This action cannot be undone.
-            </p>
-
-            <div className="flex justify-end gap-3">
-              {/* Cancel */}
-              <button
-                onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 rounded-full text-sm bg-gray-200 hover:bg-gray-300"
-              >
-                Cancel
-              </button>
-
-              {/* Delete */}
-              <button
-                onClick={handleDelete}
-                className="px-4 py-2 rounded-full text-sm bg-red-500 text-white hover:bg-red-600"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmModal
+        open={showDeleteModal}
+        onCancel={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+        title="Delete habit?"
+        description="This action cannot be undone."
+        confirmText="DELETE"
+      />
     </>
   );
 }

@@ -79,18 +79,6 @@ export default function StatisticsPage() {
         className="flex justify-between mb-10"
       >
         <h1 className="text-4xl font-bold">curated rhythm</h1>
-
-        <div className="flex bg-[#EEEAE0] rounded-full p-1">
-          {["WEEKLY", "MONTHLY"].map((v) => (
-            <button
-              key={v}
-              onClick={() => setView(v)}
-              className="px-4 py-2 text-xs"
-            >
-              {v}
-            </button>
-          ))}
-        </div>
       </motion.div>
 
       {/* CARDS */}
@@ -170,51 +158,81 @@ export default function StatisticsPage() {
         </div>
       </div>
 
-      {/* Heatmap + Streaks */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Heatmap */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+        {/* 🔥 Heatmap */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
           animate="show"
           custom={7}
-          className="lg:col-span-2 rounded-4xl p-8"
+          className="rounded-4xl p-6 w-full h-full"
           style={{ background: "#F0EDE5" }}
         >
-          <div className="flex justify-between items-center mb-6">
-            <h2
-              className="text-2xl font-bold"
-              style={{ fontFamily: "Epilogue, sans-serif", color: "#1A1A1A" }}
-            >
-              monthly consistency
-            </h2>
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs" style={{ color: "#9A9A8A" }}>
-                LESS
-              </span>
-              {["#E8E4DC", "#C8DAD6", "#8FA8A3", "#4F6F64"].map((c) => (
-                <div
-                  key={c}
-                  className="w-4 h-4 rounded-sm"
-                  style={{ background: c }}
-                />
-              ))}
-              <span className="text-xs" style={{ color: "#9A9A8A" }}>
-                MORE
-              </span>
+          <div className="flex justify-between gap-6">
+            {/* 🔥 LEFT SIDE (TEXT) */}
+            <div className="flex flex-col gap-4 max-w-60">
+              {/* Title */}
+              <h2 className="text-lg font-bold text-[#1A1A1A]">
+                Monthly Consistency
+              </h2>
+
+              {/* Month */}
+              <span className="text-xs text-[#8A8A7A]">April 2026</span>
+
+              {/* Subtitle */}
+              <p className="text-xs text-[#9A9A8A] leading-relaxed">
+                Track your daily habit completion intensity
+              </p>
+
+              {/* Divider */}
+              <div className="w-10 h-px bg-[#D6D3CB]" />
+
+              {/* Stats */}
+              <div className="flex gap-6 text-xs">
+                <div>
+                  <p className="font-semibold text-[#1A1A1A]">1</p>
+                  <p className="text-[#8A8A7A]">Days</p>
+                </div>
+
+                <div>
+                  <p className="font-semibold text-[#1A1A1A]">2</p>
+                  <p className="text-[#8A8A7A]">Logs</p>
+                </div>
+              </div>
+
+              {/* Legend */}
+              <div className="flex items-center gap-2 text-[10px] text-[#9A9A8A]">
+                <span>LESS</span>
+
+                {["#E8E4DC", "#C8DAD6", "#8FA8A3", "#4F6F64"].map((c) => (
+                  <div
+                    key={c}
+                    className="w-3 h-3 rounded-sm"
+                    style={{ background: c }}
+                  />
+                ))}
+
+                <span>MORE</span>
+              </div>
+            </div>
+
+            {/* 🔥 RIGHT SIDE (HEATMAP TOP ALIGNED) */}
+            <div className="flex-1 flex justify-end items-start">
+              <Heatmap className="min-w-95" data={heatmap} />
             </div>
           </div>
-          <Heatmap data={heatmap} />
         </motion.div>
 
-        {/* Streak Panel */}
+        {/* 🔥 Streak Panel */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
           animate="show"
           custom={8}
+          className="w-full h-full rounded-4xl p-6"
+          style={{ background: "#F0EDE5" }}
         >
-          <StreakPanel /> {/* ← props nahi — khud fetch karega */}
+          <StreakPanel />
         </motion.div>
       </div>
     </div>
