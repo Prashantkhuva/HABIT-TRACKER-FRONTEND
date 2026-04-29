@@ -279,7 +279,7 @@ export default function HabitDetailPage() {
         </div>
 
         {/* RIGHT */}
-        <div className="bg-[#F7F7F7] p-8 rounded-[32px] flex flex-col gap-6 h-fit">
+        <div className="bg-[#F7F7F7] p-8 rounded-4xl flex flex-col gap-6 h-fit">
           <h2 className="font-semibold text-lg">History</h2>
 
           {/* 🔥 CALENDAR */}
