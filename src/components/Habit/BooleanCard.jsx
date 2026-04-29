@@ -9,6 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import { getHabitLogs } from "../../api/habits-api";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../Toast/ToastProvider";
 
 export default function BooleanCard({
   habit,
@@ -26,6 +27,7 @@ export default function BooleanCard({
 
   const [weeklyCount, setWeeklyCount] = useState(0);
   const navigate = useNavigate();
+  const addToast = useToast();
 
   useEffect(() => {
     const fetchWeekly = async () => {

@@ -7,6 +7,7 @@ import { categoryMap } from "./categoryMap";
 import Button from "../Button";
 import { useDispatch } from "react-redux";
 import { addReduxHabit } from "../../store/habitSlice";
+import { useToast } from "../Toast/ToastProvider";
 
 function Create({ onClose }) {
   const navigate = useNavigate();
@@ -20,38 +21,59 @@ function Create({ onClose }) {
   const [description, setDescription] = useState("");
   const [habitType, setHabitType] = useState("boolean");
   const [unit, setUnit] = useState("");
+  const { addToast } = useToast();
 
   const colors = ["#4F6F64", "#C2B280", "#BFD8D2", "#E0DED9", "#000"];
 
   const handleCreate = async () => {
-    if (!title.trim()) return alert("Enter habit name");
+  if (!title.trim()) {
+    addToast({
+      type: "error",
+      title: "Missing title",
+      message: "Please enter a habit name",
+    });
+    return; // ⛔ yaha ruk jayega
+  }
 
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      const createdHabit = await createHabit({
-        title,
-        description,
-        frequency,
-        category,
-        color,
-        type: habitType,
+    const createdHabit = await createHabit({
+      title,
+      description,
+      frequency,
+      category,
+      color,
+      type: habitType,
+    });
+
+    const newHabit = createdHabit?.data?.data;
+
+    if (newHabit) {
+      dispatch(addReduxHabit(newHabit));
+
+      // ✅ SUCCESS TOAST
+      addToast({
+        type: "success",
+        title: "Habit created",
+        message: `${title} added successfully`,
       });
-
-      const newHabit = createdHabit?.data?.data;
-
-      if (newHabit) {
-        dispatch(addReduxHabit(newHabit));
-      }
-
-      onClose?.();
-      navigate("/dashboard");
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
     }
-  };
+
+    onClose?.();
+    navigate("/dashboard");
+  } catch (err) {
+    console.error(err);
+
+    addToast({
+      type: "error",
+      title: "Creation failed",
+      message: "Something went wrong",
+    });
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleClose = () => {
     onClose?.();

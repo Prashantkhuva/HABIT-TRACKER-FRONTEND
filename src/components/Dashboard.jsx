@@ -7,6 +7,7 @@ import { setReduxHabits } from "../store/habitSlice";
 import HabitCard from "./Habit/HabitCard";
 import CompletedHabit from "./Habit/CompletedHabit";
 import Button from "./Button";
+import { useToast } from "./Toast/ToastProvider";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ export default function Dashboard() {
   const [completedIds, setCompletedIds] = useState([]);
   const [stats, setStats] = useState(null);
   const [weeklyData, setWeeklyData] = useState([]);
+  const { addToast } = useToast();
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -64,19 +66,45 @@ export default function Dashboard() {
 
   const handleComplete = async (habit) => {
     if (completing) return;
+
     setCompleting(habit._id);
+
     try {
       await completeHabit(habit._id);
+
       setCompletedIds((prev) => [...prev, habit._id]);
+
+      // 🔥 SUCCESS TOAST
+      addToast({
+        type: "success",
+        title: "Ritual completed",
+        message: `${habit.title} done for today`,
+      });
+
       // Stats refresh
       const statsRes = await getDashboardStats();
       setStats(statsRes.data.data);
     } catch (err) {
       const msg = err.response?.data?.message;
+
       if (msg === "Habit already completed today") {
         setCompletedIds((prev) => [...prev, habit._id]);
+
+        // ⚠️ WARNING TYPE UX (still success-ish)
+        addToast({
+          type: "error",
+          title: "Already done",
+          message: "You already completed this today",
+        });
       } else {
         console.error(err);
+
+        // ❌ ERROR TOAST
+        addToast({
+          type: "error",
+          title: "Failed",
+          message: "Could not complete habit",
+        });
       }
     } finally {
       setCompleting(null);

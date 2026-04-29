@@ -18,6 +18,7 @@ import HabitCalendar from "../components/Habit/HabitCelender";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteReduxHabit } from "../store/habitSlice";
+import { useToast } from "../components/Toast/ToastProvider";
 
 export default function HabitDetailPage() {
   const { id } = useParams();
@@ -30,6 +31,7 @@ export default function HabitDetailPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { addToast } = useToast();
 
   useEffect(() => {
     if (habits.length) {
@@ -48,11 +50,22 @@ export default function HabitDetailPage() {
 
       dispatch(deleteReduxHabit(id));
 
+      addToast({
+        type: "success",
+        title: "Habit deleted",
+        message: `${habit.title} removed successfully`,
+      });
+
       navigate("/rituals");
     } catch (err) {
-      console.error(err);
+      addToast({
+        type: "error",
+        title: "Delete failed",
+        message: "Could not delete habit",
+      });
     }
   };
+
   const fetchData = async () => {
     try {
       const [logsRes, streakRes] = await Promise.all([
@@ -77,9 +90,85 @@ export default function HabitDetailPage() {
   };
 
   const handleComplete = async () => {
-    if (isDoneToday) return;
-    await completeHabit(id);
-    fetchData();
+    if (isDoneToday) {
+      addToast({
+        type: "error",
+        title: "Already done",
+        message: "You already completed this today",
+      });
+      return;
+    }
+
+    try {
+      await completeHabit(id);
+      await fetchData();
+
+      addToast({
+        type: "success",
+        title: "Ritual completed",
+        message: `${habit.title} done for today`,
+      });
+    } catch (err) {
+      addToast({
+        type: "error",
+        title: "Failed",
+        message: "Could not complete habit",
+      });
+    }
+  };
+
+  const handlePause = async () => {
+    try {
+      await pauseHabit(id);
+
+      addToast({
+        type: "success",
+        title: "Habit paused",
+        message: `${habit.title} is now paused`,
+      });
+    } catch (err) {
+      addToast({
+        type: "error",
+        title: "Failed",
+        message: "Could not pause habit",
+      });
+    }
+  };
+
+  const handleResume = async () => {
+    try {
+      await resumeHabit(id);
+
+      addToast({
+        type: "success",
+        title: "Habit resumed",
+        message: `${habit.title} is active again`,
+      });
+    } catch (err) {
+      addToast({
+        type: "error",
+        title: "Failed",
+        message: "Could not resume habit",
+      });
+    }
+  };
+
+  const handleArchive = async () => {
+    try {
+      await archiveHabit(id);
+
+      addToast({
+        type: "success",
+        title: "Habit archived",
+        message: `${habit.title} moved to archive`,
+      });
+    } catch (err) {
+      addToast({
+        type: "error",
+        title: "Failed",
+        message: "Could not archive habit",
+      });
+    }
   };
 
   if (!habit) return <p className="p-10">Loading...</p>;
@@ -172,25 +261,17 @@ export default function HabitDetailPage() {
               Delete
             </Button>
 
-            <Button variant="ghost" color="gray" onClick={() => pauseHabit(id)}>
+            <Button variant="ghost" color="gray" onClick={handlePause}>
               <Pause size={16} />
               Pause
             </Button>
 
-            <Button
-              variant="ghost"
-              color="green"
-              onClick={() => resumeHabit(id)}
-            >
+            <Button variant="ghost" color="green" onClick={handleResume}>
               <Play size={16} />
               Resume
             </Button>
 
-            <Button
-              variant="ghost"
-              color="default"
-              onClick={() => archiveHabit(id)}
-            >
+            <Button variant="ghost" color="default" onClick={handleArchive}>
               <Archive size={16} />
               Archive
             </Button>

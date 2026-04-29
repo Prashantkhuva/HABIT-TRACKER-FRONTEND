@@ -17,7 +17,7 @@ export default function StatCard({
   return (
     <motion.div
       whileHover={{ scale: 1.03 }}
-      className="rounded-[32px] px-7 py-6 flex flex-col justify-between"
+      className="rounded-4xl px-7 py-6 flex flex-col justify-between"
       style={{
         background: v.bg,
         minHeight: "190px", // 🔥 height increase

@@ -36,7 +36,7 @@ export default function StreakPanel() {
   const rankColors = ["#C2B280", "#C8E6DF", "#E0DED9"];
 
   return (
-    <div className="rounded-[32px] p-8 h-full" style={{ background: "#F0EDE5" }}>
+    <div className="rounded-4xl p-8 h-full" style={{ background: "#F0EDE5" }}>
       <h2 className="text-2xl font-bold mb-6"
         style={{ fontFamily: "Epilogue, sans-serif", color: "#1A1A1A" }}>
         ritual streaks
@@ -50,7 +50,7 @@ export default function StreakPanel() {
             <div key={habit._id} className="flex items-center gap-4 py-4 border-b"
               style={{ borderColor: "#E8E4DC" }}>
               {/* Rank circle */}
-              <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0"
+              <div className="w-11 h-11 rounded-full flex items-center justify-center shrink-0"
                 style={{ background: rankColors[i] }}>
                 <span className="text-xs font-bold"
                   style={{ color: "#1A1A1A", fontFamily: "Manrope, sans-serif" }}>

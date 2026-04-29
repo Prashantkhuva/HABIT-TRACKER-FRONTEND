@@ -115,7 +115,7 @@ export default function HelpPage() {
       </div>
 
       {/* RIGHT — FORM */}
-      <div className="w-1/2 bg-[#F0EDE5] p-10 rounded-[32px] h-fit self-start">
+      <div className="w-1/2 bg-[#FFFFFF] p-10 rounded-4xl h-fit self-start">
         <h2 className="text-2xl mb-8">direct message</h2>
 
         {/* SUCCESS MESSAGE */}
@@ -131,6 +131,7 @@ export default function HelpPage() {
             label="Full Name"
             placeholder="Enter your name"
             required
+            className="bg-[#F0EDE5]"
           />
 
           <Input
@@ -139,6 +140,7 @@ export default function HelpPage() {
             label="Email Address"
             placeholder="Enter your email"
             required
+            className="bg-[#F0EDE5]"
           />
 
           <Textarea
@@ -147,6 +149,7 @@ export default function HelpPage() {
             rows={5}
             placeholder="Tell us what's on your mind..."
             required
+            className="bg-[#F0EDE5] "
           />
 
           <Button type="submit" className="w-full mt-4" disabled={loading}>
