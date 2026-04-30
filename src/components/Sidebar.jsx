@@ -70,7 +70,7 @@ export default function Sidebar() {
       <div className="lg:px-4 px-2 mb-6">
         <Button
           onClick={() => navigate("/create-habit")}
-          className="w-full flex justify-center items-center lg:px-4 px-0 bg-[#1A1A1A] text-[#FAFAF5] dark:bg-[#D0BCFF] dark:text-black hover:bg-[#333333] dark:hover:bg-[#B69DF8] transition-colors duration-200"
+         
           style={{ fontFamily: "Manrope, sans-serif" }}
         >
           <span className="hidden lg:inline">NEW RITUAL</span>
