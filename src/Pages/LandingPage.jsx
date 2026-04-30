@@ -106,15 +106,22 @@ function LandingPage() {
               {/* Habit */}
               <div className="flex items-center gap-4 mb-10">
                 {/* Circle + Icon */}
-                <div className="w-14 h-14 rounded-full bg-gray-200 dark:bg-[#141218] flex items-center justify-center">
+                <div
+                  className="
+      w-14 h-14 rounded-full 
+      flex items-center justify-center
+      bg-[#F3F3F3] dark:bg-[#1D1B20]
+      transition-all duration-200
+      hover:scale-105
+    "
+                >
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
                     <path
                       d="M18 8L16.75 5.25L14 4L16.75 2.75L18 0L19.25 2.75L22 4L19.25 5.25L18 8ZM18 22L16.75 19.25L14 18L16.75 16.75L18 14L19.25 16.75L22 18L19.25 19.25L18 22ZM8 19L5.5 13.5L0 11L5.5 8.5L8 3L10.5 8.5L16 11L10.5 13.5L8 19ZM8 14.15L9 12L11.15 11L9 10L8 7.85L7 10L4.85 11L7 12L8 14.15Z"
-                      className="fill-[#B69DF8] dark:fill-[#D0BCFF]"
+                      className="fill-[#48645E] dark:fill-[#D0BCFF]"
                     />
                   </svg>
                 </div>
-
                 {/* Text */}
                 <div>
                   <p
@@ -133,13 +140,12 @@ function LandingPage() {
                 {[1, 2, 3, 4, 5, 6, 7].map((d) => (
                   <div
                     key={d}
-                    className={`w-12 h-12 rounded-full ${
-                      d <= 5 
-                        ? "bg-[#B69DF8] dark:bg-[#D0BCFF]" 
-                        : d === 6 
-                          ? "bg-transparent border-2 border-[#B69DF8] dark:border-[#D0BCFF]" 
+                    className={`w-12 h-12 rounded-full ${d <= 5
+                        ? "bg-[#B69DF8] dark:bg-[#D0BCFF]"
+                        : d === 6
+                          ? "bg-transparent border-2 border-[#B69DF8] dark:border-[#D0BCFF]"
                           : "bg-gray-200 dark:bg-[#141218]"
-                    }`}
+                      }`}
                   />
                 ))}
               </div>
@@ -153,13 +159,12 @@ function LandingPage() {
                   {[40, 55, 45, 70, 90, 65, 50].map((h, i) => (
                     <div
                       key={i}
-                      className={`flex-1 rounded-lg ${
-                        i === 4 
-                          ? "bg-[#B69DF8] dark:bg-[#D0BCFF]" 
-                          : i === 5 
-                            ? "bg-[#D0BCFF] dark:bg-[#B69DF8]/60" 
+                      className={`flex-1 rounded-lg ${i === 4
+                          ? "bg-[#B69DF8] dark:bg-[#D0BCFF]"
+                          : i === 5
+                            ? "bg-[#D0BCFF] dark:bg-[#B69DF8]/60"
                             : "bg-gray-300 dark:bg-[#141218]"
-                      }`}
+                        }`}
                       style={{
                         height: `${h}%`,
                       }}
