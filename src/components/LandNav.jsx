@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Bell } from "lucide-react";
 
 function LandNav() {
+  const navLinks = ["PHILOSOPHY", "FEATURES", "JOURNAL"];
 
   return (
     <motion.nav
@@ -21,7 +22,22 @@ function LandNav() {
           habitflow
         </h1>
       </Link>
-     
+
+      {/* Nav Links */}
+      <div className="flex items-center gap-10">
+        {navLinks.map((link, i) => (
+          <motion.a
+            key={link}
+            href="#"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 + 0.2, duration: 0.4 }}
+            className="text-xs tracking-widest transition-colors text-gray-400 dark:text-[#938F99] hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5] font-body"
+          >
+            {link}
+          </motion.a>
+        ))}
+      </div>
       {/* Right — Bell + Upgrade */}
       <div className="flex items-center gap-5">
         <motion.button

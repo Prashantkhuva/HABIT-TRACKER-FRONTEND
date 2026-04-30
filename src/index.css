@@ -16,7 +16,14 @@
   --color-text-muted: #888888;
   --color-border-subtle: #e8e4dc;
 
-  @variant dark {
+  /* === ACCENTS & SPECIALS === */
+  --color-primary: #1a1a1a;
+  --color-primary-soft: #333333;
+  --color-accent-mint: #4b6b63;
+}
+
+@variant dark {
+  :root {
     --color-background: #141218;
     --color-surface: #1d1b20;
     --color-surface-dim: #0f0d13;
@@ -24,14 +31,6 @@
     --color-text-primary: #e6e1e5;
     --color-text-muted: #938f99;
     --color-border-subtle: #49454f;
-  }
-
-  /* === ACCENTS & SPECIALS === */
-  --color-primary: #1a1a1a;
-  --color-primary-soft: #333333;
-  --color-accent-mint: #4b6b63;
-  
-  @variant dark {
     --color-primary: #d0bcff;
     --color-primary-soft: #b69df8;
   }
