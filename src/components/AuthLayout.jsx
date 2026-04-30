@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AuthFormSkeleton } from "./loading/LoadingSkeletons";
 
 // function AuthLayout({ children, authentication = true }) {
 //   const navigate = useNavigate();

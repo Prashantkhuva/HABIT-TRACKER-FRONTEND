@@ -24,7 +24,7 @@ import AuthLayout from "./components/AuthLayout.jsx";
 import { DashPage } from "./Pages/index.js";
 import Create from "./components/Habit/Create.jsx";
 import HelpPage from "./Pages/HelpPage.jsx";
-import ToastProvider from "./components/Toast/ToastProvider";
+
 
 const router = createBrowserRouter([
   {
@@ -153,12 +153,10 @@ const PageLoader = () => (
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-      <ToastProvider>
-        <Suspense fallback={<PageLoader />}>
-          <CustomCursor />
-          <RouterProvider router={router} />
-        </Suspense>
-      </ToastProvider>
+      <Suspense fallback={<PageLoader />}>
+        <CustomCursor />
+        <RouterProvider router={router} />
+      </Suspense>
     </Provider>
   </StrictMode>,
 );

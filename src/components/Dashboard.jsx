@@ -8,6 +8,7 @@ import HabitCard from "./Habit/HabitCard";
 import CompletedHabit from "./Habit/CompletedHabit";
 import Button from "./Button";
 import { useToast } from "./Toast/ToastProvider";
+import { DashboardSkeleton } from "./loading/LoadingSkeletons";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ export default function Dashboard() {
   const [completedIds, setCompletedIds] = useState([]);
   const [stats, setStats] = useState(null);
   const [weeklyData, setWeeklyData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { addToast } = useToast();
 
   useEffect(() => {
@@ -26,7 +28,6 @@ export default function Dashboard() {
         const fetchedHabits = res.data.data;
         dispatch(setReduxHabits(fetchedHabits));
 
-        // Stats + Weekly parallel fetch
         const [statsRes, weeklyRes] = await Promise.all([
           getDashboardStats(),
           getWeeklyData(),
@@ -34,7 +35,6 @@ export default function Dashboard() {
         setStats(statsRes.data.data);
         setWeeklyData(weeklyRes.data.data);
 
-        // Aaj ke completed habits check
         const alreadyDoneIds = [];
         await Promise.all(
           fetchedHabits.map(async (habit) => {
@@ -59,6 +59,8 @@ export default function Dashboard() {
         setCompletedIds(alreadyDoneIds);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchAll();
@@ -74,14 +76,12 @@ export default function Dashboard() {
 
       setCompletedIds((prev) => [...prev, habit._id]);
 
-      // 🔥 SUCCESS TOAST
       addToast({
         type: "success",
         title: "Ritual completed",
         message: `${habit.title} done for today`,
       });
 
-      // Stats refresh
       const statsRes = await getDashboardStats();
       setStats(statsRes.data.data);
     } catch (err) {
@@ -90,7 +90,6 @@ export default function Dashboard() {
       if (msg === "Habit already completed today") {
         setCompletedIds((prev) => [...prev, habit._id]);
 
-        // ⚠️ WARNING TYPE UX (still success-ish)
         addToast({
           type: "error",
           title: "Already done",
@@ -99,7 +98,6 @@ export default function Dashboard() {
       } else {
         console.error(err);
 
-        // ❌ ERROR TOAST
         addToast({
           type: "error",
           title: "Failed",
@@ -118,37 +116,29 @@ export default function Dashboard() {
 
   const maxWeekly = Math.max(...weeklyData.map((d) => d.count), 1);
 
+  if (loading) return <DashboardSkeleton />;
+
   return (
-    <div
-      className="min-h-screen px-8 pt-10 pb-10 custom-scroll"
-      style={{ background: "#FAFAF5", color: "#1A1A1A" }}
-    >
+    <div className="w-full min-w-0">
       {activeHabits.length === 0 ? (
-        /* ── EMPTY STATE ── */
-        <div className="flex flex-col items-center justify-center h-[60vh] gap-6">
+        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
           <div className="text-center">
-            <p
-              className="text-3xl font-semibold mb-2"
-              style={{ fontFamily: "Epilogue, sans-serif", color: "#1A1A1A" }}
-            >
+            <p className="text-3xl font-semibold mb-2 text-[#1A1A1A] dark:text-[#E6E1E5]" style={{ fontFamily: "Epilogue, sans-serif" }}>
               no rituals yet.
             </p>
-            <p className="text-sm" style={{ color: "#9A9A8A" }}>
+            <p className="text-sm text-[#888888] dark:text-[#938F99]">
               design your first daily rhythm.
             </p>
           </div>
-          <Button onClick={() => navigate("/create-habit")}>NEW RITUAL</Button>
+          <Button variant="primary" onClick={() => navigate("/create-habit")}>NEW RITUAL</Button>
         </div>
       ) : (
         <>
-          <p
-            className="text-xs tracking-widest mb-2"
-            style={{ color: "#9A9A8A" }}
-          >
+          <p className="text-xs tracking-widest mb-2 text-[#888888] dark:text-[#938F99]">
             TRACK
           </p>
           <h1
-            className="font-bold mb-8"
+            className="font-bold mb-8 text-[#1A1A1A] dark:text-[#E6E1E5]"
             style={{
               fontFamily: "Epilogue, sans-serif",
               fontSize: "clamp(2rem, 4vw, 3.5rem)",
@@ -157,36 +147,32 @@ export default function Dashboard() {
             your habits
           </h1>
 
-          {/* ── HABIT CARDS ── */}
-          <div className="flex gap-5 overflow-x-auto pb-4 custom-scroll-x">
-            {activeHabits.map((habit, i) => (
-              <HabitCard
-                key={habit._id}
-                habit={habit}
-                index={i}
-                onComplete={handleComplete}
-                completing={completing}
-                isDone={completedIds.includes(habit._id)}
-              />
-            ))}
+          <div className="relative w-full overflow-hidden">
+            <div className="w-full overflow-x-auto pb-6 flex gap-5 custom-scroll-x snap-x snap-mandatory">
+              {activeHabits.map((habit, i) => (
+                <HabitCard
+                  key={habit._id}
+                  habit={habit}
+                  index={i}
+                  onComplete={handleComplete}
+                  completing={completing}
+                  isDone={completedIds.includes(habit._id)}
+                />
+              ))}
+            </div>
           </div>
 
-          {/* ── COMPLETED ── */}
           {completedHabits.length > 0 && (
             <div className="mt-16">
               <div className="flex justify-between items-center mb-6">
                 <h2
-                  className="text-2xl font-bold"
-                  style={{
-                    fontFamily: "Epilogue, sans-serif",
-                    color: "#1A1A1A",
-                  }}
+                  className="text-2xl font-bold text-[#1A1A1A] dark:text-[#E6E1E5]"
+                  style={{ fontFamily: "Epilogue, sans-serif" }}
                 >
                   habits completed
                 </h2>
                 <button
-                  className="text-xs tracking-widest"
-                  style={{ color: "#9A9A8A" }}
+                  className="text-xs tracking-widest text-[#888888] dark:text-[#938F99] hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5] transition-colors"
                   onClick={() => navigate("/rituals/completed")}
                 >
                   VIEW HISTORY →

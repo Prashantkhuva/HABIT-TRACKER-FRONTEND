@@ -191,10 +191,10 @@ export default function HabitDetailPage() {
 
   return (
     <>
-      <div className="p-10 grid grid-cols-3 gap-10 max-w-350 mx-auto">
+      <div className="p-4 sm:p-10 flex flex-col lg:grid lg:grid-cols-3 gap-10 w-full max-w-[1400px] mx-auto">
         {/* LEFT */}
         <div className="col-span-2 flex flex-col justify-center items-start">
-          <h1 className="text-5xl font-bold mb-8">{habit.title}</h1>
+          <h1 className="text-3xl sm:text-5xl font-bold mb-8 text-[#1A1A1A] dark:text-[#E6E1E5]">{habit.title}</h1>
 
           {/* 🔥 CARD */}
           <div
@@ -203,7 +203,7 @@ export default function HabitDetailPage() {
           >
             {/* NUMBER */}
             <h1
-              className="text-[400px] mt-25 font-normal leading-none text-center"
+              className="text-[150px] sm:text-[400px] mt-10 sm:mt-25 font-normal leading-none text-center"
               style={{
                 color: textColor,
                 fontFamily: "Epilogue, sans-serif",
@@ -214,7 +214,7 @@ export default function HabitDetailPage() {
 
             {/* TEXT */}
             <p
-              className="mt-2 text-sm tracking-widest opacity-80"
+              className="mt-2 text-xs sm:text-sm tracking-widest opacity-80"
               style={{ color: textColor }}
             >
               {weeklyCompleted} of {weeklyTarget} this week
@@ -222,7 +222,7 @@ export default function HabitDetailPage() {
 
             {/* STREAK */}
             <div
-              className="mt-6 px-5 py-2 rounded-full text-sm font-medium"
+              className="mt-6 px-5 py-2 rounded-full text-xs sm:text-sm font-medium"
               style={{
                 background: subBg,
                 color: textColor,
@@ -240,13 +240,13 @@ export default function HabitDetailPage() {
                 exit={{ scale: 0, rotate: 180 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={handleComplete}
-                className="absolute right-30 top-1/2 -translate-y-1/2 w-16 h-16 rounded-full flex items-center justify-center shadow-xl"
+                className="absolute right-4 sm:right-10 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-xl"
                 style={{
                   background: btnBg,
                   color: btnColor,
                 }}
               >
-                {isDoneToday ? <Check size={28} /> : <Plus size={28} />}
+                {isDoneToday ? <Check size={24} className="sm:w-7 sm:h-7" /> : <Plus size={24} className="sm:w-7 sm:h-7" />}
               </motion.button>
             </AnimatePresence>
           </div>
@@ -280,24 +280,24 @@ export default function HabitDetailPage() {
         </div>
 
         {/* RIGHT */}
-        <div className="bg-[#F7F7F7] p-8 rounded-4xl flex flex-col gap-6 h-fit">
-          <h2 className="font-semibold text-lg">History</h2>
+        <div className="bg-[#F4F4EF] dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F] p-8 rounded-4xl flex flex-col gap-6 h-fit">
+          <h2 className="font-semibold text-lg text-[#1A1A1A] dark:text-[#E6E1E5]">History</h2>
 
           {/* 🔥 CALENDAR */}
           <HabitCalendar logs={logs} />
 
           {/* COMPLETION */}
           <div>
-            <p className="text-sm mb-2">Completion Rate</p>
+            <p className="text-sm mb-2 text-[#888888] dark:text-[#938F99]">Completion Rate</p>
 
-            <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-[#E8E4DC] dark:bg-[#2A2A2A] rounded-full overflow-hidden">
               <div
-                className="h-2 bg-[#4F6F64]"
+                className="h-2 bg-[#1A1A1A] dark:bg-[#D0BCFF]"
                 style={{ width: `${completionRate}%` }}
               />
             </div>
 
-            <p className="mt-2 text-sm font-semibold">
+            <p className="mt-2 text-sm font-semibold text-[#1A1A1A] dark:text-[#E6E1E5]">
               {completionRate.toFixed(0)}%
             </p>
           </div>

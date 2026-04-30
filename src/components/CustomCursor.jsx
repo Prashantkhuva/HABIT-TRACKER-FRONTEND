@@ -4,8 +4,24 @@ export default function CustomCursor() {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
   const [visible, setVisible] = useState(true);
+  const [isPointerFine, setIsPointerFine] = useState(false);
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia("(pointer: fine)");
+    setIsPointerFine(mediaQuery.matches);
+
+    const handleMediaChange = (e) => setIsPointerFine(e.matches);
+    mediaQuery.addEventListener("change", handleMediaChange);
+
+    return () => mediaQuery.removeEventListener("change", handleMediaChange);
+  }, []);
+
+  useEffect(() => {
+    if (!isPointerFine) {
+      document.body.style.cursor = "auto";
+      return;
+    }
+
     const move = (e) => {
       setPos({ x: e.clientX, y: e.clientY });
       setVisible(true);
@@ -37,11 +53,11 @@ export default function CustomCursor() {
       document.removeEventListener("mouseleave", leave);
       document.removeEventListener("mouseenter", enter);
       document.removeEventListener("mouseover", handleMouseOver);
-      document.body.style.cursor = "default";
+      document.body.style.cursor = "auto";
     };
-  }, []);
+  }, [isPointerFine]);
 
-  if (!visible) return null;
+  if (!visible || !isPointerFine) return null;
 
   return (
     <div

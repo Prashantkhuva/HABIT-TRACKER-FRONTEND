@@ -1,23 +1,51 @@
 @import url("https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Manrope:wght@200..800&display=swap");
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-heading: "Epilogue", sans-serif;
   --font-body: "Manrope", sans-serif;
 
-  --color-base: #fafaf5;
-  --color-deep: #1a1a1a;
-  --color-mint: #c8e6df;
-  --color-yellow: #f5e9b8;
+  /* === CORE DESIGN TOKENS (Ethos Editorial) === */
+  --color-background: #fafaf5;
+  --color-surface: #ffffff;
+  --color-surface-dim: #f4f4ef;
+  --color-surface-mint: #c8e6df;
+  --color-text-primary: #1a1a1a;
+  --color-text-muted: #888888;
+  --color-border-subtle: #e8e4dc;
+
+  @variant dark {
+    --color-background: #141218;
+    --color-surface: #1d1b20;
+    --color-surface-dim: #0f0d13;
+    --color-surface-mint: #d0bcff;
+    --color-text-primary: #e6e1e5;
+    --color-text-muted: #938f99;
+    --color-border-subtle: #49454f;
+  }
+
+  /* === ACCENTS & SPECIALS === */
+  --color-primary: #1a1a1a;
+  --color-primary-soft: #333333;
+  --color-accent-mint: #4b6b63;
+  
+  @variant dark {
+    --color-primary: #d0bcff;
+    --color-primary-soft: #b69df8;
+  }
 }
 
 * {
   cursor: none !important;
+  transition:
+    background-color 0.3s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 /* ===== GLOBAL SCROLLBAR ===== */
-
-/* Chrome, Edge, Brave */
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -28,16 +56,33 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d8d4ca;
+  background: var(--color-border-subtle);
   border-radius: 999px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #9a9a8a;
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-dark-border);
 }
 
-/* Firefox */
-* {
+/* ===== BASE ===== */
+html {
+  /* Let App.jsx handle backgrounds */
+}
+
+html.dark {
+  /* Let App.jsx handle backgrounds */
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* ===== HORIZONTAL SCROLL UTILITY ===== */
+.custom-scroll-x {
   scrollbar-width: thin;
-  scrollbar-color: #d8d4ca transparent;
+  scrollbar-color: var(--color-border-subtle) transparent;
+}
+
+.dark .custom-scroll-x {
+  scrollbar-color: var(--color-dark-border) transparent;
 }

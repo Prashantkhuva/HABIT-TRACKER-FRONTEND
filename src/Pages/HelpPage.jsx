@@ -37,34 +37,34 @@ export default function HelpPage() {
   };
 
   return (
-    <div className="min-h-screen px-12 py-10 bg-[#FAFAF5] flex gap-16">
+    <div className="flex gap-8 lg:gap-16 flex-col lg:flex-row text-text-primary">
       {/* LEFT */}
-      <div className="w-1/2 flex flex-col justify-between">
+      <div className="lg:w-1/2 flex flex-col justify-between gap-8">
         <div>
           <h1
-            className="text-[80px] font-bold leading-[0.9]"
+            className="text-[clamp(3rem,8vw,80px)] font-bold leading-[0.9] text-text-primary dark:text-dark-text-primary"
             style={{ fontFamily: "Epilogue, sans-serif" }}
           >
             need <br /> help?
           </h1>
 
-          <p className="text-gray-500 mt-4 max-w-sm">
+          <p className="text-text-muted dark:text-dark-text-muted mt-4 max-w-sm">
             feel free to reach out anytime. our rhythm matches yours.
           </p>
 
           {/* CONTACT CARDS */}
-          <div className="mt-10 space-y-5">
+          <div className="mt-10 space-y-4">
             {/* EMAIL */}
             <a
               href="mailto:work.prashantkhuva@gmail.com"
-              className="flex items-center gap-4 p-5 rounded-[20px] bg-[#F0EDE5] hover:scale-[1.02] hover:shadow-md transition-all"
+              className="flex items-center gap-4 p-5 rounded-2xl bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F] hover:scale-[1.02] transition-all duration-200"
             >
-              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                <Mail size={18} />
+              <div className="w-10 h-10 bg-surface-dim dark:bg-dark-surface-dim rounded-full flex items-center justify-center">
+                <Mail size={18} className="text-primary dark:text-dark-primary" />
               </div>
               <div>
-                <p className="text-xs text-gray-400 tracking-widest">EMAIL</p>
-                <p className="font-medium">work.prashantkhuva@gmail.com</p>
+                <p className="text-xs text-text-muted dark:text-dark-text-muted tracking-widest uppercase">EMAIL</p>
+                <p className="font-medium text-text-primary dark:text-dark-text-primary">work.prashantkhuva@gmail.com</p>
               </div>
             </a>
 
@@ -72,16 +72,14 @@ export default function HelpPage() {
             <a
               href="https://www.linkedin.com/in/prashantkhuva"
               target="_blank"
-              className="flex items-center gap-4 p-5 rounded-[20px] bg-[#F0EDE5] hover:scale-[1.02] hover:shadow-md transition-all"
+              className="flex items-center gap-4 p-5 rounded-2xl bg-surface dark:bg-dark-surface border border-border-subtle dark:border-dark-border hover:scale-[1.02] transition-all duration-200"
             >
-              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-surface-dim dark:bg-dark-surface-dim rounded-full flex items-center justify-center">
                 <img src="/linkedin.svg" alt="linkedin" className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-xs text-gray-400 tracking-widest">
-                  LINKEDIN
-                </p>
-                <p className="font-medium">prashantkhuva</p>
+                <p className="text-xs text-text-muted dark:text-dark-text-muted tracking-widest">LINKEDIN</p>
+                <p className="font-medium text-text-primary dark:text-dark-text-primary">prashantkhuva</p>
               </div>
             </a>
 
@@ -89,38 +87,36 @@ export default function HelpPage() {
             <a
               href="https://x.com/prashantkhuva_"
               target="_blank"
-              className="flex items-center gap-4 p-5 rounded-[20px] bg-[#F0EDE5] hover:scale-[1.02] hover:shadow-md transition-all"
+              className="flex items-center gap-4 p-5 rounded-2xl bg-surface dark:bg-dark-surface border border-border-subtle dark:border-dark-border hover:scale-[1.02] transition-all duration-200"
             >
-              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-surface-dim dark:bg-dark-surface-dim rounded-full flex items-center justify-center">
                 <img src="/twitter.svg" alt="twitter" className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-xs text-gray-400 tracking-widest">
-                  X / TWITTER
-                </p>
-                <p className="font-medium">@prashantkhuva_</p>
+                <p className="text-xs text-text-muted dark:text-dark-text-muted tracking-widest">X / TWITTER</p>
+                <p className="font-medium text-text-primary dark:text-dark-text-primary">@prashantkhuva_</p>
               </div>
             </a>
           </div>
         </div>
 
         {/* IMAGE */}
-        <div className="mt-10">
+        <div>
           <img
             src="/help.png"
             alt="help"
-            className="rounded-[28px] w-full object-cover"
+            className="rounded-3xl w-full object-cover"
           />
         </div>
       </div>
 
       {/* RIGHT — FORM */}
-      <div className="w-1/2 bg-[#FFFFFF] p-10 rounded-4xl h-fit self-start">
-        <h2 className="text-2xl mb-8">direct message</h2>
+      <div className="lg:w-1/2 bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F] p-8 rounded-3xl h-fit self-start">
+        <h2 className="text-2xl font-semibold mb-8 text-text-primary dark:text-dark-text-primary" style={{ fontFamily: "Epilogue, sans-serif" }}>direct message</h2>
 
         {/* SUCCESS MESSAGE */}
         {success && (
-          <p className="mb-4 text-green-600 text-sm">
+          <p className="mb-4 text-primary dark:text-dark-primary text-sm">
             ✅ Message sent successfully!
           </p>
         )}
@@ -131,7 +127,6 @@ export default function HelpPage() {
             label="Full Name"
             placeholder="Enter your name"
             required
-            className="bg-[#F0EDE5]"
           />
 
           <Input
@@ -140,7 +135,6 @@ export default function HelpPage() {
             label="Email Address"
             placeholder="Enter your email"
             required
-            className="bg-[#F0EDE5]"
           />
 
           <Textarea
@@ -149,7 +143,6 @@ export default function HelpPage() {
             rows={5}
             placeholder="Tell us what's on your mind..."
             required
-            className="bg-[#F0EDE5] "
           />
 
           <Button type="submit" className="w-full mt-4" disabled={loading}>
@@ -157,7 +150,7 @@ export default function HelpPage() {
           </Button>
         </form>
 
-        <p className="text-xs text-gray-400 mt-6 text-right">
+        <p className="text-xs text-text-muted mt-6 text-right">
           usually responds within 2 hours
         </p>
       </div>

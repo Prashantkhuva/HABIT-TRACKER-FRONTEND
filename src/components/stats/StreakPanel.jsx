@@ -37,23 +37,23 @@ export default function StreakPanel() {
     if (habits.length > 0) fetchAll();
   }, [habits]);
 
-  const rankColors = ["#C2B280", "#C8E6DF", "#E0DED9"];
+  const rankColors = ["#D4BB06", "#C8E6DF", "#E0DED9"];
 
   return (
     <div className="h-full flex flex-col gap-4">
-      {/* 🔥 Header (match heatmap style) */}
+      {/* Header */}
       <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-bold text-[#1A1A1A]">Ritual Streaks</h2>
-        <p className="text-xs text-[#8A8A7A]">Your top performing habits</p>
+        <h2 className="text-lg font-bold text-text-primary">Ritual Streaks</h2>
+        <p className="text-xs text-text-muted">Your top performing habits</p>
       </div>
 
       {/* Divider */}
-      <div className="w-10 h-px bg-[#D6D3CB]" />
+      <div className="w-10 h-px bg-border-subtle" />
 
-      {/* 🔥 Content */}
+      {/* Content */}
       <div className="flex flex-col gap-4">
         {habitStreaks.length === 0 ? (
-          <p className="text-xs text-[#9A9A8A]">No streaks yet.</p>
+          <p className="text-xs text-text-muted">No streaks yet.</p>
         ) : (
           habitStreaks.map((habit, i) => (
             <div key={habit._id} className="flex items-center justify-between">
@@ -62,17 +62,17 @@ export default function StreakPanel() {
                 {/* Rank */}
                 <div
                   className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold"
-                  style={{ background: rankColors[i], color: "#1A1A1A" }}
+                  style={{ background: rankColors[i], color: "#141218" }}
                 >
                   0{i + 1}
                 </div>
 
                 {/* Info */}
                 <div>
-                  <p className="text-sm font-semibold text-[#1A1A1A]">
+                  <p className="text-sm font-semibold text-text-primary">
                     {habit.title}
                   </p>
-                  <p className="text-xs text-[#8A8A7A]">
+                  <p className="text-xs text-text-muted">
                     {habit.frequency.toUpperCase()} HABIT
                   </p>
                 </div>
@@ -80,10 +80,10 @@ export default function StreakPanel() {
 
               {/* Right */}
               <div className="text-right">
-                <p className="text-xl font-bold text-[#1A1A1A]">
+                <p className="text-xl font-bold text-text-primary">
                   {habit.currentStreak}
                 </p>
-                <p className="text-xs text-[#8A8A7A]">DAYS</p>
+                <p className="text-xs text-text-muted">DAYS</p>
               </div>
             </div>
           ))

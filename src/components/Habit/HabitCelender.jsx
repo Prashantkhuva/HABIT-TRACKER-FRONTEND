@@ -39,24 +39,24 @@ export default function HabitCalendar({ logs }) {
   }
 
   return (
-    <div className="p-6 bg-[#F5F5F5] rounded-3xl">
+    <div className="p-6 bg-[#F4F4EF] dark:bg-[#0F0D13] rounded-3xl border border-[#E8E4DC] dark:border-[#49454F]">
       {/* TITLE */}
-      <h2 className="text-xl font-semibold mb-4">monthly rhythm</h2>
+      <h2 className="text-xl font-semibold mb-4 text-[#1A1A1A] dark:text-[#E6E1E5]">monthly rhythm</h2>
 
       {/* DAY NAMES */}
-      <div className="grid grid-cols-7 gap-3 text-xs text-gray-400 mb-3">
+      <div className="grid grid-cols-7 gap-1 sm:gap-3 text-xs text-[#888888] dark:text-[#938F99] mb-3">
         {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
-          <div key={i} className="text-center">
+          <div key={i} className="text-center font-bold">
             {d}
           </div>
         ))}
       </div>
 
       {/* CALENDAR GRID */}
-      <div className="grid grid-cols-7 gap-3">
+      <div className="grid grid-cols-7 gap-1 sm:gap-3">
         {days.map((day, i) => {
           if (!day) {
-            return <div key={i} />;
+            return <div key={`empty-${i}`} className="w-8 h-8 sm:w-10 sm:h-10" />;
           }
 
           const isCompleted = completedMap[day];
@@ -64,12 +64,17 @@ export default function HabitCalendar({ logs }) {
 
           return (
             <div
-              key={day}
-              className="w-10 h-10 flex items-center justify-center text-sm font-semibold rounded-full transition-all"
+              key={`day-${i}`}
+              className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xs sm:text-sm font-semibold rounded-full transition-all ${
+                isCompleted 
+                  ? "bg-[#1A1A1A] dark:bg-[#D0BCFF] text-[#FAFAF5] dark:text-[#1A1A1A]" 
+                  : "text-[#1A1A1A] dark:text-[#E6E1E5]"
+              }`}
               style={{
-                background: isCompleted ? "#4F6F64" : "transparent",
-                color: isCompleted ? "#fff" : "#333",
-                border: isToday ? "2px solid #000" : "1px solid #E5E5E5",
+                border: isToday 
+                  ? (isCompleted ? "none" : "2px solid #1A1A1A") 
+                  : "none",
+                borderColor: isToday && !isCompleted ? (document.documentElement.classList.contains("dark") ? "#D0BCFF" : "#1A1A1A") : "transparent"
               }}
             >
               {day}
@@ -81,11 +86,11 @@ export default function HabitCalendar({ logs }) {
       {/* FOOTER */}
       <div className="flex justify-between items-end mt-8">
         <div>
-          <p className="text-xs text-gray-400 tracking-widest">BEST MONTH</p>
-          <p className="text-lg font-semibold">{bestmonth}</p>
+          <p className="text-xs text-[#888888] dark:text-[#938F99] tracking-widest">BEST MONTH</p>
+          <p className="text-lg font-semibold text-[#1A1A1A] dark:text-[#E6E1E5]">{bestmonth}</p>
         </div>
 
-        <p className="text-3xl font-bold text-[#4F6F64]">{percentage}%</p>
+        <p className="text-3xl font-bold text-[#1A1A1A] dark:text-[#D0BCFF]">{percentage}%</p>
       </div>
     </div>
   );

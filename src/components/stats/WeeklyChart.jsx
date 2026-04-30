@@ -24,14 +24,7 @@ export default function WeeklyChart({ data }) {
               >
                 {/* Tooltip */}
                 {hovered === i && (
-                  <div
-                    className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap z-10"
-                    style={{
-                      background: "#1A1A1A",
-                      color: "#FAFAF5",
-                      fontFamily: "Manrope, sans-serif",
-                    }}
-                  >
+                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap z-10 bg-primary text-surface-dim">
                     {days[i]} — {val} habit{val !== 1 ? "s" : ""}
                   </div>
                 )}
@@ -45,14 +38,15 @@ export default function WeeklyChart({ data }) {
                     delay: i * 0.08,
                     ease: [0.22, 1, 0.36, 1],
                   }}
+                  className={`${
+                    hovered === i
+                      ? "bg-primary-soft"
+                      : val > 0
+                        ? "bg-primary"
+                        : "bg-border-subtle"
+                  }`}
                   style={{
                     width: "100%",
-                    background:
-                      hovered === i
-                        ? "#3D5A52"
-                        : val > 0
-                          ? "#4B6B63"
-                          : "#D8D4CA",
                     borderRadius: "999px 999px 0 0",
                     minHeight: "8px",
                   }}

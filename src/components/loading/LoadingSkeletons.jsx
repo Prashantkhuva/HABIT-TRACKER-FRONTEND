@@ -1,224 +1,129 @@
-import Container from "../container/Container";
+import { motion } from "framer-motion";
 
-/* ================= Skeleton Component ================= */
-
-function Skeleton({ className = "" }) {
+export const Skeleton = ({ className, style }) => {
   return (
-    <div
-      className={`relative overflow-hidden bg-gray-200 dark:bg-gray-700 ${className}`}
+    <motion.div
+      animate={{ opacity: [0.6, 1, 0.6] }}
+      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      className={`relative overflow-hidden bg-[#E8E4DC] dark:bg-[#1D1B20] ${className}`}
+      style={style}
     >
-      <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-    </div>
+      <motion.div
+        animate={{ x: ["-100%", "100%"] }}
+        transition={{
+          duration: 1.5,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 dark:via-[#2A2A2A]/50 to-transparent"
+      />
+    </motion.div>
   );
-}
-
-/* ================= App Shell ================= */
-
-function AppShellSkeleton() {
-  return (
-    <div className="min-h-screen bg-white dark:bg-black">
-      <header className="fixed left-10 right-10 top-0 z-50 rounded-3xl border border-gray-200 dark:border-gray-700 bg-white/70 dark:bg-black/70 backdrop-blur-md">
-        <Container>
-          <div className="flex items-center justify-between py-4">
-            <Skeleton className="size-12 rounded-full" />
-            <div className="flex items-center gap-3">
-              <Skeleton className="h-9 w-20 rounded-full" />
-              <Skeleton className="h-9 w-20 rounded-full" />
-              <Skeleton className="h-9 w-24 rounded-full" />
-            </div>
-          </div>
-        </Container>
-      </header>
-
-      <main className="pt-28">
-        <Container>
-          <div className="flex flex-col gap-14 py-12 md:py-16">
-            <div className="grid items-center gap-10 md:grid-cols-2">
-              <div className="flex flex-col gap-5">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-16 w-full max-w-2xl" />
-                <div className="flex items-center gap-3">
-                  <Skeleton className="h-3 w-24" />
-                  <Skeleton className="h-3 w-3 rounded-full" />
-                  <Skeleton className="h-3 w-20" />
-                </div>
-                <Skeleton className="h-5 w-full max-w-2xl" />
-                <Skeleton className="h-5 w-5/6 max-w-2xl" />
-                <div className="flex gap-4">
-                  <Skeleton className="h-12 w-44 rounded-full" />
-                  <Skeleton className="h-12 w-40 rounded-full" />
-                </div>
-              </div>
-              <Skeleton className="aspect-[4/3] w-full rounded-3xl" />
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <PostCardSkeleton key={i} />
-              ))}
-            </div>
-          </div>
-        </Container>
-      </main>
-    </div>
-  );
-}
-
-/* ================= Post Card ================= */
-
-function PostCardSkeleton() {
-  return (
-    <div className="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-lg">
-      <Skeleton className="aspect-[16/11] w-full" />
-      <div className="flex flex-col gap-5 p-6">
-        <div className="flex items-center gap-3">
-          <Skeleton className="h-3 w-24" />
-          <Skeleton className="h-3 w-3 rounded-full" />
-          <Skeleton className="h-3 w-20" />
-        </div>
-        <Skeleton className="h-8 w-4/5" />
-        <Skeleton className="h-5 w-full" />
-        <Skeleton className="h-5 w-11/12" />
-        <div className="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-4">
-          <Skeleton className="h-4 w-28" />
-          <Skeleton className="size-10 rounded-full" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ================= Post Grid ================= */
-
-function PostGridSkeleton({ count = 6 }) {
-  return (
-    <Container>
-      <div className="flex flex-col gap-12 py-12 md:py-16">
-        <div className="flex flex-col gap-4">
-          <Skeleton className="h-3 w-28" />
-          <Skeleton className="h-12 w-64" />
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: count }).map((_, i) => (
-            <PostCardSkeleton key={i} />
-          ))}
-        </div>
-      </div>
-    </Container>
-  );
-}
-
-/* ================= Home ================= */
-
-function HomeSkeleton() {
-  return (
-    <div className="w-full">
-      <section className="py-16 md:py-24">
-        <Container>
-          <div className="grid items-center gap-10 md:grid-cols-2">
-            <div className="flex flex-col gap-5">
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-16 w-full max-w-2xl" />
-              <Skeleton className="h-5 w-full" />
-              <Skeleton className="h-5 w-5/6" />
-              <div className="flex gap-4">
-                <Skeleton className="h-12 w-44 rounded-full" />
-                <Skeleton className="h-12 w-40 rounded-full" />
-              </div>
-            </div>
-
-            <Skeleton className="aspect-[4/3] w-full rounded-3xl" />
-          </div>
-        </Container>
-      </section>
-
-      <section className="py-16 md:py-20">
-        <PostGridSkeleton />
-      </section>
-    </div>
-  );
-}
-
-/* ================= Post Details ================= */
-
-function PostDetailsSkeleton() {
-  return (
-    <article className="pb-16 md:pb-24">
-      <Skeleton className="aspect-[21/8] w-full" />
-
-      <Container>
-        <div className="mx-auto -mt-16 max-w-4xl">
-          <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-6 py-8">
-            <div className="flex flex-col gap-6">
-              <Skeleton className="h-9 w-36 rounded-full" />
-              <Skeleton className="h-14 w-4/5" />
-              <div className="flex flex-col gap-4">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-11/12" />
-                <Skeleton className="h-4 w-5/6" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </Container>
-    </article>
-  );
-}
-
-/* ================= Auth ================= */
-
-function AuthFormSkeleton() {
-  return (
-    <div className="flex min-h-[80vh] items-center justify-center px-4">
-      <div className="w-full max-w-md rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 shadow-xl">
-        <Skeleton className="h-16 w-32 mx-auto mb-6" />
-
-        <div className="flex flex-col gap-3">
-          <Skeleton className="h-9 w-48 mx-auto" />
-          <Skeleton className="h-5 w-56 mx-auto" />
-        </div>
-
-        <div className="mt-8 flex flex-col gap-5">
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-12 w-full" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ================= Post Form ================= */
-
-function PostFormSkeleton() {
-  return (
-    <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 md:p-8">
-      <div className="grid gap-6 md:grid-cols-3">
-        <div className="flex flex-col gap-5 md:col-span-2">
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-72 w-full" />
-        </div>
-
-        <div className="flex flex-col gap-5">
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="aspect-[4/3] w-full rounded-lg" />
-          <Skeleton className="h-12 w-full" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ================= Export ================= */
-
-export  {
-  AppShellSkeleton,
-  AuthFormSkeleton,
-  HomeSkeleton,
-  PostCardSkeleton,
-  PostDetailsSkeleton,
-  PostFormSkeleton,
-  PostGridSkeleton,
 };
+
+export const DashboardSkeleton = () => (
+  <div className="w-full overflow-hidden">
+    {/* Label + Heading */}
+    <Skeleton className="w-20 h-4 mb-3 rounded-full" />
+    <Skeleton className="w-64 h-12 mb-8 rounded-xl" />
+
+    {/* Habit cards — horizontal scroll, clipped to parent */}
+    <div className="flex gap-5 overflow-x-auto pb-4">
+      {[1, 2, 3, 4].map((i) => (
+        <Skeleton key={i} className="min-w-72 h-52 rounded-xl shrink-0" />
+      ))}
+    </div>
+
+    {/* Completed section */}
+    <div className="mt-16">
+      <div className="flex justify-between items-center mb-6">
+        <Skeleton className="w-48 h-8 rounded-xl" />
+        <Skeleton className="w-24 h-4 rounded-full" />
+      </div>
+      <div className="flex flex-col gap-3">
+        {[1, 2].map((i) => (
+          <Skeleton key={i} className="w-full h-16 rounded-xl" />
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+
+export const HabitsPageSkeleton = () => (
+  <div className="w-full">
+    {/* Header */}
+    <div className="flex justify-between items-start mb-8">
+      <div>
+        <Skeleton className="w-20 h-4 mb-2 rounded-full" />
+        <Skeleton className="w-64 h-12 rounded-full" />
+      </div>
+      <Skeleton className="w-28 h-10 rounded-full" />
+    </div>
+
+    {/* Filter tabs */}
+    <div className="flex items-center gap-8 mb-8 border-b border-border-subtle">
+      {[1, 2, 3].map((i) => (
+        <Skeleton key={i} className="w-16 h-4 mb-3 rounded-full" />
+      ))}
+    </div>
+
+    {/* 6 habit cards grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {[1, 2, 3, 4, 5, 6].map((i) => (
+        <Skeleton key={i} className="w-full h-40 rounded-xl" />
+      ))}
+    </div>
+  </div>
+);
+
+export const StatisticsSkeleton = () => (
+  <div className="w-full">
+    {/* HEADER */}
+    <div className="mb-10">
+      <Skeleton className="w-72 h-12 rounded-full" />
+    </div>
+
+    {/* 4 Stat Cards */}
+    <div className="grid max-sm:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      {[1, 2, 3, 4].map((i) => (
+        <Skeleton key={i} className="h-32 rounded-xl" />
+      ))}
+    </div>
+
+    {/* Charts Row */}
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 items-stretch">
+      {/* Weekly Chart */}
+      <Skeleton className="lg:col-span-2 rounded-xl max-sm:h-64 sm:h-80" />
+      {/* AI Card */}
+      <Skeleton className="rounded-xl min-h-80" />
+    </div>
+
+    {/* Heatmap & Streak */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+      <Skeleton className="w-full h-80 rounded-xl" />
+      <Skeleton className="w-full h-80 rounded-xl" />
+    </div>
+  </div>
+);
+
+export const SettingsSkeleton = () => (
+  <div className="w-full">
+    <div className="w-full max-w-[1400px] mx-auto">
+      {/* Header */}
+      <div className="mb-10">
+        <Skeleton className="w-48 h-12 mb-2 rounded-full" />
+        <Skeleton className="w-64 h-4 rounded-full" />
+      </div>
+
+      {/* Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 mb-6">
+        <Skeleton className="h-100 rounded-xl" />
+        <Skeleton className="h-100 rounded-xl" />
+      </div>
+
+      {/* Danger Zone / Other Cards */}
+      <Skeleton className="h-64 rounded-xl w-full" />
+    </div>
+  </div>
+);

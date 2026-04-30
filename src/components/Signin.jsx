@@ -54,9 +54,9 @@ const Signin = () => {
 
   return (
     <>
-      <div className="relative min-h-screen bg-[#F3F1EA] overflow-hidden">
+      <div className="relative min-h-screen bg-[#FAFAF5] dark:bg-[#141218] text-[#1A1A1A] dark:text-[#E6E1E5] overflow-hidden">
         {/* 🔥 Bottom Left Blur */}
-        <div className="-rotate-4 absolute left-10 bottom-10 w-50 h-77.5 rounded-3xl overflow-hidden opacity-30 pointer-events-none">
+        <div className="max-sm:hidden -rotate-4 absolute left-10 bottom-10 w-50 h-77.5 rounded-3xl overflow-hidden opacity-30 pointer-events-none">
           <img
             src="/signinbtm.png"
             alt=""
@@ -65,7 +65,7 @@ const Signin = () => {
         </div>
 
         {/* 🔥 Top Right Blur */}
-        <div className="absolute right-10 top-10 w-42.5 h-42.5 rounded-full overflow-hidden opacity-40 pointer-events-none">
+        <div className="max-sm:hidden absolute right-10 top-10 w-42.5 h-42.5 rounded-full overflow-hidden opacity-40 pointer-events-none">
           <img
             src="/signintop.png"
             alt=""
@@ -77,7 +77,7 @@ const Signin = () => {
         <div className="relative z-10">
           {/* 🔹 Top Logo Section */}
           <div className="flex flex-col items-center gap-4 pt-10">
-            <div className="w-14 h-14 rounded-full bg-[#C8E6DF] flex items-center justify-center">
+            <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center">
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
                 <path
                   d="M18 8L16.75 5.25L14 4L16.75 2.75L18 0L19.25 2.75L22 4L19.25 5.25L18 8ZM18 22L16.75 19.25L14 18L16.75 16.75L18 14L19.25 16.75L22 18L19.25 19.25L18 22ZM8 19L5.5 13.5L0 11L5.5 8.5L8 3L10.5 8.5L16 11L10.5 13.5L8 19ZM8 14.15L9 12L11.15 11L9 10L8 7.85L7 10L4.85 11L7 12L8 14.15Z"
@@ -87,13 +87,13 @@ const Signin = () => {
             </div>
 
             <div
-              className="text-center font-bold text-3xl"
+              className="text-center font-bold text-3xl text-[#1A1A1A] dark:text-[#E6E1E5]"
               style={{ fontFamily: "Epilogue, sans-serif" }}
             >
               habitflow
             </div>
 
-            <p className="text-xs tracking-widest text-[#9A9A8A]">
+            <p className="text-xs tracking-widest text-gray-400 dark:text-[#938F99]">
               PREMIUM EDITORIAL TRACKING
             </p>
           </div>
@@ -106,10 +106,10 @@ const Signin = () => {
               initial="hidden"
               animate="visible"
             >
-              <div className="bg-white/80 backdrop-blur-md border border-[#E8E4DC] rounded-4xl p-8 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
-                <h2 className="text-2xl font-semibold mb-2">Welcome Back</h2>
+              <div className="bg-white dark:bg-[#1D1B20]/80 backdrop-blur-md border border-gray-300 dark:border-[#2A2A2A] rounded-3xl p-8 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.5)]">
+                <h2 className="text-2xl font-semibold mb-2 text-[#1A1A1A] dark:text-[#E6E1E5]" style={{ fontFamily: "Epilogue, sans-serif" }}>Welcome Back</h2>
 
-                <hr className="border-t-2 border-[#1A1A1A] w-16 mb-5 mt-7" />
+                <hr className="border-t-2 border-[#1A1A1A] dark:border-[#E6E1E5] w-16 mb-5 mt-7" />
 
                 {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
@@ -140,9 +140,9 @@ const Signin = () => {
                   </Button>
                 </form>
 
-                <p className="text-center text-sm mt-6 text-[#6A6A5A]">
+                <p className="text-center text-sm mt-6 text-gray-400 dark:text-[#938F99]">
                   Don't have account?{" "}
-                  <Link to="/signup" className="font-medium text-black">
+                  <Link to="/signup" className="font-medium text-[#1A1A1A] dark:text-[#D0BCFF] hover:opacity-80 transition-colors">
                     Sign up
                   </Link>
                 </p>
@@ -150,7 +150,7 @@ const Signin = () => {
             </motion.div>
           </div>
         </div>
-        <p className="text-sm text-[#6A6A5A] pt-3 pb-2 text-center font-thin font-body">
+        <p className="text-sm text-gray-400 dark:text-[#938F99] pt-3 pb-2 text-center font-thin font-body">
           "rituals turn intention into reality."
         </p>
       </div>

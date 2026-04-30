@@ -47,8 +47,8 @@ export default function BooleanCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="relative min-w-75 h-55 rounded-[28px] p-6 flex flex-col justify-between shrink-0"
-      style={{ background: habit.color || "#1A1A1A" }}
+      className="relative w-[80vw] sm:w-75 h-55 rounded-[28px] p-6 flex flex-col justify-between shrink-0 border border-[#E8E4DC] dark:border-[#49454F] snap-start"
+      style={{ background: habit.color || "#C8E6DF" }}
       onClick={() => navigate(`/rituals/${habit._id}`)}
     >
       {/* Top Row */}

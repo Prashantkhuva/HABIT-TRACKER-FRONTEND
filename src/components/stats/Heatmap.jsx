@@ -25,19 +25,18 @@ export default function Heatmap({ data }) {
   for (let i = 0; i < offset; i++) cells.push(null);
   for (let d = 1; d <= totalDays; d++) cells.push(d);
 
-  const getColor = (count) => {
-    if (!count) return "#E8E4DC";
-    if (count === 1) return "#C8DAD6";
-    if (count === 2) return "#8FA8A3";
-    return "#4F6F64";
+  const getColorClass = (count) => {
+    if (!count) return "bg-surface-dim";
+    if (count === 1) return "bg-primary/30";
+    if (count === 2) return "bg-primary/60";
+    return "bg-primary";
   };
 
   return (
     <div className="flex justify-center w-full">
-      {/* 🔥 IMPORTANT: inline-grid instead of grid */}
       <div className="inline-grid gap-1">
         {/* Day labels */}
-        <div className="grid grid-cols-7 text-center text-[10px] text-[#9A9A8A] mb-1">
+        <div className="grid grid-cols-7 text-center text-[10px] text-text-muted mb-1">
           {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
             <div key={i} className="w-8">
               {d}
@@ -54,20 +53,19 @@ export default function Heatmap({ data }) {
 
             return (
               <div
-                key={day}
+                key={`cell-${i}`}
                 className="relative"
                 onMouseEnter={() => setHovered({ day, count })}
                 onMouseLeave={() => setHovered(null)}
               >
                 <motion.div
                   whileHover={{ scale: 1.15 }}
-                  className="w-10 h-10 rounded-md cursor-pointer"
-                  style={{ background: getColor(count) }}
+                  className={`w-8 h-8 sm:w-10 sm:h-10 rounded-md cursor-pointer transition-colors duration-200 ${getColorClass(count)}`}
                 />
 
                 {/* Tooltip */}
                 {hovered?.day === day && (
-                  <div className="absolute bottom-[120%] left-1/2 -translate-x-1/2 bg-[#1A1A1A] text-[#FAFAF5] text-[10px] px-2 py-1 rounded-md whitespace-nowrap pointer-events-none">
+                  <div className="absolute bottom-[120%] left-1/2 -translate-x-1/2 bg-primary text-surface-dim text-[10px] px-2 py-1 rounded-md whitespace-nowrap pointer-events-none z-10">
                     {new Date(year, month, day).toLocaleDateString("en-IN", {
                       day: "numeric",
                       month: "short",

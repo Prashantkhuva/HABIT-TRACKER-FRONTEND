@@ -8,7 +8,7 @@ function Textarea({ label, className = "", ...props }) {
       {label && (
         <label
           htmlFor={id}
-          className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-[#9A9A8A]"
+          className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-text-muted dark:text-dark-text-muted"
         >
           {label}
         </label>
@@ -16,7 +16,7 @@ function Textarea({ label, className = "", ...props }) {
 
       <textarea
         id={id}
-        className={`w-full rounded-[20px] border border-transparent bg-[#EEEAE0] px-5 py-4 text-sm text-[#1A1A1A] outline-none transition-all duration-300 placeholder:text-[#BEBAB0] focus:border-[#1A1A1A] focus:ring-1 focus:ring-[#1A1A1A] resize-none ${className}`}
+        className={`w-full rounded-[20px] border border-transparent bg-surface-dim dark:bg-dark-surface-dim px-5 py-4 text-sm text-text-primary dark:text-dark-text-primary outline-none transition-all duration-300 placeholder:text-text-muted/50 dark:placeholder:text-dark-text-muted/50 focus:border-text-primary dark:focus:border-dark-text-primary focus:ring-1 focus:ring-text-primary dark:focus:ring-dark-text-primary resize-none ${className}`}
         {...props}
       />
     </div>
