@@ -20,9 +20,7 @@ export default function HelpPage() {
       const res = await fetch("https://formspree.io/f/mjgjqnqd", {
         method: "POST",
         body: data,
-        headers: {
-          Accept: "application/json",
-        },
+        headers: { Accept: "application/json" },
       });
 
       if (res.ok) {
@@ -37,38 +35,39 @@ export default function HelpPage() {
   };
 
   return (
-    <div className="flex gap-8 lg:gap-16 flex-col lg:flex-row text-text-primary">
+    <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 px-4 sm:px-6 lg:px-10 py-8 text-[#1A1A1A] dark:text-[#E6E1E5]">
       {/* LEFT */}
-      <div className="lg:w-1/2 flex flex-col justify-between gap-8">
+      <div className="w-full lg:w-1/2 flex flex-col justify-between gap-10">
         <div>
           <h1
-            className="text-[clamp(3rem,8vw,80px)] font-bold leading-[0.9] text-text-primary dark:text-white"
+            className="text-[clamp(2.5rem,8vw,80px)] font-bold leading-[0.9]"
             style={{ fontFamily: "Epilogue, sans-serif" }}
           >
             need <br /> help?
           </h1>
 
-          <p className="text-text-muted mt-4 max-w-sm">
+          <p className="mt-4 text-[#888888] dark:text-[#938F99] max-w-sm">
             feel free to reach out anytime. our rhythm matches yours.
           </p>
 
-          {/* CONTACT CARDS */}
+          {/* CONTACT */}
           <div className="mt-10 space-y-4">
             {/* EMAIL */}
             <a
               href="mailto:work.prashantkhuva@gmail.com"
-              className="flex items-center gap-4 p-5 rounded-2xl bg-white dark:bg-[#1D1B20]  hover:scale-[1.02] transition-all duration-200"
+              className="flex items-center gap-4 p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#2A2A2A] hover:scale-[1.02] transition-all"
             >
-              <div className="w-10 h-10 bg-surface-dim dark:bg-black rounded-full flex items-center justify-center">
-                <Mail size={18} className="text-primary dark:text-white" />
+              <div className="w-10 h-10 bg-[#F3F3F3] dark:bg-black rounded-full flex items-center justify-center">
+                <Mail
+                  size={18}
+                  className="text-[#1A1A1A] dark:text-[#E6E1E5]"
+                />
               </div>
               <div>
-                <p className="text-xs text-text-muted tracking-widest uppercase">
+                <p className="text-xs tracking-widest text-[#888888] dark:text-[#938F99] uppercase">
                   EMAIL
                 </p>
-                <p className="font-medium text-text-primary dark:text-white">
-                  work.prashantkhuva@gmail.com
-                </p>
+                <p className="font-medium">work.prashantkhuva@gmail.com</p>
               </div>
             </a>
 
@@ -76,32 +75,25 @@ export default function HelpPage() {
             <a
               href="https://www.linkedin.com/in/prashantkhuva"
               target="_blank"
-              className="flex items-center gap-4 p-5 rounded-2xl bg-white dark:bg-[#1D1B20]  hover:scale-[1.02] transition-all duration-200"
+              className="flex items-center gap-4 p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#2A2A2A] hover:scale-[1.02] transition-all"
             >
-              <div className="w-10 h-10 bg-surface-dim dark:bg-black rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-[#F3F3F3] dark:bg-black rounded-full flex items-center justify-center">
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  width="24"
-                  height="24"
+                  className="w-5 h-5 text-[#1A1A1A] dark:text-[#E6E1E5]"
                   fill="none"
                   stroke="currentColor"
-                  className="text-black dark:text-white"
-                  strokeWidth="1"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  strokeWidth="1.5"
                 >
                   <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2a2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6M2 9h4v12H2z" />
                   <circle cx="4" cy="4" r="2" />
                 </svg>
               </div>
               <div>
-                <p className="text-xs text-text-muted tracking-widest">
+                <p className="text-xs tracking-widest text-[#888888] dark:text-[#938F99]">
                   LINKEDIN
                 </p>
-                <p className="font-medium text-text-primary dark:text-white">
-                  prashantkhuva
-                </p>
+                <p className="font-medium">prashantkhuva</p>
               </div>
             </a>
 
@@ -109,97 +101,82 @@ export default function HelpPage() {
             <a
               href="https://x.com/prashantkhuva_"
               target="_blank"
-              className="flex items-center gap-4 p-5 rounded-2xl bg-white dark:bg-[#1D1B20] hover:scale-[1.02] transition-all duration-200"
+              className="flex items-center gap-4 p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#2A2A2A] hover:scale-[1.02] transition-all"
             >
-              <div className="w-10 h-10 bg-surface-dim dark:bg-black rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-[#F3F3F3] dark:bg-black rounded-full flex items-center justify-center">
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  width="24"
-                  height="24"
+                  className="w-5 h-5 text-[#1A1A1A] dark:text-[#E6E1E5]"
                   fill="none"
                   stroke="currentColor"
-                  className="w-5 h-5 text-[#1A1A1A] dark:text-[#E6E1E5]"
                   strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
                 >
-                  <path
-                    fill="none"
-                    d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6c2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4c-.9-4.2 4-6.6 7-3.8c1.1 0 3-1.2 3-1.2"
-                  />
+                  <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6c2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4c-.9-4.2 4-6.6 7-3.8c1.1 0 3-1.2 3-1.2" />
                 </svg>
               </div>
               <div>
-                <p className="text-xs text-text-muted tracking-widest">
+                <p className="text-xs tracking-widest text-[#888888] dark:text-[#938F99]">
                   X / TWITTER
                 </p>
-                <p className="font-medium text-text-primary dark:text-white">
-                  @prashantkhuva_
-                </p>
+                <p className="font-medium">@prashantkhuva_</p>
               </div>
             </a>
           </div>
         </div>
 
         {/* IMAGE */}
-        <div>
-          <img
-            src="/help.png"
-            alt="help"
-            className="rounded-3xl w-full object-cover"
-          />
-        </div>
+        <img
+          src="/help.png"
+          alt="help"
+          className="rounded-3xl w-full object-cover"
+        />
       </div>
 
-      {/* RIGHT — FORM */}
-      <div className="lg:w-1/2 bg-white dark:bg-black p-8 rounded-3xl h-fit self-start">
+      {/* RIGHT FORM */}
+      <div
+        className="
+          w-full lg:w-1/2
+          bg-[#FAFAF5] dark:bg-black
+          p-5 sm:p-6 lg:p-8
+          rounded-3xl
+        
+        "
+      >
         <h2
-          className="text-2xl font-semibold mb-8 text-text-primary dark:text-white"
+          className="text-xl sm:text-2xl font-semibold mb-6"
           style={{ fontFamily: "Epilogue, sans-serif" }}
         >
           direct message
         </h2>
 
-        {/* SUCCESS MESSAGE */}
         {success && (
-          <p className="mb-4 text-primary dark:text-dark-primary text-sm">
+          <p className="mb-4 text-sm text-[#48645E] dark:text-[#CDC0E9]">
             ✅ Message sent successfully!
           </p>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
           <Input
             name="name"
             label="Full Name"
-            placeholder="Enter your name"
             required
             className="dark:bg-black"
           />
-
           <Input
             name="email"
             type="email"
             label="Email Address"
-            placeholder="Enter your email"
             required
             className="dark:bg-black"
           />
-
-          <Textarea
-            name="message"
-            label="Your Message"
-            rows={5}
-            placeholder="Tell us what's on your mind..."
-            required
-          />
+          <Textarea name="message" rows={5} label="Your Message" required />
 
           <Button type="submit" className="w-full mt-4" disabled={loading}>
             {loading ? "Sending..." : "SEND MESSAGE"}
           </Button>
         </form>
 
-        <p className="text-xs text-text-muted mt-6 text-right">
+        <p className="text-xs mt-6 text-right text-[#888888] dark:text-[#938F99]">
           usually responds within 2 hours
         </p>
       </div>
