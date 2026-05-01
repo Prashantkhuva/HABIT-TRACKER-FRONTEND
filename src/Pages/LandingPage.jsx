@@ -24,7 +24,8 @@ function LandingPage() {
         {/* ── HERO ── */}
         <section className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-16 px-8 lg:px-24 items-center">
           {/* LEFT */}
-          <div className="max-w-130">
+          <div className="max-w-full lg:max-w-150">
+
             <motion.p
               variants={fadeUp}
               initial="hidden"
@@ -40,7 +41,8 @@ function LandingPage() {
               initial="hidden"
               animate="show"
               custom={1}
-              className="text-[64px] leading-[1.05] tracking-[-0.04em] mb-6 text-[#1A1A1A] dark:text-[#E6E1E5]"
+              className="text-5xl lg:text-[72px] leading-[1.1] lg:leading-[1.05] tracking-[-0.04em] mb-6 text-[#1A1A1A] dark:text-[#E6E1E5]"
+
               style={{ fontFamily: "Epilogue, sans-serif" }}
             >
               build habits
@@ -53,11 +55,13 @@ function LandingPage() {
               initial="hidden"
               animate="show"
               custom={2}
-              className="text-[15px] leading-relaxed mb-10 max-w-90 text-gray-400 dark:text-[#938F99]"
+              className="text-[15px] leading-relaxed mb-10 max-w-full lg:max-w-110 text-gray-400 dark:text-[#938F99]"
+
             >
               Designed for the intentional individual. A rhythmic workspace to
               cultivate your daily rituals with clarity and editorial elegance.
             </motion.p>
+
 
             <motion.div
               variants={fadeUp}
@@ -79,9 +83,10 @@ function LandingPage() {
           </div>
 
           {/* RIGHT */}
-          <div className="relative flex justify-center items-center">
+          <div className="relative flex justify-center items-center w-full">
             {/* Glow */}
-            <div className="absolute right-0 top-10 w-105 h-105 bg-[#E8D9A8] dark:bg-[#D0BCFF] rounded-full blur-[140px] opacity-40 dark:opacity-5" />
+            <div className="absolute right-0 top-10 w-64 h-64 lg:w-130 lg:h-130 bg-[#E8D9A8] dark:bg-[#D0BCFF] rounded-full blur-[100px] lg:blur-[140px] opacity-40 dark:opacity-[0.03]" />
+
 
             {/* Card */}
             <motion.div
@@ -89,68 +94,73 @@ function LandingPage() {
               initial="hidden"
               animate="show"
               custom={2}
-              className="relative bg-white dark:bg-[#1D1B20] rounded-[40px] border border-gray-300 dark:border-white/10 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.8)] p-10 w-130 h-165 flex flex-col justify-start"
+              className="relative bg-white dark:bg-[#1D1B20] rounded-[40px] border border-gray-300 dark:border-white/10 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.8)] p-6 sm:p-10 w-full max-w-[340px] sm:max-w-md lg:max-w-none lg:w-150 lg:h-175 flex flex-col justify-start"
+
+
             >
               {/* Header */}
-              <div className="flex justify-between items-center text-sm tracking-widest text-gray-400 dark:text-[#938F99] mb-8">
+              <div className="flex justify-between items-center text-xs sm:text-sm tracking-widest text-gray-400 dark:text-[#938F99] mb-8">
                 <span>monday ritual</span>
+
                 <svg width="18" height="4" viewBox="0 0 16 4" fill="none">
                   {" "}
                   <path
                     d="M2 4C1.45 4 0.979167 3.80417 0.5875 3.4125C0.195833 3.02083 0 2.55 0 2C0 1.45 0.195833 0.979167 0.5875 0.5875C0.979167 0.195833 1.45 0 2 0C2.55 0 3.02083 0.195833 3.4125 0.5875C3.80417 0.979167 4 1.45 4 2C4 2.55 3.80417 3.02083 3.4125 3.4125C3.02083 3.80417 2.55 4 2 4ZM8 4C7.45 4 6.97917 3.80417 6.5875 3.4125C6.19583 3.02083 6 2.55 6 2C6 1.45 6.19583 0.979167 6.5875 0.5875C6.97917 0.195833 7.45 0 8 0C8.55 0 9.02083 0.195833 9.4125 0.5875C9.80417 0.979167 10 1.45 10 2C10 2.55 9.80417 3.02083 9.4125 3.4125C9.02083 3.80417 8.55 4 8 4ZM14 4C13.45 4 12.9792 3.80417 12.5875 3.4125C12.1958 3.02083 12 2.55 12 2C12 1.45 12.1958 0.979167 12.5875 0.5875C12.9792 0.195833 13.45 0 14 0C14.55 0 15.0208 0.195833 15.4125 0.5875C15.8042 0.979167 16 1.45 16 2C16 2.55 15.8042 3.02083 15.4125 3.4125C15.0208 3.80417 14.55 4 14 4Z"
-                    className="fill-[#1A1A1A] dark:fill-[#E6E1E5]"
+                    className="fill-[#1A1A1A] "
                   />{" "}
                 </svg>
               </div>
 
               {/* Habit */}
-              <div className="flex items-center gap-4 mb-10">
+              <div className="flex items-center gap-4 mb-6 sm:mb-10">
                 {/* Circle + Icon */}
                 <div
                   className="
-      w-14 h-14 rounded-full 
+      w-10 h-10 sm:w-14 sm:h-14 rounded-full 
       flex items-center justify-center
-      bg-[#F3F3F3] dark:bg-[#1D1B20]
+      bg-[#F5F5F5] dark:bg-[#1D1B20]
       transition-all duration-200
       hover:scale-105
     "
                 >
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <svg width="18" height="18" className="sm:w-[22px] sm:h-[22px]" viewBox="0 0 22 22" fill="none">
                     <path
                       d="M18 8L16.75 5.25L14 4L16.75 2.75L18 0L19.25 2.75L22 4L19.25 5.25L18 8ZM18 22L16.75 19.25L14 18L16.75 16.75L18 14L19.25 16.75L22 18L19.25 19.25L18 22ZM8 19L5.5 13.5L0 11L5.5 8.5L8 3L10.5 8.5L16 11L10.5 13.5L8 19ZM8 14.15L9 12L11.15 11L9 10L8 7.85L7 10L4.85 11L7 12L8 14.15Z"
-                      className="fill-[#48645E] dark:fill-[#D0BCFF]"
+                      className="fill-[#48645E]"
                     />
                   </svg>
                 </div>
                 {/* Text */}
                 <div>
                   <p
-                    className="text-[22px] font-medium tracking-tight text-[#1A1A1A] dark:text-[#E6E1E5]"
+                    className="text-lg sm:text-[22px] font-medium tracking-tight text-[#1A1A1A] dark:text-[#E6E1E5]"
                     style={{ fontFamily: "Epilogue, sans-serif" }}
                   >
                     morning meditation
                   </p>
-                  <p className="text-xs tracking-widest text-gray-400 dark:text-[#938F99]">
+                  <p className="text-[10px] sm:text-xs tracking-widest text-gray-400 dark:text-[#938F99]">
                     20 MINS • STREAK 14
                   </p>
                 </div>
               </div>
               {/* Dots */}
-              <div className="flex items-center gap-4 mb-10">
+              <div className="flex items-center gap-2 sm:gap-4 mb-6 sm:mb-10">
                 {[1, 2, 3, 4, 5, 6, 7].map((d) => (
                   <div
                     key={d}
-                    className={`w-12 h-12 rounded-full ${d <= 5
-                        ? "bg-[#B69DF8] dark:bg-[#D0BCFF]"
-                        : d === 6
-                          ? "bg-transparent border-2 border-[#B69DF8] dark:border-[#D0BCFF]"
-                          : "bg-gray-200 dark:bg-[#141218]"
+                    className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full ${d <= 5
+                      ? "bg-[#48645E] dark:bg-[#D0BCFF]"
+                      : d === 6
+                        ? "bg-transparent border-2 border-[#48645E] dark:border-[#D0BCFF]"
+                        : "bg-gray-200 dark:bg-[#141218]"
                       }`}
                   />
                 ))}
               </div>
 
-              <div className="bg-gray-200 dark:bg-[#1D1B20]/50 border border-transparent dark:border-white/5 rounded-3xl p-5">
+
+              <div className="bg-gray-200 dark:bg-[#1D1B20]/50 border border-transparent dark:border-white/5 rounded-3xl p-5 lg:p-8">
+
                 <p className="text-xs tracking-widest text-gray-400 dark:text-[#938F99] mb-3">
                   WEEKLY FLOW
                 </p>
@@ -160,10 +170,10 @@ function LandingPage() {
                     <div
                       key={i}
                       className={`flex-1 rounded-lg ${i === 4
-                          ? "bg-[#B69DF8] dark:bg-[#D0BCFF]"
-                          : i === 5
-                            ? "bg-[#D0BCFF] dark:bg-[#B69DF8]/60"
-                            : "bg-gray-300 dark:bg-[#141218]"
+                        ? "bg-[#48645E] dark:bg-[#D0BCFF]"
+                        : i === 5
+                          ? "bg-[#6a8879] dark:bg-[#B69DF8]/60"
+                          : "bg-gray-300 dark:bg-[#141218]"
                         }`}
                       style={{
                         height: `${h}%`,
@@ -209,7 +219,7 @@ function LandingPage() {
                   >
                     <path
                       d="M0 12.075C0 9.575 0.55625 7.28125 1.66875 5.19375C2.78125 3.10625 4.275 1.375 6.15 0L7.9125 2.4C6.4125 3.5 5.21875 4.8875 4.33125 6.5625C3.44375 8.2375 3 10.075 3 12.075H0ZM27 12.075C27 10.075 26.5563 8.2375 25.6688 6.5625C24.7812 4.8875 23.5875 3.5 22.0875 2.4L23.85 0C25.725 1.375 27.2188 3.10625 28.3312 5.19375C29.4437 7.28125 30 9.575 30 12.075H27ZM3 25.575V22.575H6V12.075C6 10 6.625 8.15625 7.875 6.54375C9.125 4.93125 10.75 3.875 12.75 3.375V2.325C12.75 1.7 12.9688 1.16875 13.4062 0.73125C13.8438 0.29375 14.375 0.075 15 0.075C15.625 0.075 16.1562 0.29375 16.5938 0.73125C17.0312 1.16875 17.25 1.7 17.25 2.325V3.375C19.25 3.875 20.875 4.93125 22.125 6.54375C23.375 8.15625 24 10 24 12.075V22.575H27V25.575H3ZM15 30.075C14.175 30.075 13.4688 29.7812 12.8813 29.1938C12.2938 28.6063 12 27.9 12 27.075H18C18 27.9 17.7062 28.6063 17.1187 29.1938C16.5312 29.7812 15.825 30.075 15 30.075ZM9 22.575H21V12.075C21 10.425 20.4125 9.0125 19.2375 7.8375C18.0625 6.6625 16.65 6.075 15 6.075C13.35 6.075 11.9375 6.6625 10.7625 7.8375C9.5875 9.0125 9 10.425 9 12.075V22.575Z"
-                      className="fill-[#B69DF8] dark:fill-[#D0BCFF]"
+                      className="fill-[#1A1A1A] dark:fill-[#D0BCFF]"
                     />
                   </svg>
                 ),
@@ -235,6 +245,7 @@ function LandingPage() {
                 desc: "A digital broadsheet of your progress, curated as an editorial journey.",
               },
             ].map((f, i) => (
+
               <motion.div
                 key={i}
                 variants={fadeUp}
@@ -242,7 +253,7 @@ function LandingPage() {
                 whileInView="show"
                 viewport={{ once: true }}
                 custom={i}
-                className="h-87 rounded-[50px] p-8 flex flex-col justify-between bg-white dark:bg-[#1D1B20] border border-gray-300 dark:border-[#2A2A2A]"
+                className="min-h-87 rounded-[50px] p-8 flex flex-col justify-between bg-white dark:bg-[#1D1B20] border border-gray-300 dark:border-[#2A2A2A]"
               >
                 <span className="text-2xl block">{f.icon}</span>
                 <div>
@@ -262,6 +273,7 @@ function LandingPage() {
                 </div>
               </motion.div>
             ))}
+
           </div>
         </section>
 
@@ -323,9 +335,9 @@ function LandingPage() {
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div
-                    className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 bg-[#B69DF8] dark:bg-[#D0BCFF]"
+                    className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 bg-[#48645E] dark:bg-[#D0BCFF]"
                   >
-                    <span className="text-xs text-black dark:text-[#1A1A1A]">
+                    <span className="text-xs text-white dark:text-[#1A1A1A]">
                       ✓
                     </span>
                   </div>

@@ -7,10 +7,15 @@ export default function HabitCalendar({ logs }) {
   // 🔥 Create map for quick lookup
   const completedMap = useMemo(() => {
     const map = {};
+
     logs.forEach((log) => {
-      const d = new Date(log.date).getDate();
-      if (log.completed) map[d] = true;
+      const date = new Date(log.date);
+
+      const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+
+      if (log.completed) map[key] = true;
     });
+
     return map;
   }, [logs]);
 
@@ -59,20 +64,20 @@ export default function HabitCalendar({ logs }) {
             return <div key={`empty-${i}`} className="w-8 h-8 sm:w-10 sm:h-10" />;
           }
 
-          const isCompleted = completedMap[day];
+          const key = `${year}-${month}-${day}`;
+          const isCompleted = completedMap[key];
           const isToday = day === today.getDate();
 
           return (
             <div
               key={`day-${i}`}
-              className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xs sm:text-sm font-semibold rounded-full transition-all ${
-                isCompleted 
-                  ? "bg-[#1A1A1A] dark:bg-[#D0BCFF] text-[#FAFAF5] dark:text-[#1A1A1A]" 
-                  : "text-[#1A1A1A] dark:text-[#E6E1E5]"
-              }`}
+              className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xs sm:text-sm font-semibold rounded-full transition-all ${isCompleted
+                ? "bg-[#1A1A1A] dark:bg-[#D0BCFF] text-[#FAFAF5] dark:text-[#1A1A1A]"
+                : "text-[#1A1A1A] dark:text-[#E6E1E5]"
+                }`}
               style={{
-                border: isToday 
-                  ? (isCompleted ? "none" : "2px solid #1A1A1A") 
+                border: isToday
+                  ? (isCompleted ? "none" : "2px solid #1A1A1A")
                   : "none",
                 borderColor: isToday && !isCompleted ? (document.documentElement.classList.contains("dark") ? "#D0BCFF" : "#1A1A1A") : "transparent"
               }}

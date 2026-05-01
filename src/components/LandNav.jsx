@@ -12,19 +12,20 @@ function LandNav() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="flex items-center justify-between px-10 py-5 sticky top-0 z-50 bg-[#FAFAF5] dark:bg-[#141218] border-b border-gray-300 dark:border-[#2A2A2A]"
+      className="flex items-center justify-between px-6 sm:px-10 py-5 sticky top-0 z-50 bg-[#FAFAF5] dark:bg-[#141218] border-b border-gray-300 dark:border-[#2A2A2A]"
     >
       {/* Logo */}
       <Link to={"/"}>
         <h1
-          className="text-2xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#E6E1E5] font-heading"
+          className="text-xl sm:text-2xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#E6E1E5] font-heading"
         >
+
           habitflow
         </h1>
       </Link>
 
-      {/* Nav Links */}
-      <div className="flex items-center gap-10">
+      {/* Nav Links - Desktop Only */}
+      <div className="hidden md:flex items-center gap-10">
         {navLinks.map((link, i) => (
           <motion.a
             key={link}
@@ -39,7 +40,7 @@ function LandNav() {
         ))}
       </div>
       {/* Right — Bell + Upgrade */}
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-3 sm:gap-5">
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
@@ -48,8 +49,11 @@ function LandNav() {
           <Bell size={16} className="text-[#1A1A1A] dark:text-[#E6E1E5]" />
         </motion.button>
 
-        <Button variant="primary">UPGRADE</Button>
+        <Link to="/signin">
+          <Button variant="primary" className="text-xs px-4 py-2">UPGRADE</Button>
+        </Link>
       </div>
+
     </motion.nav>
   );
 }
