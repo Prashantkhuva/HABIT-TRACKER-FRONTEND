@@ -169,7 +169,8 @@ function Create({ onClose }) {
           <div>
             <p className="text-xs text-gray-400 uppercase mb-3">Symbol</p>
 
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4">
+
               {Object.entries(categoryMap).map(([key, Icon]) => (
                 <div key={key} className="relative group">
                   <div
@@ -201,14 +202,16 @@ function Create({ onClose }) {
               Thematic Palette
             </p>
 
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4">
+
               {colors.map((c) => (
                 <div
                   key={c}
                   onClick={() => setColor(c)}
-                  className="relative max-sm:w-10 max-sm:h-10 sm:w-8 sm:h-8 rounded-full cursor-pointer"
+                  className="relative shrink-0 max-sm:w-10 max-sm:h-10 sm:w-8 sm:h-8 rounded-full cursor-pointer"
                   style={{ background: c }}
                 >
+
                   {color === c && (
                     <div className="absolute inset-0 rounded-full border-2 border-black dark:border-white scale-125" />
                   )}
@@ -246,7 +249,8 @@ function Create({ onClose }) {
 
           <div>
             <p className="text-xs text-gray-400 uppercase mb-3">Habit Type</p>
-            <div className="relative flex bg-[#E8E4DC] dark:bg-[#2A2A2A] rounded-full p-1 max-sm:w-full sm:w-fit">
+            <div className="relative flex flex-wrap bg-[#E8E4DC] dark:bg-[#2A2A2A] rounded-2xl sm:rounded-full p-1 max-sm:w-full sm:w-fit">
+
               {["boolean", "streak", "quantity"].map((type) => (
                 <button
                   key={type}
