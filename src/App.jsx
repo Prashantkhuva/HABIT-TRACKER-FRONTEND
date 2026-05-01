@@ -81,15 +81,15 @@ function App() {
 
   return (
     <ToastProvider>
-      <div className="flex min-h-screen overflow-x-hidden bg-[#FAFAF5] text-[#1A1A1A] dark:bg-[#141218] dark:text-[#E6E1E5]">
+      <div className="flex min-h-dvh overflow-x-hidden bg-[#FAFAF5] text-[#1A1A1A] dark:bg-[#141218] dark:text-[#E6E1E5]">
         
-        {/* Sidebar */}
+        {/* Sidebar - Visible only on lg (1024px) and above */}
         {!shouldHide && <Sidebar />}
 
-        {/* Content */}
+        {/* Content Area */}
         <div
-          className={`flex flex-col flex-1 min-w-0 ${
-            !shouldHide ? "sm:ml-16 lg:ml-56" : ""
+          className={`flex flex-col flex-1 min-w-0 transition-all duration-300 ${
+            !shouldHide ? "lg:ml-56" : ""
           }`}
         >
           
@@ -98,16 +98,16 @@ function App() {
 
           {/* Main Content */}
           <main
-            className={`flex-1 overflow-y-auto overflow-x-hidden min-w-0 ${
+            className={`flex-1 w-full mx-auto max-w-screen-2xl min-w-0 ${
               !shouldHide
-                ? "px-4 sm:px-8 lg:px-10 py-6 pb-[80px] sm:pb-6"
+                ? "px-4 sm:px-8 lg:px-10 py-6 pb-[calc(80px+env(safe-area-inset-bottom))] lg:pb-6"
                 : ""
             }`}
           >
             <Outlet />
           </main>
 
-          {/* Mobile Nav */}
+          {/* Mobile Nav - Hidden on lg and above */}
           {!shouldHide && location.pathname !== "/create-habit" && (
             <MobileNav />
           )}
@@ -115,6 +115,7 @@ function App() {
       </div>
     </ToastProvider>
   );
+
 }
 
 export default App;

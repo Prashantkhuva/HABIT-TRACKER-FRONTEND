@@ -64,19 +64,29 @@ export default function EditProfilePage() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 dark:bg-black/60 backdrop-blur-sm px-4">
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="w-150 rounded-4xl p-10"
-        style={{ background: "#F5F3EE" }}
+        className="
+      relative w-full max-w-md
+      rounded-[28px] p-7
+      bg-[#FAFAF5] text-[#1A1A1A]
+      dark:bg-[#1A1A1A] dark:text-[#E6E1E5]
+      border border-[#E8E4DC] dark:border-[#2A2A2A]
+    "
       >
         {/* CLOSE */}
-        <button onClick={handleClose} className="absolute right-6 top-6">
-          <X />
+        <button
+          onClick={handleClose}
+          className="absolute right-5 top-5 text-[#888888] dark:text-[#938F99] hover:opacity-70"
+        >
+          <X size={20} />
         </button>
 
-        <h2 className="text-2xl font-semibold mb-6">edit profile</h2>
+        <h2 className="text-2xl font-semibold mb-6 font-display">
+          edit profile
+        </h2>
 
         {/* FORM */}
         <div className="flex flex-col gap-6">
@@ -98,7 +108,10 @@ export default function EditProfilePage() {
 
         {/* ACTIONS */}
         <div className="mt-8 flex justify-between items-center">
-          <button onClick={handleClose} className="text-xs text-gray-500">
+          <button
+            onClick={handleClose}
+            className="text-xs tracking-widest text-[#888888] dark:text-[#938F99] hover:opacity-70"
+          >
             CANCEL
           </button>
 

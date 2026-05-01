@@ -26,7 +26,7 @@ export default function CompletedHabit({ habit, index }) {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="flex items-center gap-4 px-6 py-4 rounded-full bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F]"
+      className="flex items-center gap-4 px-6 py-4 rounded-full bg-white dark:bg-[#1D1B20] "
     >
       {/* Check Icon */}
       <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-[#C8E6DF] dark:bg-[#D0BCFF] text-[#1A1A1A] dark:text-black">

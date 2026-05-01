@@ -42,13 +42,15 @@ export default function HelpPage() {
       <div className="lg:w-1/2 flex flex-col justify-between gap-8">
         <div>
           <h1
-            className="text-[clamp(3rem,8vw,80px)] font-bold leading-[0.9] text-text-primary dark:text-dark-text-primary"
+            className="text-[clamp(3rem,8vw,80px)] font-bold leading-[0.9] text-text-primary"
             style={{ fontFamily: "Epilogue, sans-serif" }}
           >
+
             need <br /> help?
           </h1>
 
-          <p className="text-text-muted dark:text-dark-text-muted mt-4 max-w-sm">
+          <p className="text-text-muted mt-4 max-w-sm">
+
             feel free to reach out anytime. our rhythm matches yours.
           </p>
 
@@ -63,8 +65,9 @@ export default function HelpPage() {
                 <Mail size={18} className="text-primary dark:text-dark-primary" />
               </div>
               <div>
-                <p className="text-xs text-text-muted dark:text-dark-text-muted tracking-widest uppercase">EMAIL</p>
-                <p className="font-medium text-text-primary dark:text-dark-text-primary">work.prashantkhuva@gmail.com</p>
+                <p className="text-xs text-text-muted tracking-widest uppercase">EMAIL</p>
+                <p className="font-medium text-text-primary">work.prashantkhuva@gmail.com</p>
+
               </div>
             </a>
 
@@ -78,8 +81,9 @@ export default function HelpPage() {
                 <img src="/linkedin.svg" alt="linkedin" className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-xs text-text-muted dark:text-dark-text-muted tracking-widest">LINKEDIN</p>
-                <p className="font-medium text-text-primary dark:text-dark-text-primary">prashantkhuva</p>
+                <p className="text-xs text-text-muted tracking-widest">LINKEDIN</p>
+                <p className="font-medium text-text-primary">prashantkhuva</p>
+
               </div>
             </a>
 
@@ -93,8 +97,9 @@ export default function HelpPage() {
                 <img src="/twitter.svg" alt="twitter" className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-xs text-text-muted dark:text-dark-text-muted tracking-widest">X / TWITTER</p>
-                <p className="font-medium text-text-primary dark:text-dark-text-primary">@prashantkhuva_</p>
+                <p className="text-xs text-text-muted tracking-widest">X / TWITTER</p>
+                <p className="font-medium text-text-primary">@prashantkhuva_</p>
+
               </div>
             </a>
           </div>
@@ -112,7 +117,8 @@ export default function HelpPage() {
 
       {/* RIGHT — FORM */}
       <div className="lg:w-1/2 bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F] p-8 rounded-3xl h-fit self-start">
-        <h2 className="text-2xl font-semibold mb-8 text-text-primary dark:text-dark-text-primary" style={{ fontFamily: "Epilogue, sans-serif" }}>direct message</h2>
+        <h2 className="text-2xl font-semibold mb-8 text-text-primary" style={{ fontFamily: "Epilogue, sans-serif" }}>direct message</h2>
+
 
         {/* SUCCESS MESSAGE */}
         {success && (

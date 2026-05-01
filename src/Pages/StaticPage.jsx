@@ -73,7 +73,9 @@ export default function StatisticsPage() {
         custom={0}
         className="flex justify-between mb-10"
       >
-        <h1 className="text-3xl sm:text-4xl font-bold text-text-primary dark:text-dark-text-primary">curated rhythm</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold text-text-primary dark:text-white">
+          curated rhythm
+        </h1>
       </motion.div>
 
       {/* CARDS */}
@@ -98,19 +100,21 @@ export default function StatisticsPage() {
       {/* CHART + AI */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 items-stretch">
         {/* CHART */}
-        <div className="lg:col-span-2 bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F] p-6 sm:p-8 rounded-xl max-sm:h-64 sm:h-80 flex flex-col justify-end">
+        <div className="lg:col-span-2 bg-white dark:bg-[#1D1B20] b p-6 sm:p-8 rounded-xl max-sm:h-64 sm:h-80 flex flex-col justify-end">
           <WeeklyChart data={weekly} />
         </div>
 
         {/* AI CARD */}
-        <div className="bg-[#F4F4EF] dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F] p-6 sm:p-8 rounded-xl min-h-80 flex flex-col">
+        <div className="bg-[#F4F4EF] dark:bg-[#1D1B20] p-6 sm:p-8 rounded-xl min-h-80 flex flex-col">
           {/* TOP */}
           <div>
             <p className="text-xs mb-3 text-[#1A1A1A] dark:text-[#D0BCFF] tracking-widest">
               ✦ INSIGHTS
             </p>
 
-            <h2 className="text-xl font-bold mb-3 text-[#1A1A1A] dark:text-[#E6E1E5]">{title}</h2>
+            <h2 className="text-xl font-bold mb-3 text-[#1A1A1A] dark:text-[#E6E1E5]">
+              {title}
+            </h2>
 
             <p className="text-sm text-[#888888] dark:text-[#938F99] leading-relaxed uppercase">
               {description}
@@ -140,7 +144,7 @@ export default function StatisticsPage() {
                   transition={{ duration: 0.3 }}
                   className="overflow-hidden"
                 >
-                  <div className="p-4 rounded-xl bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F] text-xs text-text-muted dark:text-dark-text-muted space-y-1">
+                  <div className="p-4 rounded-xl bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F] text-xs text-text-muted space-y-1">
                     <p>🌅 Morning: {timeStats.morning}</p>
                     <p>☀️ Afternoon: {timeStats.afternoon}</p>
                     <p>🌙 Evening: {timeStats.evening}</p>
@@ -159,18 +163,18 @@ export default function StatisticsPage() {
           initial="hidden"
           animate="show"
           custom={7}
-          className="rounded-xl p-6 w-full h-full bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F]"
+          className="rounded-xl p-6 w-full h-full bg-white dark:bg-[#1D1B20] "
         >
           <div className="flex max-sm:flex-col justify-between gap-6">
             {/* LEFT SIDE (TEXT) */}
             <div className="flex flex-col gap-4 max-sm:w-full sm:max-w-60">
               {/* Title */}
-              <h2 className="text-lg font-bold text-text-primary dark:text-dark-text-primary">
+              <h2 className="text-lg font-bold text-text-primary dark:text-white">
                 Monthly Consistency
               </h2>
 
               {/* Month */}
-              <span className="text-xs text-text-muted dark:text-dark-text-muted">April 2026</span>
+              <span className="text-xs text-text-muted">April 2026</span>
 
               {/* Subtitle */}
               <p className="text-xs text-[#888888] dark:text-[#938F99] leading-relaxed">
@@ -183,13 +187,13 @@ export default function StatisticsPage() {
               {/* Stats */}
               <div className="flex gap-6 text-xs">
                 <div>
-                  <p className="font-semibold text-text-primary dark:text-dark-text-primary">1</p>
-                  <p className="text-text-muted dark:text-dark-text-muted">Days</p>
+                  <p className="font-semibold text-text-primary">1</p>
+                  <p className="text-text-muted">Days</p>
                 </div>
 
                 <div>
-                  <p className="font-semibold text-text-primary dark:text-dark-text-primary">2</p>
-                  <p className="text-text-muted dark:text-dark-text-muted">Logs</p>
+                  <p className="font-semibold text-text-primary">2</p>
+                  <p className="text-text-muted">Logs</p>
                 </div>
               </div>
 
@@ -197,11 +201,22 @@ export default function StatisticsPage() {
               <div className="flex items-center gap-2 text-[10px] text-text-muted">
                 <span>LESS</span>
 
-                {["#2A282C", "#4A4750", "#6B6673", "#8F8A96"].map((c, i) => (
+                {[
+                  { light: "#E8E4DC", dark: "#2A2A2A" },
+                  { light: "#CFCBC3", dark: "#4A4750" },
+                  { light: "#A9A59D", dark: "#6B6673" },
+                  { light: "#1A1A1A", dark: "#CDC0E9" },
+                ].map((c, i) => (
                   <div
-                    key={c}
+                    key={i}
                     className="w-3 h-3 rounded-sm"
-                    style={{ background: c }}
+                    style={{
+                      background: document.documentElement.classList.contains(
+                        "dark",
+                      )
+                        ? c.dark
+                        : c.light,
+                    }}
                   />
                 ))}
 
@@ -209,8 +224,8 @@ export default function StatisticsPage() {
               </div>
             </div>
 
-            {/* RIGHT SIDE (HEATMAP TOP ALIGNED) */}
-            <div className="flex-1 flex max-sm:flex-col sm:justify-end items-start max-sm:overflow-x-auto max-sm:-mx-6 max-sm:px-6 custom-scroll-x">
+            {/* RIGHT SIDE (HEATMAP CENTERED ON MOBILE) */}
+            <div className="flex-1 flex max-sm:justify-center sm:justify-end items-start max-sm:overflow-x-auto max-sm:-mx-6 max-sm:px-6 custom-scroll-x">
               <div className="min-w-fit">
                 <Heatmap className="min-w-95" data={heatmap} />
               </div>
@@ -224,7 +239,7 @@ export default function StatisticsPage() {
           initial="hidden"
           animate="show"
           custom={8}
-          className="w-full h-full rounded-xl p-6 bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F]"
+          className="w-full h-full rounded-xl p-6 bg-white dark:bg-[#1D1B20] "
         >
           <StreakPanel />
         </motion.div>

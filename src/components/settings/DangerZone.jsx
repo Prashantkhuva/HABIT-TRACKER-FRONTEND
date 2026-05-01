@@ -33,7 +33,7 @@ export default function DangerZone() {
   return (
     <>
       {/* CARD */}
-      <div className="rounded-xl p-5 sm:p-7 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F]">
+      <div className="rounded-xl p-5 sm:p-7 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 bg-white dark:bg-[#1D1B20] ">
         
         {/* Icon */}
         <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 bg-red-500/10">

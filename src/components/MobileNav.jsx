@@ -22,15 +22,17 @@ export default function MobileNav() {
   return (
     <nav
       className="
-        fixed bottom-0 left-0 right-0 z-50 sm:hidden
-        h-16 flex items-center justify-around
+        fixed bottom-0 left-0 right-0 z-50 lg:hidden
+        h-[calc(64px+env(safe-area-inset-bottom))] flex items-center justify-around
         bg-[#F4F4EF] dark:bg-[#0F0D13]
         border-t border-[#E8E4DC] dark:border-[#49454F]
+        px-2
       "
       style={{
         paddingBottom: "env(safe-area-inset-bottom, 0px)",
       }}
     >
+
       {navItems.map(({ to, icon: Icon, label }) => {
         // 🔥 CENTER PLUS BUTTON
         if (to === "add") {
@@ -39,8 +41,9 @@ export default function MobileNav() {
               <button
                 onClick={() => navigate("/create-habit")}
                 className="
-                  absolute -top-13
+                  absolute -top-7
                   w-14 h-14 rounded-full
+
                   flex items-center justify-center
                   shadow-xl
                   bg-[#1A1A1A] dark:bg-[#D0BCFF]

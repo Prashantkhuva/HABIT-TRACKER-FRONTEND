@@ -7,9 +7,9 @@ export default function StatCard({
   variant = "default",
 }) {
   const variants = {
-    default: "bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F] text-[#1A1A1A] dark:text-[#E6E1E5]",
-    dark: "bg-[#1A1A1A] text-[#FAFAF5] dark:bg-[#D0BCFF] dark:text-[#1A1A1A]",
-    mint: "bg-[#C8E6DF] text-[#1A1A1A] dark:bg-[#D4BB06] dark:text-[#1A1A1A]",
+    default: "bg-white dark:bg-[#0F0D13] text-[#1A1A1A] dark:text-[#E6E1E5]",
+    dark: "bg-[#1A1A1A] text-[#FAFAF5] dark:bg-[#6750A4] dark:text-[#E6E1E5]",
+    mint: "bg-[#C8E6DF] text-[#1A1A1A] dark:bg-[#4D4465] dark:text-[#E6E1E5]",
   };
 
   const labelVariants = {

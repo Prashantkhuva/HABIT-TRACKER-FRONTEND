@@ -31,7 +31,6 @@ function Header() {
     >
       {/* LEFT — GREETING */}
       <div>
-
         <motion.h1
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
@@ -54,12 +53,6 @@ function Header() {
         >
           <Bell size={18} className="text-[#1A1A1A] dark:text-[#E6E1E5]" />
         </motion.button>
-
-        {/* Upgrade Button */}
-        <Button className="max-sm:px-3 sm:px-5 py-2 text-xs tracking-widest flex justify-center items-center bg-[#1A1A1A] dark:bg-[#D0BCFF] text-white dark:text-black">
-          <span className="hidden sm:inline">UPGRADE</span>
-          <Crown className="sm:hidden" size={16} />
-        </Button>
 
         {/* Profile */}
         <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}>

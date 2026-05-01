@@ -29,7 +29,7 @@ export default function Sidebar() {
 
   const handleSignOut = async () => {
     try {
-      await logout(); // 🔥 IMPORTANT (cookie clear karega)
+      await logout(); 
     } catch (err) {
       console.log(err);
     }
@@ -40,8 +40,9 @@ export default function Sidebar() {
 
   return (
     <aside
-      className="hidden sm:flex fixed top-0 left-0 h-full w-16 lg:w-56 z-40 flex-col bg-[#F4F4EF] dark:bg-[#0F0D13] border-r border-[#E8E4DC] dark:border-[#49454F]"
+      className="hidden lg:flex fixed top-0 left-0 h-full w-56 z-40 flex-col bg-[#F4F4EF] dark:bg-[#0F0D13] border-r border-[#E8E4DC] dark:border-[#49454F]"
     >
+
       {/* Logo */}
       <div className="lg:px-6 px-0 pt-8 pb-6 flex flex-col lg:items-start items-center">
         <Link to={"/dashboard"}>

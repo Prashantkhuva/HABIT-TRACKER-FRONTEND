@@ -32,9 +32,12 @@ export default function ConfirmModal({
             animate={{ scale: 1, y: 0, opacity: 1 }}
             exit={{ scale: 0.95, y: 10, opacity: 0 }}
             transition={{ type: "spring", stiffness: 260, damping: 22 }}
-            className="relative w-[92%] max-w-md rounded-[28px] p-7 bg-surface border border-border-subtle"
+            className="relative w-[92%] max-w-md rounded-[28px] p-7 
+bg-[#FAFAF5] text-[#1A1A1A] 
+dark:bg-[#1A1A1A] dark:text-[#E6E1E5] 
+border border-[#E8E4DC] dark:border-[#2A2A2A]"
           >
-            <h3 className="text-lg font-bold text-text-primary mb-2">
+            <h3 className="text-lg font-bold text-text-primary dark:text-white mb-2">
               {title}
             </h3>
 

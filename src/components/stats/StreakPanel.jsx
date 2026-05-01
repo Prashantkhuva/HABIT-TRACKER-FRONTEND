@@ -43,8 +43,8 @@ export default function StreakPanel() {
     <div className="h-full flex flex-col gap-4">
       {/* Header */}
       <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-bold text-text-primary">Ritual Streaks</h2>
-        <p className="text-xs text-text-muted">Your top performing habits</p>
+        <h2 className="text-lg font-bold text-text-primary dark:text-white">Ritual Streaks</h2>
+        <p className="text-xs text-text-muted ">Your top performing habits</p>
       </div>
 
       {/* Divider */}
@@ -69,7 +69,7 @@ export default function StreakPanel() {
 
                 {/* Info */}
                 <div>
-                  <p className="text-sm font-semibold text-text-primary">
+                  <p className="text-sm font-semibold text-text-primary dark:text-white">
                     {habit.title}
                   </p>
                   <p className="text-xs text-text-muted">
@@ -80,7 +80,7 @@ export default function StreakPanel() {
 
               {/* Right */}
               <div className="text-right">
-                <p className="text-xl font-bold text-text-primary">
+                <p className="text-xl font-bold text-text-primary dark:text-white">
                   {habit.currentStreak}
                 </p>
                 <p className="text-xs text-text-muted">DAYS</p>

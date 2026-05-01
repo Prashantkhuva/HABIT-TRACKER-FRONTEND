@@ -74,7 +74,10 @@ html.dark {
 
 body {
   overflow-x: hidden;
+  min-height: 100dvh;
+  -webkit-tap-highlight-color: transparent;
 }
+
 
 /* ===== HORIZONTAL SCROLL UTILITY ===== */
 .custom-scroll-x {

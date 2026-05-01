@@ -10,7 +10,7 @@ export default function AppearanceCard() {
   const options = ["light", "dark", "system"];
 
   return (
-    <div className="rounded-xl p-6 h-full flex flex-col justify-between bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F]">
+    <div className="rounded-xl p-6 h-full flex flex-col justify-between bg-white dark:bg-[#1D1B20] ">
       
       {/* Title */}
       <div>

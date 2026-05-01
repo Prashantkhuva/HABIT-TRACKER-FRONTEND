@@ -13,7 +13,7 @@ export default function ProfileCard() {
   return (
     <motion.div
       whileHover={{ y: -2 }}
-      className="rounded-xl p-7 flex items-center gap-6 transition-all duration-200 bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F]"
+      className="rounded-xl p-7 flex items-center gap-6 transition-all duration-200 bg-white dark:bg-[#1D1B20] "
     >
       {/* Avatar */}
       <div className="w-20 h-20 rounded-2xl flex items-center justify-center bg-[#F4F4EF] dark:bg-[#0F0D13]">
