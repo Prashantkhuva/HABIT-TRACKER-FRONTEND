@@ -24,7 +24,7 @@ import AuthLayout from "./components/AuthLayout.jsx";
 import { DashPage } from "./Pages/index.js";
 import Create from "./components/Habit/Create.jsx";
 import HelpPage from "./Pages/HelpPage.jsx";
-
+import ChangePasswordModal from "./components/ChangePasswordModal.jsx";
 
 const router = createBrowserRouter([
   {
@@ -132,6 +132,14 @@ const router = createBrowserRouter([
         element: (
           <AuthLayout authentication>
             <EditProfilePage />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/change-password",
+        element: (
+          <AuthLayout authentication>
+            <ChangePasswordModal />
           </AuthLayout>
         ),
       },

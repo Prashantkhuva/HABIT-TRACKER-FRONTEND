@@ -16,7 +16,7 @@ function Textarea({ label, className = "", ...props }) {
 
       <textarea
         id={id}
-        className={`w-full rounded-[20px] border border-transparent bg-surface-dim dark:bg-dark-surface-dim px-5 py-4 text-sm text-text-primary dark:text-dark-text-primary outline-none transition-all duration-300 placeholder:text-text-muted/50 dark:placeholder:text-dark-text-muted/50 focus:border-text-primary dark:focus:border-dark-text-primary focus:ring-1 focus:ring-text-primary dark:focus:ring-dark-text-primary resize-none ${className}`}
+        className={`w-full rounded-[20px] border border-transparent bg-surface-dim dark:bg-black px-5 py-4 text-sm text-text-primary dark:text-white outline-none transition-all duration-300 placeholder:text-text-muted/50 dark:placeholder:text-dark-text-muted/50 focus:border-text-primary dark:focus:border-dark-text-primary focus:ring-1 focus:ring-text-primary dark:focus:ring-dark-text-primary resize-none ${className}`}
         {...props}
       />
     </div>

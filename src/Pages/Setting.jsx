@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signout } from "../store/authSlice";
 import { logout } from "../api/auth-api";
+import ChangePasswordCard from "../components/settings/ChangePasswordCard";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -51,7 +52,6 @@ export default function SettingsPage() {
   return (
     <div className="text-text-primary">
       <div className="w-full max-w-[1400px] mx-auto">
-
         {/* Header */}
         <motion.div
           variants={fadeUp}
@@ -60,7 +60,10 @@ export default function SettingsPage() {
           custom={0}
           className="mb-10"
         >
-          <h1 className="font-bold text-[clamp(2.5rem,5vw,4rem)] tracking-[-0.04em] text-text-primary dark:text-white" style={{ fontFamily: "Epilogue, sans-serif" }}>
+          <h1
+            className="font-bold text-[clamp(2.5rem,5vw,4rem)] tracking-[-0.04em] text-text-primary dark:text-white"
+            style={{ fontFamily: "Epilogue, sans-serif" }}
+          >
             settings
           </h1>
           <p className="text-xs tracking-widest mt-1 text-text-muted">
@@ -78,6 +81,33 @@ export default function SettingsPage() {
         >
           <ProfileCard />
           <AppearanceCard />
+        </motion.div>
+
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={2}
+          className="mb-6"
+        >
+          <button
+            onClick={() => navigate("/change-password")}
+            className="
+      w-full sm:w-auto
+      flex items-center justify-between gap-6
+      px-4 py-3 rounded-lg
+      bg-[#FAFAF5] dark:bg-[#1D1B20]
+      border border-[#E8E4DC] dark:border-[#49454F]
+      hover:bg-[#F3F3F3] dark:hover:bg-[#2A2A2A]
+      transition-all duration-200
+    "
+          >
+            <span className="text-sm text-[#1A1A1A] dark:text-[#E6E1E5]">
+              Change Password
+            </span>
+
+            <span className="text-xs text-[#888888]">→</span>
+          </button>
         </motion.div>
 
         {/* Danger */}

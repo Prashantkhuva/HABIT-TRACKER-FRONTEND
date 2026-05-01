@@ -11,9 +11,11 @@ function Button({
   const variants = {
     // 🔥 PRIMARY (FIXED)
     primary: `
-      bg-[#1A1A1A] text-[#FAFAF5] 
-      hover:bg-[#333333]
-      dark:bg-[#D0BCFF] dark:text-[#1A1A1A]
+        bg-[#1A1A1A] text-[#FAFAF5] 
+  hover:bg-[#333333]
+  
+  dark:bg-[#D0BCFF] dark:text-[#1A1A1A]
+  dark:hover:bg-[#B69DF8]
     `,
 
     // 🔥 SECONDARY

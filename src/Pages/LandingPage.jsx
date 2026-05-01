@@ -3,6 +3,7 @@ import Button from "../components/Button";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import LandNav from "../components/LandNav";
+import { useNavigate } from "react-router-dom";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -14,6 +15,7 @@ const fadeUp = {
 };
 
 function LandingPage() {
+  const navigate = useNavigate();
   return (
     <>
       {/* Nav */}
@@ -25,7 +27,6 @@ function LandingPage() {
         <section className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-16 px-8 lg:px-24 items-center">
           {/* LEFT */}
           <div className="max-w-full lg:max-w-150">
-
             <motion.p
               variants={fadeUp}
               initial="hidden"
@@ -42,7 +43,6 @@ function LandingPage() {
               animate="show"
               custom={1}
               className="text-5xl lg:text-[72px] leading-[1.1] lg:leading-[1.05] tracking-[-0.04em] mb-6 text-[#1A1A1A] dark:text-[#E6E1E5]"
-
               style={{ fontFamily: "Epilogue, sans-serif" }}
             >
               build habits
@@ -56,12 +56,10 @@ function LandingPage() {
               animate="show"
               custom={2}
               className="text-[15px] leading-relaxed mb-10 max-w-full lg:max-w-110 text-gray-400 dark:text-[#938F99]"
-
             >
               Designed for the intentional individual. A rhythmic workspace to
               cultivate your daily rituals with clarity and editorial elegance.
             </motion.p>
-
 
             <motion.div
               variants={fadeUp}
@@ -77,7 +75,7 @@ function LandingPage() {
               </Link>
 
               <Button variant="outline" className="">
-                WATCH STORY
+                Contact US
               </Button>
             </motion.div>
           </div>
@@ -87,7 +85,6 @@ function LandingPage() {
             {/* Glow */}
             <div className="absolute right-0 top-10 w-64 h-64 lg:w-130 lg:h-130 bg-[#E8D9A8] dark:bg-[#D0BCFF] rounded-full blur-[100px] lg:blur-[140px] opacity-40 dark:opacity-[0.03]" />
 
-
             {/* Card */}
             <motion.div
               variants={fadeUp}
@@ -95,8 +92,6 @@ function LandingPage() {
               animate="show"
               custom={2}
               className="relative bg-white dark:bg-[#1D1B20] rounded-[40px] border border-gray-300 dark:border-white/10 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.8)] p-6 sm:p-10 w-full max-w-[340px] sm:max-w-md lg:max-w-none lg:w-150 lg:h-175 flex flex-col justify-start"
-
-
             >
               {/* Header */}
               <div className="flex justify-between items-center text-xs sm:text-sm tracking-widest text-gray-400 dark:text-[#938F99] mb-8">
@@ -123,7 +118,13 @@ function LandingPage() {
       hover:scale-105
     "
                 >
-                  <svg width="18" height="18" className="sm:w-[22px] sm:h-[22px]" viewBox="0 0 22 22" fill="none">
+                  <svg
+                    width="18"
+                    height="18"
+                    className="sm:w-[22px] sm:h-[22px]"
+                    viewBox="0 0 22 22"
+                    fill="none"
+                  >
                     <path
                       d="M18 8L16.75 5.25L14 4L16.75 2.75L18 0L19.25 2.75L22 4L19.25 5.25L18 8ZM18 22L16.75 19.25L14 18L16.75 16.75L18 14L19.25 16.75L22 18L19.25 19.25L18 22ZM8 19L5.5 13.5L0 11L5.5 8.5L8 3L10.5 8.5L16 11L10.5 13.5L8 19ZM8 14.15L9 12L11.15 11L9 10L8 7.85L7 10L4.85 11L7 12L8 14.15Z"
                       className="fill-[#48645E]"
@@ -148,19 +149,18 @@ function LandingPage() {
                 {[1, 2, 3, 4, 5, 6, 7].map((d) => (
                   <div
                     key={d}
-                    className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full ${d <= 5
-                      ? "bg-[#48645E] dark:bg-[#D0BCFF]"
-                      : d === 6
-                        ? "bg-transparent border-2 border-[#48645E] dark:border-[#D0BCFF]"
-                        : "bg-gray-200 dark:bg-[#141218]"
-                      }`}
+                    className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full ${
+                      d <= 5
+                        ? "bg-[#48645E] dark:bg-[#D0BCFF]"
+                        : d === 6
+                          ? "bg-transparent border-2 border-[#48645E] dark:border-[#D0BCFF]"
+                          : "bg-gray-200 dark:bg-[#141218]"
+                    }`}
                   />
                 ))}
               </div>
 
-
               <div className="bg-gray-200 dark:bg-[#1D1B20]/50 border border-transparent dark:border-white/5 rounded-3xl p-5 lg:p-8">
-
                 <p className="text-xs tracking-widest text-gray-400 dark:text-[#938F99] mb-3">
                   WEEKLY FLOW
                 </p>
@@ -169,12 +169,15 @@ function LandingPage() {
                   {[40, 55, 45, 70, 90, 65, 50].map((h, i) => (
                     <div
                       key={i}
-                      className={`flex-1 rounded-lg ${i === 4
-                        ? "bg-[#48645E] dark:bg-[#D0BCFF]"
-                        : i === 5
-                          ? "bg-[#6a8879] dark:bg-[#B69DF8]/60"
-                          : "bg-gray-300 dark:bg-[#141218]"
-                        }`}
+                      className={`flex-1 rounded-lg ${
+                        i === 5
+                          ? "bg-[#48645E] dark:bg-[#CDC0E9]"
+                          : i === 4
+                            ? "bg-[#617b6e] dark:bg-[#B69DF8]"
+                            : i === 3
+                              ? "bg-[#8ea69a] dark:bg-[#CDC0E9]/70"
+                              : "bg-[#cfd8d3] dark:bg-[#CDC0E9]/30"
+                      }`}
                       style={{
                         height: `${h}%`,
                       }}
@@ -245,7 +248,6 @@ function LandingPage() {
                 desc: "A digital broadsheet of your progress, curated as an editorial journey.",
               },
             ].map((f, i) => (
-
               <motion.div
                 key={i}
                 variants={fadeUp}
@@ -265,15 +267,12 @@ function LandingPage() {
                   >
                     {f.title}
                   </h3>
-                  <p
-                    className="text-md leading-relaxed text-gray-400 dark:text-[#938F99]"
-                  >
+                  <p className="text-md leading-relaxed text-gray-400 dark:text-[#938F99]">
                     {f.desc}
                   </p>
                 </div>
               </motion.div>
             ))}
-
           </div>
         </section>
 
@@ -314,9 +313,7 @@ function LandingPage() {
               <br />
               quiet intention.
             </h2>
-            <p
-              className="text-sm leading-relaxed mb-8 text-gray-400 dark:text-[#938F99]"
-            >
+            <p className="text-sm leading-relaxed mb-8 text-gray-400 dark:text-[#938F99]">
               We believe habit tracking shouldn't feel like a chore. It should
               feel like writing in a premium journal—an act of self-care and
               artistic expression.
@@ -334,15 +331,15 @@ function LandingPage() {
                 },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <div
-                    className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 bg-[#48645E] dark:bg-[#D0BCFF]"
-                  >
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 bg-[#48645E] dark:bg-[#D0BCFF]">
                     <span className="text-xs text-white dark:text-[#1A1A1A]">
                       ✓
                     </span>
                   </div>
                   <div>
-                    <p className="font-bold text-sm text-[#1A1A1A] dark:text-[#E6E1E5]">{item.title}</p>
+                    <p className="font-bold text-sm text-[#1A1A1A] dark:text-[#E6E1E5]">
+                      {item.title}
+                    </p>
                     <p className="text-xs text-gray-400 dark:text-[#938F99]">
                       {item.sub}
                     </p>

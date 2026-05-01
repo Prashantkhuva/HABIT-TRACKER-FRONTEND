@@ -27,7 +27,7 @@ function Header() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="sticky top-0 z-50 h-16 w-full max-w-full flex items-center justify-between lg:px-10 px-5 bg-[#FAFAF5]/80 dark:bg-[#1D1B20]/80 backdrop-blur-xl border-b border-[#E8E4DC] dark:border-[#49454F]"
+      className="sticky top-0 z-50 h-16 w-full max-w-full flex items-center justify-between lg:px-10 px-5 bg-[#FAFAF5]/80 dark:bg-[#1D1B20]/80 backdrop-blur-xl "
     >
       {/* LEFT — GREETING */}
       <div>

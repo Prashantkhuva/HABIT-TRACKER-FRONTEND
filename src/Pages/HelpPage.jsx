@@ -42,15 +42,13 @@ export default function HelpPage() {
       <div className="lg:w-1/2 flex flex-col justify-between gap-8">
         <div>
           <h1
-            className="text-[clamp(3rem,8vw,80px)] font-bold leading-[0.9] text-text-primary"
+            className="text-[clamp(3rem,8vw,80px)] font-bold leading-[0.9] text-text-primary dark:text-white"
             style={{ fontFamily: "Epilogue, sans-serif" }}
           >
-
             need <br /> help?
           </h1>
 
           <p className="text-text-muted mt-4 max-w-sm">
-
             feel free to reach out anytime. our rhythm matches yours.
           </p>
 
@@ -59,15 +57,18 @@ export default function HelpPage() {
             {/* EMAIL */}
             <a
               href="mailto:work.prashantkhuva@gmail.com"
-              className="flex items-center gap-4 p-5 rounded-2xl bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F] hover:scale-[1.02] transition-all duration-200"
+              className="flex items-center gap-4 p-5 rounded-2xl bg-white dark:bg-[#1D1B20]  hover:scale-[1.02] transition-all duration-200"
             >
-              <div className="w-10 h-10 bg-surface-dim dark:bg-dark-surface-dim rounded-full flex items-center justify-center">
-                <Mail size={18} className="text-primary dark:text-dark-primary" />
+              <div className="w-10 h-10 bg-surface-dim dark:bg-black rounded-full flex items-center justify-center">
+                <Mail size={18} className="text-primary dark:text-white" />
               </div>
               <div>
-                <p className="text-xs text-text-muted tracking-widest uppercase">EMAIL</p>
-                <p className="font-medium text-text-primary">work.prashantkhuva@gmail.com</p>
-
+                <p className="text-xs text-text-muted tracking-widest uppercase">
+                  EMAIL
+                </p>
+                <p className="font-medium text-text-primary dark:text-white">
+                  work.prashantkhuva@gmail.com
+                </p>
               </div>
             </a>
 
@@ -75,15 +76,32 @@ export default function HelpPage() {
             <a
               href="https://www.linkedin.com/in/prashantkhuva"
               target="_blank"
-              className="flex items-center gap-4 p-5 rounded-2xl bg-surface dark:bg-dark-surface border border-border-subtle dark:border-dark-border hover:scale-[1.02] transition-all duration-200"
+              className="flex items-center gap-4 p-5 rounded-2xl bg-white dark:bg-[#1D1B20]  hover:scale-[1.02] transition-all duration-200"
             >
-              <div className="w-10 h-10 bg-surface-dim dark:bg-dark-surface-dim rounded-full flex items-center justify-center">
-                <img src="/linkedin.svg" alt="linkedin" className="w-5 h-5" />
+              <div className="w-10 h-10 bg-surface-dim dark:bg-black rounded-full flex items-center justify-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  className="text-black dark:text-white"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2a2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6M2 9h4v12H2z" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
               </div>
               <div>
-                <p className="text-xs text-text-muted tracking-widest">LINKEDIN</p>
-                <p className="font-medium text-text-primary">prashantkhuva</p>
-
+                <p className="text-xs text-text-muted tracking-widest">
+                  LINKEDIN
+                </p>
+                <p className="font-medium text-text-primary dark:text-white">
+                  prashantkhuva
+                </p>
               </div>
             </a>
 
@@ -91,15 +109,34 @@ export default function HelpPage() {
             <a
               href="https://x.com/prashantkhuva_"
               target="_blank"
-              className="flex items-center gap-4 p-5 rounded-2xl bg-surface dark:bg-dark-surface border border-border-subtle dark:border-dark-border hover:scale-[1.02] transition-all duration-200"
+              className="flex items-center gap-4 p-5 rounded-2xl bg-white dark:bg-[#1D1B20] hover:scale-[1.02] transition-all duration-200"
             >
-              <div className="w-10 h-10 bg-surface-dim dark:bg-dark-surface-dim rounded-full flex items-center justify-center">
-                <img src="/twitter.svg" alt="twitter" className="w-5 h-5" />
+              <div className="w-10 h-10 bg-surface-dim dark:bg-black rounded-full flex items-center justify-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  className="w-5 h-5 text-[#1A1A1A] dark:text-[#E6E1E5]"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path
+                    fill="none"
+                    d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6c2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4c-.9-4.2 4-6.6 7-3.8c1.1 0 3-1.2 3-1.2"
+                  />
+                </svg>
               </div>
               <div>
-                <p className="text-xs text-text-muted tracking-widest">X / TWITTER</p>
-                <p className="font-medium text-text-primary">@prashantkhuva_</p>
-
+                <p className="text-xs text-text-muted tracking-widest">
+                  X / TWITTER
+                </p>
+                <p className="font-medium text-text-primary dark:text-white">
+                  @prashantkhuva_
+                </p>
               </div>
             </a>
           </div>
@@ -116,9 +153,13 @@ export default function HelpPage() {
       </div>
 
       {/* RIGHT — FORM */}
-      <div className="lg:w-1/2 bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F] p-8 rounded-3xl h-fit self-start">
-        <h2 className="text-2xl font-semibold mb-8 text-text-primary" style={{ fontFamily: "Epilogue, sans-serif" }}>direct message</h2>
-
+      <div className="lg:w-1/2 bg-white dark:bg-black p-8 rounded-3xl h-fit self-start">
+        <h2
+          className="text-2xl font-semibold mb-8 text-text-primary dark:text-white"
+          style={{ fontFamily: "Epilogue, sans-serif" }}
+        >
+          direct message
+        </h2>
 
         {/* SUCCESS MESSAGE */}
         {success && (
@@ -133,6 +174,7 @@ export default function HelpPage() {
             label="Full Name"
             placeholder="Enter your name"
             required
+            className="dark:bg-black"
           />
 
           <Input
@@ -141,6 +183,7 @@ export default function HelpPage() {
             label="Email Address"
             placeholder="Enter your email"
             required
+            className="dark:bg-black"
           />
 
           <Textarea

@@ -38,7 +38,9 @@ function App() {
         root.classList.remove("dark");
         root.style.colorScheme = "light";
       } else {
-        const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const isDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
         root.classList.toggle("dark", isDark);
         root.style.colorScheme = isDark ? "dark" : "light";
       }
@@ -82,7 +84,6 @@ function App() {
   return (
     <ToastProvider>
       <div className="flex min-h-dvh overflow-x-hidden bg-[#FAFAF5] text-[#1A1A1A] dark:bg-[#141218] dark:text-[#E6E1E5]">
-        
         {/* Sidebar - Visible only on lg (1024px) and above */}
         {!shouldHide && <Sidebar />}
 
@@ -92,7 +93,6 @@ function App() {
             !shouldHide ? "lg:ml-56" : ""
           }`}
         >
-          
           {/* Header */}
           {!shouldHide && <Header />}
 
@@ -115,7 +115,6 @@ function App() {
       </div>
     </ToastProvider>
   );
-
 }
 
 export default App;
