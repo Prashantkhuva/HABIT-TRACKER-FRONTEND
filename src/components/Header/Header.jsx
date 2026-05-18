@@ -4,6 +4,7 @@ import { Bell, User, Crown } from "lucide-react";
 import Button from "../Button";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { showNotification } from "../../utils/notifications";
 
 function Header() {
   const user = useSelector((state) => state.auth.userData);
@@ -51,6 +52,7 @@ function Header() {
           whileTap={{ scale: 0.95 }}
           className="p-2 rounded-full bg-[#F3F3F3] dark:bg-[#2A2A2A] hover:bg-white dark:hover:bg-[#1D1B20] transition-all duration-200"
         >
+          
           <Bell size={18} className="text-[#1A1A1A] dark:text-[#E6E1E5]" />
         </motion.button>
 

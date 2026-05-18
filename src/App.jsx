@@ -10,6 +10,7 @@ import MobileNav from "./components/MobileNav";
 import ToastProvider from "./components/Toast/ToastProvider";
 import { setTheme } from "./store/themeSlice";
 import SwipeNavigation from "./SwipeNavigation";
+import { requestNotificationPermission } from "./utils/notifications";
 
 const HIDE_CHROME_ON = ["/", "/signin", "/signup", "/verify-email"];
 
@@ -29,6 +30,10 @@ function App() {
     const saved = localStorage.getItem("theme");
     if (saved) dispatch(setTheme(saved));
   }, [dispatch]);
+
+  useEffect(() => {
+    requestNotificationPermission();
+  }, []);
 
   // ─── Apply theme to <html> ────────────────────────────────────────────────
   useEffect(() => {

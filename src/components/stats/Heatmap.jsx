@@ -28,17 +28,22 @@ export default function Heatmap({ data }) {
   for (let d = 1; d <= totalDays; d++) cells.push(d);
 
   // ✅ COLOR FIX
+
   const getColorClass = (count) => {
-    if (!count) return "bg-[#E8E4DC] dark:bg-[#2A2A2A]";
-    if (count === 1) return "bg-[#1A1A1A]/30 dark:bg-[#CDC0E9]/30";
-    if (count === 2) return "bg-[#1A1A1A]/60 dark:bg-[#CDC0E9]/60";
-    return "bg-[#1A1A1A] dark:bg-[#CDC0E9]";
+    const shades = [
+      "bg-[#E8E4DC] dark:bg-[#2A2A2A]",
+      "bg-[#D6D1C7] dark:bg-[#3A3640]",
+      "bg-[#BDB7AA] dark:bg-[#5A5363]",
+      "bg-[#8C8478] dark:bg-[#7B7190]",
+      "bg-[#1A1A1A] dark:bg-[#CDC0E9]",
+    ];
+
+    return shades[Math.min(count, 4)];
   };
 
   return (
     <div className="flex justify-center w-full">
       <div className="inline-grid gap-1">
-        
         {/* DAY LABELS */}
         <div className="grid grid-cols-7 text-center text-[10px] text-[#888888] dark:text-[#938F99] mb-1">
           {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
@@ -70,13 +75,15 @@ export default function Heatmap({ data }) {
 
                 {/* TOOLTIP */}
                 {hovered?.day === day && (
-                  <div className="
+                  <div
+                    className="
                     absolute bottom-[120%] left-1/2 -translate-x-1/2
                     text-[10px] px-2 py-1 rounded-md whitespace-nowrap
                     pointer-events-none z-10
                     bg-[#1A1A1A] text-[#FAFAF5]
                     dark:bg-[#CDC0E9] dark:text-[#1A1A1A]
-                  ">
+                  "
+                  >
                     {new Date(year, month, day).toLocaleDateString("en-IN", {
                       day: "numeric",
                       month: "short",

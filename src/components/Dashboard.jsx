@@ -9,6 +9,7 @@ import CompletedHabit from "./Habit/CompletedHabit";
 import Button from "./Button";
 import { useToast } from "./Toast/ToastProvider";
 import { DashboardSkeleton } from "./loading/LoadingSkeletons";
+import { showNotification } from "../utils/notifications";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -84,6 +85,11 @@ export default function Dashboard() {
 
       const statsRes = await getDashboardStats();
       setStats(statsRes.data.data);
+
+      showNotification({
+        title: "Habit Completed",
+        body: `${habit.title} completed 🔥`,
+      });
     } catch (err) {
       const msg = err.response?.data?.message;
 
@@ -123,14 +129,19 @@ export default function Dashboard() {
       {activeHabits.length === 0 ? (
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
           <div className="text-center">
-            <p className="text-3xl font-semibold mb-2 text-[#1A1A1A] dark:text-[#E6E1E5]" style={{ fontFamily: "Epilogue, sans-serif" }}>
+            <p
+              className="text-3xl font-semibold mb-2 text-[#1A1A1A] dark:text-[#E6E1E5]"
+              style={{ fontFamily: "Epilogue, sans-serif" }}
+            >
               no rituals yet.
             </p>
             <p className="text-sm text-[#888888] dark:text-[#938F99]">
               design your first daily rhythm.
             </p>
           </div>
-          <Button variant="primary" onClick={() => navigate("/create-habit")}>NEW RITUAL</Button>
+          <Button variant="primary" onClick={() => navigate("/create-habit")}>
+            NEW RITUAL
+          </Button>
         </div>
       ) : (
         <>

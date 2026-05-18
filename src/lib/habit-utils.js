@@ -252,6 +252,27 @@ function getTimeInsights(logs = []) {
   };
 }
 
+const getBestDay = (weeklyData) => {
+  if (!weeklyData?.length) return null;
+
+  const days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+
+  const max = weeklyData.reduce((a, b) => (a.count > b.count ? a : b));
+
+  return {
+    day: days[max.day - 1],
+    count: max.count,
+  };
+};
+
 // Category label
 
 export {
@@ -269,4 +290,5 @@ export {
   getButtonColors,
   getBestMonth,
   getTimeInsights,
+  getBestDay
 };

@@ -34,7 +34,7 @@ export default function ConfirmModal({
             transition={{ type: "spring", stiffness: 260, damping: 22 }}
             className="relative w-[92%] max-w-md rounded-[28px] p-7 
 bg-[#FAFAF5] text-[#1A1A1A] 
-dark:bg-[#1A1A1A] dark:text-[#E6E1E5] 
+dark:bg-black dark:text-[#E6E1E5] 
 border border-[#E8E4DC] dark:border-[#2A2A2A]"
           >
             <h3 className="text-lg font-bold text-text-primary dark:text-white mb-2">

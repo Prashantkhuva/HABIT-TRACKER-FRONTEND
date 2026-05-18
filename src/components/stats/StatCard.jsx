@@ -30,7 +30,7 @@ export default function StatCard({
       }}
     >
       {/* TITLE */}
-      <p className="text-xs tracking-widest transition-colors duration-200" style={{ fontFamily: "Manrope, sans-serif" }}>
+      <p className="text-xs tracking-widest transition-colors duration-200" style={{ fontFamily: "Epilogue, sans-serif" }}>
         {title}
       </p>
 
