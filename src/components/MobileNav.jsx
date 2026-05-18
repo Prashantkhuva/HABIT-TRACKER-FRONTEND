@@ -6,7 +6,7 @@ import {
   Settings,
   Plus,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
   { to: "/rituals", icon: Sparkles, label: "Rituals" },
@@ -28,27 +28,26 @@ export default function MobileNav() {
         border-t border-[#E8E4DC] dark:border-[#49454F]
         px-2
       "
-      style={{
-        paddingBottom: "env(safe-area-inset-bottom, 0px)",
-      }}
+      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
     >
-
       {navItems.map(({ to, icon: Icon, label }) => {
-        // 🔥 CENTER PLUS BUTTON
+        // Center Plus Button
         if (to === "add") {
           return (
-            <div key="add" className="relative flex justify-center items-center flex-1">
+            <div
+              key="add"
+              className="relative flex justify-center items-center flex-1"
+            >
               <button
                 onClick={() => navigate("/create-habit")}
                 className="
                   absolute -top-7
                   w-14 h-14 rounded-full
-
                   flex items-center justify-center
                   shadow-xl
                   bg-[#1A1A1A] dark:bg-[#D0BCFF]
                   text-[#FAFAF5] dark:text-[#1A1A1A]
-                  hover:scale-105
+                  hover:scale-105 active:scale-95
                   transition-all duration-200
                 "
               >
@@ -63,25 +62,34 @@ export default function MobileNav() {
             {({ isActive }) => (
               <div
                 className={`
-                  flex flex-col items-center justify-center
-                  gap-1
-                  h-full
-                  transition-all duration-200
-                  ${isActive
-                    ? "text-[#1A1A1A] dark:text-[#D0BCFF]"
-                    : "text-[#888888] dark:text-[#938F99]"
+                  flex flex-col items-center justify-center gap-1 h-full
+                  transition-colors duration-200
+                  ${
+                    isActive
+                      ? "text-[#1A1A1A] dark:text-[#D0BCFF]"
+                      : "text-[#888888] dark:text-[#938F99]"
                   }
                 `}
               >
                 <Icon size={20} />
 
-                {/* ACTIVE DOT */}
-                {isActive && (
-                  <motion.span
-                    layoutId="mobileNavIndicator"
-                    className="w-1 h-1 rounded-full bg-[#1A1A1A] dark:bg-[#D0BCFF]"
-                  />
-                )}
+                {/* Active dot — AnimatePresence for clean mount/unmount */}
+                <AnimatePresence>
+                  {isActive && (
+                    <motion.span
+                      layoutId="mobileNavIndicator"
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 25,
+                      }}
+                      className="w-1 h-1 rounded-full bg-[#1A1A1A] dark:bg-[#D0BCFF]"
+                    />
+                  )}
+                </AnimatePresence>
               </div>
             )}
           </NavLink>
