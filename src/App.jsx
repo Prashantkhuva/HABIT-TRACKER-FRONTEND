@@ -13,19 +13,6 @@ import SwipeNavigation from "./SwipeNavigation";
 
 const HIDE_CHROME_ON = ["/", "/signin", "/signup", "/verify-email"];
 
-// function AppLoader() {
-//   return (
-//     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#FAFAF5] dark:bg-[#141218]">
-//       <div className="flex flex-col items-center gap-4">
-//         <div className="w-10 h-10 rounded-full border-2 border-[#1A1A1A]/10 border-t-[#1A1A1A] dark:border-[#E6E1E5]/10 dark:border-t-[#E6E1E5] animate-spin" />
-//         <p className="text-sm text-[#1A1A1A]/40 dark:text-[#E6E1E5]/40 tracking-wide">
-//           Loading...
-//         </p>
-//       </div>
-//     </div>
-//   );
-// }
-
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -93,9 +80,6 @@ function App() {
     };
     checkAuth();
   }, [dispatch]);
-
-  // ─── Block render until auth resolves ────────────────────────────────────
-  // if (!authChecked) return <AppLoader />;
 
   return (
     <ToastProvider>

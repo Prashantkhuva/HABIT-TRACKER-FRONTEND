@@ -81,6 +81,7 @@ function Create({ onClose }) {
         category,
         color,
         type: habitType,
+        unit,
       });
 
       const newHabit = createdHabit?.data?.data;
@@ -237,7 +238,6 @@ function Create({ onClose }) {
               new habit
             </h2>
           </div>
-
           {/* TITLE */}
           <div className="flex flex-col gap-2">
             <p className="text-xs text-gray-400 uppercase">Habit Identity</p>
@@ -261,7 +261,6 @@ function Create({ onClose }) {
               "
             />
           </div>
-
           {/* DESCRIPTION */}
           <div className="flex flex-col gap-2">
             <p className="text-xs text-gray-400 uppercase">Ritual Intention</p>
@@ -285,7 +284,6 @@ function Create({ onClose }) {
               "
             />
           </div>
-
           {/* CATEGORY */}
           <div>
             <p className="text-xs text-gray-400 uppercase mb-3">Symbol</p>
@@ -313,7 +311,6 @@ function Create({ onClose }) {
               ))}
             </div>
           </div>
-
           {/* COLORS */}
           <div>
             <p className="text-xs text-gray-400 uppercase mb-3">
@@ -339,7 +336,6 @@ function Create({ onClose }) {
               ))}
             </div>
           </div>
-
           {/* FREQUENCY */}
           <div>
             <p className="text-xs text-gray-400 uppercase mb-3">
@@ -389,7 +385,75 @@ function Create({ onClose }) {
               ))}
             </div>
           </div>
+          {/* HABIT TYPE */}
+          <div>
+            <p className="text-xs text-gray-400 uppercase mb-3">Habit Type</p>
 
+            <div className="relative flex flex-wrap bg-[#E8E4DC] dark:bg-[#2A2A2A] rounded-2xl sm:rounded-full p-1 w-full sm:w-fit">
+              {["boolean", "streak", "quantity"].map((type) => (
+                <button
+                  key={type}
+                  onClick={() => setHabitType(type)}
+                  className={`
+            relative z-10
+            px-3 sm:px-5 py-2
+            text-xs flex-1 text-center
+            transition-all
+
+            ${
+              habitType === type
+                ? "text-black dark:text-white font-medium"
+                : "text-gray-500"
+            }
+          `}
+                >
+                  {habitType === type && (
+                    <motion.div
+                      layoutId="habitTypePill"
+                      className="
+                absolute inset-0
+                rounded-full
+                bg-white
+                dark:bg-[#4A4A4A]
+                shadow
+                -z-10
+              "
+                    />
+                  )}
+
+                  {type.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+          ```jsx
+          {habitType === "quantity" && (
+            <div className="flex flex-col gap-2">
+              <p className="text-xs text-gray-400 uppercase">
+                Measurement Unit
+              </p>
+
+              <input
+                value={unit}
+                onChange={(e) => setUnit(e.target.value)}
+                placeholder="e.g. pages, liters, km"
+                className="
+        w-full border-b
+        border-gray-300
+        dark:border-[#2A2A2A]
+
+        bg-transparent
+        outline-none
+        py-2
+        text-sm
+
+        text-[#1A1A1A]
+        dark:text-[#FAFAF5]
+      "
+              />
+            </div>
+          )}
+          ```
           {/* BUTTONS */}
           <div
             className="
