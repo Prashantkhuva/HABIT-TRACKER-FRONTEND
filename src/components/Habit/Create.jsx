@@ -47,6 +47,7 @@ function Create({ onClose }) {
   ];
 
   const handleCreate = async () => {
+    // ✅ Title validation
     if (!title.trim()) {
       addToast({
         type: "error",
@@ -57,6 +58,18 @@ function Create({ onClose }) {
       return;
     }
 
+    // ✅ Quantity unit validation
+    if (habitType === "quantity" && !unit.trim()) {
+      addToast({
+        type: "error",
+        title: "Missing unit",
+        message: "Please enter a measurement unit",
+      });
+
+      return;
+    }
+
+    // ✅ Duplicate validation
     const isDuplicate = habits.some(
       (h) => h.title.toLowerCase() === title.trim().toLowerCase(),
     );
@@ -74,14 +87,23 @@ function Create({ onClose }) {
     try {
       setLoading(true);
 
+      // ✅ API CALL
       const createdHabit = await createHabit({
-        title,
-        description,
+        title: title.trim(),
+
+        description: description.trim(),
+
         frequency,
+
         category,
+
         color,
+
+        // ✅ IMPORTANT
         type: habitType,
-        unit,
+
+        // ✅ IMPORTANT
+        unit: habitType === "quantity" ? unit.trim() : "",
       });
 
       const newHabit = createdHabit?.data?.data;
@@ -291,21 +313,66 @@ function Create({ onClose }) {
             <div className="flex flex-wrap gap-4">
               {Object.entries(categoryMap).map(([key, Icon]) => (
                 <div key={key} className="relative group">
+                  {/* ICON BUTTON */}
                   <div
                     onClick={() => setCategory(key)}
                     className={`
-                        w-12 h-12 rounded-full
-                        flex items-center justify-center
-                        cursor-pointer transition
+        w-12 h-12 rounded-full
+        flex items-center justify-center
+        cursor-pointer
+        transition-all duration-200
 
-                        ${
-                          category === key
-                            ? "bg-black dark:bg-[#FAFAF5] text-white dark:text-[#1A1A1A]"
-                            : "bg-gray-200 dark:bg-[#2A2A2A] text-gray-600 dark:text-[#8A8A7A]"
-                        }
-                      `}
+        hover:scale-105
+
+        ${
+          category === key
+            ? "bg-black dark:bg-[#FAFAF5] text-white dark:text-[#1A1A1A]"
+            : "bg-gray-200 dark:bg-[#2A2A2A] text-gray-600 dark:text-[#8A8A7A]"
+        }
+      `}
                   >
                     <Icon size={18} />
+                  </div>
+
+                  {/* TOOLTIP */}
+                  <div
+                    className="
+        absolute
+        left-1/2
+        -translate-x-1/2
+        -top-10
+
+        px-3
+        py-1.5
+
+        rounded-full
+
+        text-[10px]
+        uppercase
+        tracking-wider
+        whitespace-nowrap
+
+        opacity-0
+        pointer-events-none
+
+        translate-y-1
+        group-hover:translate-y-0
+        group-hover:opacity-100
+
+        transition-all
+        duration-200
+
+        bg-[#1A1A1A]
+        text-[#FAFAF5]
+
+        dark:bg-[#FAFAF5]
+        dark:text-[#1A1A1A]
+
+        shadow-lg
+        z-20
+      "
+                  >
+                    {key}
                   </div>
                 </div>
               ))}
@@ -336,6 +403,7 @@ function Create({ onClose }) {
               ))}
             </div>
           </div>
+
           {/* FREQUENCY */}
           <div>
             <p className="text-xs text-gray-400 uppercase mb-3">
@@ -385,12 +453,13 @@ function Create({ onClose }) {
               ))}
             </div>
           </div>
+
           {/* HABIT TYPE */}
           <div>
             <p className="text-xs text-gray-400 uppercase mb-3">Habit Type</p>
 
             <div className="relative flex flex-wrap bg-[#E8E4DC] dark:bg-[#2A2A2A] rounded-2xl sm:rounded-full p-1 w-full sm:w-fit">
-              {["boolean", "streak", "quantity"].map((type) => (
+              {["boolean", "streak"].map((type) => (
                 <button
                   key={type}
                   onClick={() => setHabitType(type)}
@@ -426,7 +495,6 @@ function Create({ onClose }) {
               ))}
             </div>
           </div>
-          ```jsx
           {habitType === "quantity" && (
             <div className="flex flex-col gap-2">
               <p className="text-xs text-gray-400 uppercase">
@@ -453,38 +521,29 @@ function Create({ onClose }) {
               />
             </div>
           )}
-          ```
+
           {/* BUTTONS */}
           <div
             className="
-              fixed
-              bottom-0
-              left-0
-              right-0
+    mt-auto
 
-              sm:absolute
-              sm:bottom-8
-              sm:right-8
-              sm:left-auto
+    sticky
+    bottom-0
 
-              p-6
-              sm:p-0
+    flex
+    justify-end
+    gap-6
 
-              bg-gradient-to-t
-              from-[#F5F3EE]
-              via-[#F5F3EE]
-              to-transparent
+    pt-6
+    pb-2
 
-              dark:from-[#0E0E0E]
-              dark:via-[#0E0E0E]
+    bg-[#F5F3EE]
+    dark:bg-[#0E0E0E]
 
-              sm:bg-none
-
-              flex justify-end
-              gap-6
-
-              z-20
-            "
+    border-t
+    border-black/5
+    dark:border-white/5
+  "
           >
             <button
               onClick={handleClose}

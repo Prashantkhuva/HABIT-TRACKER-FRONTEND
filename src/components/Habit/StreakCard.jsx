@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Plus } from "lucide-react";
 import { categoryMap } from "./categoryMap";
-import { getTextColor, getIconBg, getButtonColors } from "../../lib/habit-utils";
+import {
+  getTextColor,
+  getIconBg,
+  getButtonColors,
+} from "../../lib/habit-utils";
 import { getHabitStreak as fetchStreak } from "../../api/habits-api";
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +20,8 @@ export default function StreakCard({
   const Icon = categoryMap[habit.category];
   const textColor = getTextColor(habit.color);
   const iconBg = getIconBg(habit.color);
-  const subColor = textColor === "#FAFAF5" ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.4)";
+  const subColor =
+    textColor === "#FAFAF5" ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.4)";
   const { plusBg, plusIcon, checkBg, checkIcon } = getButtonColors(habit.color);
 
   const navigate = useNavigate();
@@ -89,7 +94,14 @@ export default function StreakCard({
           exit={{ scale: 0, rotate: 180 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
           whileTap={{ scale: 0.9 }}
-          onClick={() => !isDone && onComplete(habit)}
+          id="w8j0kp"
+          onClick={(e) => {
+            e.stopPropagation();
+
+            if (!isDone) {
+              onComplete(habit);
+            }
+          }}
           className="absolute bottom-6 right-6 w-12 h-12 rounded-full flex items-center justify-center"
           style={{
             background: isDone ? checkBg : plusBg,

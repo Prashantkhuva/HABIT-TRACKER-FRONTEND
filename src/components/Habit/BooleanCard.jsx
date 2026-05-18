@@ -90,7 +90,12 @@ export default function BooleanCard({
           exit={{ scale: 0, rotate: 180 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
           whileTap={{ scale: 0.9 }}
-          onClick={() => !isDone && onComplete(habit)}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (!isDone) {
+              onComplete(habit);
+            }
+          }}
           className="absolute bottom-6 right-6 w-12 h-12 rounded-full flex items-center justify-center"
           style={{
             background: isDone ? checkBg : plusBg,

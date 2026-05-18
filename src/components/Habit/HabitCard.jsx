@@ -1,6 +1,5 @@
 import BooleanCard from "./BooleanCard";
 import StreakCard from "./StreakCard";
-import QuantityCard from "./QuantityCard";
 
 export default function HabitCard({
   habit,
@@ -21,9 +20,6 @@ export default function HabitCard({
     );
   }
 
-  if (habit.type === "quantity") {
-    return <QuantityCard habit={habit} index={index} />;
-  }
 
   return (
     <BooleanCard
