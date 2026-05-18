@@ -9,18 +9,22 @@ import { getCurrentUser } from "./api/auth-api";
 import MobileNav from "./components/MobileNav";
 import ToastProvider from "./components/Toast/ToastProvider";
 import { setTheme } from "./store/themeSlice";
+import SwipeNavigation from "./SwipeNavigation";
 
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
+
   const theme = useSelector((state) => state.theme.theme);
 
   const hideHeaderOn = ["/", "/signin", "/signup", "/verify-email"];
+
   const shouldHide = hideHeaderOn.includes(location.pathname);
 
   // ✅ LOAD SAVED THEME
   useEffect(() => {
     const saved = localStorage.getItem("theme");
+
     if (saved) {
       dispatch(setTheme(saved));
     }
@@ -41,6 +45,7 @@ function App() {
         const isDark = window.matchMedia(
           "(prefers-color-scheme: dark)",
         ).matches;
+
         root.classList.toggle("dark", isDark);
         root.style.colorScheme = isDark ? "dark" : "light";
       }
@@ -57,6 +62,7 @@ function App() {
       };
 
       mediaQuery.addEventListener("change", handleChange);
+
       return () => mediaQuery.removeEventListener("change", handleChange);
     }
   }, [theme]);
@@ -66,6 +72,7 @@ function App() {
     const checkAuth = async () => {
       try {
         const res = await getCurrentUser();
+
         const user = res?.data?.data;
 
         if (user) {
@@ -84,7 +91,7 @@ function App() {
   return (
     <ToastProvider>
       <div className="flex min-h-dvh overflow-x-hidden bg-[#FAFAF5] text-[#1A1A1A] dark:bg-[#141218] dark:text-[#E6E1E5]">
-        {/* Sidebar - Visible only on lg (1024px) and above */}
+        {/* Sidebar */}
         {!shouldHide && <Sidebar />}
 
         {/* Content Area */}
@@ -96,18 +103,20 @@ function App() {
           {/* Header */}
           {!shouldHide && <Header />}
 
-          {/* Main Content */}
-          <main
-            className={`flex-1 w-full mx-auto max-w-screen-2xl min-w-0 ${
-              !shouldHide
-                ? "px-4 sm:px-8 lg:px-10 py-6 pb-[calc(80px+env(safe-area-inset-bottom))] lg:pb-6"
-                : ""
-            }`}
-          >
-            <Outlet />
-          </main>
+          {/* Swipe Wrapper */}
+          <SwipeNavigation>
+            <main
+              className={`flex-1 w-full mx-auto max-w-screen-2xl min-w-0 ${
+                !shouldHide
+                  ? "px-4 sm:px-8 lg:px-10 py-6 pb-[calc(80px+env(safe-area-inset-bottom))] lg:pb-6"
+                  : ""
+              }`}
+            >
+              <Outlet />
+            </main>
+          </SwipeNavigation>
 
-          {/* Mobile Nav - Hidden on lg and above */}
+          {/* Mobile Nav */}
           {!shouldHide && location.pathname !== "/create-habit" && (
             <MobileNav />
           )}
