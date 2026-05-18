@@ -109,17 +109,23 @@ function App() {
         >
           {!shouldHide && <Header />}
 
-          <SwipeNavigation>
-            <main
-              className={`flex-1 w-full mx-auto max-w-screen-2xl min-w-0 ${
-                !shouldHide
-                  ? "px-4 sm:px-8 lg:px-10 py-6 pb-[calc(80px+env(safe-area-inset-bottom))] lg:pb-6"
-                  : ""
-              }`}
-            >
+          <main
+            className={`flex-1 w-full mx-auto max-w-screen-2xl min-w-0 ${
+              !shouldHide
+                ? "px-4 sm:px-8 lg:px-10 py-6 pb-[calc(80px+env(safe-area-inset-bottom))] lg:pb-6"
+                : ""
+            }`}
+          >
+            {["/dashboard", "/rituals", "/statistics", "/settings"].includes(
+              location.pathname,
+            ) ? (
+              <SwipeNavigation>
+                <Outlet />
+              </SwipeNavigation>
+            ) : (
               <Outlet />
-            </main>
-          </SwipeNavigation>
+            )}
+          </main>
 
           {!shouldHideMobileNav && <MobileNav />}
         </div>
