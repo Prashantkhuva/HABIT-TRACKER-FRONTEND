@@ -9,24 +9,21 @@ export default function SwipeNavigation({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // ❌ Disable swipe on forms
   const disableSwipeRoutes = ["/create-habit"];
 
-  if (disableSwipeRoutes.includes(location.pathname)) {
-    return children;
-  }
+  const swipeDisabled = disableSwipeRoutes.includes(location.pathname);
 
   const currentIndex = routes.indexOf(location.pathname);
 
   const handlers = useSwipeable({
     onSwipedLeft: () => {
-      if (currentIndex < routes.length - 1) {
+      if (!swipeDisabled && currentIndex < routes.length - 1) {
         navigate(routes[currentIndex + 1]);
       }
     },
 
     onSwipedRight: () => {
-      if (currentIndex > 0) {
+      if (!swipeDisabled && currentIndex > 0) {
         navigate(routes[currentIndex - 1]);
       }
     },
@@ -42,7 +39,7 @@ export default function SwipeNavigation({ children }) {
         <motion.div
           key={location.pathname}
           initial={{
-            x: 80,
+            x: 30,
             opacity: 0,
           }}
           animate={{
@@ -50,7 +47,7 @@ export default function SwipeNavigation({ children }) {
             opacity: 1,
           }}
           exit={{
-            x: -80,
+            x: -30,
             opacity: 0,
           }}
           transition={{
