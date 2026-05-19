@@ -43,7 +43,7 @@ export default function Heatmap({ data }) {
 
   return (
     <div className="flex justify-center w-full">
-      <div className="inline-grid gap-1">
+      <div className="inline-grid gap-2 min-w-fit mx-auto">
         {/* DAY LABELS */}
         <div className="grid grid-cols-7 text-center text-[10px] text-[#888888] dark:text-[#938F99] mb-1">
           {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
