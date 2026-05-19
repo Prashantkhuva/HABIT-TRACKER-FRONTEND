@@ -6,7 +6,11 @@ export const deleteHabit = (id) => api.delete(`/habits/delete-habit/${id}`);
 export const updateHabit = (id, data) =>
   api.patch(`/habits/update-habit/${id}`, data);
 
-export const completeHabit = (id) => api.post(`/habitlog/${id}/complete`);
+export const completeHabit = async (habitId, note = "") => {
+  return api.post(`/habitlog/${habitId}/complete`, {
+    note,
+  });
+};
 
 export const getHabitLogs = (id, page = 1, limit = 10) =>
   api.get(`/habitlog/${id}/logs`, { params: { page, limit } });

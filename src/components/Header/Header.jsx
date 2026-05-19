@@ -4,7 +4,6 @@ import { Bell, User, Crown } from "lucide-react";
 import Button from "../Button";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { showNotification } from "../../utils/notifications";
 
 function Header() {
   const user = useSelector((state) => state.auth.userData);

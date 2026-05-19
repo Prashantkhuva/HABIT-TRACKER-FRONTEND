@@ -9,7 +9,7 @@ import CompletedHabit from "./Habit/CompletedHabit";
 import Button from "./Button";
 import { useToast } from "./Toast/ToastProvider";
 import { DashboardSkeleton } from "./loading/LoadingSkeletons";
-import { showNotification } from "../utils/notifications";
+import ReflectionModal from "./Habit/ReflectionModal";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -18,6 +18,8 @@ export default function Dashboard() {
   const [completing, setCompleting] = useState(null);
   const [completedIds, setCompletedIds] = useState([]);
   const [stats, setStats] = useState(null);
+  const [reflectionOpen, setReflectionOpen] = useState(false);
+  const [selectedHabit, setSelectedHabit] = useState(null);
   const [weeklyData, setWeeklyData] = useState([]);
   const [loading, setLoading] = useState(true);
   const { addToast } = useToast();
@@ -67,34 +69,42 @@ export default function Dashboard() {
     fetchAll();
   }, []);
 
-  const handleComplete = async (habit) => {
+  const handleComplete = (habit) => {
     if (completing) return;
 
-    setCompleting(habit._id);
+    setSelectedHabit(habit);
+
+    setReflectionOpen(true);
+  };
+
+  const handleSaveReflection = async (note = "") => {
+    if (!selectedHabit) return;
+
+    setCompleting(selectedHabit._id);
 
     try {
-      await completeHabit(habit._id);
+      await completeHabit(selectedHabit._id, note);
 
-      setCompletedIds((prev) => [...prev, habit._id]);
+      setCompletedIds((prev) => [...prev, selectedHabit._id]);
 
       addToast({
         type: "success",
         title: "Ritual completed",
-        message: `${habit.title} done for today`,
+        message: `${selectedHabit.title} done for today`,
       });
 
       const statsRes = await getDashboardStats();
+
       setStats(statsRes.data.data);
 
-      showNotification({
-        title: "Habit Completed",
-        body: `${habit.title} completed 🔥`,
-      });
+      setReflectionOpen(false);
+
+      setSelectedHabit(null);
     } catch (err) {
       const msg = err.response?.data?.message;
 
       if (msg === "Habit already completed today") {
-        setCompletedIds((prev) => [...prev, habit._id]);
+        setCompletedIds((prev) => [...prev, selectedHabit._id]);
 
         addToast({
           type: "error",
@@ -119,8 +129,6 @@ export default function Dashboard() {
   const completedHabits = activeHabits.filter((h) =>
     completedIds.includes(h._id),
   );
-
-  const maxWeekly = Math.max(...weeklyData.map((d) => d.count), 1);
 
   if (loading) return <DashboardSkeleton />;
 
@@ -198,6 +206,17 @@ export default function Dashboard() {
           )}
         </>
       )}
+
+      <ReflectionModal
+        open={reflectionOpen}
+        habit={selectedHabit}
+        onClose={() => {
+          setReflectionOpen(false);
+          setSelectedHabit(null);
+        }}
+        onSkip={() => handleSaveReflection("")}
+        onSave={handleSaveReflection}
+      />
     </div>
   );
 }

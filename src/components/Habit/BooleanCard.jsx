@@ -92,6 +92,7 @@ export default function BooleanCard({
           whileTap={{ scale: 0.9 }}
           onClick={(e) => {
             e.stopPropagation();
+
             if (!isDone) {
               onComplete(habit);
             }
