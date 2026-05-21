@@ -14,12 +14,19 @@ export default function StatCard({
 
   const labelVariants = {
     default: "text-[#888888] dark:text-[#938F99]",
-    dark: "text-[#FAFAF5]/70 dark:text-[#1A1A1A]/70",
-    mint: "text-[#1A1A1A]/70 dark:text-[#1A1A1A]/70",
+    dark: "text-[#FAFAF5]/70 dark:text-[#E6E1E5]/70",
+    mint: "text-[#1A1A1A]/70 dark:text-[#E6E1E5]/70",
+  };
+
+  const titleVariants = {
+    default: "text-[#888888] dark:text-[#938F99]",
+    dark: "text-[#FAFAF5]/70 dark:text-[#E6E1E5]/70",
+    mint: "text-[#1A1A1A]/70 dark:text-[#E6E1E5]/70",
   };
 
   const vClass = variants[variant];
   const lClass = labelVariants[variant];
+  const tClass = titleVariants[variant];
 
   return (
     <motion.div
@@ -30,7 +37,7 @@ export default function StatCard({
       }}
     >
       {/* TITLE */}
-      <p className="text-xs tracking-widest transition-colors duration-200" style={{ fontFamily: "Epilogue, sans-serif" }}>
+      <p className={`text-xs tracking-widest transition-colors duration-200 ${tClass}`} style={{ fontFamily: "Epilogue, sans-serif" }}>
         {title}
       </p>
 

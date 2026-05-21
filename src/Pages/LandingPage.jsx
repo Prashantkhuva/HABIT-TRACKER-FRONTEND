@@ -44,11 +44,11 @@ function LandingPage() {
       "
       >
         {/* HERO */}
-        <section className="min-h-screen pt-40 pb-24 px-8 lg:px-20 relative overflow-hidden">
+        <section className="min-h-screen pt-28 sm:pt-40 pb-16 sm:pb-24 px-5 sm:px-8 lg:px-20 relative overflow-hidden">
           {/* Glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-[#C58B5D] blur-[120px] opacity-20" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] sm:w-[700px] h-[200px] sm:h-[300px] bg-[#C58B5D] blur-[120px] opacity-20" />
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-16 items-center relative z-10">
             {/* LEFT */}
             <div className="lg:col-span-7">
               <motion.p
@@ -66,7 +66,7 @@ function LandingPage() {
                 initial="hidden"
                 animate="show"
                 custom={1}
-                className="font-[Epilogue] text-6xl sm:text-7xl lg:text-[120px] leading-[0.85] tracking-[-0.07em] lowercase mb-10"
+                className="font-[Epilogue] text-[clamp(2.8rem,10vw,7.5rem)] leading-[0.85] tracking-[-0.07em] lowercase mb-8 sm:mb-10"
               >
                 cultivate
                 <br />
@@ -80,7 +80,7 @@ function LandingPage() {
                 initial="hidden"
                 animate="show"
                 custom={2}
-                className="max-w-xl text-[17px] leading-relaxed text-[#6F6F6F] dark:text-[#938F99] mb-12"
+                className="max-w-xl text-[15px] sm:text-[17px] leading-relaxed text-[#6F6F6F] dark:text-[#938F99] mb-8 sm:mb-12"
               >
                 A rhythmic workspace crafted for intentional living. Transform
                 habits into a quiet editorial journey of consistency, clarity,
@@ -122,7 +122,7 @@ function LandingPage() {
             >
               <div className="absolute -top-20 -right-10 w-72 h-72 bg-[#E8D9A8] dark:bg-[#D0BCFF] blur-[120px] opacity-30 dark:opacity-10 rounded-full" />
 
-              <div className="relative overflow-hidden rounded-[36px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] group">
+              <div className="relative overflow-hidden rounded-[24px] sm:rounded-[36px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] group">
                 <img
                   src="./workspace.png"
                   alt="workspace"
@@ -131,8 +131,8 @@ function LandingPage() {
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
 
-                <div className="absolute bottom-10 left-10 text-white">
-                  <h3 className="font-[Epilogue] text-4xl lowercase tracking-[-0.05em]">
+                <div className="absolute bottom-6 left-6 sm:bottom-10 sm:left-10 text-white">
+                  <h3 className="font-[Epilogue] text-2xl sm:text-4xl lowercase tracking-[-0.05em]">
                     morning stillness
                   </h3>
 
@@ -148,15 +148,15 @@ function LandingPage() {
         {/* FEATURE GRID */}
         <section
           id="features"
-          className="scroll-mt-28 py-32 px-8 lg:px-20 bg-[#F4F4EF] dark:bg-[#1A171D]"
+          className="scroll-mt-28 py-20 sm:py-32 px-5 sm:px-8 lg:px-20 bg-[#F4F4EF] dark:bg-[#1A171D]"
         >
-          <div className="flex flex-col md:flex-row justify-between items-end gap-10 mb-24">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 sm:gap-10 mb-14 sm:mb-24">
             <div className="max-w-xl">
               <p className="uppercase tracking-[0.35em] text-[10px] text-[#6F6F6F] dark:text-[#938F99] mb-6">
                 Curated Experience
               </p>
 
-              <h2 className="font-[Epilogue] text-5xl lg:text-7xl tracking-[-0.06em] lowercase leading-[0.9] mb-6">
+              <h2 className="font-[Epilogue] text-[clamp(2rem,7vw,4.5rem)] tracking-[-0.06em] lowercase leading-[0.9] mb-6">
                 designed for
                 <br />
                 quiet intention.
@@ -180,7 +180,7 @@ function LandingPage() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              className="md:col-span-8 bg-white dark:bg-[#1D1B20] rounded-[36px] p-10 lg:p-14 flex flex-col justify-between min-h-[350px]"
+              className="md:col-span-8 bg-white dark:bg-[#1D1B20] rounded-[24px] sm:rounded-[36px] p-6 sm:p-10 lg:p-14 flex flex-col justify-between min-h-[300px] sm:min-h-[350px]"
             >
               <div>
                 <BookOpen
@@ -189,7 +189,7 @@ function LandingPage() {
                   className="mb-10 text-[#1A1A1A] dark:text-[#D0BCFF]"
                 />
 
-                <h3 className="font-[Epilogue] text-5xl tracking-[-0.05em] lowercase mb-5">
+                <h3 className="font-[Epilogue] text-3xl sm:text-5xl tracking-[-0.05em] lowercase mb-5">
                   visual narrative
                 </h3>
 
@@ -215,9 +215,9 @@ function LandingPage() {
               whileInView="show"
               viewport={{ once: true }}
               custom={1}
-              className="md:col-span-4 rounded-[36px] bg-[#1A1A1A] dark:bg-[#D0BCFF] text-white dark:text-black p-12 flex flex-col justify-center"
+              className="md:col-span-4 rounded-[24px] sm:rounded-[36px] bg-[#1A1A1A] dark:bg-[#D0BCFF] text-white dark:text-black p-8 sm:p-12 flex flex-col justify-center"
             >
-              <h3 className="font-[Epilogue] text-7xl tracking-[-0.06em] mb-4">
+              <h3 className="font-[Epilogue] text-5xl sm:text-7xl tracking-[-0.06em] mb-4">
                 94%
               </h3>
 
@@ -238,7 +238,7 @@ function LandingPage() {
               whileInView="show"
               viewport={{ once: true }}
               custom={2}
-              className="md:col-span-4 bg-[#EAEAE4] dark:bg-[#1D1B20] rounded-[36px] p-10 min-h-[300px] flex flex-col justify-between"
+              className="md:col-span-4 bg-[#EAEAE4] dark:bg-[#1D1B20] rounded-[24px] sm:rounded-[36px] p-7 sm:p-10 min-h-[240px] sm:min-h-[300px] flex flex-col justify-between"
             >
               <Waves
                 size={36}
@@ -264,7 +264,7 @@ function LandingPage() {
               whileInView="show"
               viewport={{ once: true }}
               custom={3}
-              className="md:col-span-8 overflow-hidden rounded-[36px] relative group"
+              className="md:col-span-8 overflow-hidden rounded-[24px] sm:rounded-[36px] relative group min-h-[240px] sm:min-h-0"
             >
               <img
                 src="./minimal-desk.png"
@@ -274,12 +274,12 @@ function LandingPage() {
 
               <div className="absolute inset-0 bg-black/25" />
 
-              <div className="absolute bottom-10 left-10 text-white">
-                <h3 className="font-[Epilogue] text-5xl tracking-[-0.05em] lowercase mb-4">
+              <div className="absolute bottom-6 left-6 sm:bottom-10 sm:left-10 text-white">
+                <h3 className="font-[Epilogue] text-3xl sm:text-5xl tracking-[-0.05em] lowercase mb-4">
                   digital stillness
                 </h3>
 
-                <p className="max-w-sm text-white/70 leading-relaxed">
+                <p className="max-w-xs sm:max-w-sm text-sm sm:text-base text-white/70 leading-relaxed">
                   No distractions. No clutter. Just your intentions and the
                   rhythm of the day.
                 </p>
@@ -291,21 +291,21 @@ function LandingPage() {
         {/* BROADSHEET */}
         <section
           id="archive"
-          className="scroll-mt-28 py-40 px-8 lg:px-20 bg-white dark:bg-[#141218]"
+          className="scroll-mt-28 py-20 sm:py-40 px-5 sm:px-8 lg:px-20 bg-white dark:bg-[#141218]"
         >
-          <div className="text-center mb-28">
+          <div className="text-center mb-14 sm:mb-28">
             <p className="uppercase tracking-[0.35em] text-[10px] text-[#6F6F6F] dark:text-[#938F99] mb-8">
               The Archive
             </p>
 
-            <h2 className="font-[Epilogue] text-6xl lg:text-8xl tracking-[-0.06em] lowercase leading-[0.9]">
+            <h2 className="font-[Epilogue] text-[clamp(2.5rem,8vw,6rem)] tracking-[-0.06em] lowercase leading-[0.9]">
               the broadsheet
               <br />
               spread.
             </h2>
           </div>
 
-          <div className="border-y border-black/10 dark:border-white/10 py-16 grid grid-cols-1 lg:grid-cols-3 gap-16">
+          <div className="border-y border-black/10 dark:border-white/10 py-10 sm:py-16 grid grid-cols-1 lg:grid-cols-3 gap-10 sm:gap-16">
             {/* LEFT */}
             <div className="space-y-10">
               <div className="border-b border-black/5 dark:border-white/5 pb-8">
@@ -392,7 +392,7 @@ function LandingPage() {
         {/* PHILOSOPHY */}
         <section
           id="philosophy"
-          className="scroll-mt-28 relative px-8 lg:px-20 py-32 lg:py-40 bg-[#FAFAF5] dark:bg-[#141218] overflow-hidden"
+          className="scroll-mt-28 relative px-5 sm:px-8 lg:px-20 py-20 sm:py-32 lg:py-40 bg-[#FAFAF5] dark:bg-[#141218] overflow-hidden"
         >
           <div
             className="absolute inset-0 pointer-events-none opacity-[0.12] dark:opacity-[0.16]"
@@ -405,7 +405,7 @@ function LandingPage() {
           />
           <div className="absolute inset-0 bg-[#FAFAF5]/85 dark:bg-[#141218]/82 pointer-events-none" />
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-center">
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center">
             {/* IMAGE */}
             <motion.div
               variants={fadeUp}
@@ -450,7 +450,7 @@ function LandingPage() {
                 The Philosophy
               </p>
 
-              <h2 className="font-[Epilogue] text-6xl lg:text-7xl tracking-[-0.06em] lowercase leading-[0.9] mb-10">
+              <h2 className="font-[Epilogue] text-[clamp(2.5rem,8vw,4.5rem)] tracking-[-0.06em] lowercase leading-[0.9] mb-8 sm:mb-10">
                 the luxury
                 <br />
                 of intentionality.
@@ -532,12 +532,12 @@ function LandingPage() {
         </section>
 
         {/* FINAL CTA */}
-        <section className="px-8 lg:px-20 pb-32">
-          <div className="relative overflow-hidden rounded-[48px] bg-[#111111] text-white px-8 py-28 lg:p-32 text-center">
+        <section className="px-5 sm:px-8 lg:px-20 pb-20 sm:pb-32">
+          <div className="relative overflow-hidden rounded-[28px] sm:rounded-[48px] bg-[#111111] text-white px-6 py-20 sm:px-8 sm:py-28 lg:p-32 text-center">
             <div className="absolute inset-0 bg-black/50" />
 
             <div className="relative z-10">
-              <h2 className="font-[Epilogue] text-6xl lg:text-8xl tracking-[-0.07em] lowercase leading-[0.9] mb-12">
+              <h2 className="font-[Epilogue] text-[clamp(2.5rem,8vw,5rem)] lg:text-8xl tracking-[-0.07em] lowercase leading-[0.9] mb-8 sm:mb-12">
                 begin your
                 <br />
                 first ritual.

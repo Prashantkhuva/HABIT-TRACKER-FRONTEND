@@ -51,14 +51,14 @@ export default function SettingsPage() {
 
   return (
     <div className="text-text-primary">
-      <div className="w-full max-w-[1400px] mx-auto">
+      <div className="w-full max-w-[1400px] mx-auto pb-4">
         {/* Header */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
           animate="show"
           custom={0}
-          className="mb-10"
+          className="mb-6 sm:mb-10"
         >
           <h1
             className="app-heading text-[clamp(2.5rem,5vw,4rem)] text-text-primary"
@@ -76,7 +76,7 @@ export default function SettingsPage() {
           initial="hidden"
           animate="show"
           custom={1}
-          className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 mb-6"
+          className="grid grid-cols-1 gap-4 sm:gap-6 mb-4 sm:mb-6 xl:grid-cols-[2fr_1fr]"
         >
           <ProfileCard />
           <AppearanceCard />
@@ -87,7 +87,7 @@ export default function SettingsPage() {
           initial="hidden"
           animate="show"
           custom={2}
-          className="mb-6"
+          className="mb-4 sm:mb-6"
         >
           <button
             onClick={() => navigate("/change-password")}
@@ -107,7 +107,7 @@ export default function SettingsPage() {
           initial="hidden"
           animate="show"
           custom={2}
-          className="mb-6"
+          className="mb-4 sm:mb-6"
         >
           <DangerZone />
         </motion.div>
@@ -117,7 +117,7 @@ export default function SettingsPage() {
           initial="hidden"
           animate="show"
           custom={3}
-          className="flex flex-row justify-end items-start gap-2"
+          className="flex flex-row flex-wrap justify-end items-start gap-2"
         >
           {/* Help */}
           <button

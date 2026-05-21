@@ -33,10 +33,10 @@ function LandNav() {
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="sticky top-0 z-50 border-b border-black/10 dark:border-white/10 bg-[#FAFAF5]/90 dark:bg-[#141218]/90 backdrop-blur-xl"
     >
-      <div className="flex items-center justify-between px-8 lg:px-20 py-4">
+      <div className="flex items-center justify-between px-4 sm:px-8 lg:px-20 py-3 sm:py-4">
         {/* Logo */}
         <Link to={"/"} className="group inline-flex flex-col">
-          <span className="font-[Epilogue] text-2xl sm:text-3xl lowercase tracking-[-0.06em] leading-none text-[#1A1A1A] dark:text-[#E6E1E5]">
+          <span className="font-[Epilogue] text-xl sm:text-2xl md:text-3xl lowercase tracking-[-0.06em] leading-none text-[#1A1A1A] dark:text-[#E6E1E5]">
             habitflow
           </span>
           <span className="mt-1 hidden sm:block uppercase tracking-[0.25em] text-[9px] text-[#7A7A7A] dark:text-[#938F99] group-hover:text-[#1A1A1A] dark:group-hover:text-[#E6E1E5] transition-colors">
@@ -70,7 +70,7 @@ function LandNav() {
           </Link>
 
           <Link to="/signin">
-            <Button className="px-5 sm:px-6 py-3 uppercase text-[10px] tracking-[0.18em]">
+            <Button className="px-4 sm:px-6 py-2.5 sm:py-3 uppercase text-[10px] tracking-[0.18em]">
               Begin
               <ArrowRight size={14} />
             </Button>

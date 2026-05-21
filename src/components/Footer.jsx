@@ -3,7 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 
 function Footer() {
   return (
-    <footer className="relative overflow-hidden border-t border-border-subtle bg-surface-dim px-8 pb-10 pt-28 lg:px-20">
+    <footer className="relative overflow-hidden border-t border-border-subtle bg-surface-dim px-5 pb-10 pt-16 sm:px-8 sm:pt-28 lg:px-20">
       {/* GRAIN */}
       <div
         className="
@@ -16,16 +16,16 @@ function Footer() {
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* TOP */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-20 mb-28">
+        <div className="grid grid-cols-2 gap-8 mb-14 sm:gap-12 md:grid-cols-4 sm:mb-28 md:gap-20">
           {/* BRAND */}
-          <div className="md:col-span-2">
+          <div className="col-span-2 md:col-span-2">
             <Link to="/">
-              <h2 className="font-heading mb-8 text-5xl lowercase tracking-[-0.06em] text-text-primary">
+              <h2 className="font-heading mb-4 text-3xl lowercase tracking-[-0.06em] text-text-primary sm:mb-8 sm:text-5xl">
                 habitflow
               </h2>
             </Link>
 
-            <p className="max-w-md text-lg leading-relaxed text-text-muted">
+            <p className="max-w-md text-sm leading-relaxed text-text-muted sm:text-lg">
               The premium editorial tracking experience for rhythmic living.
               Designed for intentional people seeking clarity, stillness, and
               consistency.
@@ -34,7 +34,7 @@ function Footer() {
 
           {/* NAVIGATION */}
           <div>
-            <p className="app-label mb-8">
+            <p className="app-label mb-4 sm:mb-8">
               Navigation
             </p>
 
@@ -64,7 +64,7 @@ function Footer() {
 
           {/* STUDIO */}
           <div>
-            <p className="app-label mb-8">
+            <p className="app-label mb-4 sm:mb-8">
               Studio
             </p>
 
@@ -103,7 +103,7 @@ function Footer() {
         </div>
 
         {/* BOTTOM */}
-        <div className="flex flex-col items-center justify-between gap-6 border-t border-border-subtle pt-8 md:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-border-subtle pt-6 sm:gap-6 sm:pt-8 md:flex-row">
           <p className="app-label">
             © 2026 HabitFlow Studio. All rights reserved.
           </p>
