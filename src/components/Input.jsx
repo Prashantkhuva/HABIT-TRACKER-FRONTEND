@@ -16,7 +16,7 @@ function Input(
       {label && (
         <label
           htmlFor={id}
-          className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-gray-400 dark:text-[#938F99]"
+          className="app-label mb-2 block"
         >
           {label}
         </label>
@@ -28,9 +28,9 @@ function Input(
           ref={ref}
           type={isPassword ? (showPassword ? "text" : "password") : type}
           placeholder={placeholder}
-          className={`w-full rounded-full border border-gray-300 dark:border-[#2A2A2A] bg-gray-200 dark:bg-[#1D1B20] px-5 py-4 ${
+          className={`w-full rounded-full border border-border-subtle bg-surface px-5 py-4 ${
             isPassword ? "pr-14" : ""
-          } text-sm text-[#1A1A1A] dark:text-[#E6E1E5] outline-none transition-all duration-300 placeholder:text-gray-400/50 dark:placeholder:text-[#938F99]/50 focus:border-[#1A1A1A] dark:focus:border-[#E6E1E5] focus:ring-1 focus:ring-[#1A1A1A] dark:focus:ring-[#E6E1E5] focus:-translate-y-0.5 ${className}`}
+          } text-sm text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted/55 focus:border-primary focus:bg-background focus:ring-4 focus:ring-primary/10 ${className}`}
           {...props}
         />
 
@@ -38,7 +38,7 @@ function Input(
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-[#938F99]"
+            className="absolute right-5 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary"
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>

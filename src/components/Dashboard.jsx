@@ -135,15 +135,14 @@ export default function Dashboard() {
   return (
     <div className="w-full min-w-0">
       {activeHabits.length === 0 ? (
-        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
+        <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6">
           <div className="text-center">
             <p
-              className="text-3xl font-semibold mb-2 text-[#1A1A1A] dark:text-[#E6E1E5]"
-              style={{ fontFamily: "Epilogue, sans-serif" }}
+              className="font-heading mb-2 text-3xl font-semibold tracking-[-0.04em] text-text-primary"
             >
               no rituals yet.
             </p>
-            <p className="text-sm text-[#888888] dark:text-[#938F99]">
+            <p className="text-sm text-text-muted">
               design your first daily rhythm.
             </p>
           </div>
@@ -153,13 +152,12 @@ export default function Dashboard() {
         </div>
       ) : (
         <>
-          <p className="text-xs tracking-widest mb-2 text-[#888888] dark:text-[#938F99]">
+          <p className="app-label mb-2">
             TRACK
           </p>
           <h1
-            className="font-bold mb-8 text-[#1A1A1A] dark:text-[#E6E1E5]"
+            className="app-heading mb-8 text-text-primary"
             style={{
-              fontFamily: "Epilogue, sans-serif",
               fontSize: "clamp(2rem, 4vw, 3.5rem)",
             }}
           >
@@ -183,15 +181,14 @@ export default function Dashboard() {
 
           {completedHabits.length > 0 && (
             <div className="mt-16">
-              <div className="flex justify-between items-center mb-6">
+              <div className="mb-6 flex items-center justify-between">
                 <h2
-                  className="text-2xl font-bold text-[#1A1A1A] dark:text-[#E6E1E5]"
-                  style={{ fontFamily: "Epilogue, sans-serif" }}
+                  className="font-heading text-2xl font-bold tracking-[-0.04em] text-text-primary"
                 >
                   habits completed
                 </h2>
                 <button
-                  className="text-xs tracking-widest text-[#888888] dark:text-[#938F99] hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5] transition-colors"
+                  className="app-label transition-colors hover:text-text-primary"
                   onClick={() => navigate("/rituals/completed")}
                 >
                   VIEW HISTORY →

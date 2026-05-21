@@ -1,182 +1,352 @@
 import { motion } from "framer-motion";
-import Button from "../components/Button";
 import { Link } from "react-router-dom";
+import {
+  ArrowRight,
+  BookOpen,
+  Waves,
+  Sparkles,
+  Play,
+  Clock3,
+  Leaf,
+} from "lucide-react";
+
 import Footer from "../components/Footer";
 import LandNav from "../components/LandNav";
-import { useNavigate } from "react-router-dom";
+import Button from "../components/Button";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 40 },
   show: (i = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] },
+    transition: {
+      duration: 1.1,
+      delay: i * 0.12,
+      ease: [0.22, 1, 0.36, 1],
+    },
   }),
 };
 
 function LandingPage() {
-  const navigate = useNavigate();
   return (
     <>
-      {/* Nav */}
       <LandNav />
 
-      {/* Main */}
-      <div className="min-h-screen bg-[#FAFAF5] dark:bg-[#141218] text-[#1A1A1A] dark:text-[#E6E1E5] font-body">
-        {/* ── HERO ── */}
-        <section className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-16 px-8 lg:px-24 items-center">
-          {/* LEFT */}
-          <div className="max-w-full lg:max-w-150">
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              custom={0}
-              className="text-[11px] tracking-[0.25em] mb-6 text-gray-400 dark:text-[#938F99]"
-            >
-              THE EDITORIAL TRACKER
-            </motion.p>
+      <main
+        className="
+        bg-[#FAFAF5]
+        dark:bg-[#141218]
+        text-[#1A1A1A]
+        dark:text-[#E6E1E5]
+        overflow-hidden
+        selection:bg-black
+        selection:text-white
+      "
+      >
+        {/* HERO */}
+        <section className="min-h-screen pt-40 pb-24 px-8 lg:px-20 relative overflow-hidden">
+          {/* Glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-[#C58B5D] blur-[120px] opacity-20" />
 
-            <motion.h1
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              custom={1}
-              className="text-5xl lg:text-[72px] leading-[1.1] lg:leading-[1.05] tracking-[-0.04em] mb-6 text-[#1A1A1A] dark:text-[#E6E1E5]"
-              style={{ fontFamily: "Epilogue, sans-serif" }}
-            >
-              build habits
-              <br />
-              that stick
-            </motion.h1>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
+            {/* LEFT */}
+            <div className="lg:col-span-7">
+              <motion.p
+                variants={fadeUp}
+                initial="hidden"
+                animate="show"
+                custom={0}
+                className="uppercase tracking-[0.35em] text-[10px] text-[#7A7A7A] dark:text-[#938F99] mb-8"
+              >
+                Volume 01 — The Editorial Ritual
+              </motion.p>
 
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              custom={2}
-              className="text-[15px] leading-relaxed mb-10 max-w-full lg:max-w-110 text-gray-400 dark:text-[#938F99]"
-            >
-              Designed for the intentional individual. A rhythmic workspace to
-              cultivate your daily rituals with clarity and editorial elegance.
-            </motion.p>
+              <motion.h1
+                variants={fadeUp}
+                initial="hidden"
+                animate="show"
+                custom={1}
+                className="font-[Epilogue] text-6xl sm:text-7xl lg:text-[120px] leading-[0.85] tracking-[-0.07em] lowercase mb-10"
+              >
+                cultivate
+                <br />
+                your daily
+                <br />
+                rituals.
+              </motion.h1>
 
+              <motion.p
+                variants={fadeUp}
+                initial="hidden"
+                animate="show"
+                custom={2}
+                className="max-w-xl text-[17px] leading-relaxed text-[#6F6F6F] dark:text-[#938F99] mb-12"
+              >
+                A rhythmic workspace crafted for intentional living. Transform
+                habits into a quiet editorial journey of consistency, clarity,
+                and stillness.
+              </motion.p>
+
+              <motion.div
+                variants={fadeUp}
+                initial="hidden"
+                animate="show"
+                custom={3}
+                className="flex flex-wrap items-center gap-5"
+              >
+                <Link to="/signin">
+                  <Button className="rounded-full px-10 py-5 uppercase tracking-[0.2em] text-[10px]">
+                    Start The Ritual
+                  </Button>
+                </Link>
+
+                <button className="group flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all duration-300">
+                    <Play size={18} strokeWidth={1.5} />
+                  </div>
+
+                  <span className="uppercase tracking-[0.2em] text-[10px]">
+                    The Philosophy
+                  </span>
+                </button>
+              </motion.div>
+            </div>
+
+            {/* RIGHT */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
               animate="show"
-              custom={3}
-              className="flex items-center gap-4"
+              custom={4}
+              className="lg:col-span-5 relative"
             >
-              <Link to={"/signin"}>
-                <Button className="px-6 py-3 rounded-full text-sm">
-                  GET STARTED
-                </Button>
-              </Link>
+              <div className="absolute -top-20 -right-10 w-72 h-72 bg-[#E8D9A8] dark:bg-[#D0BCFF] blur-[120px] opacity-30 dark:opacity-10 rounded-full" />
 
-              <Button variant="outline" className="">
-                Contact US
-              </Button>
+              <div className="relative overflow-hidden rounded-[36px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] group">
+                <img
+                  src="./workspace.png"
+                  alt="workspace"
+                  className="w-full aspect-[4/5] object-cover grayscale contrast-125 group-hover:scale-[1.03] transition-transform duration-1000"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+
+                <div className="absolute bottom-10 left-10 text-white">
+                  <h3 className="font-[Epilogue] text-4xl lowercase tracking-[-0.05em]">
+                    morning stillness
+                  </h3>
+
+                  <p className="uppercase tracking-[0.25em] text-[10px] opacity-70 mt-3">
+                    Ritual № 01 • 6:00 AM
+                  </p>
+                </div>
+              </div>
             </motion.div>
           </div>
+        </section>
 
-          {/* RIGHT */}
-          <div className="relative flex justify-center items-center w-full">
-            {/* Glow */}
-            <div className="absolute right-0 top-10 w-64 h-64 lg:w-130 lg:h-130 bg-[#E8D9A8] dark:bg-[#D0BCFF] rounded-full blur-[100px] lg:blur-[140px] opacity-40 dark:opacity-[0.03]" />
+        {/* FEATURE GRID */}
+        <section
+          id="features"
+          className="scroll-mt-28 py-32 px-8 lg:px-20 bg-[#F4F4EF] dark:bg-[#1A171D]"
+        >
+          <div className="flex flex-col md:flex-row justify-between items-end gap-10 mb-24">
+            <div className="max-w-xl">
+              <p className="uppercase tracking-[0.35em] text-[10px] text-[#6F6F6F] dark:text-[#938F99] mb-6">
+                Curated Experience
+              </p>
 
-            {/* Card */}
+              <h2 className="font-[Epilogue] text-5xl lg:text-7xl tracking-[-0.06em] lowercase leading-[0.9] mb-6">
+                designed for
+                <br />
+                quiet intention.
+              </h2>
+
+              <p className="text-[#6F6F6F] dark:text-[#938F99] leading-relaxed">
+                Every interaction is designed to feel tactile, calm, and
+                editorial. No clutter. No noise. Just rhythm.
+              </p>
+            </div>
+
+            <button className="uppercase tracking-[0.25em] text-[10px] border-b border-black dark:border-white pb-2">
+              Explore Ecosystem
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+            {/* BIG CARD */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
-              animate="show"
-              custom={2}
-              className="relative bg-white dark:bg-[#1D1B20] rounded-[40px] border border-gray-300 dark:border-white/10 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.8)] p-6 sm:p-10 w-full max-w-[340px] sm:max-w-md lg:max-w-none lg:w-150 lg:h-175 flex flex-col justify-start"
+              whileInView="show"
+              viewport={{ once: true }}
+              className="md:col-span-8 bg-white dark:bg-[#1D1B20] rounded-[36px] p-10 lg:p-14 flex flex-col justify-between min-h-[350px]"
             >
-              {/* Header */}
-              <div className="flex justify-between items-center text-xs sm:text-sm tracking-widest text-gray-400 dark:text-[#938F99] mb-8">
-                <span>monday ritual</span>
+              <div>
+                <BookOpen
+                  size={42}
+                  strokeWidth={1.5}
+                  className="mb-10 text-[#1A1A1A] dark:text-[#D0BCFF]"
+                />
 
-                <svg width="18" height="4" viewBox="0 0 16 4" fill="none">
-                  {" "}
-                  <path
-                    d="M2 4C1.45 4 0.979167 3.80417 0.5875 3.4125C0.195833 3.02083 0 2.55 0 2C0 1.45 0.195833 0.979167 0.5875 0.5875C0.979167 0.195833 1.45 0 2 0C2.55 0 3.02083 0.195833 3.4125 0.5875C3.80417 0.979167 4 1.45 4 2C4 2.55 3.80417 3.02083 3.4125 3.4125C3.02083 3.80417 2.55 4 2 4ZM8 4C7.45 4 6.97917 3.80417 6.5875 3.4125C6.19583 3.02083 6 2.55 6 2C6 1.45 6.19583 0.979167 6.5875 0.5875C6.97917 0.195833 7.45 0 8 0C8.55 0 9.02083 0.195833 9.4125 0.5875C9.80417 0.979167 10 1.45 10 2C10 2.55 9.80417 3.02083 9.4125 3.4125C9.02083 3.80417 8.55 4 8 4ZM14 4C13.45 4 12.9792 3.80417 12.5875 3.4125C12.1958 3.02083 12 2.55 12 2C12 1.45 12.1958 0.979167 12.5875 0.5875C12.9792 0.195833 13.45 0 14 0C14.55 0 15.0208 0.195833 15.4125 0.5875C15.8042 0.979167 16 1.45 16 2C16 2.55 15.8042 3.02083 15.4125 3.4125C15.0208 3.80417 14.55 4 14 4Z"
-                    className="fill-[#1A1A1A] "
-                  />{" "}
-                </svg>
+                <h3 className="font-[Epilogue] text-5xl tracking-[-0.05em] lowercase mb-5">
+                  visual narrative
+                </h3>
+
+                <p className="max-w-md text-[#6F6F6F] dark:text-[#938F99] leading-relaxed">
+                  Every completed habit becomes part of your personal archive —
+                  a quiet visual story of consistency.
+                </p>
               </div>
 
-              {/* Habit */}
-              <div className="flex items-center gap-4 mb-6 sm:mb-10">
-                {/* Circle + Icon */}
-                <div
-                  className="
-      w-10 h-10 sm:w-14 sm:h-14 rounded-full 
-      flex items-center justify-center
-      bg-[#F5F5F5] dark:bg-[#1D1B20]
-      transition-all duration-200
-      hover:scale-105
-    "
-                >
-                  <svg
-                    width="18"
-                    height="18"
-                    className="sm:w-[22px] sm:h-[22px]"
-                    viewBox="0 0 22 22"
-                    fill="none"
-                  >
-                    <path
-                      d="M18 8L16.75 5.25L14 4L16.75 2.75L18 0L19.25 2.75L22 4L19.25 5.25L18 8ZM18 22L16.75 19.25L14 18L16.75 16.75L18 14L19.25 16.75L22 18L19.25 19.25L18 22ZM8 19L5.5 13.5L0 11L5.5 8.5L8 3L10.5 8.5L16 11L10.5 13.5L8 19ZM8 14.15L9 12L11.15 11L9 10L8 7.85L7 10L4.85 11L7 12L8 14.15Z"
-                      className="fill-[#48645E]"
-                    />
-                  </svg>
-                </div>
-                {/* Text */}
-                <div>
-                  <p
-                    className="text-lg sm:text-[22px] font-medium tracking-tight text-[#1A1A1A] dark:text-[#E6E1E5]"
-                    style={{ fontFamily: "Epilogue, sans-serif" }}
-                  >
-                    morning meditation
-                  </p>
-                  <p className="text-[10px] sm:text-xs tracking-widest text-gray-400 dark:text-[#938F99]">
-                    20 MINS • STREAK 14
-                  </p>
-                </div>
+              <div className="mt-14 h-15 overflow-hidden rounded-[28px] group">
+                <img
+                  src="./journal.png"
+                  alt=""
+                  className="w-full h-72 object-cover group-hover:scale-[1.03] transition-transform duration-1000"
+                />
               </div>
-              {/* Dots */}
-              <div className="flex items-center gap-2 sm:gap-4 mb-6 sm:mb-10">
-                {[1, 2, 3, 4, 5, 6, 7].map((d) => (
-                  <div
-                    key={d}
-                    className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full ${
-                      d <= 5
-                        ? "bg-[#48645E] dark:bg-[#D0BCFF]"
-                        : d === 6
-                          ? "bg-transparent border-2 border-[#48645E] dark:border-[#D0BCFF]"
-                          : "bg-gray-200 dark:bg-[#141218]"
-                    }`}
-                  />
-                ))}
-              </div>
+            </motion.div>
 
-              <div className="bg-gray-200 dark:bg-[#1D1B20]/50 border border-transparent dark:border-white/5 rounded-3xl p-5 lg:p-8">
-                <p className="text-xs tracking-widest text-gray-400 dark:text-[#938F99] mb-3">
-                  WEEKLY FLOW
+            {/* STAT CARD */}
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              custom={1}
+              className="md:col-span-4 rounded-[36px] bg-[#1A1A1A] dark:bg-[#D0BCFF] text-white dark:text-black p-12 flex flex-col justify-center"
+            >
+              <h3 className="font-[Epilogue] text-7xl tracking-[-0.06em] mb-4">
+                94%
+              </h3>
+
+              <p className="uppercase tracking-[0.25em] text-[10px] mb-8 opacity-70">
+                Retention Rate
+              </p>
+
+              <p className="leading-relaxed opacity-80 italic">
+                “HabitFlow transformed my chaotic mornings into a calm ritual of
+                focus.”
+              </p>
+            </motion.div>
+
+            {/* SMALL FEATURE */}
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              custom={2}
+              className="md:col-span-4 bg-[#EAEAE4] dark:bg-[#1D1B20] rounded-[36px] p-10 min-h-[300px] flex flex-col justify-between"
+            >
+              <Waves
+                size={36}
+                strokeWidth={1.5}
+                className="text-[#1A1A1A] dark:text-[#D0BCFF]"
+              />
+
+              <div>
+                <h3 className="font-[Epilogue] text-3xl tracking-[-0.05em] lowercase mb-3">
+                  rhythmic pacing
+                </h3>
+
+                <p className="uppercase tracking-[0.2em] text-[10px] text-[#6F6F6F] dark:text-[#938F99]">
+                  Natural Flow
+                </p>
+              </div>
+            </motion.div>
+
+            {/* IMAGE CARD */}
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              custom={3}
+              className="md:col-span-8 overflow-hidden rounded-[36px] relative group"
+            >
+              <img
+                src="./minimal-desk.png"
+                alt=""
+                className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-[1.03] transition-transform duration-1000"
+              />
+
+              <div className="absolute inset-0 bg-black/25" />
+
+              <div className="absolute bottom-10 left-10 text-white">
+                <h3 className="font-[Epilogue] text-5xl tracking-[-0.05em] lowercase mb-4">
+                  digital stillness
+                </h3>
+
+                <p className="max-w-sm text-white/70 leading-relaxed">
+                  No distractions. No clutter. Just your intentions and the
+                  rhythm of the day.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* BROADSHEET */}
+        <section
+          id="archive"
+          className="scroll-mt-28 py-40 px-8 lg:px-20 bg-white dark:bg-[#141218]"
+        >
+          <div className="text-center mb-28">
+            <p className="uppercase tracking-[0.35em] text-[10px] text-[#6F6F6F] dark:text-[#938F99] mb-8">
+              The Archive
+            </p>
+
+            <h2 className="font-[Epilogue] text-6xl lg:text-8xl tracking-[-0.06em] lowercase leading-[0.9]">
+              the broadsheet
+              <br />
+              spread.
+            </h2>
+          </div>
+
+          <div className="border-y border-black/10 dark:border-white/10 py-16 grid grid-cols-1 lg:grid-cols-3 gap-16">
+            {/* LEFT */}
+            <div className="space-y-10">
+              <div className="border-b border-black/5 dark:border-white/5 pb-8">
+                <p className="uppercase tracking-[0.2em] text-[9px] opacity-50 mb-5">
+                  Volume 01 • Issue 04
                 </p>
 
-                <div className="flex items-end gap-2 h-28">
-                  {[40, 55, 45, 70, 90, 65, 50].map((h, i) => (
+                <h3 className="font-[Epilogue] text-3xl lowercase tracking-[-0.04em] mb-4">
+                  monday composition
+                </h3>
+
+                <p className="text-sm leading-relaxed text-[#6F6F6F] dark:text-[#938F99]">
+                  Meditation completed at dawn. Focus remains the primary
+                  objective. Silence became the framework for clarity.
+                </p>
+              </div>
+
+              <div className="overflow-hidden rounded-sm group">
+                <img
+                  src="./writing.png"
+                  alt=""
+                  className="w-full aspect-square object-cover group-hover:scale-[1.03] transition-transform duration-1000"
+                />
+              </div>
+            </div>
+
+            {/* CENTER */}
+            <div className="lg:border-x border-black/10 dark:border-white/10 lg:px-12">
+              <div className="text-center">
+                <p className="uppercase tracking-[0.35em] text-[10px] mb-10">
+                  Weekly Distribution
+                </p>
+
+                <div className="flex items-end gap-3 h-72 mb-10">
+                  {[30, 50, 40, 90, 70, 60, 35].map((h, i) => (
                     <div
                       key={i}
-                      className={`flex-1 rounded-lg ${
-                        i === 5
-                          ? "bg-[#48645E] dark:bg-[#CDC0E9]"
-                          : i === 4
-                            ? "bg-[#617b6e] dark:bg-[#B69DF8]"
-                            : i === 3
-                              ? "bg-[#8ea69a] dark:bg-[#CDC0E9]/70"
-                              : "bg-[#cfd8d3] dark:bg-[#CDC0E9]/30"
+                      className={`flex-1 rounded-full ${
+                        i === 3
+                          ? "bg-black dark:bg-[#D0BCFF]"
+                          : "bg-black/20 dark:bg-white/20"
                       }`}
                       style={{
                         height: `${h}%`,
@@ -184,175 +354,214 @@ function LandingPage() {
                     />
                   ))}
                 </div>
+
+                <p className="font-[Epilogue] text-2xl italic lowercase">
+                  “consistency is the only metric that matters.”
+                </p>
               </div>
+            </div>
+
+            {/* RIGHT */}
+            <div className="space-y-10">
+              <div className="overflow-hidden rounded-sm group">
+                <img
+                  src="./tea.png"
+                  alt=""
+                  className="w-full aspect-[3/4] object-cover group-hover:scale-[1.03] transition-transform duration-1000"
+                />
+              </div>
+
+              <div>
+                <h3 className="font-[Epilogue] text-3xl lowercase tracking-[-0.04em] mb-4">
+                  evening wind-down
+                </h3>
+
+                <p className="text-sm leading-relaxed text-[#6F6F6F] dark:text-[#938F99]">
+                  Closing the loop of the day through silence, reflection, and
+                  intentional rest.
+                </p>
+
+                <button className="mt-6 uppercase tracking-[0.2em] text-[10px] border-b border-black dark:border-white pb-1">
+                  View Full Journal
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* PHILOSOPHY */}
+        <section
+          id="philosophy"
+          className="scroll-mt-28 relative px-8 lg:px-20 py-32 lg:py-40 bg-[#FAFAF5] dark:bg-[#141218] overflow-hidden"
+        >
+          <div
+            className="absolute inset-0 pointer-events-none opacity-[0.12] dark:opacity-[0.16]"
+            style={{
+              backgroundImage: "url('/grain.png')",
+              backgroundRepeat: "repeat",
+              backgroundSize: "360px 360px",
+              backgroundPosition: "center",
+            }}
+          />
+          <div className="absolute inset-0 bg-[#FAFAF5]/85 dark:bg-[#141218]/82 pointer-events-none" />
+
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-center">
+            {/* IMAGE */}
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              className="relative mx-auto w-full max-w-[380px] sm:max-w-[420px] lg:mx-0 lg:max-w-[460px]"
+            >
+              <div className="absolute -top-6 -left-6 w-36 h-36 border border-black/10 dark:border-white/10 rounded-full" />
+              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#C58B5D]/20 dark:bg-[#D0BCFF]/15 blur-[70px] rounded-full" />
+
+              <div className="relative overflow-hidden rounded-[28px] bg-black shadow-[0_30px_80px_-35px_rgba(0,0,0,0.35)]">
+                <img
+                  src="/grain.png"
+                  alt="A quiet monochrome ritual scene"
+                  className="w-full aspect-[3/4] object-cover opacity-90"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent" />
+
+                <div className="absolute bottom-7 left-7 right-7 text-white">
+                  <p className="uppercase tracking-[0.25em] text-[10px] opacity-70 mb-3">
+                    Ritual Study
+                  </p>
+
+                  <h3 className="font-[Epilogue] text-3xl sm:text-4xl lowercase tracking-[-0.05em] leading-none">
+                    quiet focus
+                  </h3>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* CONTENT */}
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              custom={1}
+            >
+              <p className="uppercase tracking-[0.35em] text-[10px] text-[#6F6F6F] dark:text-[#938F99] mb-8">
+                The Philosophy
+              </p>
+
+              <h2 className="font-[Epilogue] text-6xl lg:text-7xl tracking-[-0.06em] lowercase leading-[0.9] mb-10">
+                the luxury
+                <br />
+                of intentionality.
+              </h2>
+
+              <div className="space-y-9">
+                <div className="flex gap-6">
+                  <div className="mt-1">
+                    <Sparkles
+                      size={22}
+                      strokeWidth={1.5}
+                      className="text-[#1A1A1A] dark:text-[#D0BCFF]"
+                    />
+                  </div>
+
+                  <div>
+                    <h3 className="font-[Epilogue] text-2xl lowercase mb-3">
+                      tactile feedback
+                    </h3>
+
+                    <p className="text-[#6F6F6F] dark:text-[#938F99] leading-relaxed">
+                      Interactions designed to feel like premium paper, ink, and
+                      thoughtful composition.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-6">
+                  <div className="mt-1">
+                    <Clock3
+                      size={22}
+                      strokeWidth={1.5}
+                      className="text-[#1A1A1A] dark:text-[#D0BCFF]"
+                    />
+                  </div>
+
+                  <div>
+                    <h3 className="font-[Epilogue] text-2xl lowercase mb-3">
+                      rhythmic cadence
+                    </h3>
+
+                    <p className="text-[#6F6F6F] dark:text-[#938F99] leading-relaxed">
+                      Built around natural momentum rather than overwhelming
+                      productivity systems.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-6">
+                  <div className="mt-1">
+                    <Leaf
+                      size={22}
+                      strokeWidth={1.5}
+                      className="text-[#1A1A1A] dark:text-[#D0BCFF]"
+                    />
+                  </div>
+
+                  <div>
+                    <h3 className="font-[Epilogue] text-2xl lowercase mb-3">
+                      quiet aesthetics
+                    </h3>
+
+                    <p className="text-[#6F6F6F] dark:text-[#938F99] leading-relaxed">
+                      A calm visual language designed to disappear into your
+                      ritual.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <Link to="/signin" className="inline-flex mt-12">
+                <Button className="px-8 py-4 uppercase text-xs tracking-[0.18em]">
+                  Start The Ritual
+                  <ArrowRight size={16} />
+                </Button>
+              </Link>
             </motion.div>
           </div>
         </section>
 
-        {/* ── FEATURES ── */}
-        <section className="px-8 lg:px-20 py-20">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: (
-                  <svg
-                    width="33"
-                    height="26"
-                    viewBox="0 0 33 26"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M3 25.5C2.175 25.5 1.46875 25.2062 0.88125 24.6187C0.29375 24.0312 0 23.325 0 22.5C0 21.675 0.29375 20.9688 0.88125 20.3813C1.46875 19.7938 2.175 19.5 3 19.5C3.15 19.5 3.28125 19.5 3.39375 19.5C3.50625 19.5 3.625 19.525 3.75 19.575L10.575 12.75C10.525 12.625 10.5 12.5063 10.5 12.3938C10.5 12.2812 10.5 12.15 10.5 12C10.5 11.175 10.7938 10.4688 11.3813 9.88125C11.9688 9.29375 12.675 9 13.5 9C14.325 9 15.0312 9.29375 15.6187 9.88125C16.2062 10.4688 16.5 11.175 16.5 12C16.5 12.05 16.475 12.3 16.425 12.75L20.25 16.575C20.375 16.525 20.4938 16.5 20.6063 16.5C20.7188 16.5 20.85 16.5 21 16.5C21.15 16.5 21.2812 16.5 21.3937 16.5C21.5062 16.5 21.625 16.525 21.75 16.575L27.075 11.25C27.025 11.125 27 11.0063 27 10.8938C27 10.7812 27 10.65 27 10.5C27 9.675 27.2938 8.96875 27.8813 8.38125C28.4688 7.79375 29.175 7.5 30 7.5C30.825 7.5 31.5313 7.79375 32.1188 8.38125C32.7063 8.96875 33 9.675 33 10.5C33 11.325 32.7063 12.0312 32.1188 12.6187C31.5313 13.2062 30.825 13.5 30 13.5C29.85 13.5 29.7188 13.5 29.6063 13.5C29.4938 13.5 29.375 13.475 29.25 13.425L23.925 18.75C23.975 18.875 24 18.9938 24 19.1063C24 19.2188 24 19.35 24 19.5C24 20.325 23.7062 21.0312 23.1187 21.6187C22.5312 22.2062 21.825 22.5 21 22.5C20.175 22.5 19.4688 22.2062 18.8813 21.6187C18.2938 21.0312 18 20.325 18 19.5C18 19.35 18 19.2188 18 19.1063C18 18.9938 18.025 18.875 18.075 18.75L14.25 14.925C14.125 14.975 14.0063 15 13.8938 15C13.7812 15 13.65 15 13.5 15C13.45 15 13.2 14.975 12.75 14.925L5.925 21.75C5.975 21.875 6 21.9938 6 22.1063C6 22.2188 6 22.35 6 22.5C6 23.325 5.70625 24.0312 5.11875 24.6187C4.53125 25.2062 3.825 25.5 3 25.5ZM4.5 10.4625L3.5625 8.4375L1.5375 7.5L3.5625 6.5625L4.5 4.5375L5.4375 6.5625L7.4625 7.5L5.4375 8.4375L4.5 10.4625ZM21 9L19.575 5.925L16.5 4.5L19.575 3.075L21 0L22.425 3.075L25.5 4.5L22.425 5.925L21 9Z"
-                      className="fill-[#1A1A1A] dark:fill-[#D0BCFF]"
-                    />
-                  </svg>
-                ),
-                title: "track streaks",
-                desc: "Visualize consistency through organic growth patterns and rhythmic momentum.",
-              },
-              {
-                icon: (
-                  <svg
-                    width="30"
-                    height="31"
-                    viewBox="0 0 30 31"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M0 12.075C0 9.575 0.55625 7.28125 1.66875 5.19375C2.78125 3.10625 4.275 1.375 6.15 0L7.9125 2.4C6.4125 3.5 5.21875 4.8875 4.33125 6.5625C3.44375 8.2375 3 10.075 3 12.075H0ZM27 12.075C27 10.075 26.5563 8.2375 25.6688 6.5625C24.7812 4.8875 23.5875 3.5 22.0875 2.4L23.85 0C25.725 1.375 27.2188 3.10625 28.3312 5.19375C29.4437 7.28125 30 9.575 30 12.075H27ZM3 25.575V22.575H6V12.075C6 10 6.625 8.15625 7.875 6.54375C9.125 4.93125 10.75 3.875 12.75 3.375V2.325C12.75 1.7 12.9688 1.16875 13.4062 0.73125C13.8438 0.29375 14.375 0.075 15 0.075C15.625 0.075 16.1562 0.29375 16.5938 0.73125C17.0312 1.16875 17.25 1.7 17.25 2.325V3.375C19.25 3.875 20.875 4.93125 22.125 6.54375C23.375 8.15625 24 10 24 12.075V22.575H27V25.575H3ZM15 30.075C14.175 30.075 13.4688 29.7812 12.8813 29.1938C12.2938 28.6063 12 27.9 12 27.075H18C18 27.9 17.7062 28.6063 17.1187 29.1938C16.5312 29.7812 15.825 30.075 15 30.075ZM9 22.575H21V12.075C21 10.425 20.4125 9.0125 19.2375 7.8375C18.0625 6.6625 16.65 6.075 15 6.075C13.35 6.075 11.9375 6.6625 10.7625 7.8375C9.5875 9.0125 9 10.425 9 12.075V22.575Z"
-                      className="fill-[#1A1A1A] dark:fill-[#D0BCFF]"
-                    />
-                  </svg>
-                ),
-                title: "smart reminders",
-                desc: "Gentle nudges synchronized with your biological clock and lifestyle flow.",
-              },
-              {
-                icon: (
-                  <svg
-                    width="33"
-                    height="24"
-                    viewBox="0 0 33 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M19.5 8.85V6.3C20.325 5.95 21.1688 5.6875 22.0312 5.5125C22.8937 5.3375 23.8 5.25 24.75 5.25C25.4 5.25 26.0375 5.3 26.6625 5.4C27.2875 5.5 27.9 5.625 28.5 5.775V8.175C27.9 7.95 27.2937 7.78125 26.6812 7.66875C26.0688 7.55625 25.425 7.5 24.75 7.5C23.8 7.5 22.8875 7.61875 22.0125 7.85625C21.1375 8.09375 20.3 8.425 19.5 8.85ZM19.5 17.1V14.55C20.325 14.2 21.1688 13.9375 22.0312 13.7625C22.8937 13.5875 23.8 13.5 24.75 13.5C25.4 13.5 26.0375 13.55 26.6625 13.65C27.2875 13.75 27.9 13.875 28.5 14.025V16.425C27.9 16.2 27.2937 16.0312 26.6812 15.9187C26.0688 15.8062 25.425 15.75 24.75 15.75C23.8 15.75 22.8875 15.8625 22.0125 16.0875C21.1375 16.3125 20.3 16.65 19.5 17.1ZM19.5 12.975V10.425C20.325 10.075 21.1688 9.8125 22.0312 9.6375C22.8937 9.4625 23.8 9.375 24.75 9.375C25.4 9.375 26.0375 9.425 26.6625 9.525C27.2875 9.625 27.9 9.75 28.5 9.9V12.3C27.9 12.075 27.2937 11.9062 26.6812 11.7937C26.0688 11.6812 25.425 11.625 24.75 11.625C23.8 11.625 22.8875 11.7437 22.0125 11.9812C21.1375 12.2188 20.3 12.55 19.5 12.975ZM8.25 18C9.425 18 10.5687 18.1312 11.6812 18.3937C12.7937 18.6562 13.9 19.05 15 19.575V4.8C13.975 4.2 12.8875 3.75 11.7375 3.45C10.5875 3.15 9.425 3 8.25 3C7.35 3 6.45625 3.0875 5.56875 3.2625C4.68125 3.4375 3.825 3.7 3 4.05V18.9C3.875 18.6 4.74375 18.375 5.60625 18.225C6.46875 18.075 7.35 18 8.25 18ZM18 19.575C19.1 19.05 20.2063 18.6562 21.3188 18.3937C22.4312 18.1312 23.575 18 24.75 18C25.65 18 26.5312 18.075 27.3937 18.225C28.2562 18.375 29.125 18.6 30 18.9V4.05C29.175 3.7 28.3188 3.4375 27.4312 3.2625C26.5437 3.0875 25.65 3 24.75 3C23.575 3 22.4125 3.15 21.2625 3.45C20.1125 3.75 19.025 4.2 18 4.8V19.575ZM16.5 24C15.3 23.05 14 22.3125 12.6 21.7875C11.2 21.2625 9.75 21 8.25 21C7.2 21 6.16875 21.1375 5.15625 21.4125C4.14375 21.6875 3.175 22.075 2.25 22.575C1.725 22.85 1.21875 22.8375 0.73125 22.5375C0.24375 22.2375 0 21.8 0 21.225V3.15C0 2.875 0.06875 2.6125 0.20625 2.3625C0.34375 2.1125 0.55 1.925 0.825 1.8C1.975 1.2 3.175 0.75 4.425 0.45C5.675 0.15 6.95 0 8.25 0C9.7 0 11.1188 0.1875 12.5063 0.5625C13.8938 0.9375 15.225 1.5 16.5 2.25C17.775 1.5 19.1062 0.9375 20.4937 0.5625C21.8813 0.1875 23.3 0 24.75 0C26.05 0 27.325 0.15 28.575 0.45C29.825 0.75 31.025 1.2 32.175 1.8C32.45 1.925 32.6562 2.1125 32.7938 2.3625C32.9313 2.6125 33 2.875 33 3.15V21.225C33 21.8 32.7562 22.2375 32.2687 22.5375C31.7812 22.8375 31.275 22.85 30.75 22.575C29.825 22.075 28.8563 21.6875 27.8438 21.4125C26.8312 21.1375 25.8 21 24.75 21C23.25 21 21.8 21.2625 20.4 21.7875C19 22.3125 17.7 23.05 16.5 24Z"
-                      className="fill-[#1A1A1A] dark:fill-[#E6E1E5]"
-                    />
-                  </svg>
-                ),
-                title: "visual history",
-                desc: "A digital broadsheet of your progress, curated as an editorial journey.",
-              },
-            ].map((f, i) => (
-              <motion.div
-                key={i}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-                custom={i}
-                className="min-h-87 rounded-[50px] p-8 flex flex-col justify-between bg-white dark:bg-[#1D1B20] border border-gray-300 dark:border-[#2A2A2A]"
-              >
-                <span className="text-2xl block">{f.icon}</span>
-                <div>
-                  <h3
-                    className="text-2xl font-medium mb-3 text-[#1A1A1A] dark:text-[#E6E1E5]"
-                    style={{
-                      fontFamily: "Epilogue, sans-serif",
-                    }}
-                  >
-                    {f.title}
-                  </h3>
-                  <p className="text-md leading-relaxed text-gray-400 dark:text-[#938F99]">
-                    {f.desc}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+        {/* FINAL CTA */}
+        <section className="px-8 lg:px-20 pb-32">
+          <div className="relative overflow-hidden rounded-[48px] bg-[#111111] text-white px-8 py-28 lg:p-32 text-center">
+            <div className="absolute inset-0 bg-black/50" />
+
+            <div className="relative z-10">
+              <h2 className="font-[Epilogue] text-6xl lg:text-8xl tracking-[-0.07em] lowercase leading-[0.9] mb-12">
+                begin your
+                <br />
+                first ritual.
+              </h2>
+
+              <Link to="/signin">
+                <Button
+                  variant="secondary"
+                  className="mx-auto px-10 sm:px-14 py-5 sm:py-6 uppercase tracking-[0.24em] text-[10px]"
+                >
+                  Join The Collective
+                  <ArrowRight size={16} />
+                </Button>
+              </Link>
+
+              <p className="mt-10 uppercase tracking-[0.25em] text-[10px] opacity-50">
+                limited invites released weekly
+              </p>
+            </div>
           </div>
         </section>
 
-        {/* ── PHILOSOPHY ── */}
-        <section className="px-8 lg:px-20 py-20 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Left — Image */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="rounded-4xl overflow-hidden bg-gray-200 dark:bg-[#1D1B20] flex items-center justify-center h-65 sm:h-80 lg:h-95"
-          >
-            <img
-              src="/meditation.png"
-              alt="Meditation illustration"
-              className="w-[80%] max-w-105 h-auto object-contain opacity-80"
-            />
-          </motion.div>
-
-          {/* Right — Text */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            custom={1}
-            className="border border-gray-300 dark:border-[#2A2A2A] p-8 rounded-3xl"
-          >
-            <h2
-              className="text-5xl font-bold leading-tight mb-6 text-[#1A1A1A] dark:text-[#E6E1E5]"
-              style={{
-                fontFamily: "Epilogue, sans-serif",
-                letterSpacing: "-0.04em",
-              }}
-            >
-              designed for
-              <br />
-              quiet intention.
-            </h2>
-            <p className="text-sm leading-relaxed mb-8 text-gray-400 dark:text-[#938F99]">
-              We believe habit tracking shouldn't feel like a chore. It should
-              feel like writing in a premium journal—an act of self-care and
-              artistic expression.
-            </p>
-
-            <div className="flex flex-col gap-4">
-              {[
-                {
-                  title: "no clutter",
-                  sub: "only what matters to your ritual.",
-                },
-                {
-                  title: "tonal depth",
-                  sub: "visual hierarchy through soft layers.",
-                },
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 bg-[#48645E] dark:bg-[#D0BCFF]">
-                    <span className="text-xs text-white dark:text-[#1A1A1A]">
-                      ✓
-                    </span>
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm text-[#1A1A1A] dark:text-[#E6E1E5]">
-                      {item.title}
-                    </p>
-                    <p className="text-xs text-gray-400 dark:text-[#938F99]">
-                      {item.sub}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </section>
-
-        {/* ── FOOTER ── */}
         <Footer />
-      </div>
+      </main>
     </>
   );
 }

@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Bell, User, Crown } from "lucide-react";
-import Button from "../Button";
+import { Bell } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -15,19 +14,12 @@ function Header() {
     return "Good Evening";
   };
 
-  const getEmoji = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return "🌅";
-    if (hour < 18) return "☀️";
-    return "🌙";
-  };
-
   return (
     <motion.nav
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="sticky top-0 z-50 h-16 w-full max-w-full flex items-center justify-between lg:px-10 px-5 bg-[#FAFAF5]/80 dark:bg-[#1D1B20]/80 backdrop-blur-xl "
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      className="sticky top-0 z-50 h-16 w-full max-w-full flex items-center justify-between border-b border-border-subtle/70 bg-background/88 px-5 backdrop-blur-xl lg:px-10"
     >
       {/* LEFT — GREETING */}
       <div>
@@ -35,31 +27,29 @@ function Header() {
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="text-lg font-semibold text-text-primary dark:text-white"
-          style={{ fontFamily: "Epilogue, sans-serif" }}
+          className="font-heading text-lg font-semibold tracking-[-0.03em] text-text-primary"
         >
           {getGreeting()}
-          {user?.username && `, ${user.username}`} {getEmoji()}
+          {user?.username && `, ${user.username}`}
         </motion.h1>
       </div>
 
       {/* RIGHT */}
-      <div className="flex items-center gap-4 ml-6">
+      <div className="ml-6 flex items-center gap-3">
         {/* Bell */}
         <motion.button
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.95 }}
-          className="p-2 rounded-full bg-[#F3F3F3] dark:bg-[#2A2A2A] hover:bg-white dark:hover:bg-[#1D1B20] transition-all duration-200"
+          whileHover={{ y: -1, scale: 1.03 }}
+          whileTap={{ scale: 0.96 }}
+          className="rounded-full border border-border-subtle bg-surface p-2 text-text-muted hover:text-text-primary"
         >
-          
-          <Bell size={18} className="text-[#1A1A1A] dark:text-[#E6E1E5]" />
+          <Bell size={18} />
         </motion.button>
 
         {/* Profile */}
-        <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}>
+        <motion.div whileHover={{ y: -1, scale: 1.03 }} whileTap={{ scale: 0.96 }}>
           <Link
             to="/settings"
-            className="flex items-center justify-center w-9 h-9 rounded-full bg-[#1A1A1A] dark:bg-[#D0BCFF] text-white dark:text-black hover:opacity-90 transition-all duration-200 text-sm font-semibold"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-background shadow-[0_12px_28px_-18px_rgba(26,26,26,0.8)]"
           >
             {user?.username?.charAt(0)?.toUpperCase() || "U"}
           </Link>

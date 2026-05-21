@@ -33,20 +33,20 @@ export default function DangerZone() {
   return (
     <>
       {/* CARD */}
-      <div className="rounded-xl p-5 sm:p-7 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 bg-white dark:bg-[#1D1B20] ">
+      <div className="app-surface flex flex-col gap-4 rounded-2xl p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-7">
         
         {/* Icon */}
-        <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 bg-red-500/10">
-          <AlertTriangle size={20} className="text-red-500" />
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-danger-soft">
+          <AlertTriangle size={20} className="text-danger" />
         </div>
 
         {/* Text */}
         <div className="flex-1">
-          <h3 className="font-bold text-base sm:text-lg text-[#1A1A1A] dark:text-[#E6E1E5]">
+          <h3 className="font-heading text-base font-bold tracking-[-0.03em] text-text-primary sm:text-lg">
             account termination
           </h3>
 
-          <p className="text-sm text-[#888888] dark:text-[#938F99] leading-relaxed">
+          <p className="text-sm leading-relaxed text-text-muted">
             this action is irreversible. all tracking history, rituals, and
             personal statistics will be permanently removed from our servers.
           </p>

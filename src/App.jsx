@@ -3,12 +3,11 @@ import "./App.css";
 import Sidebar from "./components/Sidebar";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header/Header";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setAuthChecked, signin } from "./store/authSlice";
 import { getCurrentUser } from "./api/auth-api";
 import MobileNav from "./components/MobileNav";
 import ToastProvider from "./components/Toast/ToastProvider";
-import { setTheme } from "./store/themeSlice";
 import SwipeNavigation from "./SwipeNavigation";
 
 const HIDE_CHROME_ON = ["/", "/signin", "/signup", "/verify-email"];
@@ -17,51 +16,17 @@ function App() {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const theme = useSelector((state) => state.theme.theme);
-  const authChecked = useSelector((state) => state.auth.authChecked);
-
   const shouldHide = HIDE_CHROME_ON.includes(location.pathname);
   const shouldHideMobileNav =
     shouldHide || location.pathname === "/create-habit";
 
-  // ─── Load saved theme ─────────────────────────────────────────────────────
-  useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    if (saved) dispatch(setTheme(saved));
-  }, [dispatch]);
-
-  // ─── Apply theme to <html> ────────────────────────────────────────────────
+  // ─── Keep dark theme disabled ─────────────────────────────────────────────
   useEffect(() => {
     const root = document.documentElement;
-
-    const applyTheme = (t) => {
-      if (t === "dark") {
-        root.classList.add("dark");
-        root.style.colorScheme = "dark";
-      } else if (t === "light") {
-        root.classList.remove("dark");
-        root.style.colorScheme = "light";
-      } else {
-        const isDark = window.matchMedia(
-          "(prefers-color-scheme: dark)",
-        ).matches;
-        root.classList.toggle("dark", isDark);
-        root.style.colorScheme = isDark ? "dark" : "light";
-      }
-    };
-
-    applyTheme(theme);
-
-    if (theme === "system") {
-      const mq = window.matchMedia("(prefers-color-scheme: dark)");
-      const handleChange = (e) => {
-        root.classList.toggle("dark", e.matches);
-        root.style.colorScheme = e.matches ? "dark" : "light";
-      };
-      mq.addEventListener("change", handleChange);
-      return () => mq.removeEventListener("change", handleChange);
-    }
-  }, [theme]);
+    root.classList.remove("dark");
+    root.style.colorScheme = "light";
+    localStorage.setItem("theme", "light");
+  }, []);
 
   // ─── Auth check ───────────────────────────────────────────────────────────
   useEffect(() => {

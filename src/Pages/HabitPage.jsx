@@ -84,34 +84,31 @@ export default function HabitsPage() {
   return (
     <div className="w-full">
       {/* Header */}
-      <div className="flex justify-between items-start mb-8">
+      <div className="mb-8 flex items-start justify-between gap-5">
         <div>
-          <p className="text-xs tracking-widest mb-1 text-[#888888] dark:text-[#938F99]">
+          <p className="app-label mb-1">
             OVERVIEW
           </p>
           <h1
-            className="font-bold text-[#1A1A1A] dark:text-[#E6E1E5]"
+            className="app-heading text-text-primary"
             style={{
-              fontFamily: "Epilogue, sans-serif",
               fontSize: "clamp(2.5rem, 5vw, 4rem)",
-              letterSpacing: "-0.04em",
             }}
           >
             my habits
           </h1>
         </div>
 
-        <button
+        <Button
           onClick={() => navigate("/create-habit")}
-          className="px-6 py-3 rounded-full text-xs font-bold tracking-widest mt-2 bg-[#1A1A1A] dark:bg-[#D0BCFF] text-[#FAFAF5] dark:text-[#1A1A1A] hover:bg-[#333333] dark:hover:bg-[#B69DF8] transition-colors duration-200"
-          style={{ fontFamily: "Manrope, sans-serif" }}
+          className="mt-2 px-6 py-3 text-[10px]"
         >
           ADD NEW
-        </button>
+        </Button>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-8 mb-8 border-b border-[#E8E4DC] dark:border-[#49454F]">
+      <div className="mb-8 flex items-center gap-8 border-b border-border-subtle">
         {filters.map((filter) => (
           <button
             key={filter}
@@ -120,17 +117,16 @@ export default function HabitsPage() {
               if (filter === "ACTIVE") navigate("/rituals/active");
               if (filter === "COMPLETED") navigate("/rituals/completed");
             }}
-            className={`relative pb-3 text-xs font-semibold tracking-widest transition-all duration-200 ${
-              activeFilter === filter ? "text-[#1A1A1A] dark:text-[#D0BCFF]" : "text-[#888888] dark:text-[#938F99]"
+            className={`relative pb-3 text-xs font-bold tracking-[0.16em] transition-all duration-200 ${
+              activeFilter === filter ? "text-text-primary" : "text-text-muted"
             }`}
-            style={{ fontFamily: "Manrope, sans-serif" }}
           >
             {filter}
 
             {activeFilter === filter && (
               <motion.div
                 layoutId="filterLine"
-                className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-[#1A1A1A] dark:bg-[#D0BCFF]"
+                className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-primary"
               />
             )}
           </button>
@@ -139,12 +135,12 @@ export default function HabitsPage() {
 
       {/* Grid */}
       {filteredHabits.length === 0 ? (
-        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
+        <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6">
           <div className="text-center">
-            <p className="text-3xl font-semibold mb-2 text-[#1A1A1A] dark:text-[#E6E1E5]" style={{ fontFamily: "Epilogue, sans-serif" }}>
+            <p className="font-heading mb-2 text-3xl font-semibold tracking-[-0.04em] text-text-primary">
               no rituals yet.
             </p>
-            <p className="text-sm text-[#888888] dark:text-[#938F99]">
+            <p className="text-sm text-text-muted">
               design your first daily rhythm.
             </p>
           </div>

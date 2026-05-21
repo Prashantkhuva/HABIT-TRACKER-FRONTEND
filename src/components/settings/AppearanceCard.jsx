@@ -1,39 +1,36 @@
-import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { useDispatch, useSelector } from "react-redux";
-import { setTheme } from "../../store/themeSlice";
 
 export default function AppearanceCard() {
-  const dispatch = useDispatch();
-  const theme = useSelector((state) => state.theme.theme);
-
   const options = ["light", "dark", "system"];
+  const theme = "light";
 
   return (
-    <div className="rounded-xl p-6 h-full flex flex-col justify-between bg-white dark:bg-[#1D1B20] ">
+    <div className="app-surface flex h-full flex-col justify-between rounded-2xl p-6">
       
       {/* Title */}
       <div>
-        <p className="text-[10px] tracking-[0.2em] uppercase mb-2 text-[#888888] dark:text-[#938F99]">
+        <p className="app-label mb-2">
           VISUALS
         </p>
 
         <h2
-          className="text-2xl font-semibold text-[#1A1A1A] dark:text-[#E6E1E5]"
-          style={{ fontFamily: "Epilogue" }}
+          className="font-heading text-2xl font-semibold tracking-[-0.04em] text-text-primary"
         >
           appearance
         </h2>
       </div>
 
       {/* Toggle */}
-      <div className="relative grid grid-cols-3 bg-[#F3F3F3] dark:bg-[#2A2A2A] rounded-full p-1 mt-6">
+      <div
+        className="relative mt-6 grid cursor-not-allowed select-none grid-cols-3 rounded-full bg-surface-dim p-1 opacity-70"
+        aria-disabled="true"
+      >
         
         {/* Animated pill */}
         <motion.div
           layout
           transition={{ type: "spring", stiffness: 260, damping: 22 }}
-          className="absolute top-1 bottom-1 rounded-full bg-[#1A1A1A] dark:bg-[#D0BCFF] shadow-sm"
+          className="absolute bottom-1 top-1 rounded-full bg-primary shadow-sm"
           style={{
             width: "calc(100% / 3 - 6px)",
             left:
@@ -54,18 +51,23 @@ export default function AppearanceCard() {
           return (
             <button
               key={opt}
-              onClick={() => dispatch(setTheme(opt))}
+              type="button"
+              disabled
               className={`relative z-10 py-2 text-xs tracking-wide transition-all duration-200 ${
                 isActive
-                  ? "text-[#FAFAF5] dark:text-black font-medium"
-                  : "text-[#888888] dark:text-[#938F99]"
-              }`}
+                  ? "font-medium text-background"
+                  : "text-text-muted"
+              } cursor-not-allowed`}
             >
               {opt.toUpperCase()}
             </button>
           );
         })}
       </div>
+
+      <p className="app-label mt-3">
+        Coming soon
+      </p>
     </div>
   );
 }

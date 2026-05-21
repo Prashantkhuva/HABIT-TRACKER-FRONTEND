@@ -1,5 +1,4 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
   LayoutDashboard,
   Sparkles,
@@ -40,30 +39,27 @@ export default function Sidebar() {
 
   return (
     <aside
-      className="hidden lg:flex fixed top-0 left-0 h-full w-56 z-40 flex-col bg-[#F4F4EF] dark:bg-[#0F0D13] border-r border-[#E8E4DC] dark:border-[#49454F]"
+      className="fixed left-0 top-0 z-40 hidden h-full w-56 flex-col border-r border-border-subtle bg-surface-dim lg:flex"
     >
 
       {/* Logo */}
-      <div className="lg:px-6 px-0 pt-8 pb-6 flex flex-col lg:items-start items-center">
+      <div className="flex flex-col items-center px-0 pb-6 pt-8 lg:items-start lg:px-6">
         <Link to={"/dashboard"}>
           <h1
-            className="hidden lg:block text-2xl font-medium tracking-tight text-[#1A1A1A] dark:text-[#E6E1E5]"
-            style={{ fontFamily: "Epilogue, sans-serif" }}
+            className="hidden font-heading text-2xl font-semibold lowercase tracking-[-0.055em] text-text-primary lg:block"
           >
             habitflow
           </h1>
           <h1
-            className="lg:hidden text-2xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#E6E1E5]"
-            style={{ fontFamily: "Epilogue, sans-serif" }}
+            className="font-heading text-2xl font-bold tracking-tight text-text-primary lg:hidden"
           >
             h.
           </h1>
         </Link>
         <p
-          className="hidden lg:block text-[10px] tracking-widest mt-1 text-[#888888] dark:text-[#938F99]"
-          style={{ fontFamily: "Manrope, sans-serif" }}
+          className="app-label mt-1 hidden lg:block"
         >
-          PREMIUM EDITORIAL TRACKING
+          EDITORIAL TRACKING
         </p>
       </div>
 
@@ -71,8 +67,7 @@ export default function Sidebar() {
       <div className="lg:px-4 px-2 mb-6">
         <Button
           onClick={() => navigate("/create-habit")}
-         
-          style={{ fontFamily: "Manrope, sans-serif" }}
+          className="w-full px-4 py-3 text-[10px]"
         >
           <span className="hidden lg:inline">NEW RITUAL</span>
           <Plus className="lg:hidden" size={20} />
@@ -80,26 +75,25 @@ export default function Sidebar() {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 lg:px-3 px-2 flex flex-col gap-1">
+      <nav className="flex flex-1 flex-col gap-1 px-2 lg:px-3">
         {navItems.map(({ to, icon: Icon, label }) => (
           <NavLink key={to} to={to}>
             {({ isActive }) => (
               <div
-                className={`flex items-center lg:justify-start justify-center gap-3 lg:px-3 px-0 py-3 rounded-lg cursor-pointer transition-all duration-200 relative ${isActive
-                  ? "bg-white text-[#1A1A1A] dark:bg-[#1D1B20] dark:text-[#D0BCFF]"
-                  : "bg-transparent text-[#888888] dark:text-[#938F99] hover:bg-white dark:hover:bg-[#1D1B20] hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5]"
+                className={`relative flex cursor-pointer items-center justify-center gap-3 rounded-xl px-0 py-3 transition-all duration-200 lg:justify-start lg:px-3 ${isActive
+                  ? "bg-surface text-text-primary shadow-[0_14px_34px_-28px_rgba(26,26,26,0.45)]"
+                  : "bg-transparent text-text-muted hover:bg-surface hover:text-text-primary"
                   }`}
               >
                 {/* Active indicator */}
                 {isActive && (
                   <span
-                    className="absolute left-0 w-1 h-4 rounded-full bg-[#1A1A1A] dark:bg-[#D0BCFF]"
+                    className="absolute left-0 h-4 w-1 rounded-full bg-primary"
                   />
                 )}
                 <Icon size={18} className="shrink-0" />
                 <span
-                  className="hidden lg:block text-xs font-semibold tracking-widest"
-                  style={{ fontFamily: "Manrope, sans-serif" }}
+                  className="hidden text-[11px] font-bold tracking-[0.16em] lg:block"
                 >
                   {label}
                 </span>
@@ -110,16 +104,15 @@ export default function Sidebar() {
       </nav>
 
       {/* Bottom */}
-      <div className="lg:px-3 px-2 pb-8 flex flex-col gap-1">
+      <div className="flex flex-col gap-1 px-2 pb-8 lg:px-3">
         {/* Help */}
         <button
-          className="w-full flex items-center lg:justify-start justify-center gap-3 lg:px-3 px-0 py-3 rounded-lg transition-all duration-200 text-[#888888] dark:text-[#938F99] hover:bg-white dark:hover:bg-[#1D1B20] hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5]"
+          className="flex w-full items-center justify-center gap-3 rounded-xl px-0 py-3 text-text-muted transition-all duration-200 hover:bg-surface hover:text-text-primary lg:justify-start lg:px-3"
           onClick={() => navigate("/help")}
         >
           <HelpCircle size={18} className="shrink-0" />
           <span
-            className="hidden lg:block text-xs font-semibold tracking-widest"
-            style={{ fontFamily: "Manrope, sans-serif" }}
+            className="hidden text-[11px] font-bold tracking-[0.16em] lg:block"
           >
             HELP
           </span>
@@ -128,12 +121,11 @@ export default function Sidebar() {
         {/* Sign Out */}
         <button
           onClick={handleSignOut}
-          className="w-full flex items-center lg:justify-start justify-center gap-3 lg:px-3 px-0 py-3 rounded-lg transition-all duration-200 text-[#888888] dark:text-[#938F99] hover:bg-white dark:hover:bg-[#1D1B20] hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5]"
+          className="flex w-full items-center justify-center gap-3 rounded-xl px-0 py-3 text-text-muted transition-all duration-200 hover:bg-danger-soft hover:text-danger lg:justify-start lg:px-3"
         >
           <LogOut size={18} className="shrink-0" />
           <span
-            className="hidden lg:block text-xs font-semibold tracking-widest"
-            style={{ fontFamily: "Manrope, sans-serif" }}
+            className="hidden text-[11px] font-bold tracking-[0.16em] lg:block"
           >
             SIGN OUT
           </span>

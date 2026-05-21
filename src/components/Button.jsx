@@ -9,60 +9,53 @@ function Button({
   ...props
 }) {
   const variants = {
-    // 🔥 PRIMARY (FIXED)
     primary: `
-        bg-[#1A1A1A] text-[#FAFAF5] 
-  hover:bg-[#333333]
-  
-  dark:bg-[#D0BCFF] dark:text-[#1A1A1A]
-  dark:hover:bg-[#B69DF8]
+      bg-primary text-background shadow-[0_14px_34px_-22px_rgba(26,26,26,0.85)]
+      hover:bg-primary-soft
+      dark:bg-primary dark:text-[#1A1A1A] dark:hover:bg-primary-soft
     `,
 
-    // 🔥 SECONDARY
     secondary: `
-      bg-[#F4F4EF] text-[#1A1A1A] border border-[#E8E4DC]
-      hover:bg-[#E8E4DC]
-      dark:bg-[#2A2A2A] dark:text-[#E6E1E5] dark:border-[#49454F]
+      bg-surface-dim text-text-primary border border-border-subtle
+      hover:bg-border-subtle/60
+      dark:bg-surface-dim dark:text-text-primary dark:border-border-subtle
     `,
 
-    // 🔥 OUTLINE
     outline: `
-      bg-transparent text-[#1A1A1A] border border-[#E8E4DC]
-      hover:bg-[#F4F4EF]
-      dark:text-[#E6E1E5] dark:border-[#49454F] dark:hover:bg-[#2A2A2A]
+      bg-transparent text-text-primary border border-border-subtle
+      hover:bg-surface-dim
+      dark:text-text-primary dark:border-border-subtle dark:hover:bg-surface-dim
     `,
 
-    // 🔥 GHOST
     ghost: `
-      bg-transparent text-[#888888]
-      hover:text-[#1A1A1A]
-      dark:text-[#938F99] dark:hover:text-[#E6E1E5]
+      bg-transparent text-text-muted
+      hover:bg-surface-dim hover:text-text-primary
+      dark:text-text-muted dark:hover:text-text-primary
     `,
 
-    // 🔥 DANGER
     danger: `
-      bg-[#FFEDED] text-[#D32F2F]
-      hover:bg-[#FFDADA]
-      dark:bg-[#311111] dark:text-[#F2B8B5] dark:hover:bg-[#411111]
+      bg-danger-soft text-danger
+      hover:bg-danger-soft/80
+      dark:bg-danger-soft dark:text-danger
     `,
   };
 
   const ghostHover = {
     red: `
-      hover:border-red-500 hover:text-red-500 hover:bg-red-50 
-      dark:hover:bg-red-900/20
+      hover:text-danger hover:bg-danger-soft
+      dark:hover:bg-danger-soft
     `,
     green: `
-      hover:border-[#4F6F64] hover:text-[#4F6F64] hover:bg-[#EEF4F2] 
-      dark:hover:bg-[#4F6F64]/20
+      hover:text-accent-mint hover:bg-accent-soft
+      dark:hover:bg-accent-soft
     `,
     gray: `
-      hover:border-[#1A1A1A] hover:text-[#1A1A1A] hover:bg-[#F3F3F3] 
-      dark:hover:bg-[#2A2A2A]
+      hover:text-text-primary hover:bg-surface-dim
+      dark:hover:bg-surface-dim
     `,
     default: `
-      hover:border-[#1A1A1A] hover:text-[#1A1A1A] hover:bg-[#F5F5F5] 
-      dark:hover:bg-[#2A2A2A]
+      hover:text-text-primary hover:bg-surface-dim
+      dark:hover:bg-surface-dim
     `,
   };
 
@@ -70,15 +63,19 @@ function Button({
     <motion.button
       type={type}
       className={`
-        px-6 py-3 inline-flex items-center justify-center gap-2
-        rounded-full font-thin text-sm tracking-widest
-        transition-all duration-200 font-body
+        inline-flex items-center justify-center gap-2 rounded-full
+        px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.18em]
+        outline-none transition-all duration-200
+        focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2
+        focus-visible:ring-offset-background
+        disabled:pointer-events-none disabled:opacity-50
         ${variants[variant]}
         ${variant === "ghost" ? ghostHover[color] : ""}
         ${className}
       `}
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.97 }}
+      whileHover={props.disabled ? undefined : { y: -1, scale: 1.015 }}
+      whileTap={props.disabled ? undefined : { scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 420, damping: 28 }}
       {...props}
     >
       {children}

@@ -46,16 +46,13 @@ export default function ChangePasswordCard() {
 
   return (
     <div
-      className="
-      rounded-xl p-6
-      bg-[#FAFAF5] dark:bg-[#1D1B20]
-    "
+      className="app-surface rounded-2xl p-6"
     >
-      <p className="text-[10px] tracking-widest text-[#888888] dark:text-[#938F99] mb-2">
+      <p className="app-label mb-2">
         SECURITY
       </p>
 
-      <h2 className="text-xl font-semibold mb-6 text-[#1A1A1A] dark:text-[#E6E1E5]">
+      <h2 className="font-heading mb-6 text-xl font-semibold tracking-[-0.04em] text-text-primary">
         change password
       </h2>
 

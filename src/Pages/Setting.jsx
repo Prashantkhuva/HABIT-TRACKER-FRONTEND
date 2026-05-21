@@ -61,13 +61,12 @@ export default function SettingsPage() {
           className="mb-10"
         >
           <h1
-            className="font-bold text-[clamp(2.5rem,5vw,4rem)] tracking-[-0.04em] text-text-primary dark:text-white"
-            style={{ fontFamily: "Epilogue, sans-serif" }}
+            className="app-heading text-[clamp(2.5rem,5vw,4rem)] text-text-primary"
           >
             settings
           </h1>
-          <p className="text-xs tracking-widest mt-1 text-text-muted">
-            CONFIGURE YOUR CREATIVE SPACE
+          <p className="app-label mt-2">
+            Configure your creative space
           </p>
         </motion.div>
 
@@ -92,21 +91,13 @@ export default function SettingsPage() {
         >
           <button
             onClick={() => navigate("/change-password")}
-            className="
-      w-full sm:w-auto
-      flex items-center justify-between gap-6
-      px-4 py-3 rounded-lg
-      bg-[#FAFAF5] dark:bg-[#1D1B20]
-      border border-[#E8E4DC] dark:border-[#49454F]
-      hover:bg-[#F3F3F3] dark:hover:bg-[#2A2A2A]
-      transition-all duration-200
-    "
+            className="app-surface flex w-full items-center justify-between gap-6 rounded-2xl px-5 py-4 transition-all duration-200 hover:-translate-y-0.5 hover:bg-surface-dim sm:w-auto"
           >
-            <span className="text-sm text-[#1A1A1A] dark:text-[#E6E1E5]">
+            <span className="text-sm font-semibold text-text-primary">
               Change Password
             </span>
 
-            <span className="text-xs text-[#888888]">→</span>
+            <span className="text-xs text-text-muted">→</span>
           </button>
         </motion.div>
 
@@ -131,7 +122,7 @@ export default function SettingsPage() {
           {/* Help */}
           <button
             onClick={() => navigate("/help")}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-text-muted dark:text-dark-text-muted hover:bg-surface dark:hover:bg-dark-surface hover:text-text-primary dark:hover:text-dark-text-primary transition-all duration-200"
+            className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-text-muted transition-all duration-200 hover:bg-surface-dim hover:text-text-primary"
           >
             <HelpCircle size={16} />
             <span>Help</span>
@@ -140,7 +131,7 @@ export default function SettingsPage() {
           {/* Logout */}
           <button
             onClick={handleSignOut}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-red-400 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200"
+            className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-danger transition-all duration-200 hover:bg-danger-soft"
           >
             <LogOut size={16} />
             <span>Logout</span>

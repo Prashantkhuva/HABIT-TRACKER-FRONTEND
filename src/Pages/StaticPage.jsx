@@ -48,7 +48,7 @@ const scaleIn = {
 function Eyebrow({ children, className = "" }) {
   return (
     <p
-      className={`text-[10px] tracking-[0.32em] uppercase text-[#888888] dark:text-[#938F99] ${className}`}
+      className={`text-[10px] font-bold tracking-[0.26em] uppercase text-[#8B8477] ${className}`}
     >
       {children}
     </p>
@@ -57,13 +57,13 @@ function Eyebrow({ children, className = "" }) {
 
 function MiniMetric({ icon: Icon, label, value, accent = false }) {
   return (
-    <div className="flex items-center justify-between py-3.5 border-b border-[#E8E4DC] dark:border-[#49454F] last:border-0">
-      <span className="flex items-center gap-2.5 text-xs text-[#888888] dark:text-[#938F99]">
+    <div className="flex items-center justify-between border-b border-[#E6DED1] py-3.5 last:border-0">
+      <span className="flex items-center gap-2.5 text-xs text-[#8B8477]">
         <Icon size={13} />
         {label}
       </span>
       <span
-        className={`text-xs font-bold ${accent ? "text-[#48645E] dark:text-[#D0BCFF]" : "text-[#1A1A1A] dark:text-[#E6E1E5]"}`}
+        className={`text-xs font-bold ${accent ? "text-[#47655E]" : "text-[#181714]"}`}
       >
         {value}
       </span>
@@ -125,30 +125,32 @@ export default function StatisticsPage() {
   const completionPct = stats.completionRate || 0;
 
   return (
-    <div className="w-full space-y-10">
+    <div className="relative w-full space-y-8 overflow-hidden pb-6">
+      <div className="pointer-events-none absolute -right-28 top-8 h-72 w-72 rounded-full bg-[#C8E6DF]/30 blur-3xl" />
+      <div className="pointer-events-none absolute -left-24 top-80 h-64 w-64 rounded-full bg-[#E9D7B8]/45 blur-3xl" />
+
       {/* ── HEADER ────────────────────────────────────── */}
       <motion.div
         variants={fadeUp}
         initial="hidden"
         animate="show"
         custom={0}
-        className="flex items-end justify-between"
+        className="relative z-10 flex items-end justify-between"
       >
         <div>
           <Eyebrow className="mb-4">Analytics</Eyebrow>
           <h1
-            className="text-[clamp(40px,6vw,72px)] font-black leading-[0.92] tracking-[-0.05em] text-[#1A1A1A] dark:text-[#E6E1E5]"
+            className="text-[clamp(44px,7vw,84px)] font-black leading-[0.88] tracking-[-0.07em] text-[#181714]"
             style={{ fontFamily: "Epilogue, sans-serif" }}
           >
-            curated{" "}
-            <em className="not-italic text-[#48645E] dark:text-[#D0BCFF]">
-              rhythm
-            </em>
+            ritual
+            <br />
+            intelligence.
           </h1>
         </div>
 
-        <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-[#1D1B20] border border-[#E8E4DC] dark:border-[#49454F] text-[11px] tracking-[0.2em] uppercase text-[#888888] dark:text-[#938F99]">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#48645E] dark:bg-[#D0BCFF] animate-pulse" />
+        <div className="hidden items-center gap-2 rounded-full border border-[#E6DED1] bg-white/70 px-4 py-2 text-[11px] uppercase tracking-[0.2em] text-[#8B8477] shadow-sm backdrop-blur sm:flex">
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#47655E]" />
           Live sync
         </div>
       </motion.div>
@@ -159,16 +161,16 @@ export default function StatisticsPage() {
         initial="hidden"
         animate="show"
         custom={1}
-        className="relative overflow-hidden rounded-[32px] bg-white dark:bg-[#1D1B20] p-8 sm:p-12 border border-[#E8E4DC] dark:border-[#49454F]"
+        className="relative overflow-hidden rounded-[36px] border border-[#E6DED1] bg-[#FFFEFA] p-7 shadow-[0_30px_90px_-60px_rgba(24,23,20,0.7)] sm:p-10"
         style={{ fontFamily: "Epilogue, sans-serif" }}
       >
         {/* glows */}
         <motion.div
           animate={{ y: [0, -18, 0] }}
           transition={{ repeat: Infinity, duration: 7, ease: "easeInOut" }}
-          className="absolute -top-32 -right-32 w-[380px] h-[380px] rounded-full bg-[#48645E]/[0.12] dark:bg-[#D0BCFF]/[0.12] blur-3xl pointer-events-none"
+          className="pointer-events-none absolute -right-32 -top-32 h-[380px] w-[380px] rounded-full bg-[#47655E]/[0.12] blur-3xl"
         />
-        <div className="absolute -bottom-24 -left-16 w-64 h-64 rounded-full bg-[#C8E6DF]/[0.2] dark:bg-[#6750A4]/[0.16] blur-3xl pointer-events-none" />
+        <div className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-[#E9D7B8]/50 blur-3xl" />
 
         {/* subtle grid */}
         <div
@@ -180,25 +182,25 @@ export default function StatisticsPage() {
           }}
         />
 
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-start gap-12">
+        <div className="relative z-10 flex flex-col gap-10 lg:flex-row lg:items-start">
           {/* left */}
           <div className="flex-1">
-            <div className="flex items-center gap-2 mb-8">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#48645E] dark:bg-[#D0BCFF]" />
+            <div className="mb-8 flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#47655E]" />
               <Eyebrow>Today's Rhythm</Eyebrow>
             </div>
 
-            <div className="flex items-end gap-4 mb-5">
-              <span className="text-[96px] sm:text-[120px] font-bold leading-none tracking-[-0.06em] text-[#1A1A1A] dark:text-[#E6E1E5]">
+            <div className="mb-5 flex items-end gap-4">
+              <span className="text-[92px] font-black leading-none tracking-[-0.08em] text-[#181714] sm:text-[124px]">
                 {stats.completedToday}
               </span>
-              <span className="text-[30px] font-medium text-[#888888]/50 dark:text-[#938F99]/50 pb-5">
+              <span className="pb-5 text-[30px] font-medium text-[#8B8477]/55">
                 / {stats.totalHabits}
               </span>
             </div>
 
             <p
-              className="text-sm text-[#888888] dark:text-[#938F99] max-w-sm leading-[1.8] mb-8"
+              className="mb-8 max-w-sm text-sm leading-[1.8] text-[#6F685D]"
               style={{ fontFamily: "Manrope, sans-serif" }}
             >
               Your consistency compounds daily. Every completed ritual
@@ -209,9 +211,9 @@ export default function StatisticsPage() {
               {["Flow Active", "Synced Analytics", "Streak Intact"].map((t) => (
                 <span
                   key={t}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#F4F4EF] dark:bg-[#0F0D13] text-[11px] tracking-[0.18em] uppercase text-[#888888] dark:text-[#938F99]"
+                  className="flex items-center gap-1.5 rounded-full border border-[#E6DED1] bg-[#F7F2EA] px-4 py-2 text-[11px] uppercase tracking-[0.16em] text-[#756D61]"
                 >
-                  <span className="w-1 h-1 rounded-full bg-[#48645E] dark:bg-[#D0BCFF]" />
+                  <span className="h-1 w-1 rounded-full bg-[#47655E]" />
                   {t}
                 </span>
               ))}
@@ -219,8 +221,8 @@ export default function StatisticsPage() {
           </div>
 
           {/* right panel */}
-          <div className="w-full lg:w-[280px] shrink-0 rounded-[24px] bg-[#F4F4EF] dark:bg-[#0F0D13] p-6">
-            <div className="flex items-end gap-2 h-20 mb-8">
+          <div className="w-full shrink-0 rounded-[28px] border border-[#E6DED1] bg-[#F7F2EA] p-6 lg:w-[300px]">
+            <div className="mb-8 flex h-24 items-end gap-2">
               {[38, 60, 52, 88, 58, 95, 72].map((h, i) => (
                 <motion.div
                   key={i}
@@ -231,7 +233,7 @@ export default function StatisticsPage() {
                     delay: 0.3 + i * 0.06,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className="flex-1 rounded-full bg-gradient-to-t from-[#48645E] to-[#C8E6DF] dark:from-[#6750A4] dark:to-[#D0BCFF]"
+                  className="flex-1 rounded-full bg-gradient-to-t from-[#47655E] to-[#C8E6DF]"
                 />
               ))}
             </div>
@@ -254,11 +256,11 @@ export default function StatisticsPage() {
                     {Icon && (
                       <Icon
                         size={13}
-                        className="text-[#48645E] dark:text-[#D0BCFF] shrink-0"
+                        className="shrink-0 text-[#47655E]"
                       />
                     )}
                     <span
-                      className={`font-bold text-[#1A1A1A] dark:text-[#E6E1E5] leading-none ${
+                      className={`font-bold leading-none text-[#181714] ${
                         big ? "text-[28px] tracking-[-0.04em]" : "text-sm"
                       }`}
                     >
@@ -275,16 +277,16 @@ export default function StatisticsPage() {
         <div className="relative z-10 mt-12">
           <div className="flex justify-between items-center mb-4">
             <Eyebrow>Daily Progress</Eyebrow>
-            <span className="text-xs text-[#888888] dark:text-[#938F99]">
+            <span className="text-xs text-[#8B8477]">
               {stats.completedToday} rituals completed
             </span>
           </div>
-          <div className="relative h-[5px] w-full rounded-full bg-[#E8E4DC] dark:bg-[#49454F] overflow-hidden">
+          <div className="relative h-[6px] w-full overflow-hidden rounded-full bg-[#E6DED1]">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${completionPct}%` }}
               transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-              className="h-full rounded-full bg-gradient-to-r from-[#48645E] via-[#617B6E] to-[#C8E6DF] dark:from-[#6750A4] dark:via-[#B69DF8] dark:to-[#D0BCFF] relative"
+              className="relative h-full rounded-full bg-gradient-to-r from-[#47655E] via-[#6F8C72] to-[#C8E6DF]"
             >
               <motion.div
                 animate={{ x: ["-100%", "300%"] }}
@@ -296,7 +298,7 @@ export default function StatisticsPage() {
         </div>
 
         {/* footer cards */}
-        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10">
+        <div className="relative z-10 mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {[
             {
               eyebrow: "Longest Run",
@@ -319,20 +321,20 @@ export default function StatisticsPage() {
           ].map(({ eyebrow, val, sub, icon: Icon }) => (
             <div
               key={eyebrow}
-              className="rounded-[20px] bg-[#F4F4EF] dark:bg-[#0F0D13] p-5 flex items-center gap-4"
+              className="flex items-center gap-4 rounded-[22px] border border-[#E6DED1] bg-[#F7F2EA] p-5"
             >
-              <div className="w-11 h-11 rounded-2xl bg-[#48645E]/10 dark:bg-[#D0BCFF]/10 flex items-center justify-center shrink-0">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#47655E]/10">
                 <Icon
                   size={17}
-                  className="text-[#48645E] dark:text-[#D0BCFF]"
+                  className="text-[#47655E]"
                 />
               </div>
               <div>
                 <Eyebrow className="mb-1.5">{eyebrow}</Eyebrow>
-                <p className="text-base font-black tracking-[-0.03em] text-[#1A1A1A] dark:text-[#E6E1E5] leading-none">
+                <p className="text-base font-black leading-none tracking-[-0.03em] text-[#181714]">
                   {val}
                 </p>
-                <p className="text-[11px] text-[#888888] dark:text-[#938F99] mt-1">
+                <p className="mt-1 text-[11px] text-[#8B8477]">
                   {sub}
                 </p>
               </div>
@@ -342,7 +344,7 @@ export default function StatisticsPage() {
       </motion.div>
 
       {/* ── STAT CARDS ────────────────────────────────── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {[
           { eyebrow: "Total Habits", val: stats.totalHabits, accent: false },
           {
@@ -370,10 +372,10 @@ export default function StatisticsPage() {
             initial="hidden"
             animate="show"
             custom={i}
-            className={`rounded-[20px] p-6 flex flex-col justify-between min-h-[120px] ${
+            className={`flex min-h-[128px] flex-col justify-between rounded-[24px] border p-6 shadow-[0_18px_60px_-48px_rgba(24,23,20,0.8)] ${
               accent
-                ? "bg-[#C8E6DF] dark:bg-[#4D4465]"
-                : "bg-white dark:bg-[#1D1B20]"
+                ? "border-[#B9D9D1] bg-[#C8E6DF]"
+                : "border-[#E6DED1] bg-[#FFFEFA]"
             }`}
           >
             <Eyebrow>{eyebrow}</Eyebrow>
@@ -381,8 +383,8 @@ export default function StatisticsPage() {
               <p
                 className={`text-[38px] font-black leading-none tracking-[-0.05em] mt-3 ${
                   accent
-                    ? "text-[#1A1A1A] dark:text-[#E6E1E5]"
-                    : "text-[#1A1A1A] dark:text-[#E6E1E5]"
+                    ? "text-[#181714]"
+                    : "text-[#181714]"
                 }`}
                 style={{ fontFamily: "Epilogue, sans-serif" }}
               >
@@ -390,7 +392,7 @@ export default function StatisticsPage() {
               </p>
               {sub && (
                 <p
-                  className={`text-[11px] uppercase tracking-[0.15em] mt-1.5 ${accent ? "text-[#1A1A1A]/70 dark:text-[#E6E1E5]/70" : "text-[#888888] dark:text-[#938F99]"}`}
+                  className={`mt-1.5 text-[11px] uppercase tracking-[0.15em] ${accent ? "text-[#181714]/70" : "text-[#8B8477]"}`}
                 >
                   {sub}
                 </p>
@@ -401,30 +403,30 @@ export default function StatisticsPage() {
       </div>
 
       {/* ── CHART + INSIGHTS ──────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+      <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-3">
         {/* weekly chart */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
           animate="show"
           custom={2}
-          className="lg:col-span-2 bg-white dark:bg-[#1D1B20] rounded-[24px] p-8 sm:p-10 flex flex-col border border-[#E8E4DC] dark:border-[#49454F]"
+          className="flex flex-col rounded-[28px] border border-[#E6DED1] bg-[#FFFEFA] p-7 shadow-[0_24px_80px_-58px_rgba(24,23,20,0.75)] sm:p-9 lg:col-span-2"
         >
-          <div className="flex justify-between items-start mb-10">
+          <div className="mb-10 flex items-start justify-between gap-4">
             <div>
               <Eyebrow className="mb-3">Weekly Flow</Eyebrow>
               <h2
-                className="text-2xl font-black tracking-[-0.04em] text-[#1A1A1A] dark:text-[#E6E1E5]"
+                className="text-2xl font-black tracking-[-0.04em] text-[#181714]"
                 style={{ fontFamily: "Epilogue, sans-serif" }}
               >
                 Completion Activity
               </h2>
             </div>
-            <span className="text-[11px] uppercase tracking-[0.18em] px-4 py-2 rounded-full bg-[#F4F4EF] dark:bg-[#0F0D13] text-[#888888] dark:text-[#938F99]">
+            <span className="rounded-full bg-[#F7F2EA] px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-[#8B8477]">
               Last 7 days
             </span>
           </div>
-          <div className="flex-1 flex flex-col justify-end min-h-52 sm:min-h-64">
+          <div className="flex min-h-52 flex-1 flex-col justify-end sm:min-h-64">
             <WeeklyChart data={weekly} />
           </div>
         </motion.div>
@@ -435,25 +437,25 @@ export default function StatisticsPage() {
           initial="hidden"
           animate="show"
           custom={3}
-          className="bg-white dark:bg-[#1D1B20] rounded-[24px] p-8 sm:p-10 flex flex-col border border-[#E8E4DC] dark:border-[#49454F]"
+          className="flex flex-col rounded-[28px] border border-[#E6DED1] bg-[#FFFEFA] p-7 shadow-[0_24px_80px_-58px_rgba(24,23,20,0.75)] sm:p-9"
         >
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-5">
               <Sparkles
                 size={13}
-                className="text-[#48645E] dark:text-[#D0BCFF]"
+                className="text-[#47655E]"
               />
               <Eyebrow>Insights</Eyebrow>
             </div>
 
             <h2
-              className="text-xl font-black tracking-[-0.03em] text-[#1A1A1A] dark:text-[#E6E1E5] leading-tight mb-3"
+              className="mb-3 text-xl font-black leading-tight tracking-[-0.03em] text-[#181714]"
               style={{ fontFamily: "Epilogue, sans-serif" }}
             >
               {title}
             </h2>
 
-            <p className="text-xs text-[#888888] dark:text-[#938F99] uppercase tracking-[0.12em] leading-relaxed mb-8">
+            <p className="mb-8 text-xs uppercase leading-relaxed tracking-[0.12em] text-[#8B8477]">
               {description}
             </p>
 
@@ -482,7 +484,7 @@ export default function StatisticsPage() {
             <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={() => setShowDetails(!showDetails)}
-              className="w-full py-3.5 rounded-full bg-[#1A1A1A] dark:bg-[#D0BCFF] text-[#FAFAF5] dark:text-[#1A1A1A] text-[11px] font-bold tracking-[0.2em] uppercase hover:opacity-85 transition-colors flex items-center justify-center gap-2"
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-[#181714] py-3.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#FAFAF5] shadow-[0_18px_40px_-25px_rgba(24,23,20,0.9)] transition-colors hover:bg-[#32302A]"
             >
               {showDetails ? "Hide Details" : "Optimize Routine"}
               <ArrowUpRight size={13} />
@@ -514,11 +516,9 @@ export default function StatisticsPage() {
           rounded-[28px]
 
           border
-          border-[#ECE7F3]
-          dark:border-[#2B2436]
+          border-[#E6DED1]
 
-          bg-[#F8F8F6]
-          dark:bg-[#141218]
+          bg-[#F7F2EA]
 
           p-5
 
@@ -563,7 +563,7 @@ export default function StatisticsPage() {
               duration-300
 
               hover:bg-white
-              dark:hover:bg-[#1D1B20]
+              hover:bg-white
             "
                       >
                         {/* LEFT */}
@@ -580,15 +580,13 @@ export default function StatisticsPage() {
 
                   rounded-2xl
 
-                  bg-[#E8E4DC]
-                  dark:bg-[#2A2A2A]
+                  bg-[#E6DED1]
                 "
                           >
                             <Icon
                               size={18}
                               className="
-                    text-[#1A1A1A]
-                    dark:text-[#D0BCFF]
+                    text-[#47655E]
                   "
                             />
                           </div>
@@ -599,8 +597,7 @@ export default function StatisticsPage() {
                     text-sm
                     font-semibold
 
-                    text-[#1A1A1A]
-                    dark:text-[#E6E1E5]
+                    text-[#181714]
                   "
                             >
                               {label}
@@ -613,8 +610,7 @@ export default function StatisticsPage() {
                     tracking-[0.18em]
                     uppercase
 
-                    text-[#888888]
-                    dark:text-[#938F99]
+                    text-[#8B8477]
                   "
                             >
                               Peak Focus
@@ -630,8 +626,7 @@ export default function StatisticsPage() {
                   text-base
                   font-bold
 
-                  text-[#1A1A1A]
-                  dark:text-[#FAFAF5]
+                  text-[#181714]
                 "
                             style={{
                               fontFamily: "Epilogue, sans-serif",
@@ -647,8 +642,7 @@ export default function StatisticsPage() {
                   uppercase
                   tracking-[0.18em]
 
-                  text-[#888888]
-                  dark:text-[#938F99]
+                  text-[#8B8477]
                 "
                           >
                             completion
@@ -665,45 +659,45 @@ export default function StatisticsPage() {
       </div>
 
       {/* ── HEATMAP + STREAK ──────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 items-stretch">
+      <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-2">
         {/* heatmap */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
           animate="show"
           custom={4}
-          className="bg-white dark:bg-[#1D1B20] rounded-[24px] p-8 sm:p-10 border border-[#E8E4DC] dark:border-[#49454F]"
+          className="rounded-[28px] border border-[#E6DED1] bg-[#FFFEFA] p-7 shadow-[0_24px_80px_-58px_rgba(24,23,20,0.75)] sm:p-9"
         >
-          <div className="flex max-sm:flex-col justify-between gap-8">
+          <div className="flex justify-between gap-8 max-sm:flex-col">
             <div className="flex flex-col gap-5 sm:max-w-52">
               <div>
                 <Eyebrow className="mb-3">Consistency Map</Eyebrow>
                 <h2
-                  className="text-2xl font-black tracking-[-0.04em] text-[#1A1A1A] dark:text-[#E6E1E5]"
+                  className="text-2xl font-black tracking-[-0.04em] text-[#181714]"
                   style={{ fontFamily: "Epilogue, sans-serif" }}
                 >
                   Monthly Rhythm
                 </h2>
               </div>
 
-              <span className="text-[11px] uppercase tracking-[0.2em] text-[#888888] dark:text-[#938F99]">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-[#8B8477]">
                 {new Date().toLocaleDateString("en-US", {
                   month: "long",
                   year: "numeric",
                 })}
               </span>
 
-              <p className="text-xs text-[#888888] dark:text-[#938F99] leading-relaxed">
+              <p className="text-xs leading-relaxed text-[#8B8477]">
                 Track your daily habit completion intensity throughout the
                 month.
               </p>
 
-              <div className="w-8 h-px bg-[#E8E4DC] dark:bg-[#49454F]" />
+              <div className="h-px w-8 bg-[#E6DED1]" />
 
               <div className="flex gap-10">
                 <div>
                   <p
-                    className="text-2xl font-black tracking-[-0.04em] text-[#1A1A1A] dark:text-[#E6E1E5]"
+                    className="text-2xl font-black tracking-[-0.04em] text-[#181714]"
                     style={{ fontFamily: "Epilogue, sans-serif" }}
                   >
                     {activeDays}
@@ -712,7 +706,7 @@ export default function StatisticsPage() {
                 </div>
                 <div>
                   <p
-                    className="text-2xl font-black tracking-[-0.04em] text-[#1A1A1A] dark:text-[#E6E1E5]"
+                    className="text-2xl font-black tracking-[-0.04em] text-[#181714]"
                     style={{ fontFamily: "Epilogue, sans-serif" }}
                   >
                     {totalHeatmapLogs}
@@ -722,25 +716,25 @@ export default function StatisticsPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-[10px] text-[#888888] dark:text-[#938F99] uppercase tracking-[0.15em]">
+                <span className="text-[10px] uppercase tracking-[0.15em] text-[#8B8477]">
                   Less
                 </span>
                 {[
-                  "bg-[#E8E4DC] dark:bg-[#2A2A2A]",
-                  "bg-[#C8E6DF]/40 dark:bg-[#D0BCFF]/20",
-                  "bg-[#C8E6DF] dark:bg-[#D0BCFF]/40",
-                  "bg-[#48645E]/65 dark:bg-[#D0BCFF]/65",
-                  "bg-[#48645E] dark:bg-[#D0BCFF]",
+                  "bg-[#E6DED1]",
+                  "bg-[#C8E6DF]/40",
+                  "bg-[#C8E6DF]",
+                  "bg-[#47655E]/65",
+                  "bg-[#47655E]",
                 ].map((c, i) => (
                   <div key={i} className={`w-3 h-3 rounded-sm ${c}`} />
                 ))}
-                <span className="text-[10px] text-[#888888] dark:text-[#938F99] uppercase tracking-[0.15em]">
+                <span className="text-[10px] uppercase tracking-[0.15em] text-[#8B8477]">
                   More
                 </span>
               </div>
             </div>
 
-            <div className="flex-1 flex max-sm:justify-center sm:justify-end items-start max-sm:overflow-x-auto">
+            <div className="flex flex-1 items-start max-sm:justify-center max-sm:overflow-x-auto sm:justify-end">
               <div className="min-w-fit">
                 <Heatmap data={heatmap} />
               </div>
@@ -754,7 +748,7 @@ export default function StatisticsPage() {
           initial="hidden"
           animate="show"
           custom={5}
-          className="bg-white dark:bg-[#1D1B20] rounded-[24px] p-8 sm:p-10 border border-[#E8E4DC] dark:border-[#49454F]"
+          className="rounded-[28px] border border-[#E6DED1] bg-[#FFFEFA] p-7 shadow-[0_24px_80px_-58px_rgba(24,23,20,0.75)] sm:p-9"
         >
           <StreakPanel />
         </motion.div>
