@@ -101,7 +101,7 @@ export default function HabitsPage() {
 
         <Button
           onClick={() => navigate("/create-habit")}
-          className="mt-2 px-6 py-3 text-[10px]"
+          className="mt-2 px-4 py-2 sm:px-6 sm:py-3 text-[10px]"
         >
           ADD NEW
         </Button>

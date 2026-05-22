@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function CustomCursor() {
-  const [pos, setPos] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
-  const [visible, setVisible] = useState(true);
   const [isPointerFine, setIsPointerFine] = useState(false);
+  const cursorRef = useRef(null);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(pointer: fine)");
@@ -22,17 +21,49 @@ export default function CustomCursor() {
       return;
     }
 
-    const move = (e) => {
-      setPos({ x: e.clientX, y: e.clientY });
-      setVisible(true);
+    const cursorEl = cursorRef.current;
+    if (!cursorEl) return;
+
+    let rafId = null;
+    let targetX = 0;
+    let targetY = 0;
+    let isVisible = true;
+
+    const updateCursor = () => {
+      if (cursorEl) {
+        cursorEl.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`;
+        cursorEl.style.opacity = isVisible ? "1" : "0";
+      }
+      rafId = null;
     };
 
-    const leave = () => setVisible(false);
-    const enter = () => setVisible(true);
+    const move = (e) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      isVisible = true;
+
+      if (!rafId) {
+        rafId = requestAnimationFrame(updateCursor);
+      }
+    };
+
+    const leave = () => {
+      isVisible = false;
+      if (!rafId) {
+        rafId = requestAnimationFrame(updateCursor);
+      }
+    };
+
+    const enter = () => {
+      isVisible = true;
+      if (!rafId) {
+        rafId = requestAnimationFrame(updateCursor);
+      }
+    };
 
     // ✅ IMPORTANT: event delegation (React friendly)
     const handleMouseOver = (e) => {
-      const target = e.target.closest("button, a");
+      const target = e.target.closest("button, a, [role='button'], input, select, textarea");
       if (target) {
         setHovered(true);
       } else {
@@ -40,7 +71,7 @@ export default function CustomCursor() {
       }
     };
 
-    window.addEventListener("mousemove", move);
+    window.addEventListener("mousemove", move, { passive: true });
     document.addEventListener("mouseleave", leave);
     document.addEventListener("mouseenter", enter);
     document.addEventListener("mouseover", handleMouseOver);
@@ -49,6 +80,7 @@ export default function CustomCursor() {
     document.body.style.cursor = "none";
 
     return () => {
+      if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener("mousemove", move);
       document.removeEventListener("mouseleave", leave);
       document.removeEventListener("mouseenter", enter);
@@ -57,16 +89,20 @@ export default function CustomCursor() {
     };
   }, [isPointerFine]);
 
-  if (!visible || !isPointerFine) return null;
+  if (!isPointerFine) return null;
 
   return (
     <div
+      ref={cursorRef}
       style={{
         position: "fixed",
-        top: pos.y,
-        left: pos.x,
+        top: 0,
+        left: 0,
         pointerEvents: "none",
         zIndex: 99999,
+        opacity: 0,
+        willChange: "transform, opacity",
+        transition: "opacity 0.15s ease",
       }}
     >
       {hovered ? (

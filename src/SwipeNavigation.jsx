@@ -8,7 +8,7 @@ const DISABLE_SWIPE_ON = ["/create-habit"];
 
 const variants = {
   enter: (dir) => ({
-    x: dir > 0 ? "60%" : "-60%",
+    x: dir > 0 ? "25%" : "-25%",
     opacity: 0,
   }),
   center: {
@@ -16,7 +16,7 @@ const variants = {
     opacity: 1,
   },
   exit: (dir) => ({
-    x: dir > 0 ? "-60%" : "60%",
+    x: dir > 0 ? "-25%" : "25%",
     opacity: 0,
   }),
 };
@@ -60,8 +60,8 @@ export default function SwipeNavigation({ children }) {
           animate="center"
           exit="exit"
           transition={{
-            x: { type: "spring", stiffness: 300, damping: 32, mass: 0.8 },
-            opacity: { duration: 0.15 },
+            x: { type: "spring", stiffness: 380, damping: 35, mass: 0.7 },
+            opacity: { duration: 0.12 },
           }}
           className="flex-1 flex flex-col min-h-0"
         >

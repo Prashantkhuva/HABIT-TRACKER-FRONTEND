@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import "./App.css";
 import Sidebar from "./components/Sidebar";
 import { Outlet, useLocation } from "react-router-dom";
@@ -9,12 +9,21 @@ import { getCurrentUser } from "./api/auth-api";
 import MobileNav from "./components/MobileNav";
 import ToastProvider from "./components/Toast/ToastProvider";
 import SwipeNavigation from "./SwipeNavigation";
+import { usePageSeo } from "./hooks/usePageSeo";
+import { getStructuredData } from "./lib/seo-config";
 
 const HIDE_CHROME_ON = ["/", "/signin", "/signup", "/verify-email"];
 
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
+
+  const homeJsonLd = useMemo(
+    () => (location.pathname === "/" ? getStructuredData() : null),
+    [location.pathname],
+  );
+
+  usePageSeo(location.pathname, { jsonLd: homeJsonLd });
 
   const shouldHide = HIDE_CHROME_ON.includes(location.pathname);
   const shouldHideMobileNav =

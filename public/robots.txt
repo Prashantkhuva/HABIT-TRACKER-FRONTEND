@@ -1,0 +1,33 @@
+# HabitFlow — https://habit-flow-fullstack.vercel.app
+User-agent: *
+Allow: /
+Allow: /signin
+Allow: /signup
+
+# App workspace — private user data, not for indexing
+Disallow: /dashboard
+Disallow: /rituals
+Disallow: /statistics
+Disallow: /settings
+Disallow: /create-habit
+Disallow: /help
+Disallow: /edit-profile
+Disallow: /change-password
+
+# AI crawlers (GEO) — allow marketing pages
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://habit-flow-fullstack.vercel.app/sitemap.xml

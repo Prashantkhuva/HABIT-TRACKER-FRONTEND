@@ -95,7 +95,7 @@ function LandingPage() {
                 className="flex flex-wrap items-center gap-5"
               >
                 <Link to="/signin">
-                  <Button className="rounded-full px-10 py-5 uppercase tracking-[0.2em] text-[10px]">
+                  <Button className="rounded-full px-6 py-4 sm:px-10 sm:py-5 uppercase tracking-[0.2em] text-[10px]">
                     Start The Ritual
                   </Button>
                 </Link>
@@ -125,7 +125,7 @@ function LandingPage() {
               <div className="relative overflow-hidden rounded-[24px] sm:rounded-[36px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] group">
                 <img
                   src="./workspace.png"
-                  alt="workspace"
+                  alt="HabitFlow editorial workspace for morning ritual tracking"
                   className="w-full aspect-[4/5] object-cover grayscale contrast-125 group-hover:scale-[1.03] transition-transform duration-1000"
                 />
 
@@ -202,7 +202,7 @@ function LandingPage() {
               <div className="mt-14 h-15 overflow-hidden rounded-[28px] group">
                 <img
                   src="./journal.png"
-                  alt=""
+                  alt="Habit journal visual narrative of completed daily rituals"
                   className="w-full h-72 object-cover group-hover:scale-[1.03] transition-transform duration-1000"
                 />
               </div>
@@ -268,7 +268,7 @@ function LandingPage() {
             >
               <img
                 src="./minimal-desk.png"
-                alt=""
+                alt="Minimal desk setup for distraction-free habit tracking"
                 className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-[1.03] transition-transform duration-1000"
               />
 
@@ -326,7 +326,7 @@ function LandingPage() {
               <div className="overflow-hidden rounded-sm group">
                 <img
                   src="./writing.png"
-                  alt=""
+                  alt="Writing ritual for morning composition and focus"
                   className="w-full aspect-square object-cover group-hover:scale-[1.03] transition-transform duration-1000"
                 />
               </div>
@@ -366,7 +366,7 @@ function LandingPage() {
               <div className="overflow-hidden rounded-sm group">
                 <img
                   src="./tea.png"
-                  alt=""
+                  alt="Evening wind-down ritual with tea and reflection"
                   className="w-full aspect-[3/4] object-cover group-hover:scale-[1.03] transition-transform duration-1000"
                 />
               </div>
@@ -522,7 +522,7 @@ function LandingPage() {
               </div>
 
               <Link to="/signin" className="inline-flex mt-12">
-                <Button className="px-8 py-4 uppercase text-xs tracking-[0.18em]">
+                <Button className="px-6 py-3 sm:px-8 sm:py-4 uppercase text-xs tracking-[0.18em]">
                   Start The Ritual
                   <ArrowRight size={16} />
                 </Button>
@@ -546,7 +546,7 @@ function LandingPage() {
               <Link to="/signin">
                 <Button
                   variant="secondary"
-                  className="mx-auto px-10 sm:px-14 py-5 sm:py-6 uppercase tracking-[0.24em] text-[10px]"
+                  className="mx-auto px-6 sm:px-14 py-4 sm:py-6 uppercase tracking-[0.24em] text-[10px]"
                 >
                   Join The Collective
                   <ArrowRight size={16} />

@@ -252,23 +252,92 @@ function getTimeInsights(logs = []) {
   };
 }
 
+const WEEKDAY_NAMES = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+
+const WEEKDAY_SHORT = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
+/** API day strings (Sun-first week) → Monday-first chart index */
+const API_DAY_TO_INDEX = {
+  Mon: 0,
+  Monday: 0,
+  Tue: 1,
+  Tuesday: 1,
+  Wed: 2,
+  Wednesday: 2,
+  Thu: 3,
+  Thursday: 3,
+  Fri: 4,
+  Friday: 4,
+  Sat: 5,
+  Saturday: 5,
+  Sun: 6,
+  Sunday: 6,
+};
+
+function getTodayMondayFirstIndex() {
+  const js = new Date().getDay();
+  return js === 0 ? 6 : js - 1;
+}
+
+function apiDayToMondayFirstIndex(day, arrayIndex = -1) {
+  if (typeof day === "string") {
+    const idx = API_DAY_TO_INDEX[day.trim()];
+    if (idx != null) return idx;
+  }
+
+  if (typeof day === "number" && day >= 1 && day <= 7) {
+    // MongoDB $dayOfWeek: 1 = Sunday … 7 = Saturday
+    if (day === 1) return 6;
+    return day - 2;
+  }
+
+  // API default order: Sun, Mon, Tue, Wed, Thu, Fri, Sat
+  if (arrayIndex >= 0 && arrayIndex < 7) {
+    return arrayIndex === 0 ? 6 : arrayIndex - 1;
+  }
+
+  return null;
+}
+
+function normalizeWeeklyChartData(data = []) {
+  const slots = WEEKDAY_SHORT.map((label, index) => ({
+    label,
+    count: 0,
+    isToday: index === getTodayMondayFirstIndex(),
+  }));
+
+  data.forEach((entry, arrayIndex) => {
+    const idx = apiDayToMondayFirstIndex(entry?.day, arrayIndex);
+    if (idx != null && idx >= 0 && idx < 7) {
+      slots[idx].count = entry.count || 0;
+    }
+  });
+
+  return slots;
+}
+
 const getBestDay = (weeklyData) => {
   if (!weeklyData?.length) return null;
 
-  const days = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
-
   const max = weeklyData.reduce((a, b) => (a.count > b.count ? a : b));
+  const idx = apiDayToMondayFirstIndex(
+    max.day,
+    weeklyData.indexOf(max),
+  );
+
+  if (idx == null) return null;
 
   return {
-    day: days[max.day - 1],
+    day: WEEKDAY_NAMES[idx],
+    shortLabel: WEEKDAY_SHORT[idx],
     count: max.count,
   };
 };
@@ -290,5 +359,6 @@ export {
   getButtonColors,
   getBestMonth,
   getTimeInsights,
-  getBestDay
+  getBestDay,
+  normalizeWeeklyChartData,
 };

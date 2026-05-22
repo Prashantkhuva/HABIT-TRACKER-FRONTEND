@@ -9,6 +9,11 @@ import {
   Sunrise,
   Sun,
   Moon,
+  Search,
+  SlidersHorizontal,
+  BookOpen,
+  Calendar,
+  Clock,
 } from "lucide-react";
 
 import {
@@ -17,12 +22,13 @@ import {
   getLongestStreak,
   getHeatmapData,
 } from "../api/dashboard-api";
-import { getAllHabitLogs } from "../api/habits-api";
+import { getAllHabitLogs, getHabits } from "../api/habits-api";
 
 import WeeklyChart from "../components/stats/WeeklyChart";
 import Heatmap from "../components/stats/Heatmap";
 import StreakPanel from "../components/stats/StreakPanel";
-import { getTimeInsights } from "../lib/habit-utils";
+import { categoryMap } from "../components/Habit/categoryMap";
+import { getTimeInsights, getTextColor, getBestDay } from "../lib/habit-utils";
 import { StatisticsSkeleton } from "../components/loading/LoadingSkeletons";
 
 /* ─── variants ───────────────────────────────────────────────── */
@@ -78,23 +84,32 @@ export default function StatisticsPage() {
   const [streak, setStreak] = useState({});
   const [heatmap, setHeatmap] = useState([]);
   const [logs, setLogs] = useState([]);
+  const [habits, setHabits] = useState([]);
   const [showDetails, setShowDetails] = useState(false);
+
+  // Journal States
+  const [journalSearch, setJournalSearch] = useState("");
+  const [selectedHabitFilter, setSelectedHabitFilter] = useState("ALL");
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState("ALL");
+  const [visibleCount, setVisibleCount] = useState(6);
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [s, w, st, h, logsRes] = await Promise.all([
+        const [s, w, st, h, logsRes, habitsRes] = await Promise.all([
           getDashboardStats(),
           getWeeklyData(),
           getLongestStreak(),
           getHeatmapData(),
           getAllHabitLogs(),
+          getHabits(),
         ]);
         setStats(s.data.data);
         setWeekly(w.data.data || []);
         setStreak(st.data.data || {});
         setHeatmap(h.data.data || []);
         setLogs(logsRes.data.data.logs || []);
+        setHabits(habitsRes.data.data || []);
       } catch (err) {
         console.error(err);
       }
@@ -104,11 +119,63 @@ export default function StatisticsPage() {
 
   const { title, description, stats: timeStats } = getTimeInsights(logs || []);
 
+  const resolveHabitId = (habitRef) =>
+    typeof habitRef === "object" && habitRef !== null ? habitRef._id : habitRef;
+
+  const journalLogs = useMemo(() => {
+    const noteLogs = logs.filter(
+      (log) => log.completed && log.note && log.note.trim() !== "",
+    );
+
+    return noteLogs
+      .map((log) => {
+        const habitId = resolveHabitId(log.habit);
+        const habitDetails = habits.find((h) => h._id === habitId);
+        return {
+          ...log,
+          habitId,
+          habitDetails: habitDetails || {
+            title: "Unknown Ritual",
+            color: "#8B8477",
+            category: "Mindfulness",
+          },
+        };
+      })
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+  }, [logs, habits]);
+
+  const filteredJournalLogs = useMemo(() => {
+    return journalLogs.filter((log) => {
+      // Habit ID filter
+      if (selectedHabitFilter !== "ALL" && log.habitId !== selectedHabitFilter) {
+        return false;
+      }
+      // Category filter
+      if (
+        selectedCategoryFilter !== "ALL" &&
+        log.habitDetails?.category !== selectedCategoryFilter
+      ) {
+        return false;
+      }
+      // Search filter
+      if (journalSearch.trim() !== "") {
+        const query = journalSearch.toLowerCase();
+        const noteMatch = log.note.toLowerCase().includes(query);
+        const titleMatch = log.habitDetails?.title?.toLowerCase().includes(query);
+        const categoryMatch = log.habitDetails?.category?.toLowerCase().includes(query);
+        return noteMatch || titleMatch || categoryMatch;
+      }
+      return true;
+    });
+  }, [journalLogs, selectedHabitFilter, selectedCategoryFilter, journalSearch]);
+
+  const visibleLogs = useMemo(() => {
+    return filteredJournalLogs.slice(0, visibleCount);
+  }, [filteredJournalLogs, visibleCount]);
+
   const bestDay = useMemo(() => {
-    if (!weekly?.length) return null;
-    const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-    const max = weekly.reduce((a, b) => (a.count > b.count ? a : b));
-    return days[max.day - 1];
+    const result = getBestDay(weekly);
+    return result?.shortLabel ?? null;
   }, [weekly]);
 
   const totalHeatmapLogs = useMemo(
@@ -753,6 +820,276 @@ export default function StatisticsPage() {
           <StreakPanel />
         </motion.div>
       </div>
+
+      {/* ── RHYTHM JOURNAL (DAILY REFLECTIONS) ────────── */}
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+        custom={6}
+        className="relative overflow-hidden rounded-[36px] border border-[#E6DED1] bg-[#FFFEFA] p-7 shadow-[0_30px_90px_-60px_rgba(24,23,20,0.7)] sm:p-10"
+        style={{ fontFamily: "Epilogue, sans-serif" }}
+      >
+        {/* Decorative elements */}
+        <div className="pointer-events-none absolute -right-32 -bottom-32 h-80 w-80 rounded-full bg-[#E9D7B8]/20 blur-3xl" />
+        <div className="pointer-events-none absolute -left-20 top-20 h-64 w-64 rounded-full bg-[#47655E]/[0.05] blur-3xl" />
+        
+        {/* Subtle broadsheet pattern grid */}
+        <div
+          className="absolute inset-0 opacity-[0.02] pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right,currentColor 1px,transparent 1px),linear-gradient(to bottom,currentColor 1px,transparent 1px)",
+            backgroundSize: "30px 30px",
+          }}
+        />
+
+        <div className="relative z-10">
+          {/* Header */}
+          <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <BookOpen size={13} className="text-[#47655E]" />
+                <Eyebrow>VOLUME 01 — THE WRITTEN RECORD</Eyebrow>
+              </div>
+              <h2
+                className="text-3xl font-black tracking-[-0.05em] text-[#181714] sm:text-4xl"
+                style={{ fontFamily: "Epilogue, sans-serif" }}
+              >
+                rhythm journal.
+              </h2>
+              <p 
+                className="mt-2 max-w-xl text-sm leading-relaxed text-[#6F685D]"
+                style={{ fontFamily: "Manrope, sans-serif" }}
+              >
+                An archive of your thoughts, breakthroughs, and daily reflections captured when checking off your sacred rituals.
+              </p>
+            </div>
+            
+            <div className="flex items-center gap-2 rounded-full border border-[#E6DED1] bg-[#F7F2EA] px-4 py-2 text-[10px] uppercase tracking-[0.18em] text-[#8B8477]">
+              <span>{journalLogs.length} Reflections logged</span>
+            </div>
+          </div>
+
+          {/* Search & Filters Controls */}
+          <div className="mb-8 flex flex-col gap-4 border-b border-[#E6DED1] pb-8">
+            {/* Search and Category filters */}
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+              {/* Search Bar */}
+              <div className="relative flex-1">
+                <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8B8477]" />
+                <input
+                  type="text"
+                  placeholder="Search your daily thoughts..."
+                  value={journalSearch}
+                  onChange={(e) => {
+                    setJournalSearch(e.target.value);
+                    setVisibleCount(6); // reset pagination when searching
+                  }}
+                  className="w-full rounded-full border border-[#E6DED1] bg-[#F7F2EA]/40 py-3.5 pl-11 pr-5 text-xs text-[#181714] placeholder-[#8B8477]/70 transition-all focus:border-[#47655E] focus:bg-[#FFFEFA] focus:outline-none focus:ring-1 focus:ring-[#47655E]"
+                  style={{ fontFamily: "Manrope, sans-serif" }}
+                />
+              </div>
+
+              {/* Category Filter Dropdown */}
+              <div className="flex items-center gap-2 self-start sm:self-auto">
+                <SlidersHorizontal size={13} className="text-[#8B8477]" />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#8B8477] mr-1" style={{ fontFamily: "Manrope, sans-serif" }}>Category:</span>
+                <select
+                  value={selectedCategoryFilter}
+                  onChange={(e) => {
+                    setSelectedCategoryFilter(e.target.value);
+                    setVisibleCount(6); // reset pagination
+                  }}
+                  className="rounded-full border border-[#E6DED1] bg-[#FFFEFA] px-4 py-2.5 text-xs font-bold text-[#181714] outline-none transition-all hover:bg-[#F7F2EA] cursor-pointer"
+                  style={{ fontFamily: "Manrope, sans-serif" }}
+                >
+                  <option value="ALL">All Categories</option>
+                  <option value="Health">Health</option>
+                  <option value="Fitness">Fitness</option>
+                  <option value="Learning">Learning</option>
+                  <option value="Productivity">Productivity</option>
+                  <option value="Mindfulness">Mindfulness</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Habit Filter Pills */}
+            {habits.length > 0 && (
+              <div className="flex flex-col gap-2 mt-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#8B8477]" style={{ fontFamily: "Manrope, sans-serif" }}>Filter by ritual:</span>
+                <div className="flex flex-wrap gap-2 py-1 max-h-24 overflow-y-auto pr-2 custom-scroll">
+                  <button
+                    onClick={() => {
+                      setSelectedHabitFilter("ALL");
+                      setVisibleCount(6);
+                    }}
+                    className={`rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all ${
+                      selectedHabitFilter === "ALL"
+                        ? "bg-[#181714] text-[#FAFAF5] shadow-sm"
+                        : "border border-[#E6DED1] bg-[#FFFEFA] text-[#8B8477] hover:bg-[#F7F2EA] hover:text-[#181714]"
+                    }`}
+                  >
+                    All Rituals
+                  </button>
+                  {habits.map((h) => {
+                    const hasNotes = journalLogs.some((l) => l.habitId === h._id);
+                    if (!hasNotes) return null; // Only show habits that have notes to keep pills clean
+                    return (
+                      <button
+                        key={h._id}
+                        onClick={() => {
+                          setSelectedHabitFilter(h._id);
+                          setVisibleCount(6);
+                        }}
+                        className={`flex items-center gap-2 rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all ${
+                          selectedHabitFilter === h._id
+                            ? "bg-[#181714] text-[#FAFAF5] shadow-sm"
+                            : "border border-[#E6DED1] bg-[#FFFEFA] text-[#8B8477] hover:bg-[#F7F2EA] hover:text-[#181714]"
+                        }`}
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: h.color }} />
+                        {h.title}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Reflections Grid */}
+          <AnimatePresence mode="popLayout">
+            {visibleLogs.length === 0 ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="flex flex-col items-center justify-center rounded-[28px] border border-dashed border-[#D6D1C7] bg-[#F7F2EA]/40 p-12 text-center"
+              >
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#47655E]/10">
+                  <BookOpen size={24} className="text-[#47655E]" />
+                </div>
+                <h3 className="text-lg font-black tracking-tight text-[#181714]">The journal is currently blank</h3>
+                <p 
+                  className="mt-2 max-w-sm text-xs leading-relaxed text-[#8B8477]"
+                  style={{ fontFamily: "Manrope, sans-serif" }}
+                >
+                  {journalLogs.length === 0
+                    ? "Record a note when checking off your rituals to begin your written archive."
+                    : "No reflections match your search or filters. Try adjusting your criteria."}
+                </p>
+              </motion.div>
+            ) : (
+              <motion.div
+                layout
+                className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+              >
+                {visibleLogs.map((log) => {
+                  const Icon = categoryMap[log.habitDetails?.category] || BookOpen;
+                  const borderAccentColor = log.habitDetails?.color || "#47655E";
+                  const badgeTextColor = getTextColor(borderAccentColor);
+
+                  return (
+                    <motion.div
+                      layout
+                      key={log._id}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -15 }}
+                      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                      whileHover={{ y: -4, shadow: "0 20px 40px -25px rgba(24,23,20,0.15)" }}
+                      className="group flex flex-col justify-between rounded-[24px] border border-[#E6DED1] bg-[#FFFEFA] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-shadow duration-300"
+                    >
+                      <div>
+                        {/* Card Header metadata */}
+                        <div className="flex items-center justify-between border-b border-[#E6DED1]/60 pb-3 mb-4">
+                          <div className="flex items-center gap-2">
+                            <div
+                              className="flex h-7 w-7 items-center justify-center rounded-full"
+                              style={{
+                                backgroundColor: borderAccentColor,
+                                color: badgeTextColor,
+                              }}
+                            >
+                              <Icon size={12} />
+                            </div>
+                            <div>
+                              <p className="text-[10px] font-bold uppercase tracking-widest text-[#181714] truncate max-w-[130px]">
+                                {log.habitDetails?.title}
+                              </p>
+                              <p className="text-[9px] uppercase tracking-wider text-[#8B8477]">
+                                {log.habitDetails?.category}
+                              </p>
+                            </div>
+                          </div>
+                          
+                          <div className="text-right">
+                            <div className="flex items-center gap-1 text-[9px] uppercase tracking-wider text-[#8B8477]">
+                              <Calendar size={9} />
+                              <span>
+                                {new Date(log.date).toLocaleDateString("en-US", {
+                                  month: "long",
+                                  day: "numeric",
+                                  year: "numeric",
+                                })}
+                              </span>
+                            </div>
+                            {log.completedAt && (
+                              <div className="flex items-center justify-end gap-1 text-[8px] uppercase tracking-wider text-[#8B8477]/70 mt-0.5">
+                                <Clock size={8} />
+                                <span>
+                                  {new Date(log.completedAt).toLocaleTimeString("en-US", {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Note Content */}
+                        <p
+                          className="relative pl-4 text-sm font-medium italic leading-relaxed text-[#181714]/80 group-hover:text-[#181714] transition-colors"
+                          style={{
+                            fontFamily: "Epilogue, sans-serif",
+                            borderLeft: `3px solid ${borderAccentColor}`,
+                          }}
+                        >
+                          “ {log.note} ”
+                        </p>
+                      </div>
+                      
+                      {/* Card Footer detail */}
+                      <div className="mt-6 flex items-center justify-end text-[8px] font-bold tracking-widest text-[#8B8477]/40 group-hover:text-[#47655E] uppercase transition-colors">
+                        <span>Ritual Complete</span>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Reveal More / Load More Button */}
+          {filteredJournalLogs.length > visibleCount && (
+            <motion.div 
+              layout
+              className="mt-12 flex justify-center"
+            >
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                onClick={() => setVisibleCount((prev) => prev + 6)}
+                className="flex items-center gap-2 rounded-full border border-[#E6DED1] bg-[#FFFEFA] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.2em] text-[#181714] shadow-sm transition-colors hover:bg-[#F7F2EA]"
+              >
+                <span>Reveal More Pages</span>
+                <ArrowUpRight size={13} className="text-[#8B8477]" />
+              </motion.button>
+            </motion.div>
+          )}
+        </div>
+      </motion.div>
     </div>
   );
 }

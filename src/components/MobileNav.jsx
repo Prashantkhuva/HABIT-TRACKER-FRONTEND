@@ -20,76 +20,62 @@ export default function MobileNav() {
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-50 px-3 pb-3 lg:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-50 px-4 pb-4 lg:hidden">
       <div
-        className="relative mx-auto flex h-[72px] max-w-md items-center justify-around rounded-[28px] border border-white/70 bg-[#F8F6EF]/88 px-2 shadow-[0_24px_70px_-34px_rgba(26,26,26,0.9)] backdrop-blur-2xl"
+        className="relative mx-auto flex h-[68px] max-w-md items-center justify-around rounded-full border border-border-subtle/50 bg-[#FAFAF5]/90 dark:bg-[#141218]/90 px-3 shadow-[0_16px_40px_-16px_rgba(26,26,26,0.25)] backdrop-blur-xl"
         style={{ marginBottom: "env(safe-area-inset-bottom, 0px)" }}
       >
-        <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-white/90" />
-      {navItems.map(({ to, icon: Icon, label, short }) => {
-        // Center Plus Button
-        if (to === "add") {
+        <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-white/40" />
+
+        {navItems.map(({ to, icon: Icon, label, short }) => {
+          // Center Plus Button
+          if (to === "add") {
+            return (
+              <div
+                key="add"
+                className="relative flex flex-1 items-center justify-center"
+              >
+                <motion.button
+                  onClick={() => navigate("/create-habit")}
+                  whileHover={{ y: -2, scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="absolute -top-5 flex h-13 w-13 items-center justify-center rounded-full border-[4px] border-[#FAFAF5] dark:border-[#141218] bg-[#1A1A1A] dark:bg-[#D0BCFF] text-[#FAFAF5] dark:text-[#1A1A1A] shadow-[0_10px_20px_-6px_rgba(26,26,26,0.4)]"
+                  aria-label="Create ritual"
+                >
+                  <Plus size={22} strokeWidth={2.5} />
+                </motion.button>
+              </div>
+            );
+          }
+
           return (
-            <div
-              key="add"
-              className="relative flex flex-1 items-center justify-center"
-            >
-              <motion.button
-                onClick={() => navigate("/create-habit")}
-                whileHover={{ y: -2, scale: 1.03 }}
-                whileTap={{ scale: 0.95 }}
-                className="absolute -top-8 flex h-16 w-16 items-center justify-center rounded-full border-[6px] border-[#F8F6EF] bg-[#111111] text-[#FAFAF5] shadow-[0_24px_44px_-22px_rgba(17,17,17,0.95)]"
-                aria-label="Create ritual"
-              >
-                <Plus size={25} strokeWidth={2} />
-              </motion.button>
-            </div>
+            <NavLink key={to} to={to} className="flex flex-1 justify-center z-10">
+              {({ isActive }) => (
+                <motion.div
+                  whileTap={{ scale: 0.94 }}
+                  className={`relative flex h-12 w-full max-w-[72px] flex-col items-center justify-center gap-0.5 rounded-full transition-colors duration-200 ${
+                    isActive
+                      ? "text-text-primary font-bold"
+                      : "text-text-muted hover:text-text-primary"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="mobileActivePill"
+                      className="absolute inset-0 rounded-full bg-white dark:bg-[#1D1B20] border border-border-subtle/30 shadow-[0_4px_12px_rgba(0,0,0,0.03)] z-0"
+                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    />
+                  )}
+
+                  <Icon className="relative z-10" size={17} strokeWidth={isActive ? 2.2 : 1.8} />
+                  <span className="relative z-10 text-[8.5px] font-bold uppercase tracking-[0.14em] scale-95 sm:scale-100">
+                    {short}
+                  </span>
+                </motion.div>
+              )}
+            </NavLink>
           );
-        }
-
-        return (
-          <NavLink key={to} to={to} className="flex flex-1 justify-center">
-            {({ isActive }) => (
-              <motion.div
-                whileTap={{ scale: 0.94 }}
-                className={`relative flex h-14 min-w-12 flex-col items-center justify-center gap-1 rounded-2xl px-2 transition-colors duration-200 ${
-                  isActive ? "text-[#111111]" : "text-[#918B80]"
-                }`}
-              >
-                <AnimatePresence>
-                  {isActive && (
-                    <motion.span
-                      layoutId="mobileNavGlow"
-                      className="absolute inset-0 rounded-2xl bg-white shadow-[0_12px_30px_-24px_rgba(26,26,26,0.8)]"
-                      initial={{ opacity: 0, scale: 0.86 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.86 }}
-                      transition={{ type: "spring", stiffness: 420, damping: 30 }}
-                    />
-                  )}
-                </AnimatePresence>
-
-                <Icon className="relative z-10" size={19} strokeWidth={isActive ? 2.2 : 1.8} />
-                <span className="relative z-10 text-[9px] font-bold uppercase tracking-[0.14em]">
-                  {short}
-                </span>
-                <AnimatePresence>
-                  {isActive && (
-                    <motion.span
-                      layoutId="mobileNavIndicator"
-                      className="relative z-10 h-1 w-4 rounded-full bg-[#111111]"
-                      initial={{ scaleX: 0, opacity: 0 }}
-                      animate={{ scaleX: 1, opacity: 1 }}
-                      exit={{ scaleX: 0, opacity: 0 }}
-                      transition={{ type: "spring", stiffness: 420, damping: 28 }}
-                    />
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            )}
-          </NavLink>
-        );
-      })}
+        })}
       </div>
     </nav>
   );
