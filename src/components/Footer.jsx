@@ -4,15 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-border-subtle bg-surface-dim px-5 pb-10 pt-16 sm:px-8 sm:pt-28 lg:px-20">
-      {/* GRAIN */}
-      <div
-        className="
-        absolute inset-0
-        bg-[url('/grain.png')]
-        opacity-[0.035]
-        pointer-events-none
-      "
-      />
+     
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* TOP */}
