@@ -6,24 +6,11 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// Request interceptor
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
 // Response interceptor
 api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-
-      // Better: emit event instead of redirect
       window.dispatchEvent(new Event("unauthorized"));
     }
 

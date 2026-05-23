@@ -34,7 +34,6 @@ function App() {
     const root = document.documentElement;
     root.classList.remove("dark");
     root.style.colorScheme = "light";
-    localStorage.setItem("theme", "light");
   }, []);
 
   // ─── Auth check ───────────────────────────────────────────────────────────
