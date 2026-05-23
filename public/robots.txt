@@ -14,20 +14,70 @@ Disallow: /help
 Disallow: /edit-profile
 Disallow: /change-password
 
-# AI crawlers (GEO) — allow marketing pages
+# AI crawlers (GEO) — allow marketing pages only
 User-agent: GPTBot
 Allow: /
+Allow: /signin
+Allow: /signup
+Disallow: /dashboard
+Disallow: /rituals
+Disallow: /statistics
+Disallow: /settings
+Disallow: /create-habit
+Disallow: /help
+Disallow: /edit-profile
+Disallow: /change-password
 
 User-agent: ChatGPT-User
 Allow: /
+Allow: /signin
+Allow: /signup
+Disallow: /dashboard
+Disallow: /rituals
+Disallow: /statistics
+Disallow: /settings
+Disallow: /create-habit
+Disallow: /help
+Disallow: /edit-profile
+Disallow: /change-password
 
 User-agent: PerplexityBot
 Allow: /
+Allow: /signin
+Allow: /signup
+Disallow: /dashboard
+Disallow: /rituals
+Disallow: /statistics
+Disallow: /settings
+Disallow: /create-habit
+Disallow: /help
+Disallow: /edit-profile
+Disallow: /change-password
 
 User-agent: ClaudeBot
 Allow: /
+Allow: /signin
+Allow: /signup
+Disallow: /dashboard
+Disallow: /rituals
+Disallow: /statistics
+Disallow: /settings
+Disallow: /create-habit
+Disallow: /help
+Disallow: /edit-profile
+Disallow: /change-password
 
 User-agent: Google-Extended
 Allow: /
+Allow: /signin
+Allow: /signup
+Disallow: /dashboard
+Disallow: /rituals
+Disallow: /statistics
+Disallow: /settings
+Disallow: /create-habit
+Disallow: /help
+Disallow: /edit-profile
+Disallow: /change-password
 
 Sitemap: https://habit-flow-fullstack.vercel.app/sitemap.xml
