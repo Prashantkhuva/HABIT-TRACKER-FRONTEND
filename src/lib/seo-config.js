@@ -20,14 +20,16 @@ export const ROUTE_SEO = {
   },
   "/signin": {
     title: "Sign In — HabitFlow",
-    description: "Sign in to your HabitFlow account and continue your daily rituals.",
-    robots: "noindex, follow",
+    description:
+      "Sign in to your HabitFlow account and continue your daily rituals.",
+    robots: "index, follow", // ✅
     ogType: "website",
   },
   "/signup": {
     title: "Create Account — HabitFlow",
-    description: "Create a free HabitFlow account and start building editorial daily rituals.",
-    robots: "noindex, follow",
+    description:
+      "Create a free HabitFlow account and start building editorial daily rituals.",
+    robots: "index, follow", // ✅
     ogType: "website",
   },
 };
@@ -44,53 +46,53 @@ export function getStructuredData() {
   return {
     "@context": "https://schema.org",
     "@graph": [
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "@id": `${SITE_URL}/#website`,
-      name: SITE_NAME,
-      url: SITE_URL,
-      description:
-        "Premium editorial habit tracking for daily rituals, streaks, and intentional routines.",
-      inLanguage: "en",
-      publisher: { "@id": `${SITE_URL}/#organization` },
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
-      name: SITE_NAME,
-      url: SITE_URL,
-      logo: `${SITE_URL}/logo.png`,
-      founder: {
-        "@type": "Person",
-        name: "Prashant Khuva",
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        name: SITE_NAME,
+        url: SITE_URL,
+        description:
+          "Premium editorial habit tracking for daily rituals, streaks, and intentional routines.",
+        inLanguage: "en",
+        publisher: { "@id": `${SITE_URL}/#organization` },
       },
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "@id": `${SITE_URL}/#app`,
-      name: SITE_NAME,
-      url: SITE_URL,
-      applicationCategory: "LifestyleApplication",
-      operatingSystem: "Web",
-      browserRequirements: "Requires JavaScript",
-      offers: {
-        "@type": "Offer",
-        price: "0",
-        priceCurrency: "USD",
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: SITE_NAME,
+        url: SITE_URL,
+        logo: `${SITE_URL}/logo.png`,
+        founder: {
+          "@type": "Person",
+          name: "Prashant Khuva",
+        },
       },
-      description:
-        "Editorial habit tracker with ritual tracking, streak analytics, heatmaps, and a calm, distraction-free interface.",
-      featureList: [
-        "Daily ritual and habit tracking",
-        "Streak and consistency analytics",
-        "Editorial, distraction-free UI",
-        "Progress heatmaps and weekly charts",
-        "Reflection notes and habit archives",
-      ],
-    },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "@id": `${SITE_URL}/#app`,
+        name: SITE_NAME,
+        url: SITE_URL,
+        applicationCategory: "LifestyleApplication",
+        operatingSystem: "Web",
+        browserRequirements: "Requires JavaScript",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+        },
+        description:
+          "Editorial habit tracker with ritual tracking, streak analytics, heatmaps, and a calm, distraction-free interface.",
+        featureList: [
+          "Daily ritual and habit tracking",
+          "Streak and consistency analytics",
+          "Editorial, distraction-free UI",
+          "Progress heatmaps and weekly charts",
+          "Reflection notes and habit archives",
+        ],
+      },
     ],
   };
 }
