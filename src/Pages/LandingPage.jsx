@@ -1,5 +1,5 @@
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -33,10 +33,8 @@ const fadeUp = {
   }),
 };
 
-// FIX: Added margin so animations don't trigger too early (old: default 0px)
 const viewportConfig = { once: true, margin: "-60px" };
 
-// Staggered grid container — children animate in sequence
 const gridContainer = {
   hidden: {},
   show: {
@@ -59,34 +57,40 @@ const gridItem = {
   },
 };
 
-// ─── Animated Counter Component ──────────────────────────────────────────────
+// ─── Animated Counter ────────────────────────────────────────────────────────
 
-function AnimatedNumber({ from = 0, to, suffix = "", duration = 1.6 }) {
+function AnimatedNumber({ to, suffix = "", duration = 1600 }) {
+  const [value, setValue] = useState(0);
   const ref = useRef(null);
-  const count = useMotionValue(from);
-  const rounded = useTransform(count, (v) => `${Math.round(v)}${suffix}`);
+  const started = useRef(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          animate(count, to, {
-            duration,
-            ease: [0.22, 1, 0.36, 1],
-          });
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const start = performance.now();
+          const tick = (now) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setValue(Math.round(eased * to));
+            if (progress < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
           observer.disconnect();
         }
       },
-      { threshold: 0.5 },
+      { threshold: 0.5 }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [count, to, duration]);
+  }, [to, duration]);
 
   return (
-    <motion.span ref={ref} className="tabular-nums">
-      {rounded}
-    </motion.span>
+    <span ref={ref}>
+      {value}
+      {suffix}
+    </span>
   );
 }
 
@@ -113,16 +117,17 @@ function AnimatedBarChart() {
                 ? "bg-black dark:bg-[#D0BCFF]"
                 : "bg-black/20 dark:bg-white/20"
             }`}
-            initial={{ height: 0, opacity: 0 }}
-            whileInView={{ height: `${bar.h}%`, opacity: 1 }}
+            style={{
+              height: `${bar.h}%`,
+              transformOrigin: "bottom",
+              scaleY: 0,
+            }}
+            whileInView={{ scaleY: 1 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{
-              height: {
-                duration: 0.7,
-                delay: i * 0.08,
-                ease: [0.22, 1, 0.36, 1],
-              },
-              opacity: { duration: 0.3, delay: i * 0.08 },
+              duration: 0.6,
+              delay: i * 0.07,
+              ease: [0.22, 1, 0.36, 1],
             }}
           />
           <span className="uppercase text-[9px] tracking-[0.15em] opacity-40">
@@ -154,11 +159,9 @@ function LandingPage() {
       >
         {/* ─── HERO ─────────────────────────────────────────────────────────── */}
         <section className="min-h-screen pt-28 sm:pt-40 pb-16 sm:pb-24 px-5 sm:px-8 lg:px-20 relative overflow-hidden">
-          {/* Glow */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] sm:w-[700px] h-[200px] sm:h-[300px] bg-[#C58B5D] blur-[120px] opacity-20" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-16 items-center relative z-10">
-            {/* LEFT */}
             <div className="lg:col-span-7">
               <motion.p
                 variants={fadeUp}
@@ -220,7 +223,6 @@ function LandingPage() {
               </motion.div>
             </div>
 
-            {/* RIGHT */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -229,7 +231,6 @@ function LandingPage() {
               className="lg:col-span-5 relative"
             >
               <div className="absolute -top-20 -right-10 w-72 h-72 bg-[#E8D9A8] dark:bg-[#D0BCFF] blur-[120px] opacity-30 dark:opacity-10 rounded-full" />
-
               <div className="relative overflow-hidden rounded-[24px] sm:rounded-[36px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] group">
                 <img
                   src="/workspace.png"
@@ -251,7 +252,6 @@ function LandingPage() {
         </section>
 
         {/* ─── STATS TICKER ─────────────────────────────────────────────────── */}
-        {/* NEW SECTION: Social proof numbers — builds trust, breaks up sections */}
         <section className="py-14 sm:py-20 px-5 sm:px-8 lg:px-20 border-y border-black/8 dark:border-white/8 bg-[#F4F4EF] dark:bg-[#1A171D]">
           <motion.div
             initial="hidden"
@@ -261,37 +261,13 @@ function LandingPage() {
             className="grid grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-16 text-center"
           >
             {[
-              {
-                icon: Flame,
-                value: 21,
-                suffix: "-day",
-                label: "Average streak built",
-              },
-              {
-                icon: CalendarCheck,
-                value: 94,
-                suffix: "%",
-                label: "Habit retention rate",
-              },
-              {
-                icon: BarChart3,
-                value: 4,
-                suffix: " charts",
-                label: "Progress visualizations",
-              },
-              {
-                icon: Sparkles,
-                value: 12,
-                suffix: " rituals",
-                label: "Habit categories",
-              },
+              { icon: Flame, value: 21, suffix: "-day", label: "Average streak built" },
+              { icon: CalendarCheck, value: 94, suffix: "%", label: "Habit retention rate" },
+              { icon: BarChart3, value: 4, suffix: " charts", label: "Progress visualizations" },
+              { icon: Sparkles, value: 12, suffix: " rituals", label: "Habit categories" },
             ].map(({ icon: Icon, value, suffix, label }, i) => (
               <motion.div key={i} variants={gridItem} className="space-y-3">
-                <Icon
-                  size={20}
-                  strokeWidth={1.5}
-                  className="mx-auto text-[#1A1A1A] dark:text-[#D0BCFF] opacity-60"
-                />
+                <Icon size={20} strokeWidth={1.5} className="mx-auto text-[#1A1A1A] dark:text-[#D0BCFF] opacity-60" />
                 <p className="font-[Epilogue] text-4xl sm:text-5xl tracking-[-0.06em]">
                   <AnimatedNumber to={value} suffix={suffix} />
                 </p>
@@ -323,13 +299,11 @@ function LandingPage() {
                 editorial. No clutter. No noise. Just rhythm.
               </p>
             </div>
-
             <button className="uppercase tracking-[0.25em] text-[10px] border-b border-black dark:border-white pb-2 hover:opacity-60 transition-opacity">
               Explore Ecosystem
             </button>
           </div>
 
-          {/* FIX: Staggered grid container — all cards now animate in sequence */}
           <motion.div
             className="grid grid-cols-1 md:grid-cols-12 gap-6"
             initial="hidden"
@@ -337,17 +311,12 @@ function LandingPage() {
             viewport={viewportConfig}
             variants={gridContainer}
           >
-            {/* BIG CARD */}
             <motion.div
               variants={gridItem}
               className="md:col-span-8 bg-white dark:bg-[#1D1B20] rounded-[24px] sm:rounded-[36px] p-6 sm:p-10 lg:p-14 flex flex-col justify-between min-h-[300px] sm:min-h-[350px]"
             >
               <div>
-                <BookOpen
-                  size={42}
-                  strokeWidth={1.5}
-                  className="mb-10 text-[#1A1A1A] dark:text-[#D0BCFF]"
-                />
+                <BookOpen size={42} strokeWidth={1.5} className="mb-10 text-[#1A1A1A] dark:text-[#D0BCFF]" />
                 <h3 className="font-[Epilogue] text-3xl sm:text-5xl tracking-[-0.05em] lowercase mb-5">
                   visual narrative
                 </h3>
@@ -365,7 +334,6 @@ function LandingPage() {
               </div>
             </motion.div>
 
-            {/* STAT CARD */}
             <motion.div
               variants={gridItem}
               className="md:col-span-4 rounded-[24px] sm:rounded-[36px] bg-[#1A1A1A] dark:bg-[#D0BCFF] text-white dark:text-black p-8 sm:p-12 flex flex-col justify-center"
@@ -382,16 +350,11 @@ function LandingPage() {
               </p>
             </motion.div>
 
-            {/* SMALL FEATURE */}
             <motion.div
               variants={gridItem}
               className="md:col-span-4 bg-[#EAEAE4] dark:bg-[#1D1B20] rounded-[24px] sm:rounded-[36px] p-7 sm:p-10 min-h-[240px] sm:min-h-[300px] flex flex-col justify-between"
             >
-              <Waves
-                size={36}
-                strokeWidth={1.5}
-                className="text-[#1A1A1A] dark:text-[#D0BCFF]"
-              />
+              <Waves size={36} strokeWidth={1.5} className="text-[#1A1A1A] dark:text-[#D0BCFF]" />
               <div>
                 <h3 className="font-[Epilogue] text-3xl tracking-[-0.05em] lowercase mb-3">
                   rhythmic pacing
@@ -402,7 +365,6 @@ function LandingPage() {
               </div>
             </motion.div>
 
-            {/* IMAGE CARD */}
             <motion.div
               variants={gridItem}
               className="md:col-span-8 overflow-hidden rounded-[24px] sm:rounded-[36px] relative group min-h-[240px] sm:min-h-0"
@@ -449,7 +411,6 @@ function LandingPage() {
           </motion.div>
 
           <div className="border-y border-black/10 dark:border-white/10 py-10 sm:py-16 grid grid-cols-1 lg:grid-cols-3 gap-10 sm:gap-16">
-            {/* LEFT */}
             <motion.div
               className="space-y-10"
               initial="hidden"
@@ -479,7 +440,7 @@ function LandingPage() {
               </div>
             </motion.div>
 
-            {/* CENTER — Now with animated bar chart */}
+            {/* CENTER — animated bar chart */}
             <motion.div
               className="lg:border-x border-black/10 dark:border-white/10 lg:px-12"
               initial="hidden"
@@ -492,7 +453,6 @@ function LandingPage() {
                 <p className="uppercase tracking-[0.35em] text-[10px] mb-10">
                   Weekly Distribution
                 </p>
-                {/* FIX: Replaced static bars with animated ones */}
                 <AnimatedBarChart />
                 <p className="font-[Epilogue] text-2xl italic lowercase">
                   "consistency is the only metric that matters."
@@ -500,7 +460,6 @@ function LandingPage() {
               </div>
             </motion.div>
 
-            {/* RIGHT */}
             <motion.div
               className="space-y-10"
               initial="hidden"
@@ -549,7 +508,6 @@ function LandingPage() {
           <div className="absolute inset-0 bg-[#FAFAF5]/85 dark:bg-[#141218]/82 pointer-events-none" />
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center">
-            {/* IMAGE */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -559,7 +517,6 @@ function LandingPage() {
             >
               <div className="absolute -top-6 -left-6 w-36 h-36 border border-black/10 dark:border-white/10 rounded-full" />
               <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#C58B5D]/20 dark:bg-[#D0BCFF]/15 blur-[70px] rounded-full" />
-
               <div className="relative overflow-hidden rounded-[28px] bg-black shadow-[0_30px_80px_-35px_rgba(0,0,0,0.35)]">
                 <img
                   src="/grain.png"
@@ -578,7 +535,6 @@ function LandingPage() {
               </div>
             </motion.div>
 
-            {/* CONTENT */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -626,19 +582,11 @@ function LandingPage() {
                     }}
                   >
                     <div className="mt-1">
-                      <Icon
-                        size={22}
-                        strokeWidth={1.5}
-                        className="text-[#1A1A1A] dark:text-[#D0BCFF]"
-                      />
+                      <Icon size={22} strokeWidth={1.5} className="text-[#1A1A1A] dark:text-[#D0BCFF]" />
                     </div>
                     <div>
-                      <h3 className="font-[Epilogue] text-2xl lowercase mb-3">
-                        {title}
-                      </h3>
-                      <p className="text-[#6F6F6F] dark:text-[#938F99] leading-relaxed">
-                        {desc}
-                      </p>
+                      <h3 className="font-[Epilogue] text-2xl lowercase mb-3">{title}</h3>
+                      <p className="text-[#6F6F6F] dark:text-[#938F99] leading-relaxed">{desc}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -664,14 +612,12 @@ function LandingPage() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="absolute inset-0 bg-black/50" />
-
             <div className="relative z-10">
               <h2 className="font-[Epilogue] text-[clamp(2.5rem,8vw,5rem)] lg:text-8xl tracking-[-0.07em] lowercase leading-[0.9] mb-8 sm:mb-12">
                 begin your
                 <br />
                 first ritual.
               </h2>
-
               <Link to="/signin">
                 <Button
                   variant="secondary"
@@ -681,7 +627,6 @@ function LandingPage() {
                   <ArrowRight size={16} />
                 </Button>
               </Link>
-
               <p className="mt-10 uppercase tracking-[0.25em] text-[10px] opacity-50">
                 limited invites released weekly
               </p>
