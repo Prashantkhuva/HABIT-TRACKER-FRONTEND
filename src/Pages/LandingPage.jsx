@@ -106,22 +106,22 @@ const bars = [
   { h: 35, day: "S" },
 ];
 
-function AnimatedBarChart() {
+
+  function AnimatedBarChart() {
   return (
     <div className="flex items-end gap-3 h-64 mb-8">
       {bars.map((bar, i) => (
-        <div key={i} className="flex-1 flex flex-col items-center gap-2">
+        <div
+          key={i}
+          className="flex-1 h-full flex flex-col justify-end items-center gap-2"
+        >
           <motion.div
-            className={`w-full rounded-full ${
+            className={`w-full min-h-[12px] rounded-full ${
               i === 3
                 ? "bg-black dark:bg-[#D0BCFF]"
                 : "bg-black/20 dark:bg-white/20"
             }`}
-            style={{
-              height: `${bar.h}%`,
-              transformOrigin: "bottom",
-              scaleY: 0,
-            }}
+            initial={{ scaleY: 0 }}
             whileInView={{ scaleY: 1 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{
@@ -129,7 +129,12 @@ function AnimatedBarChart() {
               delay: i * 0.07,
               ease: [0.22, 1, 0.36, 1],
             }}
+            style={{
+              height: `${bar.h}%`,
+              transformOrigin: "bottom",
+            }}
           />
+
           <span className="uppercase text-[9px] tracking-[0.15em] opacity-40">
             {bar.day}
           </span>
@@ -137,7 +142,7 @@ function AnimatedBarChart() {
       ))}
     </div>
   );
-}
+  }
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
