@@ -1,6 +1,6 @@
 /** Canonical site URL — override in production via VITE_SITE_URL */
 export const SITE_URL = (
-  import.meta.env.VITE_SITE_URL || "https://habit-flow-fullstack.vercel.app"
+  import.meta.env.VITE_SITE_URL || "https://habitflow.indevs.in"
 ).replace(/\/$/, "");
 
 export const SITE_NAME = "HabitFlow";
@@ -22,14 +22,14 @@ export const ROUTE_SEO = {
     title: "Sign In — HabitFlow",
     description:
       "Sign in to your HabitFlow account and continue your daily rituals.",
-    robots: "index, follow", // ✅
+    robots: "index, follow",
     ogType: "website",
   },
   "/signup": {
     title: "Create Account — HabitFlow",
     description:
       "Create a free HabitFlow account and start building editorial daily rituals.",
-    robots: "index, follow", // ✅
+    robots: "index, follow",
     ogType: "website",
   },
 };
