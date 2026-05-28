@@ -1,4 +1,4 @@
-# HabitFlow — https://habit-flow-fullstack.vercel.app
+# HabitFlow — https://habitflow.indevs.in
 User-agent: *
 Allow: /
 Allow: /signin
@@ -80,4 +80,4 @@ Disallow: /help
 Disallow: /edit-profile
 Disallow: /change-password
 
-Sitemap: https://habit-flow-fullstack.vercel.app/sitemap.xml
+Sitemap: https://habitflow.indevs.in/sitemap.xml
