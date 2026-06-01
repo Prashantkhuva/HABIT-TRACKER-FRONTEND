@@ -20,8 +20,7 @@ export default function DangerZone() {
 
       await deleteAccount();
       dispatch(signout());
-
-      navigate("/login");
+      window.location.href = "/";
     } catch (err) {
       console.error(err);
     } finally {

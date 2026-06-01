@@ -10,6 +10,7 @@ import Button from "./Button";
 import { useToast } from "./Toast/ToastProvider";
 import { DashboardSkeleton } from "./loading/LoadingSkeletons";
 import ReflectionModal from "./Habit/ReflectionModal";
+import { isLogFromToday } from "../lib/habit-utils";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -44,15 +45,7 @@ export default function Dashboard() {
             try {
               const logRes = await getHabitLogs(habit._id, 1, 5);
               const logs = logRes.data.data.logs;
-              const doneToday = logs.some((log) => {
-                const logDate = new Date(Number(log.date));
-                const today = new Date();
-                return (
-                  logDate.getDate() === today.getDate() &&
-                  logDate.getMonth() === today.getMonth() &&
-                  logDate.getFullYear() === today.getFullYear()
-                );
-              });
+              const doneToday = logs.some(isLogFromToday);
               if (doneToday) alreadyDoneIds.push(habit._id);
             } catch (err) {
               console.error(err);

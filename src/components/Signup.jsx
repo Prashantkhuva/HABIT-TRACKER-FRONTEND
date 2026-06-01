@@ -4,7 +4,7 @@ import { signin as authLogin } from "../store/authSlice";
 import { Button, Input } from "./index";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import { motion, setFeatureDefinitions } from "framer-motion";
+import { motion } from "framer-motion";
 import { registerUser, getCurrentUser, login } from "../api/auth-api";
 import { toPlainData } from "../lib/habit-utils";
 
@@ -104,7 +104,7 @@ const Signup = () => {
               habitflow
             </div>
 
-            <p className="text-xs tracking-widest text-gray-400 dark:text-[#938F99]">
+            <p className="text-xs tracking-widest text-text-muted">
               PREMIUM EDITORIAL TRACKING
             </p>
           </div>
@@ -118,10 +118,10 @@ const Signup = () => {
               initial="hidden"
               animate="visible"
             >
-              <div className="bg-white dark:bg-[#1D1B20]/80 backdrop-blur-md border border-gray-300 dark:border-[#2A2A2A] rounded-3xl p-8 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.5)]">
+              <div className="bg-surface dark:bg-surface/80 backdrop-blur-md border border-border-subtle rounded-3xl p-8 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.5)]">
                 <h2 className="text-2xl font-semibold mb-2 text-[#1A1A1A] dark:text-[#E6E1E5]" style={{ fontFamily: "Epilogue, sans-serif" }}>create account</h2>
 
-                <p className="text-sm text-gray-400 dark:text-[#938F99] mb-6">
+                <p className="text-sm text-text-muted mb-6">
                   begin your ritual journey.
                 </p>
 
@@ -157,7 +157,7 @@ const Signup = () => {
                   </Button>
                 </form>
 
-                <p className="text-center text-sm mt-6 text-gray-400 dark:text-[#938F99]">
+                <p className="text-center text-sm mt-6 text-text-muted">
                   already have account?{" "}
                   <Link to="/signin" className="font-medium text-[#1A1A1A] dark:text-[#D0BCFF] hover:opacity-80 transition-colors">
                     Sign in
@@ -167,7 +167,7 @@ const Signup = () => {
             </motion.div>
           </div>
         </div>
-        <p className="text-sm text-gray-400 dark:text-[#938F99] pt-3 pb-2 text-center font-thin font-body">
+          <p className="text-sm text-text-muted pt-3 pb-2 text-center font-thin font-body">
           "rituals turn intention into reality."
         </p>
       </div>

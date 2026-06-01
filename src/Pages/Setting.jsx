@@ -2,8 +2,6 @@ import { motion } from "framer-motion";
 import ProfileCard from "../components/settings/ProfileCard";
 import AppearanceCard from "../components/settings/AppearanceCard";
 import DangerZone from "../components/settings/DangerZone";
-import { useState, useEffect } from "react";
-import { SettingsSkeleton } from "../components/loading/LoadingSkeletons";
 import { HelpCircle, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -25,16 +23,8 @@ const fadeUp = {
 };
 
 export default function SettingsPage() {
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleSignOut = async () => {
     try {
@@ -44,10 +34,8 @@ export default function SettingsPage() {
     }
 
     dispatch(signout());
-    navigate("/signin", { replace: true });
+    window.location.href = "/";
   };
-
-  if (loading) return <SettingsSkeleton />;
 
   return (
     <div className="text-text-primary">

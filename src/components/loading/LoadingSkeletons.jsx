@@ -24,25 +24,25 @@ export const Skeleton = ({ className, style }) => {
 export const DashboardSkeleton = () => (
   <div className="w-full overflow-hidden">
     {/* Label + Heading */}
-    <Skeleton className="w-20 h-4 mb-3 rounded-full" />
-    <Skeleton className="w-64 h-12 mb-8 rounded-xl" />
+    <Skeleton className="w-20 h-3 mb-3 rounded-full" />
+    <Skeleton className="w-64 h-10 mb-8 rounded-xl" />
 
     {/* Habit cards — horizontal scroll, clipped to parent */}
     <div className="flex gap-5 overflow-x-auto pb-4">
       {[1, 2, 3, 4].map((i) => (
-        <Skeleton key={i} className="min-w-72 h-52 rounded-xl shrink-0" />
+        <Skeleton key={i} className="min-w-72 h-52 rounded-[28px] shrink-0" />
       ))}
     </div>
 
     {/* Completed section */}
     <div className="mt-16">
       <div className="flex justify-between items-center mb-6">
-        <Skeleton className="w-48 h-8 rounded-xl" />
-        <Skeleton className="w-24 h-4 rounded-full" />
+        <Skeleton className="w-48 h-7 rounded-xl" />
+        <Skeleton className="w-24 h-3 rounded-full" />
       </div>
       <div className="flex flex-col gap-3">
         {[1, 2].map((i) => (
-          <Skeleton key={i} className="w-full h-16 rounded-xl" />
+          <Skeleton key={i} className="w-full h-14 rounded-full" />
         ))}
       </div>
     </div>
@@ -55,8 +55,8 @@ export const HabitsPageSkeleton = () => (
     {/* Header */}
     <div className="flex justify-between items-start mb-8">
       <div>
-        <Skeleton className="w-20 h-4 mb-2 rounded-full" />
-        <Skeleton className="w-64 h-12 rounded-full" />
+        <Skeleton className="w-20 h-3 mb-2 rounded-full" />
+        <Skeleton className="w-64 h-10 rounded-xl" />
       </div>
       <Skeleton className="w-28 h-10 rounded-full" />
     </div>
@@ -81,28 +81,28 @@ export const StatisticsSkeleton = () => (
   <div className="w-full">
     {/* HEADER */}
     <div className="mb-10">
-      <Skeleton className="w-72 h-12 rounded-full" />
+      <Skeleton className="w-72 h-10 rounded-xl" />
     </div>
 
     {/* 4 Stat Cards */}
-    <div className="grid max-sm:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
       {[1, 2, 3, 4].map((i) => (
-        <Skeleton key={i} className="h-32 rounded-xl" />
+        <Skeleton key={i} className="h-32 rounded-[24px]" />
       ))}
     </div>
 
     {/* Charts Row */}
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 items-stretch">
       {/* Weekly Chart */}
-      <Skeleton className="lg:col-span-2 rounded-xl max-sm:h-64 sm:h-80" />
+      <Skeleton className="lg:col-span-2 rounded-[28px] max-sm:h-64 sm:h-80" />
       {/* AI Card */}
-      <Skeleton className="rounded-xl min-h-80" />
+      <Skeleton className="rounded-[28px] min-h-80" />
     </div>
 
     {/* Heatmap & Streak */}
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-      <Skeleton className="w-full h-80 rounded-xl" />
-      <Skeleton className="w-full h-80 rounded-xl" />
+      <Skeleton className="w-full h-80 rounded-[28px]" />
+      <Skeleton className="w-full h-80 rounded-[28px]" />
     </div>
   </div>
 );
@@ -112,18 +112,18 @@ export const SettingsSkeleton = () => (
     <div className="w-full max-w-[1400px] mx-auto">
       {/* Header */}
       <div className="mb-10">
-        <Skeleton className="w-48 h-12 mb-2 rounded-full" />
-        <Skeleton className="w-64 h-4 rounded-full" />
+        <Skeleton className="w-48 h-10 mb-2 rounded-xl" />
+        <Skeleton className="w-64 h-3 rounded-full" />
       </div>
 
       {/* Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 mb-6">
-        <Skeleton className="h-100 rounded-xl" />
-        <Skeleton className="h-100 rounded-xl" />
+        <Skeleton className="h-100 rounded-[28px]" />
+        <Skeleton className="h-100 rounded-[28px]" />
       </div>
 
       {/* Danger Zone / Other Cards */}
-      <Skeleton className="h-64 rounded-xl w-full" />
+      <Skeleton className="h-64 rounded-[28px] w-full" />
     </div>
   </div>
 );

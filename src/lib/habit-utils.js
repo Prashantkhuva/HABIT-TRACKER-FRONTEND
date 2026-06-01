@@ -87,6 +87,17 @@ function getIconBg(hexColor = "#FAFAF5") {
   return brightness < 128 ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)";
 }
 
+function isLogFromToday(log) {
+  if (!log?.date) return false;
+  const logDate = new Date(Number(log.date));
+  const today = new Date();
+  return (
+    logDate.getDate() === today.getDate() &&
+    logDate.getMonth() === today.getMonth() &&
+    logDate.getFullYear() === today.getFullYear()
+  );
+}
+
 export const getWeeklyCount = async (habitId) => {
   try {
     const res = await getHabitLogs(habitId, 1, 7);
@@ -350,6 +361,7 @@ export {
   formatStreak,
   formatDate,
   isToday,
+  isLogFromToday,
   getCompletionRate,
   getFrequencyLabel,
   getTextColor,

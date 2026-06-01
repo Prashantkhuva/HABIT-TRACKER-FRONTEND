@@ -22,8 +22,9 @@ import {
   getLongestStreak,
   getHeatmapData,
 } from "../api/dashboard-api";
-import { getAllHabitLogs, getHabits } from "../api/habits-api";
+import { getAllHabitLogs } from "../api/habits-api";
 
+import { useSelector } from "react-redux";
 import WeeklyChart from "../components/stats/WeeklyChart";
 import Heatmap from "../components/stats/Heatmap";
 import StreakPanel from "../components/stats/StreakPanel";
@@ -83,6 +84,7 @@ export default function StatisticsPage() {
   const [weekly, setWeekly] = useState([]);
   const [streak, setStreak] = useState({});
   const [heatmap, setHeatmap] = useState([]);
+  const reduxHabits = useSelector((state) => state.habit.habits);
   const [logs, setLogs] = useState([]);
   const [habits, setHabits] = useState([]);
   const [showDetails, setShowDetails] = useState(false);
@@ -96,26 +98,30 @@ export default function StatisticsPage() {
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [s, w, st, h, logsRes, habitsRes] = await Promise.all([
+        const [s, w, st, h, logsRes] = await Promise.all([
           getDashboardStats(),
           getWeeklyData(),
           getLongestStreak(),
           getHeatmapData(),
           getAllHabitLogs(),
-          getHabits(),
         ]);
         setStats(s.data.data);
         setWeekly(w.data.data || []);
         setStreak(st.data.data || {});
         setHeatmap(h.data.data || []);
         setLogs(logsRes.data.data.logs || []);
-        setHabits(habitsRes.data.data || []);
       } catch (err) {
         console.error(err);
       }
     };
     fetchAll();
   }, []);
+
+  useEffect(() => {
+    if (reduxHabits?.length) {
+      setHabits(reduxHabits);
+    }
+  }, [reduxHabits]);
 
   const { title, description, stats: timeStats } = getTimeInsights(logs || []);
 

@@ -34,7 +34,7 @@ export default function Sidebar() {
     }
 
     dispatch(signout());
-    navigate("/signin", { replace: true });
+    window.location.href = "/";
   };
 
   return (

@@ -71,16 +71,15 @@ export default function HabitCalendar({ logs }) {
           return (
             <div
               key={`day-${i}`}
-              className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xs sm:text-sm font-semibold rounded-full transition-all ${isCompleted
-                ? "bg-[#1A1A1A] dark:bg-[#D0BCFF] text-[#FAFAF5] dark:text-[#1A1A1A]"
-                : "text-[#1A1A1A] dark:text-[#E6E1E5]"
-                }`}
-              style={{
-                border: isToday
-                  ? (isCompleted ? "none" : "2px solid #1A1A1A")
-                  : "none",
-                borderColor: isToday && !isCompleted ? (document.documentElement.classList.contains("dark") ? "#D0BCFF" : "#1A1A1A") : "transparent"
-              }}
+              className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xs sm:text-sm font-semibold rounded-full transition-all ${
+                isCompleted
+                  ? "bg-[#1A1A1A] dark:bg-[#D0BCFF] text-[#FAFAF5] dark:text-[#1A1A1A]"
+                  : "text-[#1A1A1A] dark:text-[#E6E1E5]"
+              } ${
+                isToday && !isCompleted
+                  ? "border-2 border-[#1A1A1A] dark:border-[#D0BCFF]"
+                  : ""
+              }`}
             >
               {day}
             </div>

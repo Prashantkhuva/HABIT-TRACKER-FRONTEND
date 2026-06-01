@@ -11,6 +11,7 @@ import ToastProvider from "./components/Toast/ToastProvider";
 import SwipeNavigation from "./SwipeNavigation";
 import { usePageSeo } from "./hooks/usePageSeo";
 import { getStructuredData } from "./lib/seo-config";
+import { motion, AnimatePresence } from "framer-motion";
 
 const HIDE_CHROME_ON = ["/", "/signin", "/signup", "/verify-email"];
 
@@ -80,7 +81,17 @@ function App() {
                 <Outlet />
               </SwipeNavigation>
             ) : (
-              <Outlet />
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={location.pathname}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <Outlet />
+                </motion.div>
+              </AnimatePresence>
             )}
           </main>
 

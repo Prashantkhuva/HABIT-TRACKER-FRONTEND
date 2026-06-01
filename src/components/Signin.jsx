@@ -93,7 +93,7 @@ const Signin = () => {
               habitflow
             </div>
 
-            <p className="text-xs tracking-widest text-gray-400 dark:text-[#938F99]">
+            <p className="text-xs tracking-widest text-text-muted">
               PREMIUM EDITORIAL TRACKING
             </p>
           </div>
@@ -107,7 +107,7 @@ const Signin = () => {
               initial="hidden"
               animate="visible"
             >
-              <div className="bg-white dark:bg-[#1D1B20]/80 backdrop-blur-md border border-gray-300 dark:border-[#2A2A2A] rounded-3xl p-8 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.5)]">
+              <div className="bg-surface dark:bg-surface/80 backdrop-blur-md border border-border-subtle rounded-3xl p-8 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.5)]">
                 <h2 className="text-2xl font-semibold mb-2 text-[#1A1A1A] dark:text-[#E6E1E5]" style={{ fontFamily: "Epilogue, sans-serif" }}>Welcome Back</h2>
 
                 <hr className="border-t-2 border-[#1A1A1A] dark:border-[#E6E1E5] w-16 mb-5 mt-7" />
@@ -141,7 +141,7 @@ const Signin = () => {
                   </Button>
                 </form>
 
-                <p className="text-center text-sm mt-6 text-gray-400 dark:text-[#938F99]">
+                <p className="text-center text-sm mt-6 text-text-muted">
                   Don't have account?{" "}
                   <Link to="/signup" className="font-medium text-[#1A1A1A] dark:text-[#D0BCFF] hover:opacity-80 transition-colors">
                     Sign up
@@ -151,7 +151,7 @@ const Signin = () => {
             </motion.div>
           </div>
         </div>
-        <p className="text-sm text-gray-400 dark:text-[#938F99] pt-3 pb-2 text-center font-thin font-body">
+          <p className="text-sm text-text-muted pt-3 pb-2 text-center font-thin font-body">
           "rituals turn intention into reality."
         </p>
       </div>

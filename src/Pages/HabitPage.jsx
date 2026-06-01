@@ -7,6 +7,7 @@ import { setReduxHabits } from "../store/habitSlice";
 import HabitListCard from "../components/Habit/HabitListCard";
 import { Button } from "../components";
 import { HabitsPageSkeleton } from "../components/loading/LoadingSkeletons";
+import { isLogFromToday } from "../lib/habit-utils";
 
 const filters = ["ALL", "ACTIVE", "COMPLETED"];
 
@@ -41,15 +42,7 @@ export default function HabitsPage() {
               const logRes = await getHabitLogs(habit._id, 1, 5);
               const logs = logRes.data.data.logs;
 
-              const doneToday = logs.some((log) => {
-                const logDate = new Date(Number(log.date));
-                const today = new Date();
-                return (
-                  logDate.getDate() === today.getDate() &&
-                  logDate.getMonth() === today.getMonth() &&
-                  logDate.getFullYear() === today.getFullYear()
-                );
-              });
+              const doneToday = logs.some(isLogFromToday);
 
               if (doneToday) doneIds.push(habit._id);
             } catch (err) {

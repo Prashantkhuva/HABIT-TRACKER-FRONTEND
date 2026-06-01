@@ -17,7 +17,7 @@ import {
   archiveHabit,
 } from "../api/habits-api";
 
-import { getTextColor } from "../lib/habit-utils";
+import { getTextColor, isLogFromToday } from "../lib/habit-utils";
 
 import Button from "../components/Button";
 
@@ -93,10 +93,8 @@ export default function HabitDetailPage() {
 
       setStreak(streakRes.data.data.currentStreak || 0);
 
-      const today = new Date().toDateString();
-
       const doneToday = logsData.some(
-        (l) => l.completed && new Date(l.date).toDateString() === today,
+        (l) => l.completed && isLogFromToday(l),
       );
 
       setIsDoneToday(doneToday);
