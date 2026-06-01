@@ -28,7 +28,7 @@ export default function ToastProvider({ children }) {
       {children}
 
       {/* Toast container */}
-      <div className="fixed top-6 right-6 z-999 flex flex-col gap-4">
+      <div className="fixed top-4 right-4 sm:top-6 sm:right-6 z-999 flex flex-col gap-3 sm:gap-4 max-w-[calc(100vw-32px)] sm:max-w-none">
         {toasts.map((toast) => (
           <Toast key={toast.id} {...toast} onClose={() => removeToast(toast.id)} />
         ))}

@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Search } from "lucide-react";
 import { getHabits, getHabitLogs } from "../api/habits-api";
 import { setReduxHabits } from "../store/habitSlice";
 import HabitListCard from "../components/Habit/HabitListCard";
+import EditHabit from "../components/Habit/EditHabit";
 import { Button } from "../components";
 import { HabitsPageSkeleton } from "../components/loading/LoadingSkeletons";
 import { isLogFromToday } from "../lib/habit-utils";
@@ -19,6 +21,8 @@ export default function HabitsPage() {
   const habits = useSelector((state) => state.habit.habits);
   const [completedIds, setCompletedIds] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [editingHabit, setEditingHabit] = useState(null);
 
   const getFilterFromPath = () => {
     if (location.pathname === "/rituals/active") return "ACTIVE";
@@ -62,15 +66,17 @@ export default function HabitsPage() {
     fetchAll();
   }, [dispatch]);
 
-  const filteredHabits = habits.filter((h) => {
-    if (activeFilter === "ALL") return true;
-
-    if (activeFilter === "ACTIVE") return h.status === "active";
-
-    if (activeFilter === "COMPLETED") return completedIds.includes(h._id);
-
-    return true;
-  });
+  const filteredHabits = useMemo(() => {
+    return habits.filter((h) => {
+      if (activeFilter === "ACTIVE" && h.status !== "active") return false;
+      if (activeFilter === "COMPLETED" && !completedIds.includes(h._id)) return false;
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        if (!h.title.toLowerCase().includes(q)) return false;
+      }
+      return true;
+    });
+  }, [habits, activeFilter, completedIds, searchQuery]);
 
   if (loading) return <HabitsPageSkeleton />;
 
@@ -98,6 +104,18 @@ export default function HabitsPage() {
         >
           ADD NEW
         </Button>
+      </div>
+
+      {/* Search */}
+      <div className="relative mb-6">
+        <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
+        <input
+          type="text"
+          placeholder="Search rituals..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full rounded-full border border-border-subtle bg-surface py-3 pl-11 pr-5 text-sm text-text-primary placeholder:text-text-muted/55 transition-all focus:border-primary focus:bg-background focus:outline-none focus:ring-4 focus:ring-primary/10"
+        />
       </div>
 
       {/* Filter Tabs */}
@@ -142,9 +160,13 @@ export default function HabitsPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredHabits.map((habit, i) => (
-            <HabitListCard key={habit._id} habit={habit} index={i} />
+            <HabitListCard key={habit._id} habit={habit} index={i} onEdit={setEditingHabit} />
           ))}
         </div>
+      )}
+
+      {editingHabit && (
+        <EditHabit habit={editingHabit} onClose={() => setEditingHabit(null)} />
       )}
     </div>
   );

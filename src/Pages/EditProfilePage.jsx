@@ -32,7 +32,7 @@ export default function EditProfilePage() {
       setLoading(true);
 
       const res = await updateUserDetails({
-        username: username.trim(), // 🔥 IMPORTANT
+        username: username.trim(),
         email: email.trim(),
       });
 

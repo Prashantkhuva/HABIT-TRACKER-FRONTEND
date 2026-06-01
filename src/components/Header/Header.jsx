@@ -3,9 +3,11 @@ import { motion } from "framer-motion";
 import { Bell } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useToast } from "../Toast/ToastProvider";
 
 function Header() {
   const user = useSelector((state) => state.auth.userData);
+  const { addToast } = useToast();
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -40,6 +42,7 @@ function Header() {
         <motion.button
           whileHover={{ y: -1, scale: 1.03 }}
           whileTap={{ scale: 0.96 }}
+          onClick={() => addToast({ type: "info", title: "Coming soon", message: "Notifications are being built" })}
           className="rounded-full border border-border-subtle bg-surface p-2 text-text-muted hover:text-text-primary"
         >
           <Bell size={18} />

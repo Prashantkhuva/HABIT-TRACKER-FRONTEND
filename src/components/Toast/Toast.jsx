@@ -1,6 +1,6 @@
 // components/Toast/Toast.jsx
 import { motion } from "framer-motion";
-import { Check, X } from "lucide-react";
+import { Bell, Check, X } from "lucide-react";
 
 export default function Toast({ type = "success", title, message, onClose }) {
   const styles = {
@@ -15,6 +15,12 @@ export default function Toast({ type = "success", title, message, onClose }) {
       text: "text-[#D9534F] dark:text-[#FAD4D4]",
       iconBg: "bg-[#FAD4D4] dark:bg-[#200E0E]",
       icon: <X size={18} />,
+    },
+    info: {
+      bg: "bg-[#E8F0FE] dark:bg-[#1A2332]",
+      text: "text-[#4A6FA5] dark:text-[#B8D4F0]",
+      iconBg: "bg-[#D6E4F5] dark:bg-[#0E1728]",
+      icon: <Bell size={18} />,
     },
   };
 

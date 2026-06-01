@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { motion, AnimatePresence } from "framer-motion";
 
-import { Plus, Check, Trash2, Pause, Play, Archive } from "lucide-react";
+import { Plus, Check, Trash2, Pause, Play, Archive, Pencil } from "lucide-react";
 
 import {
   completeHabit,
@@ -30,6 +30,7 @@ import ReflectionModal from "../components/Habit/ReflectionModal";
 import { deleteReduxHabit } from "../store/habitSlice";
 
 import { useToast } from "../components/Toast/ToastProvider";
+import EditHabit from "../components/Habit/EditHabit";
 
 export default function HabitDetailPage() {
   const { id } = useParams();
@@ -57,6 +58,7 @@ export default function HabitDetailPage() {
   const [selectedHabit, setSelectedHabit] = useState(null);
 
   const [completing, setCompleting] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   /* --------------------------------------------- */
   /* FIND HABIT */
@@ -517,6 +519,15 @@ export default function HabitDetailPage() {
           <div className="flex gap-4 mt-8 flex-wrap">
             <Button
               variant="ghost"
+              color="default"
+              onClick={() => setShowEditModal(true)}
+            >
+              <Pencil size={16} />
+              Edit
+            </Button>
+
+            <Button
+              variant="ghost"
               color="red"
               onClick={() => setShowDeleteModal(true)}
             >
@@ -836,6 +847,10 @@ export default function HabitDetailPage() {
         onSkip={() => handleSaveReflection("")}
         onSave={handleSaveReflection}
       />
+
+      {showEditModal && (
+        <EditHabit habit={habit} onClose={() => setShowEditModal(false)} />
+      )}
     </>
   );
 }

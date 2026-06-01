@@ -26,11 +26,14 @@ import { DashPage } from "./Pages/index.js";
 import Create from "./components/Habit/Create.jsx";
 import HelpPage from "./Pages/HelpPage.jsx";
 import ChangePasswordModal from "./components/ChangePasswordModal.jsx";
+import NotFoundPage from "./Pages/NotFoundPage.jsx";
+import ErrorBoundary from "./components/ErrorBoundary.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <ErrorBoundary />,
     children: [
       {
         path: "/",
@@ -143,6 +146,10 @@ const router = createBrowserRouter([
             <ChangePasswordModal />
           </AuthLayout>
         ),
+      },
+      {
+        path: "*",
+        element: <NotFoundPage />,
       },
     ],
   },
