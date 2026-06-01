@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createHabit } from "../../api/habits-api";
 import { useNavigate } from "react-router-dom";
 import { categoryMap } from "./categoryMap";
@@ -26,7 +26,15 @@ function Create({ onClose }) {
 
   const { addToast } = useToast();
 
-  const isMobile = window.matchMedia("(max-width: 640px)").matches;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    setIsMobile(mq.matches);
+    const handler = (e) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   const colors = [
     "#4F6F64",

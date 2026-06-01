@@ -58,6 +58,10 @@ export default function HabitDetailPage() {
   const [selectedHabit, setSelectedHabit] = useState(null);
 
   const [completing, setCompleting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [pausing, setPausing] = useState(false);
+  const [resuming, setResuming] = useState(false);
+  const [archiving, setArchiving] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
   /* --------------------------------------------- */
@@ -153,6 +157,7 @@ export default function HabitDetailPage() {
 
   const handleDelete = async () => {
     try {
+      setDeleting(true);
       await deleteHabit(id);
 
       dispatch(deleteReduxHabit(id));
@@ -170,6 +175,8 @@ export default function HabitDetailPage() {
         title: "Delete failed",
         message: "Could not delete habit",
       });
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -179,6 +186,7 @@ export default function HabitDetailPage() {
 
   const handlePause = async () => {
     try {
+      setPausing(true);
       await pauseHabit(id);
 
       addToast({
@@ -194,6 +202,8 @@ export default function HabitDetailPage() {
         title: "Failed",
         message: "Could not pause habit",
       });
+    } finally {
+      setPausing(false);
     }
   };
 
@@ -203,6 +213,7 @@ export default function HabitDetailPage() {
 
   const handleResume = async () => {
     try {
+      setResuming(true);
       await resumeHabit(id);
 
       addToast({
@@ -218,6 +229,8 @@ export default function HabitDetailPage() {
         title: "Failed",
         message: "Could not resume habit",
       });
+    } finally {
+      setResuming(false);
     }
   };
 
@@ -227,6 +240,7 @@ export default function HabitDetailPage() {
 
   const handleArchive = async () => {
     try {
+      setArchiving(true);
       await archiveHabit(id);
 
       addToast({
@@ -242,6 +256,8 @@ export default function HabitDetailPage() {
         title: "Failed",
         message: "Could not archive habit",
       });
+    } finally {
+      setArchiving(false);
     }
   };
 
@@ -279,7 +295,7 @@ export default function HabitDetailPage() {
 
   const reflectionLogs = logs
     .filter((log) => log.note && log.note.trim() !== "")
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+    .sort((a, b) => new Date(Number(b.date)) - new Date(Number(a.date)));
 
   return (
     <>
@@ -530,24 +546,40 @@ export default function HabitDetailPage() {
               variant="ghost"
               color="red"
               onClick={() => setShowDeleteModal(true)}
+              disabled={deleting}
             >
               <Trash2 size={16} />
-              Delete
+              {deleting ? "Deleting..." : "Delete"}
             </Button>
 
-            <Button variant="ghost" color="gray" onClick={handlePause}>
+            <Button
+              variant="ghost"
+              color="gray"
+              onClick={handlePause}
+              disabled={pausing}
+            >
               <Pause size={16} />
-              Pause
+              {pausing ? "Pausing..." : "Pause"}
             </Button>
 
-            <Button variant="ghost" color="green" onClick={handleResume}>
+            <Button
+              variant="ghost"
+              color="green"
+              onClick={handleResume}
+              disabled={resuming}
+            >
               <Play size={16} />
-              Resume
+              {resuming ? "Resuming..." : "Resume"}
             </Button>
 
-            <Button variant="ghost" color="default" onClick={handleArchive}>
+            <Button
+              variant="ghost"
+              color="default"
+              onClick={handleArchive}
+              disabled={archiving}
+            >
               <Archive size={16} />
-              Archive
+              {archiving ? "Archiving..." : "Archive"}
             </Button>
           </div>
         </div>

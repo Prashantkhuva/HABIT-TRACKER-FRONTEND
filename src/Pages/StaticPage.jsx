@@ -147,7 +147,7 @@ export default function StatisticsPage() {
           },
         };
       })
-      .sort((a, b) => new Date(b.date) - new Date(a.date));
+      .sort((a, b) => new Date(Number(b.date)) - new Date(Number(a.date)));
   }, [logs, habits]);
 
   const filteredJournalLogs = useMemo(() => {

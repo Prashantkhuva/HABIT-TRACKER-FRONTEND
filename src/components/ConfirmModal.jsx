@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
 import Button from "./Button";
 
 export default function ConfirmModal({
@@ -11,7 +12,9 @@ export default function ConfirmModal({
   onCancel,
   loading = false,
 }) {
-  return (
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
@@ -70,6 +73,7 @@ border border-[#E8E4DC] dark:border-[#2A2A2A]"
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
