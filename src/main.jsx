@@ -10,6 +10,7 @@ import {
 import { Provider } from "react-redux";
 import store from "./store/store.js";
 import CustomCursor from "./components/CustomCursor";
+import { Analytics } from "@vercel/analytics/react";
 import {
   LandingPage,
   LoginPage,
@@ -163,6 +164,7 @@ createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <Suspense fallback={<PageLoader />}>
         <CustomCursor />
+        <Analytics />
         <RouterProvider router={router} />
       </Suspense>
     </Provider>
