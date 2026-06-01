@@ -12,7 +12,7 @@ export default function CompletedHabit({ habit, index }) {
         const res = await getHabitLogs(habit._id, 1, 7);
         const logs = res.data.data.logs;
 
-        setWeeklyCount(logs.length);
+        setWeeklyCount(logs.filter((l) => l.completed).length);
       } catch (err) {
         console.error(err);
       }

@@ -98,17 +98,6 @@ function isLogFromToday(log) {
   );
 }
 
-export const getWeeklyCount = async (habitId) => {
-  try {
-    const res = await getHabitLogs(habitId, 1, 7);
-    const logs = res.data.data.logs;
-    return logs.length;
-  } catch (err) {
-    console.error(err);
-    return 0;
-  }
-};
-
 function isDarkColor(hexColor) {
   const hex = hexColor.replace("#", "");
   const r = parseInt(hex.substring(0, 2), 16);

@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, Link } from "react-router-dom";
 import {
   LayoutDashboard,
   Sparkles,
@@ -11,8 +11,8 @@ import {
 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { signout } from "../store/authSlice";
+import { resetHabitState } from "../store/habitSlice";
 import Button from "./Button";
-import { Link } from "react-router-dom";
 import { logout } from "../api/auth-api";
 
 const navItems = [
@@ -33,6 +33,7 @@ export default function Sidebar() {
       console.log(err);
     }
 
+    dispatch(resetHabitState());
     dispatch(signout());
     window.location.href = "/";
   };

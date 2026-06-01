@@ -6,8 +6,8 @@ import { HelpCircle, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signout } from "../store/authSlice";
+import { resetHabitState } from "../store/habitSlice";
 import { logout } from "../api/auth-api";
-import ChangePasswordCard from "../components/settings/ChangePasswordCard";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -33,6 +33,7 @@ export default function SettingsPage() {
       console.log(err);
     }
 
+    dispatch(resetHabitState());
     dispatch(signout());
     window.location.href = "/";
   };

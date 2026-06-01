@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { AlertTriangle } from "lucide-react";
 import { deleteAccount } from "../../api/auth-api";
 import { signout } from "../../store/authSlice";
+import { resetHabitState } from "../../store/habitSlice";
 import ConfirmModal from "../ConfirmModal";
 import Button from "../Button";
 
@@ -19,6 +20,7 @@ export default function DangerZone() {
       setLoading(true);
 
       await deleteAccount();
+      dispatch(resetHabitState());
       dispatch(signout());
       window.location.href = "/";
     } catch (err) {

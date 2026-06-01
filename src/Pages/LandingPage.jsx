@@ -257,6 +257,7 @@ function LandingPage() {
                 <img
                   src="/workspace.png"
                   alt="A quiet editorial workspace for ritual tracking"
+                  loading="lazy"
                   className="w-full aspect-[4/5] object-cover grayscale contrast-125 group-hover:scale-[1.03] transition-transform duration-1000"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
@@ -423,6 +424,7 @@ function LandingPage() {
                 <img
                   src="/journal.png"
                   alt="Habit journal showing completed daily rituals"
+                  loading="lazy"
                   className="w-full h-52 object-cover group-hover:scale-[1.03] transition-transform duration-1000"
                 />
               </div>
@@ -466,6 +468,7 @@ function LandingPage() {
               <img
                 src="/minimal-desk.png"
                 alt="Minimal desk setup for distraction-free habit tracking"
+                loading="lazy"
                 className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-[1.03] transition-transform duration-1000"
               />
               <div className="absolute inset-0 bg-black/25" />
@@ -565,6 +568,7 @@ function LandingPage() {
                 <img
                   src="/tea.png"
                   alt="Evening wind-down ritual with tea and reflection"
+                  loading="lazy"
                   className="w-full aspect-[3/4] object-cover group-hover:scale-[1.03] transition-transform duration-1000"
                 />
               </div>
@@ -617,6 +621,7 @@ function LandingPage() {
                 <img
                   src="/grain.png"
                   alt="A quiet monochrome ritual scene"
+                  loading="lazy"
                   className="w-full aspect-[3/4] object-cover opacity-90"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent" />

@@ -47,8 +47,6 @@ export default function EditProfilePage() {
 
       navigate("/settings");
     } catch (err) {
-      console.log(err.response?.data); // debug
-
       addToast({
         type: "error",
         title: "Update failed",

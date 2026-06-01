@@ -148,12 +148,25 @@ export default function HabitsPage() {
       {filteredHabits.length === 0 ? (
         <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6">
           <div className="text-center">
-            <p className="font-heading mb-2 text-3xl font-semibold tracking-[-0.04em] text-text-primary">
-              no rituals yet.
-            </p>
-            <p className="text-sm text-text-muted">
-              design your first daily rhythm.
-            </p>
+            {searchQuery.trim() || activeFilter !== "ALL" ? (
+              <>
+                <p className="font-heading mb-2 text-3xl font-semibold tracking-[-0.04em] text-text-primary">
+                  no matching rituals.
+                </p>
+                <p className="text-sm text-text-muted">
+                  try a different search or filter.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="font-heading mb-2 text-3xl font-semibold tracking-[-0.04em] text-text-primary">
+                  no rituals yet.
+                </p>
+                <p className="text-sm text-text-muted">
+                  design your first daily rhythm.
+                </p>
+              </>
+            )}
           </div>
           <Button variant="primary" onClick={() => navigate("/create-habit")}>NEW RITUAL</Button>
         </div>

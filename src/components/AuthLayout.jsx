@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Skeleton } from "./loading/LoadingSkeletons";
 
 // function AuthLayout({ children, authentication = true }) {
 //   const navigate = useNavigate();
@@ -33,7 +34,21 @@ function AuthLayout({ children, authentication = true }) {
     }
   }, [isAuthChecked, authStatus, navigate, authentication]);
 
-  if (!isAuthChecked) return null;
+  if (!isAuthChecked) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-background p-6">
+        <div className="flex w-full max-w-2xl flex-col gap-6">
+          <Skeleton className="h-6 w-48 rounded-full" />
+          <Skeleton className="h-12 w-72 rounded-xl" />
+          <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <Skeleton key={i} className="h-44 rounded-[24px]" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return <>{children}</>;
 }

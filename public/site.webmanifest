@@ -1,6 +1,8 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "HabitFlow",
+  "short_name": "HabitFlow",
+  "description": "Premium editorial habit tracker for daily rituals and streaks.",
+  "start_url": "/",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -15,7 +17,9 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  "theme_color": "#FAFAF5",
+  "background_color": "#FAFAF5",
+  "display": "standalone",
+  "orientation": "portrait",
+  "categories": ["lifestyle", "productivity"]
 }

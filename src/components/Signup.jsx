@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signin as authLogin } from "../store/authSlice";
 import { Button, Input } from "./index";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import { registerUser, getCurrentUser, login } from "../api/auth-api";
-import { toPlainData } from "../lib/habit-utils";
+import { registerUser, login } from "../api/auth-api";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -37,7 +36,6 @@ const Signup = () => {
             authLogin({
               userData: {
                 _id: user._id,
-                fullname: user.fullname,
                 email: user.email,
                 username: user.username,
               },
@@ -71,6 +69,7 @@ const Signup = () => {
           <img
             src="/authpage1.png"
             alt=""
+            loading="lazy"
             className="w-full h-full object-cover scale-125 blur-[1px]"
           />
         </div>
@@ -80,6 +79,7 @@ const Signup = () => {
           <img
             src="/image.png"
             alt=""
+            loading="lazy"
             className="w-full h-full object-cover scale-125 blur-[3px]"
           />
         </div>

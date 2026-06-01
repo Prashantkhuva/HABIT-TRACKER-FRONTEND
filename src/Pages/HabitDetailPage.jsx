@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -15,11 +15,13 @@ import {
   pauseHabit,
   resumeHabit,
   archiveHabit,
+  getHabits,
 } from "../api/habits-api";
 
 import { getTextColor, isLogFromToday } from "../lib/habit-utils";
 
 import Button from "../components/Button";
+import { Skeleton } from "../components/loading/LoadingSkeletons";
 
 import HabitCalendar from "../components/Habit/HabitCelender";
 
@@ -27,7 +29,7 @@ import ConfirmModal from "../components/ConfirmModal";
 
 import ReflectionModal from "../components/Habit/ReflectionModal";
 
-import { deleteReduxHabit } from "../store/habitSlice";
+import { setReduxHabits, deleteReduxHabit } from "../store/habitSlice";
 
 import { useToast } from "../components/Toast/ToastProvider";
 import EditHabit from "../components/Habit/EditHabit";
@@ -63,18 +65,32 @@ export default function HabitDetailPage() {
   const [resuming, setResuming] = useState(false);
   const [archiving, setArchiving] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [notFound, setNotFound] = useState(false);
+  const [findingHabit, setFindingHabit] = useState(true);
+  const fetchedRef = useRef(false);
 
   /* --------------------------------------------- */
-  /* FIND HABIT */
+  /* FIND HABIT — fallback fetch if store is empty */
   /* --------------------------------------------- */
 
   useEffect(() => {
-    if (habits.length) {
+    if (habits.length > 0) {
       const found = habits.find((h) => h._id === id);
-
-      setHabit(found);
+      setHabit(found || null);
+      setNotFound(!found);
+      setFindingHabit(false);
+    } else if (!fetchedRef.current) {
+      fetchedRef.current = true;
+      getHabits()
+        .then((res) => {
+          dispatch(setReduxHabits(res.data.data || []));
+        })
+        .catch(() => {
+          setNotFound(true);
+          setFindingHabit(false);
+        });
     }
-  }, [habits, id]);
+  }, [habits, id, dispatch]);
 
   /* --------------------------------------------- */
   /* FETCH */
@@ -265,8 +281,40 @@ export default function HabitDetailPage() {
   /* LOADING */
   /* --------------------------------------------- */
 
-  if (!habit) {
-    return <p className="p-10">Loading...</p>;
+  if (findingHabit) {
+    return (
+      <div className="flex h-[60vh] w-full items-center justify-center p-10">
+        <div className="flex w-full max-w-4xl flex-col gap-8">
+          <div className="flex items-start justify-between">
+            <div className="flex flex-col gap-2">
+              <Skeleton className="h-4 w-20 rounded-full" />
+              <Skeleton className="h-12 w-72 rounded-xl" />
+            </div>
+            <Skeleton className="h-10 w-32 rounded-full" />
+          </div>
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">
+            <Skeleton className="col-span-2 aspect-square max-w-[650px] rounded-[40px]" />
+            <Skeleton className="h-[600px] rounded-[32px]" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (notFound || !habit) {
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6 px-4 text-center">
+        <p className="font-heading text-3xl font-semibold tracking-[-0.04em] text-text-primary">
+          ritual not found.
+        </p>
+        <p className="text-sm text-text-muted">
+          this ritual doesn’t exist or may have been deleted.
+        </p>
+        <Button onClick={() => navigate("/rituals")}>
+          BACK TO RITUALS
+        </Button>
+      </div>
+    );
   }
 
   /* --------------------------------------------- */

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signin as authLogin } from "../store/authSlice";
 import { Button, Input } from "./index";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import { registerUser, getCurrentUser, login } from "../api/auth-api";
+import { login } from "../api/auth-api";
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -60,6 +60,7 @@ const Signin = () => {
           <img
             src="/signinbtm.png"
             alt=""
+            loading="lazy"
             className="w-full h-full object-cover scale-125 blur-[1px]"
           />
         </div>
@@ -69,6 +70,7 @@ const Signin = () => {
           <img
             src="/signintop.png"
             alt=""
+            loading="lazy"
             className="w-full h-full object-cover scale-125 blur-[3px]"
           />
         </div>

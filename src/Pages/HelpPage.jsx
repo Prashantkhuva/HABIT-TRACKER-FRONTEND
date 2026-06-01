@@ -128,6 +128,7 @@ export default function HelpPage() {
         <img
           src="/help.png"
           alt="help"
+          loading="lazy"
           className="rounded-3xl w-full object-cover"
         />
       </div>

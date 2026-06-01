@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from "react";
-import "./App.css";
 import Sidebar from "./components/Sidebar";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header/Header";
@@ -13,7 +12,7 @@ import { usePageSeo } from "./hooks/usePageSeo";
 import { getStructuredData } from "./lib/seo-config";
 import { motion, AnimatePresence } from "framer-motion";
 
-const HIDE_CHROME_ON = ["/", "/signin", "/signup", "/verify-email"];
+const HIDE_CHROME_ON = ["/", "/signin", "/signup"];
 
 function App() {
   const dispatch = useDispatch();
