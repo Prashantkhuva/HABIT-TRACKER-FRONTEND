@@ -22,14 +22,14 @@ export const ROUTE_SEO = {
     title: "Sign In — HabitFlow",
     description:
       "Sign in to your HabitFlow account and continue your daily rituals.",
-    robots: "index, follow", // ✅
+    robots: "index, follow",
     ogType: "website",
   },
   "/signup": {
     title: "Create Account — HabitFlow",
     description:
       "Create a free HabitFlow account and start building editorial daily rituals.",
-    robots: "index, follow", // ✅
+    robots: "index, follow",
     ogType: "website",
   },
 };
