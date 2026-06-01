@@ -1,6 +1,6 @@
 /** Canonical site URL — override in production via VITE_SITE_URL */
 export const SITE_URL = (
-  import.meta.env.VITE_SITE_URL || "https://habit-flow-fullstack.vercel.app"
+  import.meta.env.VITE_SITE_URL || "https://habitflow.indevs.in"
 ).replace(/\/$/, "");
 
 export const SITE_NAME = "HabitFlow";

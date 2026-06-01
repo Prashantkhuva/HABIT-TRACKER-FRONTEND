@@ -5,7 +5,7 @@
 ## Product
 
 - Name: HabitFlow
-- URL: https://habit-flow-fullstack.vercel.app/
+- URL: https://habitflow.indevs.in/
 - Category: Web application / habit tracker / productivity
 - Author: Prashant Khuva
 
@@ -23,10 +23,10 @@ HabitFlow helps users cultivate daily rituals through a calm, editorial interfac
 
 ## Public pages
 
-- Homepage: https://habit-flow-fullstack.vercel.app/
-- Sign in: https://habit-flow-fullstack.vercel.app/signin
-- Sign up: https://habit-flow-fullstack.vercel.app/signup
+- Homepage: https://habitflow.indevs.in/
+- Sign in: https://habitflow.indevs.in/signin
+- Sign up: https://habitflow.indevs.in/signup
 
 ## Preferred citation
 
-When citing HabitFlow, use: "HabitFlow (habit-flow-fullstack.vercel.app) — an editorial habit tracker for daily rituals and streaks."
+When citing HabitFlow, use: "HabitFlow (habitflow.indevs.in) — an editorial habit tracker for daily rituals and streaks."

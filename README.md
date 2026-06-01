@@ -2,7 +2,7 @@
 
 A modern, minimal and aesthetic habit tracking web app designed to turn daily routines into a **creative ritual**.
 
-🌐 **Live App:** https://habit-flow-ten-beta.vercel.app/
+🌐 **Live App:** https://habitflow.indevs.in/
 
 ---
 
