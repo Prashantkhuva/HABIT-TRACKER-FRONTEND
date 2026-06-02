@@ -53,14 +53,14 @@ export default function HabitsPage() {
 
               if (doneToday) doneIds.push(habit._id);
             } catch (err) {
-              console.error(err);
+              // Silently ignore
             }
           }),
         );
 
         setCompletedIds(doneIds);
       } catch (err) {
-        console.error(err);
+        // Silently ignore
       } finally {
         setLoading(false);
       }

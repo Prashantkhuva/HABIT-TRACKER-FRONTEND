@@ -14,7 +14,7 @@ export default function CompletedHabit({ habit, index }) {
 
         setWeeklyCount(logs.filter((l) => l.completed).length);
       } catch (err) {
-        console.error(err);
+        // Silently ignore
       }
     };
 

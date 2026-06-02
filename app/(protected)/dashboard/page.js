@@ -1,5 +1,5 @@
 "use client";
-import { DashPage } from "@/views/index";
+import DashPage from "@/views/DashPage";
 export default function Dashboard() {
   return <DashPage />;
 }

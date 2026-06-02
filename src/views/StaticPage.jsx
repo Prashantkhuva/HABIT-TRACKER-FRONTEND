@@ -111,7 +111,7 @@ export default function StatisticsPage() {
         setHeatmap(h.data.data || []);
         setLogs(logsRes.data.data.logs || []);
       } catch (err) {
-        console.error(err);
+        // Silently ignore — stats fetch failures are non-critical
       }
     };
     fetchAll();

@@ -1,5 +1,5 @@
 "use client";
-import { StatisticsPage } from "@/views/index";
+import StatisticsPage from "@/views/StaticPage";
 export default function Statistics() {
   return <StatisticsPage />;
 }

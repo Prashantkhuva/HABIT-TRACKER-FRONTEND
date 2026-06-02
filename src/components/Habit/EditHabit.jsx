@@ -79,7 +79,6 @@ function EditHabit({ habit, onClose }) {
 
       onClose?.();
     } catch (err) {
-      console.error(err);
       addToast({
         type: "error",
         title: "Update failed",

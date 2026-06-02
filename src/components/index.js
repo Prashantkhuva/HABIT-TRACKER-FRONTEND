@@ -5,7 +5,6 @@ import Footer from "./Footer";
 import Dashboard from "./Dashboard";
 import Sidebar from "./Sidebar";
 import Header from "./Header/Header";
-import AuthLayout from "./AuthLayout";
 import LandNav from "./LandNav";
 
 
@@ -17,6 +16,5 @@ export {
   Dashboard,
   Sidebar,
   Header,
-  AuthLayout,
   LandNav
 }

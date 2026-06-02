@@ -1,6 +1,6 @@
 "use client";
 
-import { LoginPage } from "@/views/index";
+import LoginPage from "@/views/LoginPage";
 
 export default function SignIn() {
   return <LoginPage />;

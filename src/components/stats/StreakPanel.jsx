@@ -30,7 +30,7 @@ export default function StreakPanel() {
 
         setHabitStreaks(sorted);
       } catch (err) {
-        console.error(err);
+        // Silently ignore
       }
     };
 

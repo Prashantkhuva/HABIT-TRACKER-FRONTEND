@@ -51,13 +51,13 @@ export default function Dashboard() {
               const doneToday = logs.some(isLogFromToday);
               if (doneToday) alreadyDoneIds.push(habit._id);
             } catch (err) {
-              console.error(err);
+              // Silently ignore
             }
           }),
         );
         setCompletedIds(alreadyDoneIds);
       } catch (err) {
-        console.error(err);
+        // Silently ignore
       } finally {
         setLoading(false);
       }
@@ -108,8 +108,6 @@ export default function Dashboard() {
           message: "You already completed this today",
         });
       } else {
-        console.error(err);
-
         addToast({
           type: "error",
           title: "Failed",

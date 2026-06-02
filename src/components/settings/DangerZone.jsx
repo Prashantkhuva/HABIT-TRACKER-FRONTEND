@@ -27,7 +27,7 @@ export default function DangerZone() {
       dispatch(signout());
       window.location.href = "/";
     } catch (err) {
-      console.error(err);
+      // Silently ignore
     } finally {
       setLoading(false);
       setOpen(false);

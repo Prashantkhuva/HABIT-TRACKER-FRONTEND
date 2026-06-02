@@ -36,7 +36,7 @@ export default function BooleanCard({
         const logs = res.data.data.logs;
         setWeeklyCount(logs.filter((l) => l.completed).length);
       } catch (err) {
-        console.error(err);
+        // Silently ignore
       }
     };
     fetchWeekly();

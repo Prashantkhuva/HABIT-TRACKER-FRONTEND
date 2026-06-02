@@ -34,7 +34,7 @@ export default function Sidebar() {
     try {
       await logout(); 
     } catch (err) {
-      console.log(err);
+      // Silently ignore
     }
 
     dispatch(resetHabitState());

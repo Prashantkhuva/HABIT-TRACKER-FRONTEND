@@ -1,4 +1,4 @@
-import { Dashboard } from "../components/index";
+import Dashboard from "../components/Dashboard";
 import { motion } from "framer-motion";
 
 function DashPage() {

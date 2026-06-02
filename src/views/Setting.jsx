@@ -33,7 +33,7 @@ export default function SettingsPage() {
     try {
       await logout(); // 🔥 IMPORTANT (cookie clear karega)
     } catch (err) {
-      console.log(err);
+      // Silently ignore — session cleared or already expired
     }
 
     dispatch(resetHabitState());

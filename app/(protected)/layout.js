@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuthChecked, signin } from "@/store/authSlice";
@@ -44,12 +44,6 @@ export default function ProtectedLayout({ children }) {
     }
   }, [isAuthChecked, authStatus, router]);
 
-  useEffect(() => {
-    const root = document.documentElement;
-    root.classList.remove("dark");
-    root.style.colorScheme = "light";
-  }, []);
-
   const hideChrome = ["/", "/signin", "/signup"].includes(pathname);
   const hideMobileNav = hideChrome || pathname === "/create-habit";
   const isSwipeRoute = SWIPE_ROUTES.includes(pathname);
@@ -57,12 +51,15 @@ export default function ProtectedLayout({ children }) {
   return (
     <>
       <meta name="robots" content="noindex, nofollow" />
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:rounded-full focus:bg-primary focus:px-4 focus:py-2 focus:text-background focus:text-sm focus:font-semibold focus:outline-none">
+        Skip to content
+      </a>
       <ToastProvider>
       <div className="flex min-h-dvh overflow-x-hidden bg-background text-text-primary">
         <Sidebar />
         <div className="flex min-w-0 flex-1 flex-col transition-all duration-300 lg:ml-56">
           <Header />
-          <main className="mx-auto flex w-full min-w-0 max-w-screen-2xl flex-1 px-4 py-6 pb-[calc(80px+env(safe-area-inset-bottom))] sm:px-8 lg:px-10 lg:pb-6">
+          <main id="main-content" className="mx-auto flex w-full min-w-0 max-w-screen-2xl flex-1 px-4 py-6 pb-[calc(80px+env(safe-area-inset-bottom))] sm:px-8 lg:px-10 lg:pb-6">
             {isSwipeRoute ? (
               <SwipeNavigation>{children}</SwipeNavigation>
             ) : (

@@ -124,7 +124,7 @@ export default function HabitDetailPage() {
 
       setIsDoneToday(doneToday);
     } catch (err) {
-      console.error(err);
+      // Silently ignore
     }
   };
 
@@ -158,8 +158,6 @@ export default function HabitDetailPage() {
 
       setSelectedHabit(null);
     } catch (err) {
-      console.error(err);
-
       addToast({
         type: "error",
         title: "Failed",

@@ -28,7 +28,7 @@ export default function HelpPage() {
         form.reset();
       }
     } catch (err) {
-      console.error(err);
+      // Silently ignore
     } finally {
       setLoading(false);
     }

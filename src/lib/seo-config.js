@@ -1,6 +1,6 @@
-/** Canonical site URL — override in production via VITE_SITE_URL */
+/** Canonical site URL — override in production via NEXT_PUBLIC_SITE_URL */
 export const SITE_URL = (
-  import.meta.env.VITE_SITE_URL || "https://habitflow.indevs.in"
+  process.env.NEXT_PUBLIC_SITE_URL || "https://habitflow.indevs.in"
 ).replace(/\/$/, "");
 
 export const SITE_NAME = "HabitFlow";

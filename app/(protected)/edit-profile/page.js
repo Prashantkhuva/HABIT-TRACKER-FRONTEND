@@ -1,5 +1,5 @@
 "use client";
-import { EditProfilePage } from "@/views/index";
+import EditProfilePage from "@/views/EditProfilePage";
 export default function EditProfile() {
   return <EditProfilePage />;
 }

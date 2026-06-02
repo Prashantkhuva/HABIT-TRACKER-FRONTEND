@@ -111,7 +111,6 @@ function Create({ onClose }) {
       onClose?.();
       router.push("/dashboard");
     } catch (err) {
-      console.error(err);
       addToast({
         type: "error",
         title: "Creation failed",

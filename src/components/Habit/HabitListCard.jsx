@@ -31,7 +31,7 @@ export default function HabitListCard({ habit, index, onEdit }) {
         const logs = res.data.data.logs;
         setWeeklyCount(logs.filter((l) => l.completed).length);
       } catch (err) {
-        console.error(err);
+        // Silently ignore
       }
     };
     fetchLogs();
