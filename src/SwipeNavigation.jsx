@@ -13,7 +13,7 @@ const variants = {
   // When dir === 0 (initial), it now defaults to "enter from right" instead of wrong side
   enter: (dir) => ({
     x: dir >= 0 ? "30%" : "-30%",
-    opacity: 0,
+    opacity: 1,
   }),
   center: {
     x: 0,
@@ -22,6 +22,10 @@ const variants = {
   exit: (dir) => ({
     x: dir >= 0 ? "-30%" : "30%",
     opacity: 0,
+    position: "absolute",
+    width: "100%",
+    top: 0,
+    left: 0,
   }),
 };
 
@@ -55,7 +59,7 @@ export default function SwipeNavigation({ children }) {
   });
 
   return (
-    <div {...handlers} className="flex-1 flex flex-col min-h-0 overflow-hidden">
+    <div {...handlers} className="flex-1 flex flex-col min-h-0 overflow-hidden relative">
       {/*
         FIX 3: Removed mode="wait"
         mode="wait" causes the exit to fully finish before enter starts —

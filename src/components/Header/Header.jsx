@@ -43,6 +43,7 @@ function Header() {
       <div className="ml-6 flex items-center gap-3">
         {/* Bell */}
         <motion.button
+          aria-label="Notifications"
           whileHover={{ y: -1, scale: 1.03 }}
           whileTap={{ scale: 0.96 }}
           onClick={() => addToast({ type: "info", title: "Coming soon", message: "Notifications are being built" })}

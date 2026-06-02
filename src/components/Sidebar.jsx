@@ -49,7 +49,7 @@ export default function Sidebar() {
 
       {/* Logo */}
       <div className="flex flex-col items-center px-0 pb-6 pt-8 lg:items-start lg:px-6">
-        <Link href={"/dashboard"}>
+        <Link href={"/dashboard"} prefetch={false}>
           <h1
             className="hidden font-heading text-2xl font-semibold lowercase tracking-[-0.055em] text-text-primary lg:block"
           >
@@ -82,7 +82,7 @@ export default function Sidebar() {
       {/* Nav */}
       <nav className="flex flex-1 flex-col gap-1 px-2 lg:px-3">
         {navItems.map(({ to, icon: Icon, label }) => (
-          <Link key={to} href={to}>
+          <Link key={to} href={to} prefetch={false}>
             <div
               className={`relative flex cursor-pointer items-center justify-center gap-3 rounded-xl px-0 py-3 transition-all duration-200 lg:justify-start lg:px-3 ${pathname === to || (to !== "/" && pathname.startsWith(to))
                 ? "bg-surface text-text-primary shadow-[0_14px_34px_-28px_rgba(26,26,26,0.45)]"

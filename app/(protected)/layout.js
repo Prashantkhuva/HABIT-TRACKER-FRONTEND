@@ -10,7 +10,6 @@ import Header from "@/components/Header/Header";
 import MobileNav from "@/components/MobileNav";
 import ToastProvider from "@/components/Toast/ToastProvider";
 import SwipeNavigation from "@/SwipeNavigation";
-import { Skeleton } from "@/components/loading/LoadingSkeletons";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SWIPE_ROUTES = ["/dashboard", "/rituals", "/statistics", "/settings"];
@@ -51,7 +50,6 @@ export default function ProtectedLayout({ children }) {
     root.style.colorScheme = "light";
   }, []);
 
-  const loading = !isAuthChecked || !authStatus;
   const hideChrome = ["/", "/signin", "/signup"].includes(pathname);
   const hideMobileNav = hideChrome || pathname === "/create-habit";
   const isSwipeRoute = SWIPE_ROUTES.includes(pathname);
@@ -65,22 +63,10 @@ export default function ProtectedLayout({ children }) {
         <div className="flex min-w-0 flex-1 flex-col transition-all duration-300 lg:ml-56">
           <Header />
           <main className="mx-auto flex w-full min-w-0 max-w-screen-2xl flex-1 px-4 py-6 pb-[calc(80px+env(safe-area-inset-bottom))] sm:px-8 lg:px-10 lg:pb-6">
-            {loading ? (
-              <div className="flex w-full flex-1 items-center justify-center">
-                <div className="flex w-full max-w-2xl flex-col gap-6">
-                  <Skeleton className="h-6 w-48 rounded-full" />
-                  <Skeleton className="h-12 w-72 rounded-xl" />
-                  <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                    {[1, 2, 3].map((i) => (
-                      <Skeleton key={i} className="h-44 rounded-[24px]" />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ) : isSwipeRoute ? (
+            {isSwipeRoute ? (
               <SwipeNavigation>{children}</SwipeNavigation>
             ) : (
-              <AnimatePresence mode="wait">
+              <AnimatePresence initial={false} mode="wait">
                 <motion.div
                   key={pathname}
                   initial={{ opacity: 0, y: 12 }}

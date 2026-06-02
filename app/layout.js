@@ -54,7 +54,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${epilogue.variable} ${manrope.variable}`}>
       <head>
-        <link rel="preload" href="/workspace.png" as="image" />
+        <link rel="preconnect" href="https://habit-tracker-t0o0.onrender.com" />
       </head>
       <body suppressHydrationWarning>
         <Providers>

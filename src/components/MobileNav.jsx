@@ -53,7 +53,7 @@ export default function MobileNav() {
           }
 
           return (
-            <Link key={to} href={to} className="flex flex-1 justify-center z-10">
+            <Link key={to} href={to} prefetch={false} className="flex flex-1 justify-center z-10">
               <motion.div
                 whileTap={{ scale: 0.94 }}
                 className={`relative flex h-12 w-full max-w-[72px] flex-col items-center justify-center gap-0.5 rounded-full transition-colors duration-200 ${
