@@ -122,7 +122,7 @@ const Signup = () => {
               animate="visible"
             >
               <div className="bg-surface dark:bg-surface/80 backdrop-blur-md border border-border-subtle rounded-3xl p-8 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.5)]">
-                <h2 className="text-2xl font-semibold mb-2 text-[#1A1A1A] dark:text-[#E6E1E5]" style={{ fontFamily: "Epilogue, sans-serif" }}>create account</h2>
+                <h1 className="text-2xl font-semibold mb-2 text-[#1A1A1A] dark:text-[#E6E1E5]" style={{ fontFamily: "Epilogue, sans-serif" }}>create account</h1>
 
                 <p className="text-sm text-text-muted mb-6">
                   begin your ritual journey.

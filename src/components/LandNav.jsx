@@ -42,7 +42,7 @@ function LandNav() {
           <span className="font-[Epilogue] text-lg sm:text-xl md:text-2xl lowercase tracking-[-0.06em] leading-none text-[#1A1A1A] dark:text-[#E6E1E5]">
             habitflow
           </span>
-          <span className="mt-0.5 hidden sm:block uppercase tracking-[0.25em] text-[8px] text-[#7A7A7A] dark:text-[#938F99] group-hover:text-[#1A1A1A] dark:group-hover:text-[#E6E1E5] transition-colors">
+          <span className="mt-0.5 hidden sm:block uppercase tracking-[0.25em] text-[8px] text-[#555555] dark:text-[#938F99] group-hover:text-[#1A1A1A] dark:group-hover:text-[#E6E1E5] transition-colors">
             Editorial Rituals
           </span>
         </Link>
@@ -57,7 +57,7 @@ function LandNav() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 + 0.2, duration: 0.45 }}
-              className="relative text-[8px] uppercase tracking-[0.25em] text-[#6F6F6F] dark:text-[#938F99] transition-colors hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5] after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-current after:transition-all after:duration-300 hover:after:w-full"
+              className="relative text-[8px] uppercase tracking-[0.25em] text-[#555555] dark:text-[#938F99] transition-colors hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5] after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-current after:transition-all after:duration-300 hover:after:w-full"
             >
               {link.label}
             </motion.a>
@@ -67,7 +67,7 @@ function LandNav() {
         <div className="flex items-center gap-3">
           <Link
             href="/signin"
-            className="hidden sm:inline-flex uppercase tracking-[0.22em] text-[8px] text-[#6F6F6F] dark:text-[#938F99] hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5] transition-colors"
+            className="hidden sm:inline-flex uppercase tracking-[0.22em] text-[8px] text-[#555555] dark:text-[#938F99] hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5] transition-colors"
           >
             Sign In
           </Link>

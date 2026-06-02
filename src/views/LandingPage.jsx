@@ -167,7 +167,7 @@ function LandingPage() {
                 initial="hidden"
                 animate="show"
                 custom={0}
-                className="uppercase tracking-[0.35em] text-[8px] text-[#7A7A7A] dark:text-[#938F99] mb-5"
+                className="uppercase tracking-[0.35em] text-[8px] text-[#555555] dark:text-[#938F99] mb-5"
               >
                 HabitFlow — Mindful Habit Tracking
               </motion.p>
@@ -191,7 +191,7 @@ function LandingPage() {
                 initial="hidden"
                 animate="show"
                 custom={2}
-                className="max-w-xl text-[12px] sm:text-[13px] leading-[1.75] text-[#6F6F6F] dark:text-[#938F99] mb-4"
+                className="max-w-xl text-[12px] sm:text-[13px] leading-[1.75] text-[#555555] dark:text-[#938F99] mb-4"
               >
                 A premium habit tracker designed for intentional living. Create
                 daily routines, track streaks, visualize progress — and transform
@@ -248,32 +248,27 @@ function LandingPage() {
               </motion.div>
             </div>
 
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              custom={4}
-              className="lg:col-span-5 relative"
-            >
+            <div className="lg:col-span-5 relative">
               <div className="absolute -top-20 -right-10 w-64 h-64 bg-[#E8D9A8] dark:bg-[#D0BCFF] blur-[120px] opacity-30 dark:opacity-10 rounded-full" />
               <div className="relative overflow-hidden rounded-[20px] sm:rounded-[28px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] group">
                 <img
                   src="/workspace.png"
                   alt="A quiet editorial workspace for ritual tracking"
-                  loading="lazy"
+                  fetchpriority="high"
+                  decoding="async"
                   className="w-full aspect-[4/5] object-cover grayscale contrast-125 group-hover:scale-[1.03] transition-transform duration-1000"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                 <div className="absolute bottom-5 left-5 sm:bottom-7 sm:left-7 text-white">
-                  <h3 className="font-[Epilogue] text-lg sm:text-2xl lowercase tracking-[-0.05em]">
+                  <h2 className="font-[Epilogue] text-lg sm:text-2xl lowercase tracking-[-0.05em]">
                     your dashboard
-                  </h3>
+                  </h2>
                   <p className="uppercase tracking-[0.25em] text-[8px] opacity-70 mt-1.5">
                     Track everything in one place
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -289,13 +284,13 @@ function LandingPage() {
             viewport={viewportConfig}
             variants={fadeUp}
           >
-            <p className="uppercase tracking-[0.35em] text-[8px] text-[#6F6F6F] dark:text-[#938F99] mb-4">
+            <p className="uppercase tracking-[0.35em] text-[8px] text-[#555555] dark:text-[#938F99] mb-4">
               Simple Workflow
             </p>
             <h2 className="font-[Epilogue] text-[clamp(1.4rem,4.5vw,2.8rem)] tracking-[-0.06em] lowercase leading-[0.95] mb-4">
               how it works.
             </h2>
-            <p className="max-w-lg mx-auto text-[12px] sm:text-[13px] leading-[1.75] text-[#6F6F6F] dark:text-[#938F99]">
+            <p className="max-w-lg mx-auto text-[12px] sm:text-[13px] leading-[1.75] text-[#555555] dark:text-[#938F99]">
               Three simple steps to transform your daily routines into lasting
               habits.
             </p>
@@ -336,13 +331,13 @@ function LandingPage() {
                     className="text-[#1A1A1A] dark:text-[#D0BCFF]"
                   />
                 </div>
-                <p className="uppercase tracking-[0.35em] text-[8px] text-[#6F6F6F] dark:text-[#938F99] mb-2">
+                <p className="uppercase tracking-[0.35em] text-[8px] text-[#555555] dark:text-[#938F99] mb-2">
                   Step {step}
                 </p>
                 <h3 className="font-[Epilogue] text-lg sm:text-xl lowercase tracking-[-0.04em] mb-3">
                   {title}
                 </h3>
-                <p className="text-[12px] leading-[1.75] text-[#6F6F6F] dark:text-[#938F99] max-w-xs mx-auto">
+                <p className="text-[12px] leading-[1.75] text-[#555555] dark:text-[#938F99] max-w-xs mx-auto">
                   {desc}
                 </p>
               </motion.div>
@@ -370,7 +365,7 @@ function LandingPage() {
                 <p className="font-[Epilogue] text-2xl sm:text-3xl tracking-[-0.06em]">
                   <AnimatedNumber to={value} suffix={suffix} />
                 </p>
-                <p className="uppercase tracking-[0.2em] text-[7px] text-[#6F6F6F] dark:text-[#938F99]">
+                <p className="uppercase tracking-[0.2em] text-[7px] text-[#555555] dark:text-[#938F99]">
                   {label}
                 </p>
               </motion.div>
@@ -385,7 +380,7 @@ function LandingPage() {
         >
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-5 sm:gap-8 mb-10 sm:mb-16">
             <div className="max-w-xl">
-              <p className="uppercase tracking-[0.35em] text-[8px] text-[#6F6F6F] dark:text-[#938F99] mb-4">
+              <p className="uppercase tracking-[0.35em] text-[8px] text-[#555555] dark:text-[#938F99] mb-4">
                 Features
               </p>
               <h2 className="font-[Epilogue] text-[clamp(1.4rem,4.5vw,2.8rem)] tracking-[-0.06em] lowercase leading-[0.95] mb-4">
@@ -395,7 +390,7 @@ function LandingPage() {
                 <br />
                 consistent.
               </h2>
-              <p className="text-[12px] sm:text-[13px] leading-[1.75] text-[#6F6F6F] dark:text-[#938F99]">
+              <p className="text-[12px] sm:text-[13px] leading-[1.75] text-[#555555] dark:text-[#938F99]">
                 From streak tracking to progress charts, every feature is
                 designed to help you build habits that stick.
               </p>
@@ -418,7 +413,7 @@ function LandingPage() {
                 <h3 className="font-[Epilogue] text-xl sm:text-3xl tracking-[-0.05em] lowercase mb-3">
                   habit journal
                 </h3>
-                <p className="max-w-md text-[12px] leading-[1.75] text-[#6F6F6F] dark:text-[#938F99]">
+                <p className="max-w-md text-[12px] leading-[1.75] text-[#555555] dark:text-[#938F99]">
                   Every completed habit becomes part of your personal archive —
                   a visual story of your consistency and growth.
                 </p>
@@ -458,7 +453,7 @@ function LandingPage() {
                 <h3 className="font-[Epilogue] text-xl tracking-[-0.05em] lowercase mb-2">
                   flexible tracking
                 </h3>
-                <p className="uppercase tracking-[0.2em] text-[8px] text-[#6F6F6F] dark:text-[#938F99]">
+                <p className="uppercase tracking-[0.2em] text-[8px] text-[#555555] dark:text-[#938F99]">
                   Daily &bull; Weekly &bull; Custom
                 </p>
               </div>
@@ -500,7 +495,7 @@ function LandingPage() {
             viewport={viewportConfig}
             variants={fadeUp}
           >
-            <p className="uppercase tracking-[0.35em] text-[8px] text-[#6F6F6F] dark:text-[#938F99] mb-5">
+            <p className="uppercase tracking-[0.35em] text-[8px] text-[#555555] dark:text-[#938F99] mb-5">
               Insights
             </p>
             <h2 className="font-[Epilogue] text-[clamp(1.8rem,4.5vw,3.5rem)] tracking-[-0.06em] lowercase leading-[0.95]">
@@ -526,7 +521,7 @@ function LandingPage() {
                 <h3 className="font-[Epilogue] text-xl lowercase tracking-[-0.04em] mb-2">
                   morning meditation
                 </h3>
-                <p className="text-[12px] leading-[1.75] text-[#6F6F6F] dark:text-[#938F99]">
+                <p className="text-[12px] leading-[1.75] text-[#555555] dark:text-[#938F99]">
                   Meditation completed at dawn. Focus remains the primary
                   objective. 14-day streak and counting.
                 </p>
@@ -579,7 +574,7 @@ function LandingPage() {
                 <h3 className="font-[Epilogue] text-xl lowercase tracking-[-0.04em] mb-2">
                   deep analytics
                 </h3>
-                <p className="text-[12px] leading-[1.75] text-[#6F6F6F] dark:text-[#938F99]">
+                <p className="text-[12px] leading-[1.75] text-[#555555] dark:text-[#938F99]">
                   Visualize your progress with heatmaps, weekly charts, and
                   comprehensive statistics that reveal your patterns.
                 </p>
@@ -646,7 +641,7 @@ function LandingPage() {
               viewport={viewportConfig}
               custom={1}
             >
-              <p className="uppercase tracking-[0.35em] text-[8px] text-[#6F6F6F] dark:text-[#938F99] mb-5">
+              <p className="uppercase tracking-[0.35em] text-[8px] text-[#555555] dark:text-[#938F99] mb-5">
                 The Philosophy
               </p>
               <h2 className="font-[Epilogue] text-[clamp(1.8rem,4.5vw,3.2rem)] tracking-[-0.06em] lowercase leading-[0.95] mb-5 sm:mb-7">
@@ -690,7 +685,7 @@ function LandingPage() {
                     </div>
                     <div>
                       <h3 className="font-[Epilogue] text-lg lowercase mb-1.5">{title}</h3>
-                      <p className="text-[12px] leading-[1.75] text-[#6F6F6F] dark:text-[#938F99]">{desc}</p>
+                      <p className="text-[12px] leading-[1.75] text-[#555555] dark:text-[#938F99]">{desc}</p>
                     </div>
                   </motion.div>
                 ))}

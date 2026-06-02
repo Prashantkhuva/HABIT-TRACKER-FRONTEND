@@ -1,8 +1,19 @@
+import { Epilogue, Manrope } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import ClientBody from "./client-body";
 
-export const dynamic = "force-dynamic";
+const epilogue = Epilogue({
+  subsets: ["latin"],
+  variable: "--font-epilogue",
+  display: "swap",
+});
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
+  display: "swap",
+});
 
 export const metadata = {
   title: "HabitFlow — Editorial Habit Tracker for Daily Rituals & Streaks",
@@ -41,16 +52,11 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${epilogue.variable} ${manrope.variable}`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Manrope:wght@200..800&display=swap"
-        />
+        <link rel="preload" href="/workspace.png" as="image" />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <Providers>
           <ClientBody>
             {children}
