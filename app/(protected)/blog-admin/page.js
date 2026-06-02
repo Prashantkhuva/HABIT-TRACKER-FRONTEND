@@ -1,5 +1,6 @@
 "use client";
+import AdminGuard from "@/components/AdminGuard";
 import AdminBlogList from "@/views/blog/AdminBlogList";
 export default function BlogAdmin() {
-  return <AdminBlogList />;
+  return <AdminGuard><AdminBlogList /></AdminGuard>;
 }

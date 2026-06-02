@@ -1,5 +1,6 @@
 "use client";
+import AdminGuard from "@/components/AdminGuard";
 import AdminBlogEditor from "@/views/blog/AdminBlogEditor";
 export default function NewBlogPost() {
-  return <AdminBlogEditor />;
+  return <AdminGuard><AdminBlogEditor /></AdminGuard>;
 }
