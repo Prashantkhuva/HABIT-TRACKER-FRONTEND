@@ -88,7 +88,9 @@ export default function ProtectedLayout({ children }) {
   }
 
   return (
-    <ToastProvider>
+    <>
+      <meta name="robots" content="noindex, nofollow" />
+      <ToastProvider>
       <div className="flex min-h-dvh overflow-x-hidden bg-background text-text-primary">
         <Sidebar />
         <div className="flex min-w-0 flex-1 flex-col transition-all duration-300 lg:ml-56">
@@ -115,5 +117,6 @@ export default function ProtectedLayout({ children }) {
         </div>
       </div>
     </ToastProvider>
+    </>
   );
 }

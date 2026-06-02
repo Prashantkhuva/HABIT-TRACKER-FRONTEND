@@ -1,20 +1,11 @@
 # HabitFlow — https://habitflow.indevs.in
 User-agent: *
 Allow: /
-Allow: /signin
-Allow: /signup
 
-# App workspace — private user data, not for indexing
-Disallow: /dashboard
-Disallow: /rituals
-Disallow: /statistics
-Disallow: /settings
-Disallow: /create-habit
-Disallow: /help
-Disallow: /edit-profile
-Disallow: /change-password
+# Protected routes use <meta name="robots" content="noindex"> instead of robots.txt blocks
+# so search engines can see the noindex directive directly
 
-# AI crawlers (GEO) — allow marketing pages only
+# AI crawlers (GEO) — disallow all
 User-agent: GPTBot
 Allow: /
 Allow: /signin

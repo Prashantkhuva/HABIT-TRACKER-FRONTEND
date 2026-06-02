@@ -3,11 +3,13 @@
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { createHabit } from "../../api/habits-api";
 
 import { useRouter } from "next/navigation";
 import { categoryMap } from "./categoryMap";
 import Button from "../Button";
+import Input from "../Input";
 import { useDispatch, useSelector } from "react-redux";
 import { addReduxHabit } from "../../store/habitSlice";
 import { useToast } from "../Toast/ToastProvider";
@@ -70,7 +72,7 @@ function Create({ onClose }) {
     }
 
     const isDuplicate = habits.some(
-      (h) => h.title.toLowerCase() === title.trim().toLowerCase()
+      (h) => h.title.toLowerCase() === title.trim().toLowerCase(),
     );
 
     if (isDuplicate) {
@@ -125,7 +127,7 @@ function Create({ onClose }) {
     router.push("/dashboard");
   };
 
-  return (
+  const modal = (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/30 backdrop-blur-sm">
       <motion.div
         initial={isMobile ? { y: "100%" } : { scale: 0.96, opacity: 0 }}
@@ -168,7 +170,6 @@ function Create({ onClose }) {
 
         {/* RIGHT PANEL — flex-col wrapper */}
         <div className="w-full sm:w-[70%] flex flex-col flex-1 overflow-hidden">
-
           {/* SCROLLABLE CONTENT */}
           <div
             className="
@@ -200,35 +201,19 @@ function Create({ onClose }) {
               </h2>
             </div>
 
-            {/* TITLE */}
-            <div className="flex flex-col gap-2">
-              <p className="text-xs text-gray-400 uppercase">Habit Identity</p>
-              <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. morning meditation"
-                className="
-                  w-full border-b border-gray-300 dark:border-[#2A2A2A]
-                  bg-transparent outline-none py-2 text-sm
-                  text-[#1A1A1A] dark:text-[#FAFAF5]
-                "
-              />
-            </div>
+            <Input
+              label="Habit Identity"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="e.g. morning meditation"
+            />
 
-            {/* DESCRIPTION */}
-            <div className="flex flex-col gap-2">
-              <p className="text-xs text-gray-400 uppercase">Ritual Intention</p>
-              <input
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="e.g. read 10 pages every night"
-                className="
-                  w-full border-b border-gray-300 dark:border-[#2A2A2A]
-                  bg-transparent outline-none py-2 text-sm
-                  text-[#1A1A1A] dark:text-[#FAFAF5]
-                "
-              />
-            </div>
+            <Input
+              label="Ritual Intention"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="e.g. read 10 pages every night"
+            />
 
             {/* CATEGORY */}
             <div>
@@ -312,7 +297,11 @@ function Create({ onClose }) {
                       <motion.div
                         layoutId="frequencyPill"
                         className="absolute inset-0 rounded-full bg-white dark:bg-[#4A4A4A] shadow -z-10"
-                        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 25,
+                        }}
                       />
                     )}
                     {freq.toUpperCase()}
@@ -346,23 +335,13 @@ function Create({ onClose }) {
               </div>
             </div>
 
-            {/* UNIT */}
             {habitType === "quantity" && (
-              <div className="flex flex-col gap-2">
-                <p className="text-xs text-gray-400 uppercase">
-                  Measurement Unit
-                </p>
-                <input
-                  value={unit}
-                  onChange={(e) => setUnit(e.target.value)}
-                  placeholder="e.g. pages, liters, km"
-                  className="
-                    w-full border-b border-gray-300 dark:border-[#2A2A2A]
-                    bg-transparent outline-none py-2 text-sm
-                    text-[#1A1A1A] dark:text-[#FAFAF5]
-                  "
-                />
-              </div>
+              <Input
+                label="Measurement Unit"
+                value={unit}
+                onChange={(e) => setUnit(e.target.value)}
+                placeholder="e.g. pages, liters, km"
+              />
             )}
           </div>
 
@@ -391,11 +370,12 @@ function Create({ onClose }) {
               {loading ? "Creating..." : "CREATE HABIT"}
             </Button>
           </div>
-
         </div>
       </motion.div>
     </div>
   );
+
+  return createPortal(modal, document.body);
 }
 
 export default Create;
