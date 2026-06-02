@@ -1,6 +1,20 @@
 import Link from "next/link";
-import { BLOG_POSTS } from "@/lib/blog";
 import { SITE_URL } from "@/lib/seo-config";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+async function getPosts() {
+  try {
+    const res = await fetch(`${API_URL}/blog/posts`, {
+      next: { revalidate: 300 },
+    });
+    if (!res.ok) return [];
+    const json = await res.json();
+    return json.data || [];
+  } catch {
+    return [];
+  }
+}
 
 export const metadata = {
   title: "HabitFlow Blog — Guides on Habit Building & Daily Rituals",
@@ -26,7 +40,9 @@ export const metadata = {
   },
 };
 
-export default function BlogListing() {
+export default async function BlogListing() {
+  const posts = await getPosts();
+
   return (
     <main className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
       <header className="mb-12">
@@ -36,10 +52,21 @@ export default function BlogListing() {
         </p>
       </header>
       <div className="space-y-10">
-        {BLOG_POSTS.map((post) => (
-          <article key={post.slug}>
+        {posts.length === 0 && (
+          <p className="text-muted-foreground">No posts yet. Check back soon.</p>
+        )}
+        {posts.map((post) => (
+          <article key={post._id || post.slug}>
             <Link href={`/blog/${post.slug}`} className="group block">
-              <time className="text-sm text-muted-foreground">{post.published}</time>
+              <time className="text-sm text-muted-foreground">
+                {post.published
+                  ? new Date(post.published).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  : ""}
+              </time>
               <h2 className="mt-1 text-xl font-semibold group-hover:text-primary transition-colors">
                 {post.title}
               </h2>
@@ -47,8 +74,8 @@ export default function BlogListing() {
                 {post.description}
               </p>
               <div className="mt-3 flex items-center gap-3 text-sm text-muted-foreground">
-                <span>{post.readingTime}</span>
-                {post.categories.map((cat) => (
+                {post.readingTime && <span>{post.readingTime}</span>}
+                {(post.categories || []).map((cat) => (
                   <span key={cat} className="rounded-full border px-2.5 py-0.5 text-xs">
                     {cat}
                   </span>

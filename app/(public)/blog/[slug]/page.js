@@ -1,19 +1,87 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BLOG_POSTS, getBlogPost, getBlogMetadata } from "@/lib/blog";
+import { SITE_URL } from "@/lib/seo-config";
 
-export function generateStaticParams() {
-  return BLOG_POSTS.map((post) => ({ slug: post.slug }));
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+export const dynamic = "force-dynamic";
+
+async function getPost(slug) {
+  try {
+    const res = await fetch(`${API_URL}/blog/posts/${slug}`, {
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json.data || null;
+  } catch {
+    return null;
+  }
 }
 
-export function generateMetadata({ params }) {
-  const meta = getBlogMetadata(params.slug);
-  if (!meta) return {};
-  return meta;
+export async function generateMetadata({ params }) {
+  const post = await getPost(params.slug);
+  if (!post) return {};
+  return {
+    title: `${post.title} — HabitFlow Blog`,
+    description: post.description,
+    openGraph: {
+      type: "article",
+      url: `${SITE_URL}/blog/${post.slug}`,
+      title: `${post.title} — HabitFlow Blog`,
+      description: post.description,
+      images: [{ url: post.image || "/og-image.png" }],
+      publishedTime: post.published,
+      modifiedTime: post.lastmod,
+      authors: ["Prashant Khuva"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} — HabitFlow Blog`,
+      description: post.description,
+      images: [post.image || "/og-image.png"],
+    },
+  };
 }
 
-export default function BlogPost({ params }) {
-  const post = getBlogPost(params.slug);
+function renderContent(content) {
+  const lines = content.split("\n");
+  return lines.map((line, i) => {
+    if (line.startsWith("## ")) {
+      return (
+        <h2 key={i} className="text-2xl font-semibold mt-10 mb-4">
+          {line.slice(3)}
+        </h2>
+      );
+    }
+    if (line.startsWith("> ")) {
+      return (
+        <blockquote
+          key={i}
+          className="border-l-4 border-primary pl-4 italic text-muted-foreground my-6"
+        >
+          {line.slice(2)}
+        </blockquote>
+      );
+    }
+    if (line.startsWith("- ")) {
+      return (
+        <li key={i} className="ml-6 list-disc text-muted-foreground">
+          {line.slice(2)}
+        </li>
+      );
+    }
+    if (line.trim() === "") return <br key={i} />;
+    return (
+      <p key={i} className="text-muted-foreground leading-relaxed">
+        {line}
+      </p>
+    );
+  });
+}
+
+export default async function BlogPost({ params }) {
+  const post = await getPost(params.slug);
   if (!post) notFound();
 
   const articleJsonLd = {
@@ -21,9 +89,9 @@ export default function BlogPost({ params }) {
     "@type": "Article",
     headline: post.title,
     description: post.description,
-    image: post.image,
+    image: post.image || "/og-image.png",
     datePublished: post.published,
-    dateModified: post.lastmod,
+    dateModified: post.lastmod || post.published,
     author: {
       "@type": "Person",
       name: "Prashant Khuva",
@@ -50,8 +118,16 @@ export default function BlogPost({ params }) {
         <article>
           <header className="mb-10">
             <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">
-              <time>{post.published}</time>
-              <span>{post.readingTime}</span>
+              {post.published && (
+                <time>
+                  {new Date(post.published).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+              )}
+              {post.readingTime && <span>{post.readingTime}</span>}
             </div>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
               {post.title}
@@ -62,41 +138,10 @@ export default function BlogPost({ params }) {
           </header>
 
           <div className="prose prose-neutral dark:prose-invert max-w-none leading-relaxed space-y-4">
-            {post.content.split("\n").map((line, i) => {
-              if (line.startsWith("## ")) {
-                return (
-                  <h2 key={i} className="text-2xl font-semibold mt-10 mb-4">
-                    {line.slice(3)}
-                  </h2>
-                );
-              }
-              if (line.startsWith("> ")) {
-                return (
-                  <blockquote
-                    key={i}
-                    className="border-l-4 border-primary pl-4 italic text-muted-foreground my-6"
-                  >
-                    {line.slice(2)}
-                  </blockquote>
-                );
-              }
-              if (line.startsWith("- ")) {
-                return (
-                  <li key={i} className="ml-6 list-disc text-muted-foreground">
-                    {line.slice(2)}
-                  </li>
-                );
-              }
-              if (line.trim() === "") return <br key={i} />;
-              return (
-                <p key={i} className="text-muted-foreground leading-relaxed">
-                  {line}
-                </p>
-              );
-            })}
+            {renderContent(post.content || "")}
           </div>
 
-          {post.steps && (
+          {post.steps && post.steps.length > 0 && (
             <section className="mt-12 rounded-xl border p-6">
               <h2 className="text-xl font-semibold mb-4">
                 Quick-Start Checklist

@@ -11,6 +11,7 @@ import {
   HelpCircle,
   LogOut,
   Plus,
+  FileText,
 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { signout } from "../store/authSlice";
@@ -107,6 +108,18 @@ export default function Sidebar() {
 
       {/* Bottom */}
       <div className="flex flex-col gap-1 px-2 pb-8 lg:px-3">
+        {/* Blog Admin */}
+        <button
+          aria-label="Blog Admin"
+          className="flex w-full items-center justify-center gap-3 rounded-xl px-0 py-3 text-text-muted transition-all duration-200 hover:bg-surface hover:text-text-primary lg:justify-start lg:px-3"
+          onClick={() => router.push("/blog-admin")}
+        >
+          <FileText size={18} className="shrink-0" />
+          <span className="hidden text-[11px] font-bold tracking-[0.16em] lg:block">
+            BLOG
+          </span>
+        </button>
+
         {/* Help */}
         <button
           aria-label="Help"
