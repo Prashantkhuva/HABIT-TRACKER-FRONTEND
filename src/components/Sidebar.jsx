@@ -109,6 +109,7 @@ export default function Sidebar() {
       <div className="flex flex-col gap-1 px-2 pb-8 lg:px-3">
         {/* Help */}
         <button
+          aria-label="Help"
           className="flex w-full items-center justify-center gap-3 rounded-xl px-0 py-3 text-text-muted transition-all duration-200 hover:bg-surface hover:text-text-primary lg:justify-start lg:px-3"
           onClick={() => router.push("/help")}
         >
@@ -122,6 +123,7 @@ export default function Sidebar() {
 
         {/* Sign Out */}
         <button
+          aria-label="Sign out"
           onClick={handleSignOut}
           className="flex w-full items-center justify-center gap-3 rounded-xl px-0 py-3 text-text-muted transition-all duration-200 hover:bg-danger-soft hover:text-danger lg:justify-start lg:px-3"
         >

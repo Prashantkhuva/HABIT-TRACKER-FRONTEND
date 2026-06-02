@@ -207,6 +207,7 @@
       "middlewareClientMaxBodySize": 10485760,
       "optimizePackageImports": [
         "lucide-react",
+        "framer-motion",
         "date-fns",
         "lodash-es",
         "ramda",

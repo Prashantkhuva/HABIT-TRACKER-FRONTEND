@@ -24,6 +24,12 @@
     "react-swipeable": "^7.0.2",
     "tailwindcss": "^4.2.2"
   },
+  "browserslist": [
+    "last 2 chrome versions",
+    "last 2 firefox versions",
+    "last 2 safari versions",
+    "last 2 edge versions"
+  ],
   "devDependencies": {
     "@eslint/js": "^9.39.4",
     "@tailwindcss/postcss": "^4.2.2",

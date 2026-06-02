@@ -113,6 +113,7 @@ export default function SettingsPage() {
         >
           {/* Help */}
           <button
+            aria-label="Help"
             onClick={() => router.push("/help")}
             className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-text-muted transition-all duration-200 hover:bg-surface-dim hover:text-text-primary"
           >
@@ -122,6 +123,7 @@ export default function SettingsPage() {
 
           {/* Logout */}
           <button
+            aria-label="Logout"
             onClick={handleSignOut}
             className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-danger transition-all duration-200 hover:bg-danger-soft"
           >
