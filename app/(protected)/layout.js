@@ -51,41 +51,10 @@ export default function ProtectedLayout({ children }) {
     root.style.colorScheme = "light";
   }, []);
 
+  const loading = !isAuthChecked || !authStatus;
   const hideChrome = ["/", "/signin", "/signup"].includes(pathname);
   const hideMobileNav = hideChrome || pathname === "/create-habit";
   const isSwipeRoute = SWIPE_ROUTES.includes(pathname);
-
-  if (!isAuthChecked) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-background p-6">
-        <div className="flex w-full max-w-2xl flex-col gap-6">
-          <Skeleton className="h-6 w-48 rounded-full" />
-          <Skeleton className="h-12 w-72 rounded-xl" />
-          <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-44 rounded-[24px]" />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!authStatus) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-background p-6">
-        <div className="flex w-full max-w-2xl flex-col gap-6">
-          <Skeleton className="h-6 w-48 rounded-full" />
-          <Skeleton className="h-12 w-72 rounded-xl" />
-          <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-44 rounded-[24px]" />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <>
@@ -96,7 +65,19 @@ export default function ProtectedLayout({ children }) {
         <div className="flex min-w-0 flex-1 flex-col transition-all duration-300 lg:ml-56">
           <Header />
           <main className="mx-auto flex w-full min-w-0 max-w-screen-2xl flex-1 px-4 py-6 pb-[calc(80px+env(safe-area-inset-bottom))] sm:px-8 lg:px-10 lg:pb-6">
-            {isSwipeRoute ? (
+            {loading ? (
+              <div className="flex w-full flex-1 items-center justify-center">
+                <div className="flex w-full max-w-2xl flex-col gap-6">
+                  <Skeleton className="h-6 w-48 rounded-full" />
+                  <Skeleton className="h-12 w-72 rounded-xl" />
+                  <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {[1, 2, 3].map((i) => (
+                      <Skeleton key={i} className="h-44 rounded-[24px]" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : isSwipeRoute ? (
               <SwipeNavigation>{children}</SwipeNavigation>
             ) : (
               <AnimatePresence mode="wait">

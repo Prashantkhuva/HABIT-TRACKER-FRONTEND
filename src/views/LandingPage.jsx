@@ -21,6 +21,8 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
+import Footer from "../components/Footer";
+import LandNav from "../components/LandNav";
 import Button from "../components/Button";
 
 const fadeUp = {
@@ -141,6 +143,8 @@ function AnimatedBarChart() {
 function LandingPage() {
   return (
     <>
+      <LandNav />
+
       <main
         className="
         bg-[#FAFAF5]
@@ -729,6 +733,7 @@ function LandingPage() {
           </motion.div>
         </section>
 
+        <Footer />
       </main>
     </>
   );
