@@ -1,5 +1,8 @@
+"use client";
+
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
+import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AlertTriangle } from "lucide-react";
 import { deleteAccount } from "../../api/auth-api";
@@ -12,7 +15,7 @@ export default function DangerZone() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const handleDelete = async () => {

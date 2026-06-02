@@ -1,3 +1,5 @@
+"use client";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Check } from "lucide-react";
 import { categoryMap } from "./categoryMap";
@@ -8,7 +10,7 @@ import {
 } from "../../lib/habit-utils";
 import { useEffect, useState } from "react";
 import { getHabitLogs } from "../../api/habits-api";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 export default function BooleanCard({
   habit,
@@ -25,7 +27,7 @@ export default function BooleanCard({
   const { plusBg, plusIcon, checkBg, checkIcon } = getButtonColors(habit.color);
 
   const [weeklyCount, setWeeklyCount] = useState(0);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchWeekly = async () => {
@@ -47,7 +49,7 @@ export default function BooleanCard({
       transition={{ delay: index * 0.1 }}
       className="relative w-[80vw] sm:w-75 h-55 rounded-[28px] p-6 flex flex-col justify-between shrink-0 snap-start"
       style={{ background: habit.color || "#C8E6DF" }}
-      onClick={() => navigate(`/rituals/${habit._id}`)}
+      onClick={() => router.push(`/rituals/${habit._id}`)}
     >
       {/* Top Row */}
       <div className="flex justify-between items-start">

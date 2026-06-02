@@ -1,18 +1,9 @@
 {
-  "rewrites": [
-    {
-      "source": "/((?!robots\\.txt|sitemap\\.xml|llms\\.txt|favicon\\.svg|og-image\\.png|logo\\.png|assets/).*)",
-      "destination": "/index.html"
-    }
-  ],
   "headers": [
     {
       "source": "/sitemap.xml",
       "headers": [
-        {
-          "key": "Content-Type",
-          "value": "text/xml; charset=utf-8"
-        },
+        { "key": "Content-Type", "value": "text/xml; charset=utf-8" },
         { "key": "Cache-Control", "value": "public, max-age=86400" }
       ]
     },
@@ -26,10 +17,7 @@
       "source": "/(.*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
       ]
     }

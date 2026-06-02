@@ -1,5 +1,7 @@
+"use client";
+
 import React from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Button from "./Button";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
@@ -36,7 +38,7 @@ function LandNav() {
     >
       <div className="flex items-center justify-between px-4 sm:px-8 lg:px-20 py-2.5 sm:py-3">
         {/* Logo */}
-        <Link to={"/"} className="group inline-flex flex-col">
+        <Link href={"/"} className="group inline-flex flex-col">
           <span className="font-[Epilogue] text-lg sm:text-xl md:text-2xl lowercase tracking-[-0.06em] leading-none text-[#1A1A1A] dark:text-[#E6E1E5]">
             habitflow
           </span>
@@ -64,13 +66,13 @@ function LandNav() {
 
         <div className="flex items-center gap-3">
           <Link
-            to="/signin"
+            href="/signin"
             className="hidden sm:inline-flex uppercase tracking-[0.22em] text-[8px] text-[#6F6F6F] dark:text-[#938F99] hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5] transition-colors"
           >
             Sign In
           </Link>
 
-          <Link to="/signin">
+          <Link href="/signin">
             <Button className="uppercase">
               Begin
               <ArrowRight size={12} />

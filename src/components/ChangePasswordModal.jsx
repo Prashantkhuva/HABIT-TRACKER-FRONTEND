@@ -1,21 +1,24 @@
+"use client";
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+
+import { useRouter } from "next/navigation";
 import { changePassword } from "../api/auth-api";
 import { useToast } from "../components/Toast/ToastProvider";
 import Input from "../components/Input";
 import Button from "../components/Button";
 
 export default function ChangePasswordModal() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { addToast } = useToast();
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleClose = () => navigate("/settings");
+  const handleClose = () => router.push("/settings");
 
   const handleSubmit = async () => {
     if (!oldPassword || !newPassword) {
@@ -37,7 +40,7 @@ export default function ChangePasswordModal() {
         message: "Your password has been changed",
       });
 
-      navigate("/settings");
+      router.push("/settings");
     } catch (err) {
       addToast({
         type: "error",

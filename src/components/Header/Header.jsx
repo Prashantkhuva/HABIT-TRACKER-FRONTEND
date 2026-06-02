@@ -1,7 +1,10 @@
+"use client";
+
 import React from "react";
 import { motion } from "framer-motion";
 import { Bell } from "lucide-react";
-import { Link } from "react-router-dom";
+
+import Link from "next/link";
 import { useSelector } from "react-redux";
 import { useToast } from "../Toast/ToastProvider";
 
@@ -51,7 +54,7 @@ function Header() {
         {/* Profile */}
         <motion.div whileHover={{ y: -1, scale: 1.03 }} whileTap={{ scale: 0.96 }}>
           <Link
-            to="/settings"
+            href="/settings"
             className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-background shadow-[0_12px_28px_-18px_rgba(26,26,26,0.8)]"
           >
             {user?.username?.charAt(0)?.toUpperCase() || "U"}

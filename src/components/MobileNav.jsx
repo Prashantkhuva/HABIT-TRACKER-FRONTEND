@@ -1,4 +1,7 @@
-import { NavLink, useNavigate } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Sparkles,
@@ -17,7 +20,8 @@ const navItems = [
 ];
 
 export default function MobileNav() {
-  const navigate = useNavigate();
+  const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-50 px-4 pb-4 lg:hidden">
@@ -36,7 +40,7 @@ export default function MobileNav() {
                 className="relative flex flex-1 items-center justify-center"
               >
                 <motion.button
-                  onClick={() => navigate("/create-habit")}
+                  onClick={() => router.push("/create-habit")}
                   whileHover={{ y: -2, scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="absolute -top-5 flex h-13 w-13 items-center justify-center rounded-full border-[4px] border-[#FAFAF5] dark:border-[#141218] bg-[#1A1A1A] dark:bg-[#D0BCFF] text-[#FAFAF5] dark:text-[#1A1A1A] shadow-[0_10px_20px_-6px_rgba(26,26,26,0.4)]"
@@ -49,31 +53,27 @@ export default function MobileNav() {
           }
 
           return (
-            <NavLink key={to} to={to} className="flex flex-1 justify-center z-10">
-              {({ isActive }) => (
-                <motion.div
-                  whileTap={{ scale: 0.94 }}
-                  className={`relative flex h-12 w-full max-w-[72px] flex-col items-center justify-center gap-0.5 rounded-full transition-colors duration-200 ${
-                    isActive
-                      ? "text-text-primary font-bold"
-                      : "text-text-muted hover:text-text-primary"
-                  }`}
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="mobileActivePill"
-                      className="absolute inset-0 rounded-full bg-white dark:bg-[#1D1B20] border border-border-subtle/30 shadow-[0_4px_12px_rgba(0,0,0,0.03)] z-0"
-                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                    />
-                  )}
+            <Link key={to} href={to} className="flex flex-1 justify-center z-10">
+              <motion.div
+                whileTap={{ scale: 0.94 }}
+                className={`relative flex h-12 w-full max-w-[72px] flex-col items-center justify-center gap-0.5 rounded-full transition-colors duration-200 ${
+                  pathname === to ? "text-text-primary font-bold" : "text-text-muted hover:text-text-primary"
+                }`}
+              >
+                {pathname === to && (
+                  <motion.span
+                    layoutId="mobileActivePill"
+                    className="absolute inset-0 rounded-full bg-white dark:bg-[#1D1B20] border border-border-subtle/30 shadow-[0_4px_12px_rgba(0,0,0,0.03)] z-0"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                  />
+                )}
 
-                  <Icon className="relative z-10" size={17} strokeWidth={isActive ? 2.2 : 1.8} />
-                  <span className="relative z-10 text-[8.5px] font-bold uppercase tracking-[0.14em] scale-95 sm:scale-100">
-                    {short}
-                  </span>
-                </motion.div>
-              )}
-            </NavLink>
+                <Icon className="relative z-10" size={17} strokeWidth={pathname === to ? 2.2 : 1.8} />
+                <span className="relative z-10 text-[8.5px] font-bold uppercase tracking-[0.14em] scale-95 sm:scale-100">
+                  {short}
+                </span>
+              </motion.div>
+            </Link>
           );
         })}
       </div>

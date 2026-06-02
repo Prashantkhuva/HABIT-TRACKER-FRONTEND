@@ -1,8 +1,8 @@
-import { useRouteError, Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 
 export default function ErrorBoundary() {
-  const error = useRouteError();
-  console.error(error);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-[#FAFAF5] px-6">
@@ -11,7 +11,7 @@ export default function ErrorBoundary() {
       </h1>
       <p className="mt-4 text-sm text-[#8B8477]">Something went wrong</p>
       <Link
-        to="/dashboard"
+        href="/dashboard"
         className="mt-8 rounded-full bg-[#1A1A1A] px-6 py-3 text-xs font-bold uppercase tracking-widest text-white"
       >
         Back to Dashboard

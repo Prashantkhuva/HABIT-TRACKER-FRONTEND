@@ -1,12 +1,15 @@
+"use client";
+
 import { useSelector } from "react-redux";
 import { User } from "lucide-react";
 import Button from "../Button";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+
+import { useRouter } from "next/navigation";
 
 export default function ProfileCard() {
   const user = useSelector((state) => state.auth.userData);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   return (
     <motion.div
@@ -33,7 +36,7 @@ export default function ProfileCard() {
       {/* Button */}
       <Button
         variant="ghost"
-        onClick={() => navigate("/edit-profile")}
+        onClick={() => router.push("/edit-profile")}
         className="w-full sm:w-auto px-5 py-2 text-xs"
       >
         EDIT PROFILE

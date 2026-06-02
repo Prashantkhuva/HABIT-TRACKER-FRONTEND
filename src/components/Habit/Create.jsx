@@ -1,8 +1,11 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { createHabit } from "../../api/habits-api";
-import { useNavigate } from "react-router-dom";
+
+import { useRouter } from "next/navigation";
 import { categoryMap } from "./categoryMap";
 import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +13,7 @@ import { addReduxHabit } from "../../store/habitSlice";
 import { useToast } from "../Toast/ToastProvider";
 
 function Create({ onClose }) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const habits = useSelector((state) => state.habit.habits);
@@ -104,7 +107,7 @@ function Create({ onClose }) {
       }
 
       onClose?.();
-      navigate("/dashboard");
+      router.push("/dashboard");
     } catch (err) {
       console.error(err);
       addToast({
@@ -119,7 +122,7 @@ function Create({ onClose }) {
 
   const handleClose = () => {
     onClose?.();
-    navigate("/dashboard");
+    router.push("/dashboard");
   };
 
   return (

@@ -1,6 +1,9 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
+import { useRouter } from "next/navigation";
 import { getHabits, completeHabit, getHabitLogs } from "../api/habits-api";
 import { getDashboardStats, getWeeklyData } from "../api/dashboard-api";
 import { setReduxHabits } from "../store/habitSlice";
@@ -14,7 +17,7 @@ import { isLogFromToday } from "../lib/habit-utils";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const router = useRouter();
   const habits = useSelector((state) => state.habit.habits);
   const [completing, setCompleting] = useState(null);
   const [completedIds, setCompletedIds] = useState([]);
@@ -139,7 +142,7 @@ export default function Dashboard() {
               design your first daily rhythm.
             </p>
           </div>
-          <Button variant="primary" onClick={() => navigate("/create-habit")}>
+          <Button variant="primary" onClick={() => router.push("/create-habit")}>
             NEW RITUAL
           </Button>
         </div>
@@ -182,7 +185,7 @@ export default function Dashboard() {
                 </h2>
                 <button
                   className="app-label transition-colors hover:text-text-primary"
-                  onClick={() => navigate("/rituals/completed")}
+                  onClick={() => router.push("/rituals/completed")}
                 >
                   VIEW HISTORY →
                 </button>

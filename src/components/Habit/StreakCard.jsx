@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Plus } from "lucide-react";
@@ -8,7 +10,7 @@ import {
   getButtonColors,
 } from "../../lib/habit-utils";
 import { getHabitStreak as fetchStreak } from "../../api/habits-api";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 export default function StreakCard({
   habit,
@@ -24,7 +26,7 @@ export default function StreakCard({
     textColor === "#FAFAF5" ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.4)";
   const { plusBg, plusIcon, checkBg, checkIcon } = getButtonColors(habit.color);
 
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [streak, setStreak] = useState(0);
 
@@ -49,7 +51,7 @@ export default function StreakCard({
       transition={{ delay: index * 0.1 }}
       className="relative w-[80vw] sm:w-75 h-55 rounded-xl p-6 flex flex-col justify-between shrink-0 snap-start"
       style={{ background: habit.color || "#1A1A1A" }}
-      onClick={() => navigate(`/rituals/${habit._id}`)}
+      onClick={() => router.push(`/rituals/${habit._id}`)}
     >
       {/* Top Row */}
       <div className="flex justify-between items-start">

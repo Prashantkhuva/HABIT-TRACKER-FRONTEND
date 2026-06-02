@@ -1,10 +1,13 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Pencil } from "lucide-react";
 import { categoryMap } from "./categoryMap";
 import { getHabitLogs } from "../../api/habits-api";
 import { getTextColor, getIconBg } from "../../lib/habit-utils";
-import { useNavigate } from "react-router-dom";
+
+import { useRouter } from "next/navigation";
 
 export default function HabitListCard({ habit, index, onEdit }) {
   const Icon = categoryMap[habit.category];
@@ -17,7 +20,7 @@ export default function HabitListCard({ habit, index, onEdit }) {
     : "rgba(0,0,0,0.4)";
 
   const [weeklyCount, setWeeklyCount] = useState(0);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const isActive = habit.status === "active";
 
@@ -46,7 +49,7 @@ export default function HabitListCard({ habit, index, onEdit }) {
         opacity: isActive ? 1 : 0.6,
         filter: habit.status === "archived" ? "grayscale(0.6)" : "none",
       }}
-      onClick={() => navigate(`/rituals/${habit._id}`)} // ✅ always open
+      onClick={() => router.push(`/rituals/${habit._id}`)}
       whileHover={isActive ? { scale: 1.02 } : {}}
     >
       {/* STATUS BADGE */}

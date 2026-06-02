@@ -1,6 +1,8 @@
+"use client";
+
 import { useRef } from "react";
 import { useSwipeable } from "react-swipeable";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 const routes = ["/rituals", "/dashboard", "/statistics", "/settings"];
@@ -24,26 +26,26 @@ const variants = {
 };
 
 export default function SwipeNavigation({ children }) {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const pathname = usePathname();
+  const router = useRouter();
   // FIX 2: Initialize to 1 (forward) so first render has a clean default
   const directionRef = useRef(1);
 
-  const currentIndex = routes.indexOf(location.pathname);
+  const currentIndex = routes.indexOf(pathname);
   const swipeDisabled =
-    DISABLE_SWIPE_ON.includes(location.pathname) || currentIndex === -1;
+    DISABLE_SWIPE_ON.includes(pathname) || currentIndex === -1;
 
   const handlers = useSwipeable({
     onSwipedLeft: () => {
       if (!swipeDisabled && currentIndex < routes.length - 1) {
         directionRef.current = 1;
-        navigate(routes[currentIndex + 1]);
+        router.push(routes[currentIndex + 1]);
       }
     },
     onSwipedRight: () => {
       if (!swipeDisabled && currentIndex > 0) {
         directionRef.current = -1;
-        navigate(routes[currentIndex - 1]);
+        router.push(routes[currentIndex - 1]);
       }
     },
     delta: 60,
@@ -63,7 +65,7 @@ export default function SwipeNavigation({ children }) {
       */}
       <AnimatePresence initial={false} custom={directionRef.current}>
         <motion.div
-          key={location.pathname}
+          key={pathname}
           custom={directionRef.current}
           variants={variants}
           initial="enter"

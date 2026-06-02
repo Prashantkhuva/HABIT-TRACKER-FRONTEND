@@ -1,6 +1,9 @@
+"use client";
+
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
+import { useRouter } from "next/navigation";
 import { Skeleton } from "./loading/LoadingSkeletons";
 
 // function AuthLayout({ children, authentication = true }) {
@@ -21,18 +24,18 @@ import { Skeleton } from "./loading/LoadingSkeletons";
 
 
 function AuthLayout({ children, authentication = true }) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { status: authStatus, isAuthChecked } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (!isAuthChecked) return;
 
     if (authentication && !authStatus) {
-      navigate("/signin", { replace: true });
+      router.replace("/signin");
     } else if (!authentication && authStatus) {
-      navigate("/dashboard", { replace: true });
+      router.replace("/dashboard");
     }
-  }, [isAuthChecked, authStatus, navigate, authentication]);
+  }, [isAuthChecked, authStatus, router, authentication]);
 
   if (!isAuthChecked) {
     return (

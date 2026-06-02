@@ -1,4 +1,7 @@
-import { NavLink, useNavigate, Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Sparkles,
@@ -23,7 +26,8 @@ const navItems = [
 ];
 
 export default function Sidebar() {
-  const navigate = useNavigate();
+  const router = useRouter();
+  const pathname = usePathname();
   const dispatch = useDispatch();
 
   const handleSignOut = async () => {
@@ -45,7 +49,7 @@ export default function Sidebar() {
 
       {/* Logo */}
       <div className="flex flex-col items-center px-0 pb-6 pt-8 lg:items-start lg:px-6">
-        <Link to={"/dashboard"}>
+        <Link href={"/dashboard"}>
           <h1
             className="hidden font-heading text-2xl font-semibold lowercase tracking-[-0.055em] text-text-primary lg:block"
           >
@@ -67,7 +71,7 @@ export default function Sidebar() {
       {/* New Ritual Button */}
       <div className="lg:px-4 px-2 mb-6">
         <Button
-          onClick={() => navigate("/create-habit")}
+          onClick={() => router.push("/create-habit")}
           className="w-full px-4 py-3 text-[10px]"
         >
           <span className="hidden lg:inline">NEW RITUAL</span>
@@ -78,29 +82,26 @@ export default function Sidebar() {
       {/* Nav */}
       <nav className="flex flex-1 flex-col gap-1 px-2 lg:px-3">
         {navItems.map(({ to, icon: Icon, label }) => (
-          <NavLink key={to} to={to}>
-            {({ isActive }) => (
-              <div
-                className={`relative flex cursor-pointer items-center justify-center gap-3 rounded-xl px-0 py-3 transition-all duration-200 lg:justify-start lg:px-3 ${isActive
-                  ? "bg-surface text-text-primary shadow-[0_14px_34px_-28px_rgba(26,26,26,0.45)]"
-                  : "bg-transparent text-text-muted hover:bg-surface hover:text-text-primary"
-                  }`}
-              >
-                {/* Active indicator */}
-                {isActive && (
-                  <span
-                    className="absolute left-0 h-4 w-1 rounded-full bg-primary"
-                  />
-                )}
-                <Icon size={18} className="shrink-0" />
+          <Link key={to} href={to}>
+            <div
+              className={`relative flex cursor-pointer items-center justify-center gap-3 rounded-xl px-0 py-3 transition-all duration-200 lg:justify-start lg:px-3 ${pathname === to || (to !== "/" && pathname.startsWith(to))
+                ? "bg-surface text-text-primary shadow-[0_14px_34px_-28px_rgba(26,26,26,0.45)]"
+                : "bg-transparent text-text-muted hover:bg-surface hover:text-text-primary"
+                }`}
+            >
+              {(pathname === to || (to !== "/" && pathname.startsWith(to))) && (
                 <span
-                  className="hidden text-[11px] font-bold tracking-[0.16em] lg:block"
-                >
-                  {label}
-                </span>
-              </div>
-            )}
-          </NavLink>
+                  className="absolute left-0 h-4 w-1 rounded-full bg-primary"
+                />
+              )}
+              <Icon size={18} className="shrink-0" />
+              <span
+                className="hidden text-[11px] font-bold tracking-[0.16em] lg:block"
+              >
+                {label}
+              </span>
+            </div>
+          </Link>
         ))}
       </nav>
 
@@ -109,7 +110,7 @@ export default function Sidebar() {
         {/* Help */}
         <button
           className="flex w-full items-center justify-center gap-3 rounded-xl px-0 py-3 text-text-muted transition-all duration-200 hover:bg-surface hover:text-text-primary lg:justify-start lg:px-3"
-          onClick={() => navigate("/help")}
+          onClick={() => router.push("/help")}
         >
           <HelpCircle size={18} className="shrink-0" />
           <span

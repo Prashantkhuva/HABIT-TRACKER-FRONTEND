@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 function Footer() {
@@ -10,7 +12,7 @@ function Footer() {
         <div className="grid grid-cols-2 gap-6 mb-10 sm:gap-10 md:grid-cols-4 sm:mb-20 md:gap-16">
           {/* BRAND */}
           <div className="col-span-2 md:col-span-2">
-            <Link to="/">
+            <Link href="/">
               <h2 className="font-heading mb-3 text-2xl lowercase tracking-[-0.06em] text-text-primary sm:mb-6 sm:text-4xl">
                 habitflow
               </h2>
@@ -31,21 +33,21 @@ function Footer() {
 
             <div className="flex flex-col gap-3.5">
               <Link
-                to="/"
+                href="/"
                 className="text-[13px] text-text-muted transition-colors hover:text-text-primary"
               >
                 Manifesto
               </Link>
 
               <Link
-                to="/"
+                href="/"
                 className="text-[13px] text-text-muted transition-colors hover:text-text-primary"
               >
                 The Ritual
               </Link>
 
               <Link
-                to="/"
+                href="/"
                 className="text-[13px] text-text-muted transition-colors hover:text-text-primary"
               >
                 Journal Spread

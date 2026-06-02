@@ -1,5 +1,8 @@
+"use client";
+
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { signin as authLogin } from "../store/authSlice";
 import { Button, Input } from "./index";
 import { useDispatch } from "react-redux";
@@ -8,7 +11,7 @@ import { motion } from "framer-motion";
 import { registerUser, login } from "../api/auth-api";
 
 const Signup = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const { register, handleSubmit } = useForm();
@@ -42,7 +45,7 @@ const Signup = () => {
             }),
           );
 
-          navigate("/dashboard");
+          router.push("/dashboard");
         }
       }
     } catch (error) {
@@ -159,7 +162,7 @@ const Signup = () => {
 
                 <p className="text-center text-sm mt-6 text-text-muted">
                   already have account?{" "}
-                  <Link to="/signin" className="font-medium text-[#1A1A1A] dark:text-[#D0BCFF] hover:opacity-80 transition-colors">
+                  <Link href="/signin" className="font-medium text-[#1A1A1A] dark:text-[#D0BCFF] hover:opacity-80 transition-colors">
                     Sign in
                   </Link>
                 </p>
