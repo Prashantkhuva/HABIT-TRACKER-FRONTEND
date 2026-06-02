@@ -1,6 +1,7 @@
 # HabitFlow — https://habitflow.indevs.in
 User-agent: *
 Allow: /
+Allow: /blog
 Disallow: /dashboard
 Disallow: /rituals
 Disallow: /statistics

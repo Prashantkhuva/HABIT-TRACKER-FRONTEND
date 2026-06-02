@@ -7,7 +7,7 @@ export const SITE_NAME = "HabitFlow";
 export const SITE_TAGLINE = "Premium Editorial Habit Tracking";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 
-export const PUBLIC_ROUTES = ["/", "/signin", "/signup"];
+export const PUBLIC_ROUTES = ["/", "/signin", "/signup", "/blog"];
 
 /** Per-route SEO — private app routes use noindex */
 export const ROUTE_SEO = {
@@ -29,6 +29,13 @@ export const ROUTE_SEO = {
     title: "Create Account — HabitFlow",
     description:
       "Create a free HabitFlow account and start building editorial daily rituals.",
+    robots: "index, follow",
+    ogType: "website",
+  },
+  "/blog": {
+    title: "HabitFlow Blog — Guides on Habit Building & Daily Rituals",
+    description:
+      "Practical guides on habit building, streak tracking, habit stacking, and daily rituals.",
     robots: "index, follow",
     ogType: "website",
   },
@@ -113,6 +120,10 @@ export function getStructuredData() {
         name: SITE_NAME,
         url: SITE_URL,
         logo: `${SITE_URL}/logo.png`,
+        sameAs: [
+          "https://github.com/Prashantkhuva",
+          "https://x.com/prashantkhuva_",
+        ],
         founder: {
           "@type": "Person",
           name: "Prashant Khuva",
