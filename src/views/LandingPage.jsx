@@ -98,25 +98,25 @@ function AnimatedNumber({ to, suffix = "", duration = 1600 }) {
 }
 
 const bars = [
-  { h: 30, day: "M" },
-  { h: 50, day: "T" },
-  { h: 40, day: "W" },
-  { h: 90, day: "T" },
-  { h: 70, day: "F" },
-  { h: 60, day: "S" },
-  { h: 35, day: "S" },
+  { h: 55, day: "M" },
+  { h: 70, day: "T" },
+  { h: 60, day: "W" },
+  { h: 100, day: "T" },
+  { h: 85, day: "F" },
+  { h: 75, day: "S" },
+  { h: 50, day: "S" },
 ];
 
 function AnimatedBarChart() {
   return (
-    <div className="flex items-end gap-2 h-48 mb-5">
+    <div className="flex items-end gap-2 h-64 mb-6">
       {bars.map((bar, i) => (
         <div
           key={i}
-          className="flex-1 h-full flex flex-col justify-end items-center gap-1.5 relative"
+          className="flex-1 h-full flex flex-col items-center gap-1.5 relative"
         >
           <motion.div
-            className={`w-full rounded-full ${
+            className={`w-full rounded-full mt-auto ${
               i === 3
                 ? "bg-black dark:bg-[#D0BCFF]"
                 : "bg-black/20 dark:bg-white/20"
@@ -157,7 +157,7 @@ function LandingPage() {
       "
       >
         {/* ─── HERO ─────────────────────────────────────────────────────────── */}
-        <section className="min-h-screen pt-24 sm:pt-36 pb-14 sm:pb-20 px-5 sm:px-8 lg:px-20 relative overflow-hidden">
+        <section className="min-h-screen pt-8 sm:pt-12 pb-14 sm:pb-20 px-5 sm:px-8 lg:px-20 relative overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] sm:w-[700px] h-[200px] sm:h-[300px] bg-[#C58B5D] blur-[120px] opacity-20" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-14 items-center relative z-10">
@@ -536,7 +536,7 @@ function LandingPage() {
             </motion.div>
 
             <motion.div
-              className="lg:border-x border-black/10 dark:border-white/10 lg:px-10"
+              className="lg:border-x border-black/10 dark:border-white/10 lg:px-10 lg:py-10"
               initial="hidden"
               whileInView="show"
               viewport={viewportConfig}

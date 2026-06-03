@@ -57,7 +57,7 @@ function LandNav() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 + 0.2, duration: 0.45 }}
-              className="relative text-[8px] uppercase tracking-[0.25em] text-[#555555] dark:text-[#938F99] transition-colors hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5] after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-current after:transition-all after:duration-300 hover:after:w-full"
+              className="relative text-[6px] uppercase tracking-[0.25em] text-[#555555] dark:text-[#938F99] transition-colors hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5] after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-current after:transition-all after:duration-300 hover:after:w-full"
             >
               {link.label}
             </motion.a>
