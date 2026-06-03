@@ -25,15 +25,20 @@ export async function generateMetadata({ params }) {
   return {
     title: `${post.title} — HabitFlow Blog`,
     description: post.description,
+    alternates: {
+      canonical: `${SITE_URL}/blog/${post.slug}`,
+    },
     openGraph: {
       type: "article",
       url: `${SITE_URL}/blog/${post.slug}`,
+      siteName: "HabitFlow",
       title: `${post.title} — HabitFlow Blog`,
       description: post.description,
-      images: [{ url: post.image || "/og-image.png" }],
+      images: [{ url: post.image || "/og-image.png", width: 1200, height: 630 }],
       publishedTime: post.published,
-      modifiedTime: post.lastmod,
+      modifiedTime: post.lastmod || post.published,
       authors: ["Prashant Khuva"],
+      locale: "en_US",
     },
     twitter: {
       card: "summary_large_image",
@@ -84,6 +89,16 @@ export default async function BlogPost({ params }) {
   const post = await getPost(params.slug);
   if (!post) notFound();
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+      { "@type": "ListItem", position: 3, name: post.title, item: `${SITE_URL}/blog/${post.slug}` },
+    ],
+  };
+
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -100,21 +115,38 @@ export default async function BlogPost({ params }) {
       "@type": "Organization",
       name: "HabitFlow",
     },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/blog/${post.slug}`,
+    },
   };
 
   return (
     <>
       <script
         type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
       <main className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
-        <Link
-          href="/blog"
-          className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
-        >
-          &larr; Back to blog
-        </Link>
+        <nav aria-label="Breadcrumb" className="mb-4 text-sm text-muted-foreground">
+          <ol className="flex items-center gap-2">
+            <li>
+              <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li className="text-foreground truncate max-w-[200px]" aria-current="page">
+              {post.title}
+            </li>
+          </ol>
+        </nav>
         <article>
           <header className="mb-10">
             <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">

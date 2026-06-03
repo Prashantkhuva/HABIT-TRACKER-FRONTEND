@@ -25,9 +25,9 @@ export default async function sitemap() {
 
   const staticPages = PUBLIC_ROUTES.map((route) => ({
     url: `${SITE_URL}${route}`,
-    lastModified: "2026-06-02",
-    changeFrequency: route === "/" ? "weekly" : "monthly",
-    priority: route === "/" ? 1.0 : route === "/blog" ? 0.8 : 0.5,
+    lastModified: new Date().toISOString().split("T")[0],
+    changeFrequency: route === "/" ? "weekly" : route === "/blog" ? "daily" : "monthly",
+    priority: route === "/" ? 1.0 : route === "/blog" ? 0.9 : 0.5,
   }));
 
   const blogPages = blogPosts.map((post) => ({

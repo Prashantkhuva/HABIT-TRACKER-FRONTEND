@@ -77,6 +77,7 @@ export default function AdminBlogEditor({ postId }) {
         .map((c) => c.trim())
         .filter(Boolean),
       slug: form.slug || generateSlug(form.title),
+      published: form.published || new Date().toISOString().slice(0, 10),
     };
     try {
       if (isEdit) {
