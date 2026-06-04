@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SITE_URL } from "@/lib/seo-config";
+import ReactMarkdown from "react-markdown";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -47,42 +48,6 @@ export async function generateMetadata({ params }) {
       images: [post.image || "/og-image.png"],
     },
   };
-}
-
-function renderContent(content) {
-  const lines = content.split("\n");
-  return lines.map((line, i) => {
-    if (line.startsWith("## ")) {
-      return (
-        <h2 key={i} className="text-2xl font-semibold mt-10 mb-4">
-          {line.slice(3)}
-        </h2>
-      );
-    }
-    if (line.startsWith("> ")) {
-      return (
-        <blockquote
-          key={i}
-          className="border-l-4 border-primary pl-4 italic text-muted-foreground my-6"
-        >
-          {line.slice(2)}
-        </blockquote>
-      );
-    }
-    if (line.startsWith("- ")) {
-      return (
-        <li key={i} className="ml-6 list-disc text-muted-foreground">
-          {line.slice(2)}
-        </li>
-      );
-    }
-    if (line.trim() === "") return <br key={i} />;
-    return (
-      <p key={i} className="text-muted-foreground leading-relaxed">
-        {line}
-      </p>
-    );
-  });
 }
 
 export default async function BlogPost({ params }) {
@@ -169,8 +134,8 @@ export default async function BlogPost({ params }) {
             </p>
           </header>
 
-          <div className="prose prose-neutral dark:prose-invert max-w-none leading-relaxed space-y-4">
-            {renderContent(post.content || "")}
+          <div className="prose prose-neutral dark:prose-invert max-w-none leading-relaxed">
+            <ReactMarkdown>{post.content || ""}</ReactMarkdown>
           </div>
 
           {post.steps && post.steps.length > 0 && (

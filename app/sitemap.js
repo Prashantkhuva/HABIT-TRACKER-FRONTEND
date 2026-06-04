@@ -2,7 +2,7 @@ import { SITE_URL, PUBLIC_ROUTES } from "@/lib/seo-config";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 async function getBlogSlugs() {
   try {
