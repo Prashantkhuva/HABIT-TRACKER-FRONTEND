@@ -33,10 +33,10 @@ function Footer() {
 
             <div className="flex flex-col gap-3.5">
               <Link
-                href="/"
+                href="/blog"
                 className="text-[13px] text-text-muted transition-colors hover:text-text-primary"
               >
-                Manifesto
+                The Journal
               </Link>
 
               <Link
@@ -50,7 +50,7 @@ function Footer() {
                 href="/"
                 className="text-[13px] text-text-muted transition-colors hover:text-text-primary"
               >
-                Journal Spread
+                Philosophy
               </Link>
             </div>
           </div>

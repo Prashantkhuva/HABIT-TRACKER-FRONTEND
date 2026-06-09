@@ -24,6 +24,7 @@ const navItems = [
   { to: "/rituals", icon: Sparkles, label: "RITUALS" },
   { to: "/dashboard", icon: LayoutDashboard, label: "DASHBOARD" },
   { to: "/statistics", icon: BarChart2, label: "STATISTICS" },
+  { to: "/blog", icon: BookOpen, label: "BLOG" },
   { to: "/settings", icon: Settings, label: "SETTINGS" },
 ];
 

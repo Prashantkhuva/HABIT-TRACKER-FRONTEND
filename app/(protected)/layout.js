@@ -2,9 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
-import { setAuthChecked, signin } from "@/store/authSlice";
-import { getCurrentUser } from "@/api/auth-api";
+import { useSelector } from "react-redux";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header/Header";
 import MobileNav from "@/components/MobileNav";
@@ -17,25 +15,7 @@ const SWIPE_ROUTES = ["/dashboard", "/rituals", "/statistics", "/settings"];
 export default function ProtectedLayout({ children }) {
   const router = useRouter();
   const pathname = usePathname();
-  const dispatch = useDispatch();
   const { status: authStatus, isAuthChecked } = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await getCurrentUser();
-        const user = res?.data?.data;
-        if (user) {
-          dispatch(signin({ userData: user }));
-        } else {
-          dispatch(setAuthChecked());
-        }
-      } catch {
-        dispatch(setAuthChecked());
-      }
-    };
-    checkAuth();
-  }, [dispatch]);
 
   useEffect(() => {
     if (!isAuthChecked) return;

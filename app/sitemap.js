@@ -1,8 +1,15 @@
-import { SITE_URL, PUBLIC_ROUTES } from "@/lib/seo-config";
+import { SITE_URL } from "@/lib/seo-config";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const revalidate = 3600;
+
+const STATIC_PAGES = [
+  { path: "/", priority: 1.0, changeFreq: "weekly" },
+  { path: "/blog", priority: 0.9, changeFreq: "daily" },
+  { path: "/signin", priority: 0.3, changeFreq: "monthly" },
+  { path: "/signup", priority: 0.3, changeFreq: "monthly" },
+];
 
 async function getBlogSlugs() {
   try {
@@ -13,7 +20,7 @@ async function getBlogSlugs() {
     const json = await res.json();
     return (json.data || []).map((post) => ({
       slug: post.slug,
-      lastmod: post.lastmod || post.published || new Date().toISOString().slice(0, 10),
+      lastmod: post.lastmod || post.published || post.createdAt || null,
     }));
   } catch {
     return [];
@@ -23,18 +30,22 @@ async function getBlogSlugs() {
 export default async function sitemap() {
   const blogPosts = await getBlogSlugs();
 
-  const staticPages = PUBLIC_ROUTES.map((route) => ({
-    url: `${SITE_URL}${route}`,
-    lastModified: new Date().toISOString().split("T")[0],
-    changeFrequency: route === "/" ? "weekly" : route === "/blog" ? "daily" : "monthly",
-    priority: route === "/" ? 1.0 : route === "/blog" ? 0.9 : 0.5,
+  const blogLastMod = blogPosts.reduce((latest, post) => {
+    return post.lastmod && post.lastmod > latest ? post.lastmod : latest;
+  }, "");
+
+  const staticPages = STATIC_PAGES.map(({ path, priority, changeFreq }) => ({
+    url: `${SITE_URL}${path}`,
+    lastModified: path === "/blog" && blogLastMod ? blogLastMod : undefined,
+    changeFrequency: changeFreq,
+    priority,
   }));
 
   const blogPages = blogPosts.map((post) => ({
     url: `${SITE_URL}/blog/${post.slug}`,
-    lastModified: post.lastmod,
-    changeFrequency: "weekly",
-    priority: 0.7,
+    lastModified: post.lastmod || undefined,
+    changeFrequency: "monthly",
+    priority: 0.6,
   }));
 
   return [...staticPages, ...blogPages];
