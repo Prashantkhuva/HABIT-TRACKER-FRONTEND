@@ -31,7 +31,9 @@ function Create({ onClose }) {
 
   const { addToast } = useToast();
 
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" && window.matchMedia("(max-width: 640px)").matches,
+  );
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 640px)");
@@ -143,7 +145,7 @@ function Create({ onClose }) {
         "
       >
         {/* MOBILE HEADER */}
-        <div className="sm:hidden w-full h-15 bg-[#1A1A1A] text-white px-6 flex justify-between items-center shrink-0">
+        <div className="sm:hidden w-full h-16 bg-[#1A1A1A] text-white px-6 flex justify-between items-center shrink-0 pt-[env(safe-area-inset-top)]">
           <h1 className="text-lg font-semibold">new habit</h1>
           <div className="flex items-center gap-4">
             <span className="text-[10px] text-gray-400">RITUAL V1.0</span>
@@ -350,6 +352,7 @@ function Create({ onClose }) {
               shrink-0
               flex justify-end items-center gap-4
               px-6 py-4 sm:px-12 sm:py-5
+              pb-[calc(0.5rem+env(safe-area-inset-bottom))]
               bg-[#F5F3EE] dark:bg-[#0E0E0E]
               border-t border-black/5 dark:border-white/5
             "
