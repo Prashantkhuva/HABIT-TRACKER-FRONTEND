@@ -9,7 +9,7 @@ async function getPosts() {
     });
     if (!res.ok) return [];
     const json = await res.json();
-    return json.data || [];
+    return Array.isArray(json.data?.posts) ? json.data.posts : [];
   } catch {
     return [];
   }

@@ -18,7 +18,7 @@ async function getBlogSlugs() {
     });
     if (!res.ok) return [];
     const json = await res.json();
-    return (json.data || []).map((post) => ({
+    return (json.data?.posts || []).map((post) => ({
       slug: post.slug,
       lastmod: post.lastmod || post.published || post.createdAt || null,
     }));

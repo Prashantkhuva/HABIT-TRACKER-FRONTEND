@@ -29,40 +29,33 @@ export default function Dashboard() {
   const { addToast } = useToast();
 
   useEffect(() => {
-    const fetchAll = async () => {
+    (async () => {
       try {
         const res = await getHabits();
         const fetchedHabits = res.data.data;
         dispatch(setReduxHabits(fetchedHabits));
+        setLoading(false);
 
-        const [statsRes, weeklyRes] = await Promise.all([
-          getDashboardStats(),
-          getWeeklyData(),
-        ]);
-        setStats(statsRes.data.data);
-        setWeeklyData(weeklyRes.data.data);
+        getDashboardStats().then((r) => setStats(r.data.data)).catch(() => {});
+        getWeeklyData().then((r) => setWeeklyData(r.data.data)).catch(() => {});
 
-        const alreadyDoneIds = [];
-        await Promise.all(
+        Promise.all(
           fetchedHabits.map(async (habit) => {
             try {
               const logRes = await getHabitLogs(habit._id, 1, 5);
               const logs = logRes.data.data.logs;
-              const doneToday = logs.some(isLogFromToday);
-              if (doneToday) alreadyDoneIds.push(habit._id);
-            } catch (err) {
-              // Silently ignore
+              if (logs.some(isLogFromToday)) {
+                setCompletedIds((prev) => [...prev, habit._id]);
+              }
+            } catch {
+              // skip failed log fetch
             }
           }),
         );
-        setCompletedIds(alreadyDoneIds);
-      } catch (err) {
-        // Silently ignore
-      } finally {
+      } catch {
         setLoading(false);
       }
-    };
-    fetchAll();
+    })();
   }, []);
 
   const handleComplete = (habit) => {
@@ -119,7 +112,8 @@ export default function Dashboard() {
     }
   };
 
-  const activeHabits = habits.filter((h) => h.status === "active");
+  const habitList = Array.isArray(habits) ? habits : [];
+  const activeHabits = habitList.filter((h) => h.status === "active");
   const completedHabits = activeHabits.filter((h) =>
     completedIds.includes(h._id),
   );

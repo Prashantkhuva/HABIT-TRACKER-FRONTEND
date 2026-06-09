@@ -39,14 +39,15 @@ const gridItem = {
 export default function BlogListing({ posts }) {
   const { status: authStatus } = useSelector((state) => state.auth);
   const [search, setSearch] = useState("");
+  const postList = Array.isArray(posts) ? posts : [];
 
   const filtered = search
-    ? posts.filter(
+    ? postList.filter(
         (p) =>
           p.title?.toLowerCase().includes(search.toLowerCase()) ||
           p.description?.toLowerCase().includes(search.toLowerCase()),
       )
-    : posts;
+    : postList;
 
   return (
     <main className="bg-[#FAFAF5] dark:bg-[#141218] text-[#1A1A1A] dark:text-[#E6E1E5] overflow-hidden selection:bg-black selection:text-white">

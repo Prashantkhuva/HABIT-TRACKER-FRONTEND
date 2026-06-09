@@ -178,7 +178,7 @@ function LandNav() {
               <Link
                 href="/signup"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-between w-full uppercase tracking-[0.22em] text-[9px] bg-[#1A1A1A] dark:bg-[#D0BCFF] text-white dark:text-[#1A1A1A] rounded-full px-6 py-3 hover:opacity-80 transition-opacity"
+                className="flex items-center justify-between w-full uppercase tracking-[0.22em] text-[9px] bg-[#1A1A1A] dark:bg-[#D0BCFwF] text-white dark:text-[#1A1A1A] rounded-full px-6 py-3 hover:opacity-80 transition-opacity"
               >
                 Begin the ritual
                 <ArrowRight size={12} strokeWidth={2} />

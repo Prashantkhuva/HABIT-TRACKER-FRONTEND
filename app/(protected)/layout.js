@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header/Header";
 import MobileNav from "@/components/MobileNav";
 import ToastProvider from "@/components/Toast/ToastProvider";
 import SwipeNavigation from "@/SwipeNavigation";
-import { motion, AnimatePresence } from "framer-motion";
 
 const SWIPE_ROUTES = ["/dashboard", "/rituals", "/statistics", "/settings"];
 
@@ -43,18 +42,9 @@ export default function ProtectedLayout({ children }) {
             {isSwipeRoute ? (
               <SwipeNavigation>{children}</SwipeNavigation>
             ) : (
-              <AnimatePresence initial={false} mode="wait">
-                <motion.div
-                  key={pathname}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex w-full flex-1 flex-col"
-                >
-                  {children}
-                </motion.div>
-              </AnimatePresence>
+              <div className="flex w-full flex-1 flex-col">
+                {children}
+              </div>
             )}
           </main>
           {!hideMobileNav && <MobileNav />}

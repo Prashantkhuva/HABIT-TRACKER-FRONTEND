@@ -86,7 +86,7 @@ export default function Sidebar() {
       {/* Nav */}
       <nav className="flex flex-1 flex-col gap-1 px-2 lg:px-3">
         {navItems.map(({ to, icon: Icon, label }) => (
-          <Link key={to} href={to} prefetch={false}>
+          <Link key={to} href={to}>
             <div
               className={`relative flex cursor-pointer items-center justify-center gap-3 rounded-xl px-0 py-3 transition-all duration-200 lg:justify-start lg:px-3 ${pathname === to || (to !== "/" && pathname.startsWith(to))
                 ? "bg-surface text-text-primary shadow-[0_14px_34px_-28px_rgba(26,26,26,0.45)]"
@@ -113,23 +113,21 @@ export default function Sidebar() {
       <div className="flex flex-col gap-1 px-2 pb-8 lg:px-3">
         {/* Blog Admin — only visible to admin accounts */}
         {isAdmin(user) && (
-          <button
-            aria-label="Blog Admin"
+          <Link
+            href="/blog-admin"
             className="flex w-full items-center justify-center gap-3 rounded-xl px-0 py-3 text-text-muted transition-all duration-200 hover:bg-surface hover:text-text-primary lg:justify-start lg:px-3"
-            onClick={() => router.push("/blog-admin")}
           >
             <FileText size={18} className="shrink-0" />
             <span className="hidden text-[11px] font-bold tracking-[0.16em] lg:block">
               BLOG
             </span>
-          </button>
+          </Link>
         )}
 
         {/* Help */}
-        <button
-          aria-label="Help"
+        <Link
+          href="/help"
           className="flex w-full items-center justify-center gap-3 rounded-xl px-0 py-3 text-text-muted transition-all duration-200 hover:bg-surface hover:text-text-primary lg:justify-start lg:px-3"
-          onClick={() => router.push("/help")}
         >
           <HelpCircle size={18} className="shrink-0" />
           <span
@@ -137,7 +135,7 @@ export default function Sidebar() {
           >
             HELP
           </span>
-        </button>
+        </Link>
 
         {/* Sign Out */}
         <button

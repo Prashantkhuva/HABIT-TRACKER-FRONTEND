@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getBlogPosts, deleteBlogPost } from "@/api/blog-api";
 import { useToast } from "@/components/Toast/ToastProvider";
-import { Plus, Pencil, Trash2, FileText } from "lucide-react";
+import { Pencil, Trash2, FileText } from "lucide-react";
 
 export default function AdminBlogList() {
   const [posts, setPosts] = useState([]);
@@ -15,7 +15,7 @@ export default function AdminBlogList() {
   const fetchPosts = async () => {
     try {
       const res = await getBlogPosts();
-      setPosts(res.data.data || []);
+      setPosts(res.data?.data?.posts || []);
     } catch {
       addToast({ type: "error", title: "Failed", message: "Could not load blog posts" });
     } finally {
@@ -48,32 +48,17 @@ export default function AdminBlogList() {
 
   return (
     <div className="mx-auto w-full max-w-3xl">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Blog Posts</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {posts.length} post{posts.length !== 1 ? "s" : ""} published
-          </p>
-        </div>
-        <button
-          onClick={() => router.push("/blog-admin/new")}
-          className="flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-background transition-all hover:opacity-90"
-        >
-          <Plus size={16} />
-          New Post
-        </button>
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold">Blog Posts</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {posts.length} post{posts.length !== 1 ? "s" : ""} published
+        </p>
       </div>
 
       {posts.length === 0 ? (
         <div className="flex flex-col items-center gap-3 py-20 text-muted-foreground">
           <FileText size={40} strokeWidth={1} />
           <p className="text-sm">No blog posts yet</p>
-          <button
-            onClick={() => router.push("/blog-admin/new")}
-            className="text-sm font-medium text-primary hover:underline"
-          >
-            Write your first post
-          </button>
         </div>
       ) : (
         <div className="space-y-3">

@@ -20,7 +20,7 @@ const habitSlice = createSlice({
       state.loading = action.payload;
     },
     setReduxHabits: (state, action) => {
-      state.habits = action.payload; 
+      state.habits = Array.isArray(action.payload) ? action.payload : [];
     },
     addReduxHabit: (state, action) => {
       state.habits.unshift(action.payload); 
