@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getBlogPosts, deleteBlogPost } from "@/api/blog-api";
 import { useToast } from "@/components/Toast/ToastProvider";
-import { Pencil, Trash2, FileText } from "lucide-react";
+import { Pencil, Trash2, FileText, Plus } from "lucide-react";
+import Button from "@/components/Button";
 
 export default function AdminBlogList() {
   const [posts, setPosts] = useState([]);
@@ -55,12 +56,10 @@ export default function AdminBlogList() {
             {posts.length} post{posts.length !== 1 ? "s" : ""} published
           </p>
         </div>
-        <button
-          onClick={() => router.push("/blog-admin/new")}
-          className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-        >
-          + New Post
-        </button>
+        <Button onClick={() => router.push("/blog-admin/new")}>
+          <Plus size={14} />
+          New Post
+        </Button>
       </div>
 
       {posts.length === 0 ? (
