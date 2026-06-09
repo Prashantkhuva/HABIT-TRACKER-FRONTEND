@@ -48,11 +48,19 @@ export default function AdminBlogList() {
 
   return (
     <div className="mx-auto w-full max-w-3xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold">Blog Posts</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {posts.length} post{posts.length !== 1 ? "s" : ""} published
-        </p>
+      <div className="mb-8 flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Blog Posts</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {posts.length} post{posts.length !== 1 ? "s" : ""} published
+          </p>
+        </div>
+        <button
+          onClick={() => router.push("/blog-admin/new")}
+          className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          + New Post
+        </button>
       </div>
 
       {posts.length === 0 ? (
