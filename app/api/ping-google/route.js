@@ -7,6 +7,7 @@ export async function POST() {
       process.env.NEXT_PUBLIC_SITE_URL || "https://habitflow.indevs.in"
     ).replace(/\/$/, "");
 
+    revalidatePath("/blog");
     revalidatePath("/sitemap.xml");
 
     const sitemapUrl = `${SITE_URL}/sitemap.xml`;
