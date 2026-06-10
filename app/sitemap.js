@@ -13,7 +13,7 @@ const STATIC_PAGES = [
 
 async function getBlogSlugs() {
   try {
-    const res = await fetch(`${API_URL}/blog/posts`, {
+    const res = await fetch(`${API_URL}/blog/posts?limit=1000`, {
       next: { revalidate: 300 },
     });
     if (!res.ok) return [];

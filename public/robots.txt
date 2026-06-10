@@ -10,6 +10,7 @@ Disallow: /create-habit
 Disallow: /help
 Disallow: /edit-profile
 Disallow: /change-password
+Disallow: /blog-admin
 
 # AI crawlers — disallow private routes
 User-agent: GPTBot
@@ -21,6 +22,7 @@ Disallow: /create-habit
 Disallow: /help
 Disallow: /edit-profile
 Disallow: /change-password
+Disallow: /blog-admin
 
 User-agent: ChatGPT-User
 Disallow: /dashboard
@@ -31,6 +33,7 @@ Disallow: /create-habit
 Disallow: /help
 Disallow: /edit-profile
 Disallow: /change-password
+Disallow: /blog-admin
 
 User-agent: PerplexityBot
 Disallow: /dashboard
@@ -41,6 +44,7 @@ Disallow: /create-habit
 Disallow: /help
 Disallow: /edit-profile
 Disallow: /change-password
+Disallow: /blog-admin
 
 User-agent: ClaudeBot
 Disallow: /dashboard
@@ -51,6 +55,7 @@ Disallow: /create-habit
 Disallow: /help
 Disallow: /edit-profile
 Disallow: /change-password
+Disallow: /blog-admin
 
 User-agent: Google-Extended
 Disallow: /dashboard
@@ -61,5 +66,6 @@ Disallow: /create-habit
 Disallow: /help
 Disallow: /edit-profile
 Disallow: /change-password
+Disallow: /blog-admin
 
 Sitemap: https://habitflow.indevs.in/sitemap.xml
