@@ -4,13 +4,11 @@ import BlogPostReader from "@/views/blog/BlogPostReader";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 async function getPost(slug) {
   try {
-    const res = await fetch(`${API_URL}/blog/posts/${slug}`, {
-      next: { revalidate: 60 },
-    });
+    const res = await fetch(`${API_URL}/blog/posts/${slug}`);
     if (!res.ok) return null;
     const json = await res.json();
     return json.data || null;
