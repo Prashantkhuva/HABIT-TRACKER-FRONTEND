@@ -114,7 +114,7 @@ export default function BlogPostReader({ post, siteUrl }) {
         </header>
 
         {/* Content */}
-        <div className="prose prose-neutral dark:prose-invert max-w-none leading-[1.85] text-[14px] sm:text-[15px]">
+        <div className="prose prose-neutral dark:prose-invert max-w-none leading-[1.85] text-[14px] sm:text-[15px] prose-headings:mt-10 prose-headings:mb-4 prose-p:mb-5 prose-p:mt-0 prose-hr:my-8 prose-ul:my-5 prose-li:my-1 prose-blockquote:my-6">
           <ReactMarkdown>{post.content || ""}</ReactMarkdown>
         </div>
 
