@@ -5,6 +5,9 @@ export const metadata = {
   title: ROUTE_SEO["/signup"].title,
   description: ROUTE_SEO["/signup"].description,
   robots: ROUTE_SEO["/signup"].robots,
+  alternates: {
+    canonical: `${SITE_URL}/signup`,
+  },
   openGraph: {
     type: "website",
     url: `${SITE_URL}/signup`,

@@ -21,6 +21,9 @@ export const metadata = {
     "HabitFlow is a premium editorial habit tracker for building daily rituals, streaks, and consistency. Track rituals, visualize progress, and cultivate intentional routines.",
   metadataBase: new URL("https://habitflow.indevs.in"),
   robots: "index, follow",
+  alternates: {
+    canonical: "/",
+  },
   authors: [{ name: "Prashant Khuva" }],
   openGraph: {
     type: "website",
