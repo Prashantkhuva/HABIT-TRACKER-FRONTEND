@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createBlogPost, getBlogPostById, updateBlogPost } from "@/api/blog-api";
 import { useToast } from "@/components/Toast/ToastProvider";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/loading/LoadingSkeletons";
 
 export default function AdminBlogEditor({ postId }) {
   const router = useRouter();
@@ -98,8 +99,14 @@ export default function AdminBlogEditor({ postId }) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <Loader2 size={24} className="animate-spin text-muted-foreground" />
+      <div className="flex flex-col gap-6 max-w-3xl mx-auto">
+        <Skeleton className="h-10 w-32 rounded-full" />
+        <Skeleton className="h-10 w-64 rounded-xl" />
+        <div className="space-y-5">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-24 w-full rounded-2xl" />
+          ))}
+        </div>
       </div>
     );
   }
@@ -108,7 +115,7 @@ export default function AdminBlogEditor({ postId }) {
     <div className="mx-auto w-full max-w-3xl">
       <button
         onClick={() => router.push("/blog-admin")}
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm app-muted transition-colors hover:text-text-primary"
       >
         <ArrowLeft size={16} />
         Back to posts
@@ -127,7 +134,7 @@ export default function AdminBlogEditor({ postId }) {
             onChange={handleChange}
             onBlur={handleTitleBlur}
             placeholder="How to build daily rituals"
-            className="w-full rounded-xl border bg-transparent px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary"
+            className="w-full rounded-xl border border-border-subtle bg-transparent px-4 py-2.5 text-sm outline-none transition-colors focus:border-text-primary"
           />
         </div>
 
@@ -139,7 +146,7 @@ export default function AdminBlogEditor({ postId }) {
               value={form.slug}
               onChange={handleChange}
               placeholder="how-to-build-daily-rituals"
-              className="w-full rounded-xl border bg-transparent px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary"
+              className="w-full rounded-xl border border-border-subtle bg-transparent px-4 py-2.5 text-sm outline-none transition-colors focus:border-text-primary"
             />
           </div>
           <div>
@@ -149,7 +156,7 @@ export default function AdminBlogEditor({ postId }) {
               value={form.readingTime}
               onChange={handleChange}
               placeholder="5 min read"
-              className="w-full rounded-xl border bg-transparent px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary"
+              className="w-full rounded-xl border border-border-subtle bg-transparent px-4 py-2.5 text-sm outline-none transition-colors focus:border-text-primary"
             />
           </div>
         </div>
@@ -162,7 +169,7 @@ export default function AdminBlogEditor({ postId }) {
             onChange={handleChange}
             rows={2}
             placeholder="A short summary for search results and previews"
-            className="w-full resize-none rounded-xl border bg-transparent px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary"
+            className="w-full resize-none rounded-xl border border-border-subtle bg-transparent px-4 py-2.5 text-sm outline-none transition-colors focus:border-text-primary"
           />
         </div>
 
@@ -176,7 +183,7 @@ export default function AdminBlogEditor({ postId }) {
             onChange={handleChange}
             rows={16}
             placeholder="Write your blog content in markdown..."
-            className="w-full resize-y rounded-xl border bg-transparent px-4 py-2.5 font-mono text-sm leading-relaxed outline-none transition-colors focus:border-primary"
+            className="w-full resize-y rounded-xl border border-border-subtle bg-transparent px-4 py-2.5 font-mono text-sm leading-relaxed outline-none transition-colors focus:border-text-primary"
           />
         </div>
 
@@ -190,7 +197,7 @@ export default function AdminBlogEditor({ postId }) {
               value={form.categories}
               onChange={handleChange}
               placeholder="Habit Building, Productivity"
-              className="w-full rounded-xl border bg-transparent px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary"
+              className="w-full rounded-xl border border-border-subtle bg-transparent px-4 py-2.5 text-sm outline-none transition-colors focus:border-text-primary"
             />
           </div>
           <div>
@@ -202,7 +209,7 @@ export default function AdminBlogEditor({ postId }) {
               type="date"
               value={form.published}
               onChange={handleChange}
-              className="w-full rounded-xl border bg-transparent px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary"
+              className="w-full rounded-xl border border-border-subtle bg-transparent px-4 py-2.5 text-sm outline-none transition-colors focus:border-text-primary"
             />
           </div>
         </div>
@@ -219,7 +226,7 @@ export default function AdminBlogEditor({ postId }) {
           <button
             type="button"
             onClick={() => router.push("/blog-admin")}
-            className="rounded-full border px-6 py-2.5 text-sm font-medium transition-colors hover:bg-surface"
+            className="rounded-full border border-border-subtle/50 px-6 py-2.5 text-sm font-medium transition-colors hover:bg-surface-dim"
           >
             Cancel
           </button>

@@ -11,13 +11,9 @@ export default function CompletedHabit({ habit, index }) {
       try {
         const res = await getHabitLogs(habit._id, 1, 7);
         const logs = res.data.data.logs;
-
         setWeeklyCount(logs.filter((l) => l.completed).length);
-      } catch (err) {
-        // Silently ignore
-      }
+      } catch { /* silent */ }
     };
-
     fetchLogs();
   }, [habit._id]);
 
@@ -25,38 +21,33 @@ export default function CompletedHabit({ habit, index }) {
     <motion.div
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: index * 0.1 }}
-      className="flex items-center gap-4 px-6 py-4 rounded-full bg-white dark:bg-[#1D1B20] "
+      transition={{ delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      className="flex items-center gap-5 px-6 py-5 rounded-2xl bg-surface border border-border-subtle/50 hover:border-accent-mint/20 transition-all"
     >
-      {/* Check Icon */}
-      <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-[#C8E6DF] dark:bg-[#D0BCFF] text-[#1A1A1A] dark:text-black">
-        <Check size={18} className="text-[#1A1A1A] dark:text-black" />
+      <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 bg-accent-mint/15 text-accent-mint">
+        <Check size={20} />
       </div>
 
-      {/* Text */}
       <div className="flex-1">
-        <p className="font-bold text-sm text-[#1A1A1A] dark:text-[#E6E1E5]">
+        <p className="font-heading text-base font-bold text-text-primary">
           {habit.title}
         </p>
-        <p className="text-xs text-[#888888] dark:text-[#938F99] uppercase">
+        <p className="text-[11px] font-bold tracking-wider text-text-muted uppercase mt-0.5">
           COMPLETED TODAY
         </p>
       </div>
 
-      {/* Weekly Dots */}
-      <div>
-        <div className="flex gap-1.5">
-          {[1, 2, 3, 4, 5, 6, 7].map((d) => (
-            <div
-              key={d}
-              className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                d <= weeklyCount 
-                  ? "bg-[#1A1A1A] dark:bg-[#D0BCFF]" 
-                  : "bg-transparent border border-[#E8E4DC] dark:border-[#2A2A2A]"
-              }`}
-            />
-          ))}
-        </div>
+      <div className="flex gap-1.5">
+        {[1, 2, 3, 4, 5, 6, 7].map((d) => (
+          <div
+            key={d}
+            className={`w-3.5 h-3.5 rounded-full transition-all duration-200 ${
+              d <= weeklyCount
+                ? "bg-accent-mint"
+                : "bg-transparent border border-border-subtle"
+            }`}
+          />
+        ))}
       </div>
     </motion.div>
   );

@@ -50,12 +50,12 @@ export default function BlogListing({ posts }) {
     : postList;
 
   return (
-    <main className="bg-[#FAFAF5] dark:bg-[#141218] text-[#1A1A1A] dark:text-[#E6E1E5] overflow-hidden selection:bg-black selection:text-white">
+    <main className="bg-background text-text-primary overflow-hidden selection:bg-primary selection:text-background">
       {/* Top nav */}
       <div className="relative z-20 px-5 sm:px-8 lg:px-20 pt-6">
         <Link
           href={authStatus ? "/dashboard" : "/"}
-          className="inline-flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] text-[#555555] dark:text-[#938F99] hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5] transition-colors group"
+          className="inline-flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] app-muted hover:text-text-primary transition-colors group"
         >
           <ArrowLeft
             size={12}
@@ -78,14 +78,14 @@ export default function BlogListing({ posts }) {
           <motion.p
             variants={fadeUp}
             custom={0}
-            className="uppercase tracking-[0.35em] text-[8px] text-[#555555] dark:text-[#938F99] mb-5"
+            className="app-label mb-5"
           >
             HabitFlow — The Journal
           </motion.p>
           <motion.h1
             variants={fadeUp}
             custom={1}
-            className="font-[Epilogue] text-[clamp(2rem,6vw,4rem)] leading-[0.92] tracking-[-0.06em] lowercase mb-4"
+            className="font-heading text-[clamp(2rem,6vw,4rem)] leading-[0.92] tracking-[-0.06em] lowercase mb-4"
           >
             notes on
             <br />
@@ -94,7 +94,7 @@ export default function BlogListing({ posts }) {
           <motion.p
             variants={fadeUp}
             custom={2}
-            className="max-w-lg mx-auto text-[12px] sm:text-[13px] leading-[1.75] text-[#555555] dark:text-[#938F99]"
+            className="max-w-lg mx-auto text-[12px] sm:text-[13px] leading-[1.75] app-muted"
           >
             Practical guides on habit building, streak tracking, and the quiet
             art of daily rituals — written for those who value consistency over
@@ -110,14 +110,14 @@ export default function BlogListing({ posts }) {
             <Search
               size={14}
               strokeWidth={1.5}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-[#555555] dark:text-[#938F99] pointer-events-none"
+              className="absolute left-4 top-1/2 -translate-y-1/2 app-muted pointer-events-none"
             />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search journal entries..."
-              className="w-full rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-[#1D1B20] pl-10 pr-5 py-3 text-sm outline-none transition-colors focus:border-[#1A1A1A] dark:focus:border-[#D0BCFF]"
+              className="w-full rounded-full border border-border-subtle/50 bg-surface pl-10 pr-5 py-3 text-sm outline-none transition-colors focus:border-text-primary"
             />
           </div>
         </div>
@@ -130,7 +130,7 @@ export default function BlogListing({ posts }) {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center text-[13px] text-[#555555] dark:text-[#938F99] py-16"
+              className="text-center text-[13px] app-muted py-16"
             >
               {posts.length === 0
                 ? "No entries yet. The journal is blank."
@@ -148,10 +148,10 @@ export default function BlogListing({ posts }) {
             {filtered.map((post) => (
               <motion.div key={post._id || post.slug} variants={gridItem}>
                 <Link href={`/blog/${post.slug}`} className="group block">
-                  <article className="relative overflow-hidden rounded-[20px] sm:rounded-[24px] bg-white dark:bg-[#1D1B20] border border-black/5 dark:border-white/5 p-6 sm:p-8 transition-all duration-500 hover:shadow-[0_20px_60px_-30px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_20px_60px_-30px_rgba(0,0,0,0.4)]">
+                  <article className="relative overflow-hidden rounded-[20px] sm:rounded-[24px] bg-surface border border-border-subtle/30 p-6 sm:p-8 transition-all duration-500 hover:shadow-[0_20px_60px_-30px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_20px_60px_-30px_rgba(0,0,0,0.4)]">
                     <div className="flex items-start justify-between gap-6">
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.15em] text-[#555555] dark:text-[#938F99] mb-3">
+                        <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.15em] app-muted mb-3">
                           {post.published && (
                             <time className="text-[9px]">
                               {new Date(post.published).toLocaleDateString("en-US", {
@@ -166,11 +166,11 @@ export default function BlogListing({ posts }) {
                           )}
                         </div>
 
-                        <h2 className="font-[Epilogue] text-xl sm:text-2xl tracking-[-0.04em] lowercase group-hover:opacity-70 transition-opacity duration-300 mb-2">
+                        <h2 className="font-heading text-xl sm:text-2xl tracking-[-0.04em] lowercase group-hover:opacity-70 transition-opacity duration-300 mb-2">
                           {post.title}
                         </h2>
 
-                        <p className="text-[12px] sm:text-[13px] leading-[1.75] text-[#555555] dark:text-[#938F99] line-clamp-2">
+                        <p className="text-[12px] sm:text-[13px] leading-[1.75] app-muted line-clamp-2">
                           {post.description}
                         </p>
 
@@ -179,7 +179,7 @@ export default function BlogListing({ posts }) {
                             {(post.categories || []).map((cat) => (
                               <span
                                 key={cat}
-                                className="rounded-full border border-black/8 dark:border-white/8 px-2.5 py-0.5 text-[8px] uppercase tracking-[0.12em] text-[#555555] dark:text-[#938F99]"
+                                className="rounded-full border border-border-subtle/40 px-2.5 py-0.5 text-[8px] uppercase tracking-[0.12em] app-muted"
                               >
                                 {cat}
                               </span>
@@ -188,7 +188,7 @@ export default function BlogListing({ posts }) {
                         )}
                       </div>
 
-                      <div className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full border border-black/8 dark:border-white/8 shrink-0 group-hover:bg-[#1A1A1A] dark:group-hover:bg-[#D0BCFF] group-hover:text-white dark:group-hover:text-[#1A1A1A] transition-all duration-300">
+                      <div className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full border border-border-subtle/40 shrink-0 group-hover:bg-primary group-hover:text-background transition-all duration-300">
                         <ArrowRight size={14} strokeWidth={1.5} />
                       </div>
                     </div>

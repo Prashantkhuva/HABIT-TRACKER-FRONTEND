@@ -18,7 +18,8 @@ async function getPost(slug) {
 }
 
 export async function generateMetadata({ params }) {
-  const post = await getPost(params.slug);
+  const { slug } = await params;
+  const post = await getPost(slug);
   if (!post) return {};
   return {
     title: `${post.title} — HabitFlow Blog`,
@@ -48,7 +49,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function BlogPost({ params }) {
-  const post = await getPost(params.slug);
+  const { slug } = await params;
+  const post = await getPost(slug);
   if (!post) notFound();
 
   return <BlogPostReader post={post} siteUrl={SITE_URL} />;

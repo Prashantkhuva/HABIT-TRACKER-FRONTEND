@@ -36,7 +36,7 @@ export default function ProtectedLayout({ children }) {
       <ToastProvider>
       <div className="flex min-h-dvh overflow-x-hidden bg-background text-text-primary">
         <Sidebar />
-        <div className="flex min-w-0 flex-1 flex-col transition-all duration-300 lg:ml-56">
+          <div className="flex min-w-0 flex-1 flex-col transition-all duration-300 lg:ml-64">
           <Header />
           <main id="main-content" className="mx-auto flex w-full min-w-0 max-w-screen-2xl flex-1 px-4 py-6 pb-[calc(80px+env(safe-area-inset-bottom))] sm:px-8 lg:px-10 lg:pb-6">
             {isSwipeRoute ? (

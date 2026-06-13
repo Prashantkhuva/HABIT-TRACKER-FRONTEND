@@ -23,7 +23,7 @@ export default function BlogPostReader({ post, siteUrl }) {
   const { status: authStatus } = useSelector((state) => state.auth);
 
   return (
-    <main className="bg-[#FAFAF5] dark:bg-[#141218] text-[#1A1A1A] dark:text-[#E6E1E5] overflow-hidden selection:bg-black selection:text-white">
+    <main className="bg-background text-text-primary overflow-hidden selection:bg-primary selection:text-background">
       {/* Backdrop */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] sm:w-[1000px] h-[300px] bg-[#C58B5D] blur-[150px] opacity-10 pointer-events-none" />
 
@@ -32,7 +32,7 @@ export default function BlogPostReader({ post, siteUrl }) {
         <div className="mb-8 flex items-center gap-4">
           <Link
             href={authStatus ? "/dashboard" : "/"}
-            className="inline-flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] text-[#555555] dark:text-[#938F99] hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5] transition-colors group"
+            className="inline-flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] app-muted hover:text-text-primary transition-colors group"
           >
             <ArrowLeft
               size={12}
@@ -41,10 +41,10 @@ export default function BlogPostReader({ post, siteUrl }) {
             />
             {authStatus ? "Dashboard" : "Home"}
           </Link>
-          <span className="text-[#555555] dark:text-[#938F99] opacity-30 text-[9px]">/</span>
+          <span className="app-muted opacity-30 text-[9px]">/</span>
           <Link
             href="/blog"
-            className="inline-flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] text-[#555555] dark:text-[#938F99] hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5] transition-colors group"
+            className="inline-flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] app-muted hover:text-text-primary transition-colors group"
           >
             Journal
           </Link>
@@ -57,7 +57,7 @@ export default function BlogPostReader({ post, siteUrl }) {
             animate="show"
             variants={fadeUp}
             custom={1}
-            className="flex items-center gap-3 text-[10px] uppercase tracking-[0.15em] text-[#555555] dark:text-[#938F99] mb-4"
+            className="flex items-center gap-3 text-[10px] uppercase tracking-[0.15em] app-muted mb-4"
           >
             {post.published && (
               <time className="text-[9px]">
@@ -78,7 +78,7 @@ export default function BlogPostReader({ post, siteUrl }) {
             animate="show"
             variants={fadeUp}
             custom={2}
-            className="font-[Epilogue] text-[clamp(1.6rem,4vw,3rem)] leading-[0.95] tracking-[-0.05em] lowercase mb-5"
+            className="font-heading text-[clamp(1.6rem,4vw,3rem)] leading-[0.95] tracking-[-0.05em] lowercase mb-5"
           >
             {post.title}
           </motion.h1>
@@ -88,7 +88,7 @@ export default function BlogPostReader({ post, siteUrl }) {
             animate="show"
             variants={fadeUp}
             custom={3}
-            className="text-[14px] sm:text-[15px] leading-[1.75] text-[#555555] dark:text-[#938F99]"
+            className="text-[14px] sm:text-[15px] leading-[1.75] app-muted"
           >
             {post.description}
           </motion.p>
@@ -104,7 +104,7 @@ export default function BlogPostReader({ post, siteUrl }) {
               {(post.categories || []).map((cat) => (
                 <span
                   key={cat}
-                  className="rounded-full border border-black/8 dark:border-white/8 px-2.5 py-0.5 text-[8px] uppercase tracking-[0.12em] text-[#555555] dark:text-[#938F99]"
+                  className="rounded-full border border-border-subtle/40 px-2.5 py-0.5 text-[8px] uppercase tracking-[0.12em] app-muted"
                 >
                   {cat}
                 </span>
@@ -114,7 +114,7 @@ export default function BlogPostReader({ post, siteUrl }) {
         </header>
 
         {/* Content */}
-        <div className="prose prose-neutral dark:prose-invert max-w-none leading-[1.85] text-[14px] sm:text-[15px] prose-headings:mt-12 prose-headings:mb-5 prose-headings:font-bold prose-h3:text-[18px] prose-h3:font-bold prose-p:mb-6 prose-p:mt-0 prose-hr:my-10 prose-ul:my-5 prose-li:my-1 prose-blockquote:my-6">
+        <div className="max-w-none leading-[1.85] text-[14px] sm:text-[15px] [&_h2]:mt-12 [&_h2]:mb-5 [&_h2]:font-heading [&_h2]:text-[22px] [&_h2]:tracking-[-0.04em] [&_h3]:mt-12 [&_h3]:mb-5 [&_h3]:font-bold [&_h3]:text-[18px] [&_p]:mb-6 [&_p]:mt-0 [&_hr]:my-10 [&_ul]:my-5 [&_li]:my-1 [&_blockquote]:my-6 [&_blockquote]:border-l-2 [&_blockquote]:border-text-muted [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:app-muted [&_code]:rounded-md [&_code]:bg-surface-dim [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[13px] [&_pre]:rounded-2xl [&_pre]:bg-surface-dim [&_pre]:p-4 [&_pre]:overflow-x-auto [&_a]:underline [&_a]:underline-offset-2 [&_a]:hover:opacity-70">
           <ReactMarkdown>{post.content || ""}</ReactMarkdown>
         </div>
 
@@ -125,18 +125,18 @@ export default function BlogPostReader({ post, siteUrl }) {
             whileInView="show"
             viewport={{ once: true, margin: "-60px" }}
             variants={fadeUp}
-            className="mt-16 rounded-[20px] border border-black/8 dark:border-white/8 bg-white dark:bg-[#1D1B20] p-6 sm:p-8"
+            className="mt-16 rounded-[20px] border border-border-subtle/30 bg-surface p-6 sm:p-8"
           >
-            <p className="uppercase tracking-[0.35em] text-[8px] text-[#555555] dark:text-[#938F99] mb-5">
+            <p className="app-label mb-5">
               Quick-Start Checklist
             </p>
             <ol className="space-y-4">
               {post.steps.map((step, i) => (
                 <li key={i} className="flex gap-4 items-start">
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#1A1A1A] dark:bg-[#D0BCFF] text-[9px] font-semibold text-white dark:text-[#1A1A1A]">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-[9px] font-semibold text-background">
                     {i + 1}
                   </span>
-                  <span className="pt-0.5 text-[13px] leading-[1.7] text-[#555555] dark:text-[#938F99]">
+                  <span className="pt-0.5 text-[13px] leading-[1.7] app-muted">
                     {step}
                   </span>
                 </li>
@@ -151,11 +151,11 @@ export default function BlogPostReader({ post, siteUrl }) {
           whileInView="show"
           viewport={{ once: true, margin: "-60px" }}
           variants={fadeUp}
-          className="mt-16 pt-8 border-t border-black/8 dark:border-white/8"
+          className="mt-16 pt-8 border-t border-border-subtle/30"
         >
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-[9px] uppercase tracking-[0.2em] text-[#555555] dark:text-[#938F99] hover:text-[#1A1A1A] dark:hover:text-[#E6E1E5] transition-colors group"
+            className="inline-flex items-center gap-2 text-[9px] uppercase tracking-[0.2em] app-muted hover:text-text-primary transition-colors group"
           >
             <ArrowLeft
               size={12}

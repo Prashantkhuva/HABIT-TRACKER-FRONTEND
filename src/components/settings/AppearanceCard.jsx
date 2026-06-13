@@ -7,7 +7,6 @@ export default function AppearanceCard() {
   return (
     <div className="app-surface flex h-full flex-col justify-between rounded-2xl p-6">
       
-      {/* Title */}
       <div>
         <p className="app-label mb-2">
           VISUALS
@@ -20,13 +19,11 @@ export default function AppearanceCard() {
         </h2>
       </div>
 
-      {/* Toggle */}
       <div
         className="relative mt-6 grid cursor-not-allowed select-none grid-cols-3 rounded-full bg-surface-dim p-1 opacity-70"
         aria-disabled="true"
       >
         
-        {/* Animated pill */}
         <motion.div
           layout
           transition={{ type: "spring", stiffness: 260, damping: 22 }}
