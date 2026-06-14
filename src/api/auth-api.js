@@ -8,5 +8,3 @@ export const changePassword = (data) => api.post('/users/change-password', data)
 export const updateUserDetails = (data) => api.patch('/users/update-details', data);
 export const getCurrentUser = () => api.get('/users/current-user');
 export const deleteAccount = () => api.delete("/users/delete-account");
-export const forgotPassword = (data) => api.post('/users/forgot-password', data);
-export const resetPassword = (data) => api.post('/users/reset-password', data);
