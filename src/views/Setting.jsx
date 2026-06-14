@@ -1,10 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
 import ProfileCard from "../components/settings/ProfileCard";
 import AppearanceCard from "../components/settings/AppearanceCard";
 import DangerZone from "../components/settings/DangerZone";
-import { HelpCircle, LogOut } from "lucide-react";
+import { HelpCircle, LogOut, Download } from "lucide-react";
+import { exportAsJSON, exportAsCSV } from "../lib/data-export";
 
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
@@ -28,6 +30,7 @@ const fadeUp = {
 export default function SettingsPage() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const habits = useSelector((state) => state.habit.habits);
 
   const handleSignOut = async () => {
     try {
@@ -91,6 +94,40 @@ export default function SettingsPage() {
 
             <span className="text-xs text-text-muted">→</span>
           </button>
+        </motion.div>
+
+        {/* Data Export */}
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={2}
+          className="mb-4 sm:mb-6"
+        >
+          <div className="app-surface rounded-2xl p-6">
+            <p className="app-label mb-2">DATA</p>
+            <h2 className="font-heading text-2xl font-semibold tracking-[-0.04em] text-text-primary mb-4">
+              export
+            </h2>
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={() => exportAsJSON(habits, "habitflow-habits.json")}
+                disabled={!habits.length}
+                className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-surface-dim px-5 py-2.5 text-xs font-bold tracking-wider text-text-primary transition-all hover:bg-surface hover:shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <Download size={14} />
+                Export as JSON
+              </button>
+              <button
+                onClick={() => exportAsCSV(habits, "habitflow-habits.csv")}
+                disabled={!habits.length}
+                className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-surface-dim px-5 py-2.5 text-xs font-bold tracking-wider text-text-primary transition-all hover:bg-surface hover:shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <Download size={14} />
+                Export as CSV
+              </button>
+            </div>
+          </div>
         </motion.div>
 
         {/* Danger */}

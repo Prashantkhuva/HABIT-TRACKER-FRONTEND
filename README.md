@@ -1,161 +1,122 @@
-# 🧠 HabitFlow — Editorial Habit Tracker
+# HabitFlow — Editorial Habit Tracker
 
-A modern, minimal and aesthetic habit tracking web app designed to turn daily routines into a **creative ritual**.
+A modern, minimal, and aesthetic habit tracking web app designed to turn daily routines into a **creative ritual**.
 
-🌐 **Live App:** https://habitflow.indevs.in/
-
----
-
-## ✨ Overview
-
-HabitFlow is not just a habit tracker — it's a **design-driven experience** focused on clarity, consistency, and visual feedback.
-
-Built with a clean editorial UI, smooth animations, and powerful backend logic, it helps users track habits, analyze progress, and stay consistent.
+**Live App:** https://habitflow.indevs.in/
 
 ---
 
-## 🚀 Features
+## Overview
 
-### 🔐 Authentication
+HabitFlow is a design-driven habit tracker focused on clarity, consistency, and visual feedback. Built with Next.js, Tailwind CSS, and Framer Motion, it helps users track habits, analyze progress, and stay consistent.
 
-- Secure login & signup (JWT-based)
-- Cookie-based session handling
-- Protected routes
+---
 
-### 📊 Habit Management
+## Features
 
-- Create, update, delete habits
-- Active / Completed habit states
+### Authentication
+- Secure login & signup (cookie-based JWT)
+- Protected routes with auth guards
+
+### Habit Management
+- Create, update, delete, pause, resume, archive habits
+- Boolean and streak habit types
 - Category & color-based organization
 
-### 📈 Analytics & Insights
+### Analytics & Insights
+- Weekly completion chart
+- Monthly heatmap
+- Streak tracking & leaderboard
+- Time-of-day insights (morning/afternoon/evening)
+- Rhythm journal with reflections
 
-- Weekly chart visualization
-- Monthly heatmap tracking
-- Best month detection
-- Streak tracking system
+### Blog
+- Public blog with markdown rendering
+- Admin CRUD for blog posts
+- SEO metadata & JSON-LD structured data
 
-### 🎨 UI / UX
-
-- Editorial design system
-- Fully responsive (mobile-first)
-- Smooth animations using Framer Motion
-- Clean component architecture
-
-### 🌗 Theme System
-
-- Light / Dark mode
-- System theme detection
-- Persistent theme preference
-
-### ⚙️ Settings
-
-- Edit profile
-- Change password (secure flow)
-- Logout & account deletion
-
-### 📩 Help & Contact
-
-- Integrated contact form (Formspree)
-- External links (LinkedIn, X)
-
----
-
-## 🛠 Tech Stack
-
-### Frontend
-
-- React.js (Vite)
-- Tailwind CSS
-- Framer Motion
-- Redux Toolkit
-- React Router
-
-### Backend
-
-- Node.js
-- Express.js
-- MongoDB (Mongoose)
-- JWT Authentication
-
-### Deployment
-
-- Frontend: Vercel
-- Backend: (Render / Railway / Custom)
-
----
-
-## 📁 Project Structure
-
-```
-client/
-  ├── components/
-  ├── pages/
-  ├── store/
-  ├── api/
-  └── utils/
-
-server/
-  ├── controllers/
-  ├── routes/
-  ├── models/
-  ├── middlewares/
-  └── validators/
-```
-
----
-
-## 📸 Screenshots
-
-### Dashboard
-
-![Dashboard](./public/dashboard.png)
-
-### Static
-
-![Static](./public/static.png)
-
-### Rituals
-
-![Rituals](./public/rituals.png)
+### UI / UX
+- Editorial design system (Tailwind v4)
+- Fully responsive (mobile-first with bottom nav)
+- Framer Motion animations & GSAP scroll effects
+- Swipe navigation between main routes
+- Toast notification system
 
 ### Settings
-
-![Settings](./public/setting.png)
-
-### Help
-
-![Help](./public/helppage.png)
+- Edit profile (username/email)
+- Change password
+- Account deletion
 
 ---
 
-## ⚡ Getting Started
+## Tech Stack
 
-### 1. Clone the repo
+### Frontend
+- **Next.js 15** (App Router)
+- **React 19**
+- **Tailwind CSS v4**
+- **Redux Toolkit**
+- **Framer Motion / GSAP**
+- **React Hook Form**
+- **Axios** (withCredentials)
+- **Lucide Icons**
+
+### Backend
+- Node.js / Express.js
+- MongoDB (Mongoose)
+- JWT Authentication (HTTP-only cookies)
+
+### Deployment
+- Frontend: Vercel
+- Backend: Render
+
+---
+
+## Project Structure
+
+```
+app/                    # Next.js App Router pages
+  (protected)/          # Authenticated routes (dashboard, rituals, statistics, settings, blog-admin)
+  (public)/             # Public routes (landing, signin, signup, blog)
+  api/                  # API routes (sitemap, ping-google)
+  layout.js             # Root layout with fonts & metadata
+
+src/
+  api/                  # Axios instance & API modules
+  components/           # Reusable UI components
+  hooks/                # Custom hooks (useTheme, usePageSeo, useGsapAnimation)
+  lib/                  # Utilities (SEO config, habit utils, confetti, admin check)
+  store/                # Redux slices (auth, habit)
+  views/                # Page-level components
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm
+
+### Install
 
 ```bash
 git clone https://github.com/Prashantkhuva/HABIT-TRACKER-FRONTEND.git
-cd habitflow
-```
-
-### 2. Install dependencies
-
-```bash
+cd habit-tracker-frontend
 npm install
 ```
 
-### 3. Setup environment variables
+### Environment Variables
 
 Create a `.env` file:
 
 ```env
-PORT=5000
-MONGO_URI=your_mongodb_uri
-ACCESS_TOKEN_SECRET=your_secret
-REFRESH_TOKEN_SECRET=your_secret
+NEXT_PUBLIC_API_URL=https://your-backend-url.com/api/v1
+NEXT_PUBLIC_ADMIN_EMAIL=admin@example.com
+NEXT_PUBLIC_SITE_URL=https://habitflow.indevs.in
 ```
 
-### 4. Run the app
+### Run
 
 ```bash
 npm run dev
@@ -163,39 +124,11 @@ npm run dev
 
 ---
 
-## 🔐 API Endpoints (Overview)
-
-- `POST /users/register`
-- `POST /users/login`
-- `POST /users/logout`
-- `GET /users/current-user`
-- `POST /users/change-password`
-- `PATCH /users/update-details`
-- `DELETE /users/delete-account`
-
----
-
-## 💡 Learnings
-
-- Built full authentication system with JWT
-- Implemented scalable component architecture
-- Designed a consistent UI system for light & dark themes
-- Created data visualization (heatmaps & charts)
-- Improved UX with animation & micro-interactions
-
----
-
-## 🧑‍💻 Author
+## Author
 
 **Prashant Khuva**
 
 - LinkedIn: https://www.linkedin.com/in/prashantkhuva
 - X (Twitter): https://x.com/prashantkhuva_
-
----
-
-## ⭐ Support
-
-If you like this project, consider giving it a ⭐ on GitHub!
 
 ---

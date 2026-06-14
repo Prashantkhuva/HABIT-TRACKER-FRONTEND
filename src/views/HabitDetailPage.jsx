@@ -26,7 +26,7 @@ import { getTextColor, isLogFromToday } from "../lib/habit-utils";
 import Button from "../components/Button";
 import { Skeleton } from "../components/loading/LoadingSkeletons";
 
-import HabitCalendar from "../components/Habit/HabitCelender";
+import HabitCalendar from "../components/Habit/HabitCalendar";
 
 import ConfirmModal from "../components/ConfirmModal";
 

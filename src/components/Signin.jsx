@@ -69,6 +69,11 @@ const Signin = () => {
               <form onSubmit={handleSubmit(handleLogin)} className="space-y-4">
                 <Input type="email" label="Email" placeholder="hello@habitflow.com" {...register("email", { required: true })} />
                 <Input type="password" label="Password" placeholder="••••••••" {...register("password", { required: true })} />
+                <div className="flex justify-end">
+                  <Link href="/forgot-password" className="text-xs text-text-muted hover:text-text-primary transition-colors">
+                    Forgot password?
+                  </Link>
+                </div>
                 <Button type="submit" disabled={isSubmitting} className="w-full mt-2">
                   {isSubmitting ? "Signing in..." : "Sign in"}
                 </Button>

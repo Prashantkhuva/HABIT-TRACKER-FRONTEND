@@ -1,9 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { HexColorPicker } from "react-colorful";
 import { createHabit } from "../../api/habits-api";
 
 import { useRouter } from "next/navigation";
@@ -46,13 +47,12 @@ function Create({ onClose }) {
   const colors = [
     "#4F6F64",
     "#C2B280",
-    "#BFD8D2",
-    "#E0DED9",
-    "#000",
-    "#4D4465",
-    "#36343A",
     "#8069bf",
+    "#D4BB06",
+    "#B7B7A5",
+    "#36343A",
   ];
+  const [customPickerOpen, setCustomPickerOpen] = useState(false);
 
   const handleCreate = async () => {
     if (!title.trim()) {
@@ -263,19 +263,85 @@ function Create({ onClose }) {
               <p className="text-xs text-gray-400 uppercase mb-3">
                 Thematic Palette
               </p>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-3 items-center">
                 {colors.map((c) => (
-                  <div
+                  <button
                     key={c}
-                    onClick={() => setColor(c)}
-                    className="relative shrink-0 w-10 h-10 sm:w-8 sm:h-8 rounded-full cursor-pointer"
-                    style={{ background: c }}
+                    type="button"
+                    onClick={() => { setColor(c); setCustomPickerOpen(false); }}
+                    className="relative shrink-0 w-10 h-10 rounded-full cursor-pointer transition-all duration-200 hover:scale-110 hover:shadow-lg active:scale-95"
+                    style={{ background: c, boxShadow: color === c ? `0 0 0 2px ${c}, 0 0 20px ${c}40` : '0 2px 8px rgba(0,0,0,0.08)' }}
                   >
                     {color === c && (
-                      <div className="absolute inset-0 rounded-full border-2 border-black dark:border-white scale-125" />
+                      <>
+                        <div className="absolute inset-0 rounded-full border-2 border-white/80 dark:border-[#1A1A1A]/80 scale-[1.3]" />
+                        <div className="absolute inset-0 rounded-full border border-white dark:border-[#1A1A1A] scale-[1.15]" />
+                      </>
                     )}
-                  </div>
+                  </button>
                 ))}
+
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setCustomPickerOpen(!customPickerOpen)}
+                    className="relative shrink-0 w-10 h-10 rounded-full cursor-pointer flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-lg active:scale-95 overflow-hidden"
+                    style={{
+                      background: colors.includes(color) ? 'transparent' : color,
+                      border: `2px dashed ${colors.includes(color) ? '#888' : color}`,
+                    }}
+                  >
+                    <span className={`text-lg font-light ${colors.includes(color) ? 'text-gray-400 dark:text-gray-500' : 'text-white'}`}>
+                      +
+                    </span>
+                    {!colors.includes(color) && (
+                      <>
+                        <div className="absolute inset-0 rounded-full border-2 border-white/80 dark:border-[#1A1A1A]/80 scale-[1.3]" />
+                        <div className="absolute inset-0 rounded-full border border-white dark:border-[#1A1A1A] scale-[1.15]" />
+                      </>
+                    )}
+                  </button>
+
+                  <AnimatePresence>
+                    {customPickerOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                        transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                        className="absolute top-full mt-4 z-20 right-0 p-5 rounded-2xl bg-surface border border-border-subtle/60 shadow-2xl backdrop-blur-xl"
+                      >
+                        <div className="absolute -top-1.5 right-6 w-3 h-3 rotate-45 bg-surface border-l border-t border-border-subtle/60" />
+
+                        <div className="relative flex flex-col items-center gap-4">
+                          <div className="w-full max-w-[calc(90vw-48px)] sm:w-56">
+                            <HexColorPicker
+                              color={color}
+                              onChange={setColor}
+                              style={{ width: '100%', height: 172 }}
+                            />
+                          </div>
+
+                          <div className="flex items-center gap-3 w-full pt-1">
+                            <div className="w-9 h-9 rounded-xl shrink-0 border border-border-subtle/40 shadow-sm" style={{ background: color }} />
+                            <div className="flex items-center gap-2 flex-1 px-3 py-2 rounded-xl bg-background/50 border border-border-subtle/30">
+                              <span className="text-[10px] font-bold tracking-widest text-text-muted/70">#</span>
+                              <input
+                                type="text"
+                                value={color.replace('#', '').toUpperCase()}
+                                onChange={(e) => {
+                                  const raw = e.target.value.replace('#', '');
+                                  if (/^[0-9A-Fa-f]{0,6}$/.test(raw)) setColor('#' + raw.toUpperCase());
+                                }}
+                                className="flex-1 bg-transparent text-xs font-mono font-bold text-text-primary outline-none"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
             </div>
 

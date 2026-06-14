@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 
 export default function CustomCursor() {
   const [hovered, setHovered] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [isPointerFine, setIsPointerFine] = useState(false);
   const cursorRef = useRef(null);
 
@@ -40,13 +41,20 @@ export default function CustomCursor() {
       setHovered(!!e.target.closest("button, a, [role='button'], input, select, textarea"));
     };
 
+    const handleMouseLeave = () => setVisible(false);
+    const handleMouseEnter = () => setVisible(true);
+
     window.addEventListener("mousemove", move, { passive: true });
     document.addEventListener("mouseover", handleMouseOver);
+    document.documentElement.addEventListener("mouseleave", handleMouseLeave);
+    document.documentElement.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener("mousemove", move);
       document.removeEventListener("mouseover", handleMouseOver);
+      document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
+      document.documentElement.removeEventListener("mouseenter", handleMouseEnter);
     };
   }, [isPointerFine]);
 
@@ -62,6 +70,8 @@ export default function CustomCursor() {
         pointerEvents: "none",
         zIndex: 99999,
         willChange: "transform",
+        opacity: visible ? 1 : 0,
+        transition: "opacity 0.15s ease",
       }}
     >
       <svg

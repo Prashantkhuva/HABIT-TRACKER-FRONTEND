@@ -2,14 +2,14 @@
 
 import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Pencil, Sparkles } from "lucide-react";
+import { Pencil, Sparkles, Check } from "lucide-react";
 import { categoryMap } from "./categoryMap";
 import { getHabitLogs } from "../../api/habits-api";
 import { getTextColor, getIconBg } from "../../lib/habit-utils";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
 
-export default function HabitListCard({ habit, index, onEdit }) {
+export default function HabitListCard({ habit, index, onEdit, isSelected, onToggleSelect }) {
   const Icon = categoryMap[habit.category];
   const textColor = getTextColor(habit.color);
   const iconBg = getIconBg(habit.color);
@@ -36,7 +36,7 @@ export default function HabitListCard({ habit, index, onEdit }) {
         const res = await getHabitLogs(habit._id, 1, 7);
         const logs = res.data.data.logs;
         setWeeklyCount(logs.filter((l) => l.completed).length);
-      } catch { /* silent */ }
+      } catch (err) { console.error("[HabitListCard] Log fetch:", err); }
     };
     fetchLogs();
   }, [habit._id]);
@@ -64,6 +64,23 @@ export default function HabitListCard({ habit, index, onEdit }) {
           {habit.status.toUpperCase()}
         </div>
       )}
+
+      {/* Selection checkbox */}
+      <div className="absolute top-5 left-5 z-20">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleSelect?.(habit._id);
+          }}
+          className={`flex h-6 w-6 items-center justify-center rounded-full border-2 transition-all ${
+            isSelected
+              ? "border-white bg-white text-primary scale-110"
+              : "border-white/50 bg-white/20 text-transparent opacity-0 group-hover:opacity-100 hover:opacity-100"
+          }`}
+        >
+          {isSelected && <Check size={14} strokeWidth={3} />}
+        </button>
+      </div>
 
       <div className="relative z-10 flex justify-between items-start">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center backdrop-blur-sm" style={{ background: iconBg }}>

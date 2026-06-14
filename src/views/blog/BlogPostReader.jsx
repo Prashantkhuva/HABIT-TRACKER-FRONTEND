@@ -1,10 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { useSelector } from "react-redux";
+import { useRef } from "react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -21,13 +22,31 @@ const fadeUp = {
 
 export default function BlogPostReader({ post, siteUrl }) {
   const { status: authStatus } = useSelector((state) => state.auth);
+  const articleRef = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: articleRef,
+    offset: ["start start", "end end"],
+  });
+
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
 
   return (
     <main className="bg-background text-text-primary overflow-hidden selection:bg-primary selection:text-background">
+      {/* Reading progress bar */}
+      <motion.div
+        style={{ scaleX }}
+        className="fixed left-0 top-0 z-[9999] h-[2px] w-full origin-left bg-gradient-to-r from-accent-mint to-accent-soft"
+      />
+
       {/* Backdrop */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] sm:w-[1000px] h-[300px] bg-[#C58B5D] blur-[150px] opacity-10 pointer-events-none" />
 
-      <article className="relative z-10 max-w-2xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 sm:pb-32">
+      <article ref={articleRef} className="relative z-10 max-w-2xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 sm:pb-32">
         {/* Top nav */}
         <div className="mb-8 flex items-center gap-4">
           <Link
@@ -104,7 +123,7 @@ export default function BlogPostReader({ post, siteUrl }) {
               {(post.categories || []).map((cat) => (
                 <span
                   key={cat}
-                  className="rounded-full border border-border-subtle/40 px-2.5 py-0.5 text-[8px] uppercase tracking-[0.12em] app-muted"
+                  className="rounded-full border border-border-subtle/40 px-2.5 py-0.5 text-[8px] uppercase tracking-[0.12em] app-muted transition-colors duration-300 hover:border-accent-mint/30 hover:text-accent-mint"
                 >
                   {cat}
                 </span>
@@ -125,23 +144,36 @@ export default function BlogPostReader({ post, siteUrl }) {
             whileInView="show"
             viewport={{ once: true, margin: "-60px" }}
             variants={fadeUp}
-            className="mt-16 rounded-[20px] border border-border-subtle/30 bg-surface p-6 sm:p-8"
+            className="relative overflow-hidden mt-16 rounded-[20px] border border-border-subtle/30 bg-surface p-6 sm:p-8"
           >
-            <p className="app-label mb-5">
-              Quick-Start Checklist
-            </p>
-            <ol className="space-y-4">
-              {post.steps.map((step, i) => (
-                <li key={i} className="flex gap-4 items-start">
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-[9px] font-semibold text-background">
-                    {i + 1}
-                  </span>
-                  <span className="pt-0.5 text-[13px] leading-[1.7] app-muted">
-                    {step}
-                  </span>
-                </li>
-              ))}
-            </ol>
+            {/* Glow */}
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-accent-mint/5 blur-[60px] rounded-full pointer-events-none" />
+
+            <div className="relative z-10">
+              <p className="app-label mb-5 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent-mint" />
+                Quick-Start Checklist
+              </p>
+              <ol className="space-y-4">
+                {post.steps.map((step, i) => (
+                  <motion.li
+                    key={i}
+                    initial={{ opacity: 0, x: -12 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                    className="flex gap-4 items-start"
+                  >
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-[9px] font-semibold text-background">
+                      {i + 1}
+                    </span>
+                    <span className="pt-0.5 text-[13px] leading-[1.7] app-muted">
+                      {step}
+                    </span>
+                  </motion.li>
+                ))}
+              </ol>
+            </div>
           </motion.section>
         )}
 
@@ -151,18 +183,21 @@ export default function BlogPostReader({ post, siteUrl }) {
           whileInView="show"
           viewport={{ once: true, margin: "-60px" }}
           variants={fadeUp}
-          className="mt-16 pt-8 border-t border-border-subtle/30"
+          className="relative mt-16 pt-8 border-t border-border-subtle/30"
         >
+          <div className="absolute -top-[1px] left-0 h-[1px] w-0 bg-accent-mint/30 group-hover:w-full transition-all duration-700" />
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-[9px] uppercase tracking-[0.2em] app-muted hover:text-text-primary transition-colors group"
+            className="inline-flex items-center gap-3 text-[9px] uppercase tracking-[0.2em] app-muted hover:text-text-primary transition-colors group"
           >
-            <ArrowLeft
-              size={12}
-              strokeWidth={1.5}
-              className="group-hover:-translate-x-0.5 transition-transform"
-            />
-            Read More Entries
+            <span className="flex items-center justify-center w-8 h-8 rounded-full border border-border-subtle/40 transition-all duration-300 group-hover:bg-primary group-hover:text-background group-hover:border-transparent group-hover:shadow-[0_0_20px_-4px_rgba(75,107,99,0.3)]">
+              <ArrowLeft
+                size={12}
+                strokeWidth={1.5}
+                className="transition-transform duration-300 group-hover:-translate-x-0.5"
+              />
+            </span>
+            <span className="transition-all duration-300 group-hover:tracking-[0.25em]">Read More Entries</span>
           </Link>
         </motion.div>
       </article>

@@ -159,6 +159,12 @@ a, button, input, select, textarea {
     opacity 0.2s ease;
 }
 
+/* ===== LOADING BAR GLOW ===== */
+@keyframes loading-glow {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(200%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {

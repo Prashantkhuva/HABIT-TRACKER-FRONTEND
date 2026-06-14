@@ -254,7 +254,7 @@ function LandingPage() {
                 <img
                   src="/workspace.png"
                   alt="A quiet editorial workspace for ritual tracking"
-                  fetchpriority="high"
+                  fetchPriority="high"
                   decoding="async"
                   className="w-full aspect-[4/5] object-cover grayscale contrast-125 group-hover:scale-[1.03] transition-transform duration-1000"
                 />

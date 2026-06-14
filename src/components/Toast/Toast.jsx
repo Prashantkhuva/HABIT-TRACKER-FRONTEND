@@ -35,7 +35,7 @@ export default function Toast({ type = "success", title, message, onClose }) {
         duration: 0.4,
         ease: [0.22, 1, 0.36, 1], // smooth ease
       }}
-      className={`w-85 p-5 rounded-2xl shadow-xl flex gap-4 items-start ${s.bg}`}
+      className={`w-[340px] p-5 rounded-2xl shadow-xl flex gap-4 items-start ${s.bg}`}
     >
       {/* ICON */}
       <div

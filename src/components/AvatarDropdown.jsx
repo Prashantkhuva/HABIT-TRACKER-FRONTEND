@@ -27,7 +27,7 @@ export default function AvatarDropdown() {
 
   const handleSignOut = async () => {
     setOpen(false);
-    try { await logout(); } catch { /* silent */ }
+    try { await logout(); } catch (err) { console.error("[AvatarDropdown] Logout failed:", err); }
     dispatch(resetHabitState());
     dispatch(signout());
     window.location.href = "/";

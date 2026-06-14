@@ -76,17 +76,18 @@ export default function Heatmap({ data }) {
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: i * 0.003, type: "spring", stiffness: 200, damping: 18 }}
-                whileHover={{ scale: 1.2 }}
-                className={`size-full cursor-pointer rounded-lg transition-all duration-200 ${getColorClass(intensity)} ${
-                  isToday ? "ring-2 ring-accent-mint/40 ring-offset-1 ring-offset-background" : ""
+                whileHover={{ scale: 1.25 }}
+                className={`size-full cursor-pointer rounded-lg transition-all duration-300 ${getColorClass(intensity)} ${
+                  isToday ? "ring-2 ring-accent-mint/40 ring-offset-2 ring-offset-background" : ""
                 }`}
               />
 
               {hovered?.day === day && (
                 <motion.div
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="pointer-events-none absolute bottom-[120%] left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-xl border border-white/10 bg-primary/90 backdrop-blur-xl px-3 py-2 text-[10px] font-semibold text-background shadow-xl"
+                  initial={{ opacity: 0, y: 8, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="pointer-events-none absolute bottom-[120%] left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-xl border border-white/10 app-glass px-3 py-2 text-[10px] font-semibold text-text-primary shadow-xl"
                 >
                   {new Date(year, month, day).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
                   <span className="text-accent-mint"> · {count}</span>

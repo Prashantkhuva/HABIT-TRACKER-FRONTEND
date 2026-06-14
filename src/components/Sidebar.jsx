@@ -41,7 +41,7 @@ export default function Sidebar() {
   const dispatch = useDispatch();
 
   const handleSignOut = async () => {
-    try { await logout(); } catch { /* silent */ }
+    try { await logout(); } catch (err) { console.error("[Sidebar] Logout failed:", err); }
     dispatch(resetHabitState());
     dispatch(signout());
     window.location.href = "/";

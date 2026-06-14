@@ -88,7 +88,7 @@ export default function AdminBlogEditor({ postId }) {
         await createBlogPost(payload);
         addToast({ type: "success", title: "Published", message: "Blog post created" });
       }
-      fetch("/api/ping-google", { method: "POST" }).catch(() => {});
+      fetch("/api/ping-google", { method: "POST" }).catch((err) => console.error("[AdminBlogEditor] Ping-google failed:", err));
       router.push("/blog-admin");
     } catch {
       addToast({ type: "error", title: "Failed", message: "Could not save blog post" });

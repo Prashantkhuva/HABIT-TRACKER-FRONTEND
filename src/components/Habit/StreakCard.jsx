@@ -47,7 +47,7 @@ export default function StreakCard({
         const data = res.data.data;
         const count = data?.currentStreak ?? data?.streak ?? 0;
         setStreak(count);
-      } catch { /* silent */ }
+      } catch (err) { console.error("[StreakCard] Streak fetch:", err); }
     };
     loadStreak();
   }, [isDone, habit._id]);

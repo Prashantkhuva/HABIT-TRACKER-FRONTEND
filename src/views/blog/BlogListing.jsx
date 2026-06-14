@@ -55,13 +55,15 @@ export default function BlogListing({ posts }) {
       <div className="relative z-20 px-5 sm:px-8 lg:px-20 pt-6">
         <Link
           href={authStatus ? "/dashboard" : "/"}
-          className="inline-flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] app-muted hover:text-text-primary transition-colors group"
+          className="inline-flex items-center gap-2 text-[9px] uppercase tracking-[0.2em] app-muted hover:text-text-primary transition-colors group"
         >
-          <ArrowLeft
-            size={12}
-            strokeWidth={1.5}
-            className="group-hover:-translate-x-0.5 transition-transform"
-          />
+          <span className="flex items-center justify-center w-7 h-7 rounded-full border border-border-subtle/40 transition-all duration-300 group-hover:bg-primary group-hover:text-background group-hover:border-transparent">
+            <ArrowLeft
+              size={10}
+              strokeWidth={1.5}
+              className="transition-transform duration-300 group-hover:-translate-x-0.5"
+            />
+          </span>
           {authStatus ? "Dashboard" : "Home"}
         </Link>
       </div>
@@ -149,7 +151,13 @@ export default function BlogListing({ posts }) {
               <motion.div key={post._id || post.slug} variants={gridItem}>
                 <Link href={`/blog/${post.slug}`} className="group block">
                   <article className="relative overflow-hidden rounded-[20px] sm:rounded-[24px] bg-surface border border-border-subtle/30 p-6 sm:p-8 transition-all duration-500 hover:shadow-[0_20px_60px_-30px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_20px_60px_-30px_rgba(0,0,0,0.4)]">
-                    <div className="flex items-start justify-between gap-6">
+                    {/* Hover glow */}
+                    <div className="absolute -inset-2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-full bg-accent-mint/5 dark:bg-accent-mint/8 blur-[60px] rounded-full" />
+                    </div>
+
+                    {/* Card content */}
+                    <div className="relative z-10 flex items-start justify-between gap-6">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.15em] app-muted mb-3">
                           {post.published && (
@@ -166,7 +174,10 @@ export default function BlogListing({ posts }) {
                           )}
                         </div>
 
-                        <h2 className="font-heading text-xl sm:text-2xl tracking-[-0.04em] lowercase group-hover:opacity-70 transition-opacity duration-300 mb-2">
+                        <h2 className="font-heading text-xl sm:text-2xl tracking-[-0.04em] lowercase mb-2
+                          transition-all duration-500 ease-out
+                          group-hover:tracking-[-0.02em] group-hover:opacity-80
+                        ">
                           {post.title}
                         </h2>
 
@@ -179,7 +190,9 @@ export default function BlogListing({ posts }) {
                             {(post.categories || []).map((cat) => (
                               <span
                                 key={cat}
-                                className="rounded-full border border-border-subtle/40 px-2.5 py-0.5 text-[8px] uppercase tracking-[0.12em] app-muted"
+                                className="rounded-full border border-border-subtle/40 px-2.5 py-0.5 text-[8px] uppercase tracking-[0.12em] app-muted
+                                  transition-all duration-300 ease-out
+                                  group-hover:border-accent-mint/30 group-hover:text-accent-mint"
                               >
                                 {cat}
                               </span>
@@ -188,8 +201,13 @@ export default function BlogListing({ posts }) {
                         )}
                       </div>
 
-                      <div className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full border border-border-subtle/40 shrink-0 group-hover:bg-primary group-hover:text-background transition-all duration-300">
-                        <ArrowRight size={14} strokeWidth={1.5} />
+                      <div className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full border border-border-subtle/40 shrink-0
+                        transition-all duration-500 ease-out
+                        group-hover:bg-primary group-hover:text-background group-hover:border-transparent
+                        group-hover:shadow-[0_0_20px_-4px_rgba(75,107,99,0.3)]
+                        group-hover:scale-110
+                      ">
+                        <ArrowRight size={14} strokeWidth={1.5} className="transition-transform duration-500 ease-out group-hover:translate-x-0.5" />
                       </div>
                     </div>
                   </article>

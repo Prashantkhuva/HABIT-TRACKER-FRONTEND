@@ -33,7 +33,7 @@ export default function StreakPanel() {
         );
         const sorted = results.sort((a, b) => b.currentStreak - a.currentStreak).slice(0, 3);
         setHabitStreaks(sorted);
-      } catch { /* silent */ }
+      } catch (err) { console.error("[StreakPanel] Streak fetch:", err); }
     };
     if (habits.length > 0) fetchAll();
   }, [habits]);
@@ -86,8 +86,14 @@ export default function StreakPanel() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -3, scale: 1.01 }}
                 className="group relative overflow-hidden rounded-2xl border border-border-subtle bg-surface p-4 transition-all duration-300 hover:shadow-lg"
               >
+                {/* Hover glow */}
+                <div className="absolute -inset-2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-full bg-accent-mint/5 blur-[60px] rounded-full" />
+                </div>
+
                 <div className="relative z-10 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: `${rankColors[i]}20` }}>

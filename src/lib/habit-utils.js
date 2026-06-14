@@ -11,14 +11,12 @@ function toPlainData(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
-// Habit streak format karo
 function formatStreak(count = 0) {
   if (count === 0) return "No streak yet";
   if (count === 1) return "1 day streak 🔥";
   return `${count} day streak 🔥`;
 }
 
-// Date format karo
 function formatDate(dateValue) {
   if (!dateValue) return null;
   const date = new Date(dateValue);
@@ -30,7 +28,6 @@ function formatDate(dateValue) {
   }).format(date);
 }
 
-// Aaj ka date check karo
 function isToday(dateValue) {
   if (!dateValue) return false;
   const date = new Date(dateValue);
@@ -57,7 +54,6 @@ function getFrequencyLabel(frequency = "") {
   return map[frequency.toLowerCase()] || frequency;
 }
 
-// Hex color se brightness check karo
 function expandHex(hex) {
   // #000 → #000000, #fff → #ffffff
   if (hex.length === 3) {
@@ -169,7 +165,7 @@ function getBestMonth(logs = []) {
     }
   }
 
-  // 🔥 Fallback (agar sab months skip ho gaye)
+  // Fallback if all months were skipped
   if (!bestMonth) {
     for (const month in monthMap) {
       const { completed, total } = monthMap[month];

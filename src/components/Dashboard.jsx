@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { Sparkles, TrendingUp, Target } from "lucide-react";
+import { Sparkles, TrendingUp, Target, Search, Trophy, Sprout, Star, Flame, Gem, BookOpen, Award, Crown } from "lucide-react";
 import { getHabits, createHabit, completeHabit, getHabitLogs } from "../api/habits-api";
 import { getDashboardStats, getWeeklyData } from "../api/dashboard-api";
 import { setReduxHabits, addReduxHabit } from "../store/habitSlice";
@@ -16,6 +16,8 @@ import { DashboardSkeleton } from "./loading/LoadingSkeletons";
 import ReflectionModal from "./Habit/ReflectionModal";
 import { isLogFromToday } from "../lib/habit-utils";
 import { fireConfetti } from "../lib/confetti";
+import { getAchievements } from "../lib/achievements";
+import OnboardingGuide from "./OnboardingGuide";
 import gsap from "gsap";
 
 const TEMPLATES = [
@@ -25,13 +27,10 @@ const TEMPLATES = [
 ];
 
 function WeeklySummary({ stats }) {
-  if (!stats) return null;
-  const pct = stats.completionRate || 0;
-  const done = stats.completedToday || 0;
-  const total = stats.totalHabits || 0;
   const cardRef = useRef(null);
 
   useEffect(() => {
+    if (!stats) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(cardRef.current,
         { opacity: 0, y: 20, scale: 0.98 },
@@ -39,7 +38,12 @@ function WeeklySummary({ stats }) {
       );
     }, cardRef);
     return () => ctx.revert();
-  }, []);
+  }, [stats]);
+
+  if (!stats) return null;
+  const pct = stats.completionRate || 0;
+  const done = stats.completedToday || 0;
+  const total = stats.totalHabits || 0;
 
   return (
     <motion.div
@@ -100,31 +104,42 @@ export default function Dashboard() {
   const [, setWeeklyData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showTemplates, setShowTemplates] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [dashboardSearch, setDashboardSearch] = useState("");
   const { addToast } = useToast();
 
   useEffect(() => {
     (async () => {
       try {
         const res = await getHabits();
-        const fetchedHabits = res.data.data;
+        const raw = res.data.data;
+        const fetchedHabits = Array.isArray(raw) ? raw : raw?.habits ?? [];
         dispatch(setReduxHabits(fetchedHabits));
         setLoading(false);
 
         getDashboardStats().then((r) => setStats(r.data.data)).catch(() => {});
         getWeeklyData().then((r) => setWeeklyData(r.data.data)).catch(() => {});
 
-        Promise.all(
-          fetchedHabits.map(async (habit) => {
-            try {
-              const logRes = await getHabitLogs(habit._id, 1, 5);
-              const logs = logRes.data.data.logs;
-              if (logs.some(isLogFromToday)) {
-                setCompletedIds((prev) => [...prev, habit._id]);
-              }
-            } catch { /* silent */ }
-          }),
-        );
-      } catch {
+        if (fetchedHabits.length > 0) {
+          Promise.all(
+            fetchedHabits.map(async (habit) => {
+              try {
+                const logRes = await getHabitLogs(habit._id, 1, 5);
+                const logs = logRes.data.data.logs;
+                if (logs.some(isLogFromToday)) {
+                  setCompletedIds((prev) => [...prev, habit._id]);
+                }
+              } catch (err) { console.error("[Dashboard] Log fetch:", err); }
+            }),
+          );
+        } else {
+          const dismissed = localStorage.getItem("habitflow-onboarding-dismissed");
+          if (!dismissed) setShowOnboarding(true);
+        }
+      } catch (err) {
+        const msg = err?.response?.data?.message || err?.message || "Unknown error";
+        console.error("[Dashboard] Failed to fetch habits:", msg);
+        addToast({ type: "error", title: "Failed to load habits", message: msg });
         setLoading(false);
       }
     })();
@@ -186,6 +201,24 @@ export default function Dashboard() {
     if (doneCount >= 7) ms.push({ at: 7, label: "perfect week", reached: true });
     return ms;
   }, [doneCount]);
+
+  const filteredHabits = useMemo(() => {
+    if (!dashboardSearch.trim()) return activeHabits;
+    const q = dashboardSearch.toLowerCase();
+    return activeHabits.filter(
+      (h) =>
+        h.title.toLowerCase().includes(q) ||
+        (h.category || "").toLowerCase().includes(q),
+    );
+  }, [activeHabits, dashboardSearch]);
+
+  const ICON_MAP = { Sprout, Target, Star, Flame, Gem, BookOpen, Award, Crown };
+  const achievements = useMemo(() => {
+    const streaks = activeHabits.map(() => 0);
+    return getAchievements(stats, streaks, completedIds.length);
+  }, [stats, completedIds.length, activeHabits]);
+  const unlockedAchievements = achievements.filter((a) => a.unlocked);
+  const totalAchievements = achievements.length;
 
   if (loading) return <DashboardSkeleton />;
 
@@ -322,14 +355,28 @@ export default function Dashboard() {
             </motion.div>
           )}
 
-          <p className="app-label mb-2">TRACK</p>
-          <h1 className="app-heading mb-10 text-text-primary" style={{ fontSize: "clamp(2.2rem, 4.5vw, 3.5rem)" }}>
-            your habits
-          </h1>
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="app-label mb-2">TRACK</p>
+              <h1 className="app-heading text-text-primary" style={{ fontSize: "clamp(2.2rem, 4.5vw, 3.5rem)" }}>
+                your habits
+              </h1>
+            </div>
+            <div className="relative max-w-xs">
+              <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted" />
+              <input
+                type="text"
+                placeholder="Search habits..."
+                value={dashboardSearch}
+                onChange={(e) => setDashboardSearch(e.target.value)}
+                className="w-full rounded-full border border-border-subtle bg-surface-dim/60 py-2.5 pl-9 pr-4 text-xs text-text-primary placeholder:text-text-muted/60 transition-all focus:border-accent-mint focus:bg-surface focus:outline-none focus:ring-1 focus:ring-accent-mint"
+              />
+            </div>
+          </div>
 
           <div className="relative w-full overflow-hidden">
             <div className="flex w-full gap-6 overflow-x-auto pb-8 snap-x snap-mandatory custom-scroll-x">
-              {activeHabits.map((habit, i) => (
+              {(dashboardSearch ? filteredHabits : activeHabits).map((habit, i) => (
                 <HabitCard
                   key={habit._id}
                   habit={habit}
@@ -339,8 +386,42 @@ export default function Dashboard() {
                   isDone={completedIds.includes(habit._id)}
                 />
               ))}
+              {dashboardSearch && filteredHabits.length === 0 && (
+                <div className="flex w-full items-center justify-center py-12">
+                  <p className="text-sm text-text-muted">No habits match your search.</p>
+                </div>
+              )}
             </div>
           </div>
+
+          {/* Achievements */}
+          {unlockedAchievements.length > 0 && (
+            <div className="mt-12 mb-6">
+              <div className="flex items-center gap-2 mb-5">
+                <Trophy size={16} className="text-accent-mint" />
+                <p className="app-label">ACHIEVEMENTS ({unlockedAchievements.length}/{totalAchievements})</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {unlockedAchievements.map((a) => {
+                  const Icon = ICON_MAP[a.icon];
+                  return (
+                    <div
+                      key={a.id}
+                      className="group relative inline-flex items-center gap-2 rounded-full border border-accent-mint/20 bg-accent-mint/8 px-4 py-2 transition-all duration-300 hover:border-accent-mint/40 hover:bg-accent-mint/15 hover:shadow-lg hover:-translate-y-0.5"
+                      title={a.desc}
+                    >
+                      <div className="flex h-5 w-5 items-center justify-center rounded-full" style={{ background: `${a.color}18` }}>
+                        {Icon && <Icon size={11} style={{ color: a.color }} strokeWidth={2} />}
+                      </div>
+                      <span className="text-[11px] font-bold tracking-wide" style={{ color: a.color }}>
+                        {a.label}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {completedHabits.length > 0 && (
             <div className="mt-20">
@@ -375,6 +456,17 @@ export default function Dashboard() {
         onSkip={() => handleSaveReflection("")}
         onSave={handleSaveReflection}
       />
+
+      <AnimatePresence>
+        {showOnboarding && (
+          <OnboardingGuide
+            onDismiss={() => {
+              localStorage.setItem("habitflow-onboarding-dismissed", "true");
+              setShowOnboarding(false);
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
