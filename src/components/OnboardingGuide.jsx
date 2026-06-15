@@ -39,7 +39,7 @@ export default function OnboardingGuide({ onDismiss }) {
         initial={{ scale: 0.92, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 260, damping: 22 }}
-        className="relative w-full max-w-md overflow-hidden rounded-3xl bg-surface p-8 shadow-2xl"
+        className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-border-subtle/60 bg-surface p-8 shadow-2xl"
       >
         <div className="flex items-center gap-2 mb-6">
           {STEPS.map((_, i) => (
@@ -53,7 +53,7 @@ export default function OnboardingGuide({ onDismiss }) {
         </div>
 
         <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-accent-mint/10">
-          <current.icon size={28} className="text-accent-mint" />
+          <current.icon size={32} className="text-accent-mint" />
         </div>
 
         <h2 className="font-heading text-2xl font-bold tracking-[-0.04em] text-text-primary mb-3">

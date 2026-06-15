@@ -10,6 +10,7 @@ export default function AuthInitializer({ children }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const ran = useRef(false);
+  const initialCheckDone = useRef(false);
 
   useEffect(() => {
     if (ran.current) return;
@@ -27,10 +28,12 @@ export default function AuthInitializer({ children }) {
       } catch {
         dispatch(setAuthChecked());
       }
+      initialCheckDone.current = true;
     };
     check();
 
     const handleUnauthorized = () => {
+      if (!initialCheckDone.current) return;
       dispatch(signout());
       router.replace("/signin");
     };
