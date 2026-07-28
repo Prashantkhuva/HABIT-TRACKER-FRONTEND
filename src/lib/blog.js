@@ -1,5 +1,30 @@
 import { SITE_URL } from "./seo-config";
 
+export const ALL_SLUGS = [
+  "accountability-for-lasting-habits",
+  "design-environment-for-better-habits",
+  "evening-habits-better-sleep-recovery",
+  "goals-vs-systems-why-goals-hold-you-back",
+  "habit-stacking-guide",
+  "habit-stacking-link-new-habits",
+  "how-to-break-a-bad-habit-for-good",
+  "how-to-build-a-habit-loop",
+  "how-to-build-daily-rituals",
+  "how-to-build-habits-with-no-time",
+  "how-to-track-habits-without-burning-out",
+  "identity-based-habits-become-the-person-first",
+  "keystone-habits-one-habit-changes-everything",
+  "morning-habits-science-backed-routine",
+  "neuroscience-of-habit-formation",
+  "reward-systems-to-accelerate-habit-building",
+  "science-of-habit-streaks-consistency",
+  "streak-tracking-science",
+  "temptation-bundling-make-habits-enjoyable",
+  "two-minute-rule-tiny-habits",
+  "weekly-review-habit-that-makes-habits-work",
+  "why-you-break-habits-how-to-stop",
+];
+
 export const BLOG_POSTS = [
   {
     slug: "how-to-build-daily-rituals",

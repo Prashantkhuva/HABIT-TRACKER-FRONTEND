@@ -1,20 +1,46 @@
-import { notFound } from "next/navigation";
 import { SITE_URL } from "@/lib/seo-config";
+import { getBlogPost, ALL_SLUGS } from "@/lib/blog";
 import BlogPostReader from "@/views/blog/BlogPostReader";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const revalidate = 60;
+export const revalidate = 3600;
+export const dynamicParams = true;
 
 async function getPost(slug) {
   try {
-    const res = await fetch(`${API_URL}/blog/posts/${slug}`);
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json.data || null;
+    const res = await fetch(`${API_URL}/blog/posts/${slug}`, {
+      next: { revalidate: 300 },
+    });
+    if (res.ok) {
+      const json = await res.json();
+      if (json.data) return json.data;
+    }
   } catch {
-    return null;
+    // API unavailable
   }
+
+  const local = getBlogPost(slug);
+  if (local) return local;
+
+  return { slug, title: slug.replace(/-/g, " "), description: "", content: "", published: null, readingTime: "" };
+}
+
+export async function generateStaticParams() {
+  try {
+    const res = await fetch(`${API_URL}/blog/posts?limit=1000`, {
+      next: { revalidate: 3600 },
+    });
+    if (res.ok) {
+      const json = await res.json();
+      const posts = json.data?.posts || [];
+      if (posts.length > 0) return posts.map((p) => ({ slug: p.slug }));
+    }
+  } catch {
+    // API unavailable
+  }
+
+  return ALL_SLUGS.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }) {
@@ -51,7 +77,6 @@ export async function generateMetadata({ params }) {
 export default async function BlogPost({ params }) {
   const { slug } = await params;
   const post = await getPost(slug);
-  if (!post) notFound();
 
   return <BlogPostReader post={post} siteUrl={SITE_URL} />;
 }

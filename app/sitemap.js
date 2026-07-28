@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/seo-config";
+import { ALL_SLUGS } from "@/lib/blog";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -16,15 +17,21 @@ async function getBlogSlugs() {
     const res = await fetch(`${API_URL}/blog/posts?limit=1000`, {
       next: { revalidate: 300 },
     });
-    if (!res.ok) return [];
-    const json = await res.json();
-    return (json.data?.posts || []).map((post) => ({
-      slug: post.slug,
-      lastmod: post.lastmod || post.published || post.createdAt || null,
-    }));
+    if (res.ok) {
+      const json = await res.json();
+      const posts = json.data?.posts || [];
+      if (posts.length > 0) {
+        return posts.map((post) => ({
+          slug: post.slug,
+          lastmod: post.lastmod || post.published || post.createdAt || null,
+        }));
+      }
+    }
   } catch {
-    return [];
+    // API unavailable
   }
+
+  return ALL_SLUGS.map((slug) => ({ slug, lastmod: null }));
 }
 
 export default async function sitemap() {
