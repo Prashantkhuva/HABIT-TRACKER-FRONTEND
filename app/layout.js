@@ -2,6 +2,7 @@ import { Epilogue, Manrope } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import ClientBody from "./client-body";
+import { getStructuredData, getFAQStructuredData } from "@/lib/seo-config";
 
 const epilogue = Epilogue({
   subsets: ["latin"],
@@ -47,6 +48,10 @@ export const metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: "/site.webmanifest",
+  other: {
+    "application/ld+json:website": JSON.stringify(getStructuredData()),
+    "application/ld+json:faq": JSON.stringify(getFAQStructuredData()),
+  },
 };
 
 export const viewport = {
@@ -54,10 +59,25 @@ export const viewport = {
 };
 
 export default function RootLayout({ children }) {
+  const structuredData = getStructuredData();
+  const faqData = getFAQStructuredData();
+
   return (
     <html lang="en" suppressHydrationWarning className={`${epilogue.variable} ${manrope.variable}`}>
       <head>
         <link rel="preconnect" href="https://habit-tracker-t0o0.onrender.com" />
+        <link rel="alternate" type="text/markdown" href="/llms.txt" title="LLMs TXT" />
+        <link rel="alternate" type="text/markdown" href="/llms-full.txt" title="LLMs Full TXT" />
+        <script
+          type="application/ld+json"
+          id="ld-structured-data"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+        <script
+          type="application/ld+json"
+          id="ld-faq-data"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqData) }}
+        />
       </head>
       <body suppressHydrationWarning>
         <Providers>

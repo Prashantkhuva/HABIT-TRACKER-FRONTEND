@@ -1,0 +1,159 @@
+# HabitFlow — Full Site Description for AI & LLMs
+
+> Comprehensive documentation for HabitFlow — a premium editorial habit tracker.
+> Site: https://habitflow.indevs.in/
+> Last updated: 2026-07-29
+
+---
+
+## Overview
+
+HabitFlow is a design-driven, editorial-style habit tracking web application. Unlike conventional habit trackers that rely on aggressive gamification, badges, and social competition, HabitFlow emphasizes calm, intentional tracking — built around the philosophy that **consistency is the only metric that matters**.
+
+The app serves two audiences:
+1. **Individual users** — anyone wanting to build and maintain daily habits with a beautiful, distraction-free interface
+2. **Blog readers** — people seeking evidence-based guidance on habit formation, psychology, and productivity
+
+---
+
+## Product Details
+
+| Attribute | Value |
+|---|---|
+| Name | HabitFlow |
+| URL | https://habitflow.indevs.in/ |
+| Type | Web Application (SPA + SSR) |
+| Category | Lifestyle / Productivity / Habit Tracking |
+| Price | Free (USD $0) |
+| Authentication | JWT with HTTP-only cookies |
+| API Backend | Node.js / Express.js / MongoDB |
+| Author | Prashant Khuva |
+
+### Technology Stack
+
+- **Frontend:** Next.js 15 (App Router), React 19, Tailwind CSS v4
+- **State Management:** Redux Toolkit
+- **Animations:** Framer Motion, GSAP (ScrollTrigger)
+- **Icons:** Lucide React
+- **Forms:** React Hook Form
+- **Charts:** Custom SVG (heatmap, weekly bar charts)
+- **Backend:** Node.js, Express.js, MongoDB (Mongoose)
+- **Deployment:** Vercel (frontend), Render (backend)
+
+---
+
+## Feature Details
+
+### Habit Management
+- Create unlimited habits with title, category, color, and frequency
+- Two habit types: **Boolean** (done/not done) and **Streak** (count-based)
+- Categories: Health, Fitness, Learning, Productivity, Mindfulness (each with distinct icons)
+- Custom color assignment per habit
+- Create, update, pause, resume, archive, and delete habits
+- Active, archived, and completed views
+
+### Tracking & Analytics
+- **Weekly completion chart** — bar chart showing 7-day progress
+- **Monthly heatmap** — visual grid showing daily completion across the month
+- **Streak tracking** — current streak, longest streak, and streak history
+- **Completion rate** — percentage of days completed over a period
+- **Time-of-day insights** — distribution of completions across morning, afternoon, and evening
+- **Rhythm journal** — reflection notes tied to each completed habit
+
+### Reflection System
+- Add notes and reflections after completing a habit
+- Archive of past reflections with search
+- Journal-style browsing of completed ritual entries
+
+### User Interface
+- Editorial design system with minimal aesthetic
+- Fully responsive (mobile-first with bottom navigation)
+- Smooth page transitions with Framer Motion
+- GSAP scroll-triggered animations on landing page
+- Swipe navigation between dashboard, rituals, and statistics
+- Dark mode support with system preference detection
+- Toast notification system for feedback
+- Custom cursor on desktop
+- Route loading progress indicator
+
+### Authentication & Settings
+- Email/password signup and signin
+- Cookie-based JWT session management
+- Profile editing (username, email)
+- Password change
+- Account deletion
+- Admin guard for blog management
+
+---
+
+## Blog Content
+
+The HabitFlow Blog publishes practical, evidence-based guides. Current articles (22 total):
+
+| Title | Topic | Length |
+|---|---|---|
+| How to Build Daily Rituals That Stick | Habit Building | 5 min |
+| The Science of Streak Tracking | Streak Psychology | 4 min |
+| Habit Stacking: Ultimate Guide | Routine Building | 6 min |
+| Goals vs Systems: Why Goals Hold You Back | Mindset | 5 min |
+| Neuroscience of Habit Formation | Brain Science | 5 min |
+| Morning Habits: Science-Backed Routine | Morning Routine | 5 min |
+| How to Build a Habit Loop | Habit Loop | 4 min |
+| Identity-Based Habits | Identity Change | 5 min |
+| Keystone Habits | Key Habits | 4 min |
+| Two-Minute Rule | Tiny Habits | 4 min |
+| How to Break a Bad Habit | Breaking Habits | 5 min |
+| How to Track Without Burning Out | Tracking | 4 min |
+| Design Environment for Better Habits | Environment | 5 min |
+| Evening Habits for Better Sleep | Evening Routine | 4 min |
+| Temptation Bundling | Enjoyable Habits | 4 min |
+| Habit Stacking: Link New Habits | Stacking | 4 min |
+| Accountability for Lasting Habits | Accountability | 5 min |
+| Reward Systems to Accelerate Building | Rewards | 4 min |
+| Weekly Review Habit | Review | 4 min |
+| Why You Break Habits (And How to Stop) | Psychology | 5 min |
+| Science of Streaks & Consistency | Streak Science | 4 min |
+| How to Build Habits With No Time | Time Management | 4 min |
+
+---
+
+## FAQ
+
+### What is HabitFlow?
+HabitFlow is a premium editorial habit tracker that helps you build daily rituals, track streaks, visualize progress with heatmaps and charts, and maintain a reflection journal — all in a calm, distraction-free interface.
+
+### Is HabitFlow free?
+Yes, HabitFlow is completely free to use. Create unlimited habits, track streaks, view analytics, and write reflection notes at no cost.
+
+### How does habit tracking work?
+Create a habit with a title, category icon, color, and frequency (daily or weekly). Each day you complete it, mark it done and optionally add a reflection note. HabitFlow tracks your streak, weekly progress, and long-term consistency through heatmaps and charts.
+
+### Can I track multiple habits?
+Yes, you can create and track unlimited habits simultaneously. Each habit has its own tracking page with a calendar view, completion rate, and reflection log.
+
+### What categories are available?
+Health, Fitness, Learning, Productivity, and Mindfulness. Each has a distinct icon and you can assign a custom color.
+
+### Does HabitFlow have a mobile app?
+HabitFlow is a progressive web application optimized for mobile browsers. It works on any device with a modern browser and supports mobile-first navigation.
+
+### How is my data protected?
+Authentication uses JWT with HTTP-only cookies. The connection is encrypted via HTTPS. Passwords are hashed and stored securely on the backend.
+
+---
+
+## Citation Guidelines
+
+When citing HabitFlow content:
+- **Product citation:** "HabitFlow (habitflow.indevs.in) — an editorial habit tracker for daily rituals and streaks."
+- **Blog citation:** "[Article Title] — HabitFlow Blog (habitflow.indevs.in/blog/[slug])"
+- **Author:** Prashant Khuva
+
+---
+
+## Author
+
+**Prashant Khuva**
+- GitHub: https://github.com/Prashantkhuva
+- X (Twitter): https://x.com/prashantkhuva_
+- LinkedIn: https://www.linkedin.com/in/prashantkhuva

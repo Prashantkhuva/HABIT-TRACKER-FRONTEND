@@ -12,8 +12,38 @@ Disallow: /edit-profile
 Disallow: /change-password
 Disallow: /blog-admin
 
-# AI crawlers — disallow private routes
+# Search crawlers
+User-agent: Googlebot
+Allow: /
+Allow: /blog
+Allow: /sitemap.xml
+Disallow: /dashboard
+Disallow: /rituals
+Disallow: /statistics
+Disallow: /settings
+Disallow: /create-habit
+Disallow: /help
+Disallow: /edit-profile
+Disallow: /change-password
+Disallow: /blog-admin
+
+User-agent: Bingbot
+Allow: /
+Allow: /blog
+Disallow: /dashboard
+Disallow: /rituals
+Disallow: /statistics
+Disallow: /settings
+Disallow: /create-habit
+Disallow: /help
+Disallow: /edit-profile
+Disallow: /change-password
+Disallow: /blog-admin
+
+# AI crawlers — allow public pages, block private routes
 User-agent: GPTBot
+Allow: /
+Allow: /blog
 Disallow: /dashboard
 Disallow: /rituals
 Disallow: /statistics
@@ -25,6 +55,8 @@ Disallow: /change-password
 Disallow: /blog-admin
 
 User-agent: ChatGPT-User
+Allow: /
+Allow: /blog
 Disallow: /dashboard
 Disallow: /rituals
 Disallow: /statistics
@@ -36,6 +68,8 @@ Disallow: /change-password
 Disallow: /blog-admin
 
 User-agent: PerplexityBot
+Allow: /
+Allow: /blog
 Disallow: /dashboard
 Disallow: /rituals
 Disallow: /statistics
@@ -47,6 +81,8 @@ Disallow: /change-password
 Disallow: /blog-admin
 
 User-agent: ClaudeBot
+Allow: /
+Allow: /blog
 Disallow: /dashboard
 Disallow: /rituals
 Disallow: /statistics
@@ -58,6 +94,73 @@ Disallow: /change-password
 Disallow: /blog-admin
 
 User-agent: Google-Extended
+Allow: /
+Allow: /blog
+Disallow: /dashboard
+Disallow: /rituals
+Disallow: /statistics
+Disallow: /settings
+Disallow: /create-habit
+Disallow: /help
+Disallow: /edit-profile
+Disallow: /change-password
+Disallow: /blog-admin
+
+User-agent: CCBot
+Allow: /
+Allow: /blog
+Disallow: /dashboard
+Disallow: /rituals
+Disallow: /statistics
+Disallow: /settings
+Disallow: /create-habit
+Disallow: /help
+Disallow: /edit-profile
+Disallow: /change-password
+Disallow: /blog-admin
+
+User-agent: Bytespider
+Allow: /
+Allow: /blog
+Disallow: /dashboard
+Disallow: /rituals
+Disallow: /statistics
+Disallow: /settings
+Disallow: /create-habit
+Disallow: /help
+Disallow: /edit-profile
+Disallow: /change-password
+Disallow: /blog-admin
+
+User-agent: meta-externalagent
+Allow: /
+Allow: /blog
+Disallow: /dashboard
+Disallow: /rituals
+Disallow: /statistics
+Disallow: /settings
+Disallow: /create-habit
+Disallow: /help
+Disallow: /edit-profile
+Disallow: /change-password
+Disallow: /blog-admin
+
+User-agent: Amazonbot
+Allow: /
+Allow: /blog
+Disallow: /dashboard
+Disallow: /rituals
+Disallow: /statistics
+Disallow: /settings
+Disallow: /create-habit
+Disallow: /help
+Disallow: /edit-profile
+Disallow: /change-password
+Disallow: /blog-admin
+
+User-agent: Applebot-Extended
+Allow: /
+Allow: /blog
 Disallow: /dashboard
 Disallow: /rituals
 Disallow: /statistics

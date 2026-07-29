@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useSpring } from "framer-motion";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { useSelector } from "react-redux";
 import { useRef } from "react";
@@ -20,7 +20,7 @@ const fadeUp = {
   }),
 };
 
-export default function BlogPostReader({ post, siteUrl }) {
+export default function BlogPostReader({ post, siteUrl, relatedPosts = [] }) {
   const { status: authStatus } = useSelector((state) => state.auth);
   const articleRef = useRef(null);
 
@@ -173,6 +173,40 @@ export default function BlogPostReader({ post, siteUrl }) {
                   </motion.li>
                 ))}
               </ol>
+            </div>
+          </motion.section>
+        )}
+
+        {/* Related Posts */}
+        {relatedPosts.length > 0 && (
+          <motion.section
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={fadeUp}
+            className="relative mt-12 rounded-[20px] border border-border-subtle/30 bg-surface-dim/50 p-6 sm:p-8"
+          >
+            <p className="app-label mb-5 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent-mint" />
+              Continue Reading
+            </p>
+            <div className="space-y-3">
+              {relatedPosts.map((rp, i) => (
+                <Link
+                  key={rp.slug}
+                  href={`/blog/${rp.slug}`}
+                  className="group flex items-center justify-between gap-4 rounded-xl border border-border-subtle/20 bg-surface p-4 transition-all duration-300 hover:border-accent-mint/30 hover:shadow-[0_4px_20px_-8px_rgba(0,0,0,0.08)]"
+                >
+                  <span className="text-[13px] leading-snug app-muted group-hover:text-text-primary transition-colors">
+                    {rp.title}
+                  </span>
+                  <ArrowRight
+                    size={14}
+                    strokeWidth={1.5}
+                    className="shrink-0 app-muted transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-accent-mint"
+                  />
+                </Link>
+              ))}
             </div>
           </motion.section>
         )}

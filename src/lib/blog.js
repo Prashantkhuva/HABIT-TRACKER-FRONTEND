@@ -25,6 +25,65 @@ export const ALL_SLUGS = [
   "why-you-break-habits-how-to-stop",
 ];
 
+// Related posts map: for each slug, list 2-3 related slugs
+const RELATED_POSTS = {
+  "how-to-build-daily-rituals": ["habit-stacking-guide", "two-minute-rule-tiny-habits", "streak-tracking-science"],
+  "streak-tracking-science": ["science-of-habit-streaks-consistency", "how-to-build-daily-rituals", "neuroscience-of-habit-formation"],
+  "habit-stacking-guide": ["how-to-build-daily-rituals", "habit-stacking-link-new-habits", "keystone-habits-one-habit-changes-everything"],
+  "morning-habits-science-backed-routine": ["evening-habits-better-sleep-recovery", "how-to-build-daily-rituals", "habit-stacking-guide"],
+  "neuroscience-of-habit-formation": ["science-of-habit-streaks-consistency", "how-to-build-a-habit-loop", "how-to-build-daily-rituals"],
+  "two-minute-rule-tiny-habits": ["how-to-build-habits-with-no-time", "how-to-build-daily-rituals", "why-you-break-habits-how-to-stop"],
+  "how-to-break-a-bad-habit-for-good": ["why-you-break-habits-how-to-stop", "identity-based-habits-become-the-person-first", "design-environment-for-better-habits"],
+  "identity-based-habits-become-the-person-first": ["goals-vs-systems-why-goals-hold-you-back", "how-to-build-daily-rituals", "neuroscience-of-habit-formation"],
+  "goals-vs-systems-why-goals-hold-you-back": ["how-to-build-daily-rituals", "identity-based-habits-become-the-person-first", "streak-tracking-science"],
+  "how-to-build-a-habit-loop": ["neuroscience-of-habit-formation", "habit-stacking-guide", "how-to-build-daily-rituals"],
+  "keystone-habits-one-habit-changes-everything": ["habit-stacking-guide", "how-to-build-daily-rituals", "morning-habits-science-backed-routine"],
+  "design-environment-for-better-habits": ["how-to-build-daily-rituals", "how-to-break-a-bad-habit-for-good", "temptation-bundling-make-habits-enjoyable"],
+  "evening-habits-better-sleep-recovery": ["morning-habits-science-backed-routine", "how-to-build-daily-rituals", "weekly-review-habit-that-makes-habits-work"],
+  "temptation-bundling-make-habits-enjoyable": ["reward-systems-to-accelerate-habit-building", "habit-stacking-guide", "how-to-build-daily-rituals"],
+  "accountability-for-lasting-habits": ["habit-stacking-guide", "streak-tracking-science", "how-to-build-daily-rituals"],
+  "reward-systems-to-accelerate-habit-building": ["temptation-bundling-make-habits-enjoyable", "neuroscience-of-habit-formation", "streak-tracking-science"],
+  "how-to-track-habits-without-burning-out": ["streak-tracking-science", "how-to-build-daily-rituals", "weekly-review-habit-that-makes-habits-work"],
+  "weekly-review-habit-that-makes-habits-work": ["how-to-build-daily-rituals", "streak-tracking-science", "goals-vs-systems-why-goals-hold-you-back"],
+  "science-of-habit-streaks-consistency": ["streak-tracking-science", "neuroscience-of-habit-formation", "how-to-build-daily-rituals"],
+  "how-to-build-habits-with-no-time": ["two-minute-rule-tiny-habits", "habit-stacking-guide", "how-to-build-daily-rituals"],
+  "habit-stacking-link-new-habits": ["habit-stacking-guide", "how-to-build-daily-rituals", "keystone-habits-one-habit-changes-everything"],
+  "why-you-break-habits-how-to-stop": ["how-to-break-a-bad-habit-for-good", "identity-based-habits-become-the-person-first", "streak-tracking-science"],
+};
+
+const POST_TITLES = {
+  "accountability-for-lasting-habits": "Accountability for Lasting Habits",
+  "design-environment-for-better-habits": "Design Your Environment for Better Habits",
+  "evening-habits-better-sleep-recovery": "Evening Habits for Better Sleep and Recovery",
+  "goals-vs-systems-why-goals-hold-you-back": "Goals vs Systems: Why Goals Hold You Back",
+  "habit-stacking-guide": "Habit Stacking: The Ultimate Guide to Building Powerful Routines",
+  "habit-stacking-link-new-habits": "Habit Stacking: How to Link New Habits to Existing Routines",
+  "how-to-break-a-bad-habit-for-good": "How to Break a Bad Habit for Good",
+  "how-to-build-a-habit-loop": "How to Build a Habit Loop That Actually Works",
+  "how-to-build-daily-rituals": "How to Build Daily Rituals That Stick: A Practical Guide",
+  "how-to-build-habits-with-no-time": "How to Build Habits When You Have No Time",
+  "how-to-track-habits-without-burning-out": "How to Track Habits Without Burning Out",
+  "identity-based-habits-become-the-person-first": "Identity-Based Habits: Become the Person First",
+  "keystone-habits-one-habit-changes-everything": "Keystone Habits: One Habit That Changes Everything",
+  "morning-habits-science-backed-routine": "Morning Habits: A Science-Backed Daily Routine",
+  "neuroscience-of-habit-formation": "The Neuroscience of Habit Formation",
+  "reward-systems-to-accelerate-habit-building": "Reward Systems to Accelerate Habit Building",
+  "science-of-habit-streaks-consistency": "The Science of Habit Streaks and Consistency",
+  "streak-tracking-science": "The Science of Streak Tracking: Why Consistency Beats Intensity",
+  "temptation-bundling-make-habits-enjoyable": "Temptation Bundling: Make Habits Enjoyable",
+  "two-minute-rule-tiny-habits": "The Two-Minute Rule: Start with Tiny Habits",
+  "weekly-review-habit-that-makes-habits-work": "The Weekly Review: The Habit That Makes Habits Work",
+  "why-you-break-habits-how-to-stop": "Why You Break Habits and How to Stop",
+};
+
+export function getRelatedPosts(slug, count = 3) {
+  const related = RELATED_POSTS[slug] || [];
+  return related.slice(0, count).map((s) => ({
+    slug: s,
+    title: POST_TITLES[s] || s.replace(/-/g, " "),
+  }));
+}
+
 export const BLOG_POSTS = [
   {
     slug: "how-to-build-daily-rituals",
@@ -41,7 +100,7 @@ export const BLOG_POSTS = [
 
 Most people fail at building habits not because they lack motivation, but because they lack a system. Research from Stanford professor BJ Fogg shows that behaviour change succeeds when **motivation, ability, and a prompt** align at the same moment.
 
-## Implementation Intentions
+## What Are Implementation Intentions?
 
 An implementation intention is a simple if-then plan: *"If X happens, then I will do Y."* This removes the need to make a decision when the moment arrives.
 
@@ -49,17 +108,19 @@ An implementation intention is a simple if-then plan: *"If X happens, then I wil
 
 Start absurdly small. Two minutes of meditation, one push-up, one sentence of journaling. The key is **consistency over intensity**.
 
-## Habit Stacking
+## What Is Habit Stacking?
 
-Attach a new habit to an existing one. Identify a current routine — brushing your teeth, making coffee, commuting — and stack your new habit immediately after.
+Habit stacking is a technique popularised by James Clear in *Atomic Habits*. Attach a new habit to an existing one. Identify a current routine — brushing your teeth, making coffee, commuting — and stack your new habit immediately after.
 
-## Environmental Design
+For a deeper dive, read our full guide on [habit stacking techniques](/blog/habit-stacking-guide).
 
-Make good habits easy and bad habits hard. If you want to read more, keep a book on your pillow. If you want to eat healthier, wash and cut vegetables as soon as you get home.
+## How Does Environmental Design Affect Habits?
 
-## Track Everything
+Make good habits easy and bad habits hard. If you want to read more, keep a book on your pillow. If you want to eat healthier, wash and cut vegetables as soon as you get home. Your environment shapes your behaviour more than willpower ever will.
 
-Use a tracker like HabitFlow to log your daily rituals. Seeing your streak grow creates a powerful feedback loop. Never break the chain.
+## Why Should You Track Everything?
+
+Use a tracker like HabitFlow to log your daily rituals. Seeing your streak grow creates a powerful feedback loop. Research shows that people who track their habits are significantly more likely to maintain them after 6 months. Learn more about the [science behind streak tracking](/blog/streak-tracking-science).
 `,
     steps: [
       "Start with a 2-minute version of your habit",
@@ -80,25 +141,25 @@ Use a tracker like HabitFlow to log your daily rituals. Seeing your streak grow 
     readingTime: "4 min read",
     categories: ["Psychology", "Habit Science"],
     content: `
-## The Dopamine Loop
+## What Is the Dopamine Loop in Habit Formation?
 
 Every time you mark a habit as complete, your brain releases a small amount of dopamine — the same neurotransmitter involved in motivation and reward. This creates a **positive feedback loop** that makes you want to repeat the behaviour.
 
-## The Streak Effect
+## What Is the Streak Effect?
 
 Once you have a streak of 3+ days, the psychological cost of breaking it outweighs the effort of doing the habit. This is called the **streak effect**. Your identity shifts from "someone trying to build a habit" to "someone who doesn't miss days."
 
-## Why Intensity Fails
+## Why Does Intensity Fail for Long-Term Habits?
 
 Going all-in on January 1st feels great but is rarely sustainable. Research shows that people who start with small daily actions are **2.5x more likely** to maintain the habit after 6 months compared to those who start with intense sessions.
 
-## Tracking Without Judgement
+## How to Track Habits Without Judgment
 
-The goal isn't a perfect streak — it's data. A missed day is information, not failure. Use HabitFlow's heatmap to spot patterns: do you always miss on weekends? After late work nights? Adjust your system, not your willpower.
+The goal isn't a perfect streak — it's data. A missed day is information, not failure. Use a habit tracker's heatmap to spot patterns: do you always miss on weekends? After late work nights? Adjust your system, not your willpower.
 
-## Key Metrics That Matter
+## Key Metrics That Matter for Streak Tracking
 
-Rather than just tracking yes/no, pay attention to: streak length, completion rate over 30 days, and weekly consistency. These give you a fuller picture of your habit health.
+Rather than just tracking yes/no, pay attention to: streak length, completion rate over 30 days, and weekly consistency. These give you a fuller picture of your habit health. For more on how streaks work at a neural level, read about the [neuroscience of habit formation](/blog/neuroscience-of-habit-formation).
 `,
     steps: [
       "Track at least one habit daily for 7 days to establish baseline",
@@ -127,7 +188,7 @@ Habit stacking is a technique popularised by James Clear in *Atomic Habits*. The
 
 By linking a new behaviour to an existing one, you piggyback on neural pathways that are already automatic.
 
-## Why It Works
+## Why Does Habit Stacking Work?
 
 Your brain loves patterns. Existing habits are triggered by context cues — time of day, location, preceding action. When you stack a new habit onto an existing cue, you **eliminate the need for motivation or decision-making**.
 
@@ -143,11 +204,11 @@ Your brain loves patterns. Existing habits are triggered by context cues — tim
 - *After I change into pyjamas, I will meditate for 2 minutes.*
 - *After I get into bed, I will write down three things I'm grateful for.*
 
-## Fine-Tuning Your Stack
+## How to Fine-Tune Your Habit Stack
 
-If a stack isn't sticking, adjust the anchor or the size of the new habit. Make it so easy you can't say no. A 2-minute habit done daily beats a 30-minute habit done weekly.
+If a stack isn't sticking, adjust the anchor or the size of the new habit. Make it so easy you can't say no. A 2-minute habit done daily beats a 30-minute habit done weekly. Learn how the [two-minute rule](/blog/two-minute-rule-tiny-habits) can help you start smaller.
 
-## Common Mistakes
+## Common Mistakes in Habit Stacking
 
 - Stacking too many habits at once — start with one stack
 - Choosing an inconsistent anchor — your anchor must happen daily

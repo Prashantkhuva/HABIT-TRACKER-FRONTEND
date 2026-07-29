@@ -1,5 +1,5 @@
 import { SITE_URL } from "@/lib/seo-config";
-import { getBlogPost, ALL_SLUGS } from "@/lib/blog";
+import { getBlogPost, ALL_SLUGS, getRelatedPosts } from "@/lib/blog";
 import BlogPostReader from "@/views/blog/BlogPostReader";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -77,6 +77,13 @@ export async function generateMetadata({ params }) {
 export default async function BlogPost({ params }) {
   const { slug } = await params;
   const post = await getPost(slug);
+  const relatedPosts = getRelatedPosts(slug, 3);
 
-  return <BlogPostReader post={post} siteUrl={SITE_URL} />;
+  return (
+    <BlogPostReader
+      post={post}
+      siteUrl={SITE_URL}
+      relatedPosts={relatedPosts}
+    />
+  );
 }

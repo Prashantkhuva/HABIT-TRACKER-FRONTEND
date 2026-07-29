@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ArrowRight,
   BookOpen,
@@ -21,6 +22,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
+import { useSelector } from "react-redux";
 import Footer from "../components/Footer";
 import LandNav from "../components/LandNav";
 import Button from "../components/Button";
@@ -140,8 +142,23 @@ function AnimatedBarChart() {
   );
 }
 
+function AuthRedirect() {
+  const router = useRouter();
+  const { status: authStatus, isAuthChecked } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isAuthChecked && authStatus) {
+      router.replace("/dashboard");
+    }
+  }, [isAuthChecked, authStatus, router]);
+
+  return null;
+}
+
 function LandingPage() {
   return (
+    <>
+      <AuthRedirect />
     <>
       <LandNav />
 

@@ -8,10 +8,13 @@
 - URL: https://habitflow.indevs.in/
 - Category: Web application / habit tracker / productivity
 - Author: Prashant Khuva
+- Tech Stack: Next.js 15, React 19, Tailwind CSS v4, Redux Toolkit, Framer Motion
+- Price: Free (USD $0)
+- Launch Date: 2026
 
 ## What it does
 
-HabitFlow helps users cultivate daily rituals through a calm, editorial interface. Users track habits (called rituals), build streaks, view consistency heatmaps and weekly charts, add reflection notes, and archive completed habits.
+HabitFlow helps users cultivate daily rituals through a calm, editorial interface. Users track habits (called rituals), build streaks, view consistency heatmaps and weekly charts, add reflection notes, and archive completed habits. It is designed for intentional living — focused on clarity, consistency, and visual feedback rather than gamification or pressure.
 
 ## Key features
 
@@ -19,13 +22,34 @@ HabitFlow helps users cultivate daily rituals through a calm, editorial interfac
 - Streak analytics and consistency insights
 - Progress heatmaps and weekly completion charts
 - Reflection notes on completed rituals
+- Time-of-day insights (morning/afternoon/evening)
+- Habit categories: Health, Fitness, Learning, Productivity, Mindfulness
 - Editorial, distraction-free UI designed for intentional living
+- Responsive mobile-first design with bottom navigation
+- Swipe navigation between main routes
+- Dark mode support
+- Full authentication system (JWT cookie-based)
 
 ## Public pages
 
 - Homepage: https://habitflow.indevs.in/
 - Sign in: https://habitflow.indevs.in/signin
 - Sign up: https://habitflow.indevs.in/signup
+- Blog: https://habitflow.indevs.in/blog
+
+## Blog topics
+
+HabitFlow's blog covers evidence-based guides on:
+- Habit building and formation science
+- Streak tracking and consistency psychology
+- Habit stacking techniques
+- Morning and evening routines
+- Environmental design for better habits
+- Identity-based habit change
+- Keystone habits
+- Two-minute rule and tiny habits
+- Temptation bundling
+- Weekly review practices
 
 ## Preferred citation
 
