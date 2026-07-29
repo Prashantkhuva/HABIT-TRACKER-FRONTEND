@@ -159,7 +159,6 @@ function LandingPage() {
   return (
     <>
       <AuthRedirect />
-    <>
       <LandNav />
 
       <main
