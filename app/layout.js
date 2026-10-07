@@ -63,11 +63,25 @@ export default function RootLayout({ children }) {
   const faqData = getFAQStructuredData();
 
   return (
-    <html lang="en" suppressHydrationWarning className={`${epilogue.variable} ${manrope.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${epilogue.variable} ${manrope.variable}`}
+    >
       <head>
         <link rel="preconnect" href="https://habit-tracker-t0o0.onrender.com" />
-        <link rel="alternate" type="text/markdown" href="/llms.txt" title="LLMs TXT" />
-        <link rel="alternate" type="text/markdown" href="/llms-full.txt" title="LLMs Full TXT" />
+        <link
+          rel="alternate"
+          type="text/markdown"
+          href="/llms.txt"
+          title="LLMs TXT"
+        />
+        <link
+          rel="alternate"
+          type="text/markdown"
+          href="/llms-full.txt"
+          title="LLMs Full TXT"
+        />
         <script
           type="application/ld+json"
           id="ld-structured-data"
@@ -78,12 +92,15 @@ export default function RootLayout({ children }) {
           id="ld-faq-data"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqData) }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("habitflow-theme");var dark=t==="dark"||(t===null||t==="system")&&window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",dark);var id=localStorage.getItem("habitflow-accent")||"forest";var m={forest:"#4b6b63",ocean:"#2b6cb0",plum:"#7c3aed",ember:"#c2410c"};var c=m[id]||m.forest;var s=document.createElement("style");s.id="habitflow-accent-style";s.textContent=":root{--color-accent-mint:"+c+";}";document.head.appendChild(s);}catch(e){}})();`,
+          }}
+        />
       </head>
       <body suppressHydrationWarning>
         <Providers>
-          <ClientBody>
-            {children}
-          </ClientBody>
+          <ClientBody>{children}</ClientBody>
         </Providers>
       </body>
     </html>

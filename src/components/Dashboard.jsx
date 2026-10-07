@@ -4,8 +4,26 @@ import { useEffect, useState, useMemo, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { Sparkles, TrendingUp, Target, Search, Trophy, Sprout, Star, Flame, Gem, BookOpen, Award, Crown } from "lucide-react";
-import { getHabits, createHabit, completeHabit, getHabitLogs } from "../api/habits-api";
+import {
+  Sparkles,
+  TrendingUp,
+  Target,
+  Search,
+  Trophy,
+  Sprout,
+  Star,
+  Flame,
+  Gem,
+  BookOpen,
+  Award,
+  Crown,
+} from "lucide-react";
+import {
+  getHabits,
+  createHabit,
+  completeHabit,
+  getHabitLogs,
+} from "../api/habits-api";
 import { getDashboardStats, getWeeklyData } from "../api/dashboard-api";
 import { setReduxHabits, addReduxHabit } from "../store/habitSlice";
 import HabitCard from "./Habit/HabitCard";
@@ -18,12 +36,29 @@ import { isLogFromToday } from "../lib/habit-utils";
 import { fireConfetti } from "../lib/confetti";
 import { getAchievements } from "../lib/achievements";
 import OnboardingGuide from "./OnboardingGuide";
+import KpiRow from "./stats/KpiRow";
+import DonutGauge from "./stats/DonutGauge";
 import gsap from "gsap";
 
 const TEMPLATES = [
-  { title: "Morning Meditation", category: "Mindfulness", color: "#4F6F64", description: "Start your day with calm" },
-  { title: "Read 10 Pages", category: "Learning", color: "#8B7E74", description: "Daily reading habit" },
-  { title: "Evening Walk", category: "Health", color: "#C2B280", description: "Wind down with a walk" },
+  {
+    title: "Morning Meditation",
+    category: "Mindfulness",
+    color: "#4F6F64",
+    description: "Start your day with calm",
+  },
+  {
+    title: "Read 10 Pages",
+    category: "Learning",
+    color: "#8B7E74",
+    description: "Daily reading habit",
+  },
+  {
+    title: "Evening Walk",
+    category: "Health",
+    color: "#C2B280",
+    description: "Wind down with a walk",
+  },
 ];
 
 function WeeklySummary({ stats }) {
@@ -32,9 +67,10 @@ function WeeklySummary({ stats }) {
   useEffect(() => {
     if (!stats) return;
     const ctx = gsap.context(() => {
-      gsap.fromTo(cardRef.current,
+      gsap.fromTo(
+        cardRef.current,
         { opacity: 0, y: 20, scale: 0.98 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power3.out" }
+        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power3.out" },
       );
     }, cardRef);
     return () => ctx.revert();
@@ -48,7 +84,7 @@ function WeeklySummary({ stats }) {
   return (
     <motion.div
       ref={cardRef}
-      className="mb-10 overflow-hidden rounded-3xl border border-border-subtle/60 bg-gradient-to-br from-accent-soft via-surface to-surface-dim p-6 sm:p-8"
+      className="overflow-hidden rounded-3xl border border-border-subtle/60 bg-gradient-to-br from-accent-soft via-surface to-surface-dim p-6 sm:p-8"
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
@@ -101,7 +137,7 @@ export default function Dashboard() {
   const [stats, setStats] = useState(null);
   const [reflectionOpen, setReflectionOpen] = useState(false);
   const [selectedHabit, setSelectedHabit] = useState(null);
-  const [, setWeeklyData] = useState([]);
+  const [weeklyData, setWeeklyData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showTemplates, setShowTemplates] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -113,12 +149,16 @@ export default function Dashboard() {
       try {
         const res = await getHabits();
         const raw = res.data.data;
-        const fetchedHabits = Array.isArray(raw) ? raw : raw?.habits ?? [];
+        const fetchedHabits = Array.isArray(raw) ? raw : (raw?.habits ?? []);
         dispatch(setReduxHabits(fetchedHabits));
         setLoading(false);
 
-        getDashboardStats().then((r) => setStats(r.data.data)).catch(() => {});
-        getWeeklyData().then((r) => setWeeklyData(r.data.data)).catch(() => {});
+        getDashboardStats()
+          .then((r) => setStats(r.data.data))
+          .catch(() => {});
+        getWeeklyData()
+          .then((r) => setWeeklyData(r.data.data))
+          .catch(() => {});
 
         if (fetchedHabits.length > 0) {
           Promise.all(
@@ -129,17 +169,26 @@ export default function Dashboard() {
                 if (logs.some(isLogFromToday)) {
                   setCompletedIds((prev) => [...prev, habit._id]);
                 }
-              } catch (err) { console.error("[Dashboard] Log fetch:", err); }
+              } catch (err) {
+                console.error("[Dashboard] Log fetch:", err);
+              }
             }),
           );
         } else {
-          const dismissed = localStorage.getItem("habitflow-onboarding-dismissed");
+          const dismissed = localStorage.getItem(
+            "habitflow-onboarding-dismissed",
+          );
           if (!dismissed) setShowOnboarding(true);
         }
       } catch (err) {
-        const msg = err?.response?.data?.message || err?.message || "Unknown error";
+        const msg =
+          err?.response?.data?.message || err?.message || "Unknown error";
         console.error("[Dashboard] Failed to fetch habits:", msg);
-        addToast({ type: "error", title: "Failed to load habits", message: msg });
+        addToast({
+          type: "error",
+          title: "Failed to load habits",
+          message: msg,
+        });
         setLoading(false);
       }
     })();
@@ -177,9 +226,17 @@ export default function Dashboard() {
       const msg = err.response?.data?.message;
       if (msg === "Habit already completed today") {
         setCompletedIds((prev) => [...prev, selectedHabit._id]);
-        addToast({ type: "error", title: "Already done", message: "You already completed this today" });
+        addToast({
+          type: "error",
+          title: "Already done",
+          message: "You already completed this today",
+        });
       } else {
-        addToast({ type: "error", title: "Failed", message: "Could not complete habit" });
+        addToast({
+          type: "error",
+          title: "Failed",
+          message: "Could not complete habit",
+        });
       }
     } finally {
       setCompleting(null);
@@ -195,10 +252,12 @@ export default function Dashboard() {
   const doneCount = completedHabits.length;
   const streakMilestones = useMemo(() => {
     const ms = [];
-    if (doneCount >= 1) ms.push({ at: 1, label: "first ritual", reached: true });
+    if (doneCount >= 1)
+      ms.push({ at: 1, label: "first ritual", reached: true });
     if (doneCount >= 3) ms.push({ at: 3, label: "hat trick", reached: true });
     if (doneCount >= 5) ms.push({ at: 5, label: "half dozen", reached: true });
-    if (doneCount >= 7) ms.push({ at: 7, label: "perfect week", reached: true });
+    if (doneCount >= 7)
+      ms.push({ at: 7, label: "perfect week", reached: true });
     return ms;
   }, [doneCount]);
 
@@ -244,7 +303,10 @@ export default function Dashboard() {
           </motion.div>
 
           <div className="flex flex-col items-center gap-5">
-            <Button variant="primary" onClick={() => router.push("/create-habit")}>
+            <Button
+              variant="primary"
+              onClick={() => router.push("/create-habit")}
+            >
               NEW RITUAL
             </Button>
 
@@ -258,79 +320,127 @@ export default function Dashboard() {
 
           <AnimatePresence>
             {showTemplates && (
-            <motion.div
-              initial={{ opacity: 0, y: 12, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.97 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full max-w-lg"
-            >
-              <p className="app-label mb-5 text-center">
-                choose a template
-              </p>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                {TEMPLATES.map((t, i) => (
-                  <motion.button
-                    key={t.title}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.08 * i, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    onClick={async () => {
-                      try {
-                        const res = await createHabit({
-                          title: t.title,
-                          description: t.description,
-                          category: t.category,
-                          color: t.color,
-                          frequency: "daily",
-                          type: "boolean",
-                          unit: "",
-                        });
-                        if (res?.data?.data) {
-                          dispatch(addReduxHabit(res.data.data));
-                          addToast({ type: "success", title: "Template added", message: `${t.title} created` });
-                          setShowTemplates(false);
-                        } else {
-                          addToast({ type: "error", title: "Failed", message: "Unexpected server response" });
+              <motion.div
+                initial={{ opacity: 0, y: 12, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.97 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="w-full max-w-lg"
+              >
+                <p className="app-label mb-5 text-center">choose a template</p>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                  {TEMPLATES.map((t, i) => (
+                    <motion.button
+                      key={t.title}
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{
+                        delay: 0.08 * i,
+                        duration: 0.5,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                      onClick={async () => {
+                        try {
+                          const res = await createHabit({
+                            title: t.title,
+                            description: t.description,
+                            category: t.category,
+                            color: t.color,
+                            frequency: "daily",
+                            type: "boolean",
+                            unit: "",
+                          });
+                          if (res?.data?.data) {
+                            dispatch(addReduxHabit(res.data.data));
+                            addToast({
+                              type: "success",
+                              title: "Template added",
+                              message: `${t.title} created`,
+                            });
+                            setShowTemplates(false);
+                          } else {
+                            addToast({
+                              type: "error",
+                              title: "Failed",
+                              message: "Unexpected server response",
+                            });
+                          }
+                        } catch (err) {
+                          addToast({
+                            type: "error",
+                            title: "Failed",
+                            message:
+                              err?.response?.data?.message ||
+                              err?.message ||
+                              "Could not create template",
+                          });
                         }
-                      } catch (err) {
-                        addToast({ type: "error", title: "Failed", message: err?.response?.data?.message || err?.message || "Could not create template" });
-                      }
-                    }}
-                    className="group relative overflow-hidden rounded-2xl border border-border-subtle/60 bg-surface/80 backdrop-blur-sm p-5 text-left transition-all duration-300 hover:border-accent-mint/30 hover:shadow-xl hover:-translate-y-1.5"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-br from-accent-mint/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="relative z-10">
-                      <div className="mb-4 flex items-center gap-3">
-                        <div
-                          className="h-10 w-10 rounded-xl flex items-center justify-center text-sm font-bold"
-                          style={{ background: t.color + "20", color: t.color }}
-                        >
-                          {t.title.charAt(0)}
+                      }}
+                      className="group relative overflow-hidden rounded-2xl border border-border-subtle/60 bg-surface/80 backdrop-blur-sm p-5 text-left transition-all duration-300 hover:border-accent-mint/30 hover:shadow-xl hover:-translate-y-1.5"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-accent-mint/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="relative z-10">
+                        <div className="mb-4 flex items-center gap-3">
+                          <div
+                            className="h-10 w-10 rounded-xl flex items-center justify-center text-sm font-bold"
+                            style={{
+                              background: t.color + "20",
+                              color: t.color,
+                            }}
+                          >
+                            {t.title.charAt(0)}
+                          </div>
+                          <span className="app-label">{t.category}</span>
                         </div>
-                        <span className="app-label">{t.category}</span>
+                        <p className="text-sm font-bold text-text-primary group-hover:text-accent-mint transition-colors">
+                          {t.title}
+                        </p>
+                        <p className="mt-1.5 text-[10px] leading-relaxed text-text-muted/70">
+                          {t.description}
+                        </p>
+                        <div className="mt-3 flex items-center gap-1.5 text-[9px] font-bold tracking-wider text-accent-mint opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <span>ADD RITUAL</span>
+                          <span>→</span>
+                        </div>
                       </div>
-                      <p className="text-sm font-bold text-text-primary group-hover:text-accent-mint transition-colors">
-                        {t.title}
-                      </p>
-                      <p className="mt-1.5 text-[10px] leading-relaxed text-text-muted/70">
-                        {t.description}
-                      </p>
-                      <div className="mt-3 flex items-center gap-1.5 text-[9px] font-bold tracking-wider text-accent-mint opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span>ADD RITUAL</span>
-                        <span>→</span>
-                      </div>
-                    </div>
-                  </motion.button>
-                ))}
-              </div>
-            </motion.div>
-          )}
+                    </motion.button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
       ) : (
         <>
-          <WeeklySummary stats={stats} />
+          <KpiRow
+            stats={stats}
+            weeklyData={weeklyData}
+            achievements={achievements}
+            onNavigate={(href) => router.push(href)}
+          />
+
+          <div className="mb-10 grid gap-4 lg:grid-cols-[1.7fr_1fr]">
+            <WeeklySummary stats={stats} />
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{
+                duration: 0.7,
+                ease: [0.22, 1, 0.36, 1],
+                delay: 0.1,
+              }}
+              className="flex flex-col items-center justify-center rounded-3xl border border-border-subtle/60 bg-surface p-6"
+            >
+              <p className="app-label mb-4 self-start">TODAY&apos;S RHYTHM</p>
+              <DonutGauge
+                value={stats?.completionRate || 0}
+                caption={`${stats?.completedToday || 0} done · ${Math.max(
+                  (stats?.totalHabits || 0) - (stats?.completedToday || 0),
+                  0,
+                )} remaining`}
+              />
+            </motion.div>
+          </div>
 
           {streakMilestones.length > 0 && (
             <motion.div
@@ -358,12 +468,18 @@ export default function Dashboard() {
           <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="app-label mb-2">TRACK</p>
-              <h1 className="app-heading text-text-primary" style={{ fontSize: "clamp(2.2rem, 4.5vw, 3.5rem)" }}>
+              <h1
+                className="app-heading text-text-primary"
+                style={{ fontSize: "clamp(2.2rem, 4.5vw, 3.5rem)" }}
+              >
                 your habits
               </h1>
             </div>
             <div className="relative max-w-xs">
-              <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted" />
+              <Search
+                size={14}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted"
+              />
               <input
                 type="text"
                 placeholder="Search habits..."
@@ -376,19 +492,23 @@ export default function Dashboard() {
 
           <div className="relative w-full overflow-hidden">
             <div className="flex w-full gap-6 overflow-x-auto pb-8 snap-x snap-mandatory custom-scroll-x">
-              {(dashboardSearch ? filteredHabits : activeHabits).map((habit, i) => (
-                <HabitCard
-                  key={habit._id}
-                  habit={habit}
-                  index={i}
-                  onComplete={handleComplete}
-                  completing={completing}
-                  isDone={completedIds.includes(habit._id)}
-                />
-              ))}
+              {(dashboardSearch ? filteredHabits : activeHabits).map(
+                (habit, i) => (
+                  <HabitCard
+                    key={habit._id}
+                    habit={habit}
+                    index={i}
+                    onComplete={handleComplete}
+                    completing={completing}
+                    isDone={completedIds.includes(habit._id)}
+                  />
+                ),
+              )}
               {dashboardSearch && filteredHabits.length === 0 && (
                 <div className="flex w-full items-center justify-center py-12">
-                  <p className="text-sm text-text-muted">No habits match your search.</p>
+                  <p className="text-sm text-text-muted">
+                    No habits match your search.
+                  </p>
                 </div>
               )}
             </div>
@@ -399,7 +519,10 @@ export default function Dashboard() {
             <div className="mt-12 mb-6">
               <div className="flex items-center gap-2 mb-5">
                 <Trophy size={16} className="text-accent-mint" />
-                <p className="app-label">ACHIEVEMENTS ({unlockedAchievements.length}/{totalAchievements})</p>
+                <p className="app-label">
+                  ACHIEVEMENTS ({unlockedAchievements.length}/
+                  {totalAchievements})
+                </p>
               </div>
               <div className="flex flex-wrap gap-2">
                 {unlockedAchievements.map((a) => {
@@ -410,10 +533,22 @@ export default function Dashboard() {
                       className="group relative inline-flex items-center gap-2 rounded-full border border-accent-mint/20 bg-accent-mint/8 px-4 py-2 transition-all duration-300 hover:border-accent-mint/40 hover:bg-accent-mint/15 hover:shadow-lg hover:-translate-y-0.5"
                       title={a.desc}
                     >
-                      <div className="flex h-5 w-5 items-center justify-center rounded-full" style={{ background: `${a.color}18` }}>
-                        {Icon && <Icon size={11} style={{ color: a.color }} strokeWidth={2} />}
+                      <div
+                        className="flex h-5 w-5 items-center justify-center rounded-full"
+                        style={{ background: `${a.color}18` }}
+                      >
+                        {Icon && (
+                          <Icon
+                            size={11}
+                            style={{ color: a.color }}
+                            strokeWidth={2}
+                          />
+                        )}
                       </div>
-                      <span className="text-[11px] font-bold tracking-wide" style={{ color: a.color }}>
+                      <span
+                        className="text-[11px] font-bold tracking-wide"
+                        style={{ color: a.color }}
+                      >
                         {a.label}
                       </span>
                     </div>

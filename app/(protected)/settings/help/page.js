@@ -1,5 +1,5 @@
-"use client";
-import HelpPage from "@/views/HelpPage";
+import { redirect } from "next/navigation";
+
 export default function Help() {
-  return <HelpPage />;
+  redirect("/help");
 }

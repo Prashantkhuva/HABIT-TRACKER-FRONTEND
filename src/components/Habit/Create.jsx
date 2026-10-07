@@ -129,7 +129,7 @@ function Create({ onClose }) {
   };
 
   const modal = (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/30 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/45 backdrop-blur-[8px]">
       <motion.div
         initial={isMobile ? { y: "100%" } : { scale: 0.96, opacity: 0 }}
         animate={isMobile ? { y: 0 } : { scale: 1, opacity: 1 }}

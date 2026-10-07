@@ -5,6 +5,7 @@ import {
   TrendingUp,
   Zap,
   ArrowUpRight,
+  ArrowDownRight,
   Sparkles,
   Sunrise,
   Sun,
@@ -18,6 +19,7 @@ import {
   Activity,
   Target,
   Timer,
+  Download,
 } from "lucide-react";
 
 import {
@@ -34,6 +36,7 @@ import Heatmap from "../components/stats/Heatmap";
 import StreakPanel from "../components/stats/StreakPanel";
 import { categoryMap } from "../components/Habit/categoryMap";
 import { getTimeInsights, getTextColor, getBestDay } from "../lib/habit-utils";
+import { exportAsCSV } from "../lib/data-export";
 import { StatisticsSkeleton } from "../components/loading/LoadingSkeletons";
 
 /* ─── animation variants ───────────────────────────────────── */
@@ -86,6 +89,32 @@ export default function StatisticsPage() {
   const [selectedHabitFilter, setSelectedHabitFilter] = useState("ALL");
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState("ALL");
   const [visibleCount, setVisibleCount] = useState(6);
+
+  // Period (7D / 30D / 90D) comparison
+  const [period, setPeriod] = useState(7);
+
+  const periodStats = useMemo(() => {
+    const dayMs = 86400000;
+    const now = Date.now();
+    const curStart = now - period * dayMs;
+    const prevStart = now - period * 2 * dayMs;
+    let current = 0;
+    let previous = 0;
+    (logs || []).forEach((l) => {
+      if (l.completed === false) return;
+      const t = Number(l.date);
+      if (Number.isNaN(t)) return;
+      if (t >= curStart) current++;
+      else if (t >= prevStart) previous++;
+    });
+    const delta =
+      previous === 0
+        ? current > 0
+          ? 100
+          : 0
+        : Math.round(((current - previous) / previous) * 100);
+    return { current, previous, delta };
+  }, [logs, period]);
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -141,8 +170,13 @@ export default function StatisticsPage() {
 
   const filteredJournalLogs = useMemo(() => {
     return journalLogs.filter((log) => {
-      if (selectedHabitFilter !== "ALL" && log.habitId !== selectedHabitFilter) return false;
-      if (selectedCategoryFilter !== "ALL" && log.habitDetails?.category !== selectedCategoryFilter) return false;
+      if (selectedHabitFilter !== "ALL" && log.habitId !== selectedHabitFilter)
+        return false;
+      if (
+        selectedCategoryFilter !== "ALL" &&
+        log.habitDetails?.category !== selectedCategoryFilter
+      )
+        return false;
       if (journalSearch.trim() !== "") {
         const q = journalSearch.toLowerCase();
         return (
@@ -155,15 +189,24 @@ export default function StatisticsPage() {
     });
   }, [journalLogs, selectedHabitFilter, selectedCategoryFilter, journalSearch]);
 
-  const visibleLogs = useMemo(() => filteredJournalLogs.slice(0, visibleCount), [filteredJournalLogs, visibleCount]);
+  const visibleLogs = useMemo(
+    () => filteredJournalLogs.slice(0, visibleCount),
+    [filteredJournalLogs, visibleCount],
+  );
 
   const bestDay = useMemo(() => {
     const result = getBestDay(weekly);
     return result?.shortLabel ?? null;
   }, [weekly]);
 
-  const totalHeatmapLogs = useMemo(() => heatmap.reduce((acc, curr) => acc + curr.count, 0), [heatmap]);
-  const activeDays = useMemo(() => heatmap.filter((d) => d.count > 0).length, [heatmap]);
+  const totalHeatmapLogs = useMemo(
+    () => heatmap.reduce((acc, curr) => acc + curr.count, 0),
+    [heatmap],
+  );
+  const activeDays = useMemo(
+    () => heatmap.filter((d) => d.count > 0).length,
+    [heatmap],
+  );
 
   if (!stats) return <StatisticsSkeleton />;
 
@@ -195,9 +238,70 @@ export default function StatisticsPage() {
               intelligence.
             </h1>
           </div>
-          <div className="app-glass hidden items-center gap-2 rounded-full px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-text-muted shadow-sm sm:flex">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent-mint" />
-            Live sync
+          <div className="flex flex-col items-end gap-2">
+            <div className="app-glass hidden items-center gap-2 rounded-full px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-text-muted shadow-sm sm:flex">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent-mint" />
+              Live sync
+            </div>
+
+            <div className="flex flex-wrap items-center justify-end gap-2">
+              {/* Period segmented control */}
+              <div className="flex rounded-full border border-border-subtle/60 bg-surface-dim p-1">
+                {[7, 30, 90].map((d) => (
+                  <button
+                    key={d}
+                    onClick={() => setPeriod(d)}
+                    className={`rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest transition-colors duration-200 ${
+                      period === d
+                        ? "bg-primary text-background"
+                        : "text-text-muted hover:text-text-primary"
+                    }`}
+                  >
+                    {d}D
+                  </button>
+                ))}
+              </div>
+
+              {/* Delta vs previous period */}
+              <div
+                className={`flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[11px] font-bold ${
+                  periodStats.delta > 0
+                    ? "bg-accent-mint/10 text-accent-mint"
+                    : periodStats.delta < 0
+                      ? "bg-red-500/10 text-red-500"
+                      : "bg-surface-dim text-text-muted"
+                }`}
+                title={`${periodStats.current} completions this ${period} days vs ${periodStats.previous} in the previous ${period} days`}
+              >
+                {periodStats.delta > 0 ? (
+                  <ArrowUpRight size={13} />
+                ) : periodStats.delta < 0 ? (
+                  <ArrowDownRight size={13} />
+                ) : null}
+                {periodStats.delta > 0 ? "+" : ""}
+                {periodStats.delta}%
+                <span className="font-medium text-text-muted">
+                  vs prev {period}d
+                </span>
+              </div>
+
+              {/* Export journal logs */}
+              <button
+                onClick={() => {
+                  const rows = journalLogs.map((l) => ({
+                    date: new Date(Number(l.date)).toISOString().slice(0, 10),
+                    habit: l.habitDetails?.title,
+                    category: l.habitDetails?.category,
+                    note: l.note,
+                  }));
+                  exportAsCSV(rows, "habitflow-journal.csv");
+                }}
+                className="flex items-center gap-1.5 rounded-full border border-border-subtle/60 bg-surface-dim px-3.5 py-2 text-[10px] font-bold uppercase tracking-widest text-text-muted transition-colors duration-200 hover:border-accent-mint/40 hover:text-accent-mint"
+              >
+                <Download size={13} />
+                CSV
+              </button>
+            </div>
           </div>
         </motion.div>
 
@@ -285,7 +389,11 @@ export default function StatisticsPage() {
                 >
                   <motion.div
                     animate={{ x: ["-100%", "300%"] }}
-                    transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 3,
+                      ease: "linear",
+                    }}
                     className="absolute inset-y-0 w-20 bg-white/30 blur-md"
                   />
 
@@ -293,7 +401,11 @@ export default function StatisticsPage() {
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: [0, 1, 0] }}
-                    transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 2,
+                      ease: "easeInOut",
+                    }}
                     className="absolute -right-[2px] -top-[2px] h-[14px] w-[14px] rounded-full bg-accent-mint shadow-[0_0_10px_3px_rgba(75,107,99,0.4)]"
                   />
                 </motion.div>
@@ -364,8 +476,15 @@ export default function StatisticsPage() {
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-4">
                     <p className="app-label">{label}</p>
-                    <div className={`flex items-center justify-center w-8 h-8 rounded-xl ${accent ? "bg-accent-mint/15" : "bg-surface-dim"}`}>
-                      <Icon size={14} className={accent ? "text-accent-mint" : "text-text-muted"} />
+                    <div
+                      className={`flex items-center justify-center w-8 h-8 rounded-xl ${accent ? "bg-accent-mint/15" : "bg-surface-dim"}`}
+                    >
+                      <Icon
+                        size={14}
+                        className={
+                          accent ? "text-accent-mint" : "text-text-muted"
+                        }
+                      />
                     </div>
                   </div>
                   <p className="font-heading text-[32px] font-black leading-none tracking-[-0.05em] text-text-primary">
@@ -420,9 +539,23 @@ export default function StatisticsPage() {
 
               <div className="space-y-2">
                 {[
-                  { icon: Flame, label: "Strongest day", value: bestDay || "N/A" },
-                  { icon: Zap, label: "Peak consistency", value: "Evening", accent: true },
-                  { icon: TrendingUp, label: "Rhythm score", value: `${completionPct}/100`, accent: true },
+                  {
+                    icon: Flame,
+                    label: "Strongest day",
+                    value: bestDay || "N/A",
+                  },
+                  {
+                    icon: Zap,
+                    label: "Peak consistency",
+                    value: "Evening",
+                    accent: true,
+                  },
+                  {
+                    icon: TrendingUp,
+                    label: "Rhythm score",
+                    value: `${completionPct}/100`,
+                    accent: true,
+                  },
                 ].map(({ icon: Icon, label, value, accent }) => (
                   <div
                     key={label}
@@ -432,7 +565,9 @@ export default function StatisticsPage() {
                       <Icon size={13} />
                       {label}
                     </span>
-                    <span className={`text-xs font-bold ${accent ? "text-accent-mint" : "text-text-primary"}`}>
+                    <span
+                      className={`text-xs font-bold ${accent ? "text-accent-mint" : "text-text-primary"}`}
+                    >
                       {value}
                     </span>
                   </div>
@@ -475,7 +610,9 @@ export default function StatisticsPage() {
                         <p className="font-heading text-lg font-black leading-none tracking-[-0.03em] text-text-primary">
                           {val}
                         </p>
-                        <p className="mt-0.5 text-[10px] text-text-muted">{sub}</p>
+                        <p className="mt-0.5 text-[10px] text-text-muted">
+                          {sub}
+                        </p>
                       </div>
                     </div>
                   </motion.div>
@@ -503,9 +640,21 @@ export default function StatisticsPage() {
                   >
                     <div className="rounded-2xl border border-border-subtle bg-surface-dim p-4 space-y-3">
                       {[
-                        { icon: Sunrise, label: "Morning", val: timeStats.morning },
-                        { icon: Sun, label: "Afternoon", val: timeStats.afternoon },
-                        { icon: Moon, label: "Evening", val: timeStats.evening },
+                        {
+                          icon: Sunrise,
+                          label: "Morning",
+                          val: timeStats.morning,
+                        },
+                        {
+                          icon: Sun,
+                          label: "Afternoon",
+                          val: timeStats.afternoon,
+                        },
+                        {
+                          icon: Moon,
+                          label: "Evening",
+                          val: timeStats.evening,
+                        },
                       ].map(({ icon: Icon, label, val }) => (
                         <motion.div
                           key={label}
@@ -517,13 +666,21 @@ export default function StatisticsPage() {
                               <Icon size={16} className="text-accent-mint" />
                             </div>
                             <div>
-                              <p className="text-sm font-semibold text-text-primary">{label}</p>
-                              <p className="text-[10px] tracking-[0.18em] uppercase text-text-muted">Peak Focus</p>
+                              <p className="text-sm font-semibold text-text-primary">
+                                {label}
+                              </p>
+                              <p className="text-[10px] tracking-[0.18em] uppercase text-text-muted">
+                                Peak Focus
+                              </p>
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="font-heading text-base font-bold text-text-primary">{val}</p>
-                            <p className="text-[9px] uppercase tracking-[0.18em] text-text-muted">completed</p>
+                            <p className="font-heading text-base font-bold text-text-primary">
+                              {val}
+                            </p>
+                            <p className="text-[9px] uppercase tracking-[0.18em] text-text-muted">
+                              completed
+                            </p>
                           </div>
                         </motion.div>
                       ))}
@@ -572,11 +729,21 @@ export default function StatisticsPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[9px] uppercase tracking-[0.15em] text-text-muted">Less</span>
-                  {["bg-border-subtle", "bg-accent-mint/20", "bg-accent-mint/40", "bg-accent-mint/70", "bg-accent-mint"].map((c, i) => (
+                  <span className="text-[9px] uppercase tracking-[0.15em] text-text-muted">
+                    Less
+                  </span>
+                  {[
+                    "bg-border-subtle",
+                    "bg-accent-mint/20",
+                    "bg-accent-mint/40",
+                    "bg-accent-mint/70",
+                    "bg-accent-mint",
+                  ].map((c, i) => (
                     <div key={i} className={`w-2.5 h-2.5 rounded-[3px] ${c}`} />
                   ))}
-                  <span className="text-[9px] uppercase tracking-[0.15em] text-text-muted">More</span>
+                  <span className="text-[9px] uppercase tracking-[0.15em] text-text-muted">
+                    More
+                  </span>
                 </div>
               </div>
               <div className="flex flex-1 items-start max-sm:justify-center max-sm:overflow-x-auto sm:justify-end">
@@ -628,12 +795,18 @@ export default function StatisticsPage() {
             <div className="mb-6 flex flex-col gap-4 border-b border-border-subtle pb-6">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <div className="relative flex-1">
-                  <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
+                  <Search
+                    size={14}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted"
+                  />
                   <input
                     type="text"
                     placeholder="Search reflections..."
                     value={journalSearch}
-                    onChange={(e) => { setJournalSearch(e.target.value); setVisibleCount(6); }}
+                    onChange={(e) => {
+                      setJournalSearch(e.target.value);
+                      setVisibleCount(6);
+                    }}
                     className="w-full rounded-full border border-border-subtle bg-surface-dim/40 py-3 pl-10 pr-4 text-xs text-text-primary placeholder:text-text-muted/60 transition-all focus:border-accent-mint focus:bg-surface focus:outline-none focus:ring-1 focus:ring-accent-mint"
                   />
                 </div>
@@ -641,7 +814,10 @@ export default function StatisticsPage() {
                   <SlidersHorizontal size={12} className="text-text-muted" />
                   <select
                     value={selectedCategoryFilter}
-                    onChange={(e) => { setSelectedCategoryFilter(e.target.value); setVisibleCount(6); }}
+                    onChange={(e) => {
+                      setSelectedCategoryFilter(e.target.value);
+                      setVisibleCount(6);
+                    }}
                     className="rounded-full border border-border-subtle bg-surface px-3.5 py-2 text-[10px] font-bold text-text-primary outline-none transition-all hover:bg-surface-dim cursor-pointer"
                   >
                     <option value="ALL">All Categories</option>
@@ -657,7 +833,10 @@ export default function StatisticsPage() {
               {habits.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   <button
-                    onClick={() => { setSelectedHabitFilter("ALL"); setVisibleCount(6); }}
+                    onClick={() => {
+                      setSelectedHabitFilter("ALL");
+                      setVisibleCount(6);
+                    }}
                     className={`rounded-full px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-widest transition-all ${
                       selectedHabitFilter === "ALL"
                         ? "bg-primary text-background shadow-sm"
@@ -666,20 +845,28 @@ export default function StatisticsPage() {
                   >
                     All
                   </button>
-                  {habits.filter((h) => journalLogs.some((l) => l.habitId === h._id)).map((h) => (
-                    <button
-                      key={h._id}
-                      onClick={() => { setSelectedHabitFilter(h._id); setVisibleCount(6); }}
-                      className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-widest transition-all ${
-                        selectedHabitFilter === h._id
-                          ? "bg-primary text-background shadow-sm"
-                          : "border border-border-subtle bg-surface text-text-muted hover:bg-surface-dim hover:text-text-primary"
-                      }`}
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: h.color }} />
-                      {h.title}
-                    </button>
-                  ))}
+                  {habits
+                    .filter((h) => journalLogs.some((l) => l.habitId === h._id))
+                    .map((h) => (
+                      <button
+                        key={h._id}
+                        onClick={() => {
+                          setSelectedHabitFilter(h._id);
+                          setVisibleCount(6);
+                        }}
+                        className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-widest transition-all ${
+                          selectedHabitFilter === h._id
+                            ? "bg-primary text-background shadow-sm"
+                            : "border border-border-subtle bg-surface text-text-muted hover:bg-surface-dim hover:text-text-primary"
+                        }`}
+                      >
+                        <span
+                          className="w-1.5 h-1.5 rounded-full"
+                          style={{ backgroundColor: h.color }}
+                        />
+                        {h.title}
+                      </button>
+                    ))}
                 </div>
               )}
             </div>
@@ -706,9 +893,13 @@ export default function StatisticsPage() {
                   </p>
                 </motion.div>
               ) : (
-                <motion.div layout className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+                <motion.div
+                  layout
+                  className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"
+                >
                   {visibleLogs.map((log) => {
-                    const Icon = categoryMap[log.habitDetails?.category] || BookOpen;
+                    const Icon =
+                      categoryMap[log.habitDetails?.category] || BookOpen;
                     const accentColor = log.habitDetails?.color || "#4B6B63";
                     const badgeTextColor = getTextColor(accentColor);
 
@@ -719,7 +910,10 @@ export default function StatisticsPage() {
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -12 }}
-                        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{
+                          duration: 0.35,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
                         whileHover={{ y: -4, scale: 1.01 }}
                         className="group relative overflow-hidden rounded-2xl border border-border-subtle bg-surface p-5 transition-shadow duration-300 hover:shadow-md"
                       >
@@ -732,7 +926,10 @@ export default function StatisticsPage() {
                             <div className="flex items-center gap-2">
                               <div
                                 className="flex h-6 w-6 items-center justify-center rounded-full"
-                                style={{ backgroundColor: accentColor, color: badgeTextColor }}
+                                style={{
+                                  backgroundColor: accentColor,
+                                  color: badgeTextColor,
+                                }}
                               >
                                 <Icon size={11} />
                               </div>
@@ -749,17 +946,22 @@ export default function StatisticsPage() {
                               <div className="flex items-center gap-1 text-[8px] uppercase tracking-wider text-text-muted">
                                 <Calendar size={8} />
                                 <span>
-                                  {new Date(log.date).toLocaleDateString("en-US", {
-                                    month: "short",
-                                    day: "numeric",
-                                  })}
+                                  {new Date(log.date).toLocaleDateString(
+                                    "en-US",
+                                    {
+                                      month: "short",
+                                      day: "numeric",
+                                    },
+                                  )}
                                 </span>
                               </div>
                               {log.completedAt && (
                                 <div className="flex items-center justify-end gap-1 text-[7px] uppercase tracking-wider text-text-muted/60 mt-0.5">
                                   <Clock size={7} />
                                   <span>
-                                    {new Date(log.completedAt).toLocaleTimeString("en-US", {
+                                    {new Date(
+                                      log.completedAt,
+                                    ).toLocaleTimeString("en-US", {
                                       hour: "2-digit",
                                       minute: "2-digit",
                                     })}

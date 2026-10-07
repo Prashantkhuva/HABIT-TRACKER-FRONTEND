@@ -21,6 +21,14 @@
   --color-danger: #c92a2a;
   --color-danger-soft: #fff1f1;
 
+  /* === MOTION / SHAPE (Fernly-style) === */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --r-lg: 26px;
+  --r-md: 20px;
+  --r-sm: 14px;
+  --shadow-card: 0 1px 2px rgba(26, 26, 26, 0.04), 0 8px 24px -12px rgba(26, 26, 26, 0.1);
+  --focus-ring: 0 0 0 3px var(--color-surface), 0 0 0 5px var(--color-accent-mint);
+
   /* === PREMIUM GLASS === */
   --glass-bg: rgba(255, 255, 255, 0.6);
   --glass-border: rgba(232, 228, 220, 0.5);
@@ -42,13 +50,13 @@
     --color-background: #141218;
     --color-surface: #1d1b20;
     --color-surface-dim: #0f0d13;
-    --color-surface-mint: #d0bcff;
+    --color-surface-mint: color-mix(in srgb, var(--color-accent-mint) 30%, #1d1b20);
     --color-text-primary: #e6e1e5;
     --color-text-muted: #938f99;
     --color-border-subtle: #49454f;
-    --color-primary: #d0bcff;
-    --color-primary-soft: #b69df8;
-    --color-accent-soft: #1d1b20;
+    --color-primary: var(--color-accent-mint);
+    --color-primary-soft: color-mix(in srgb, var(--color-accent-mint) 80%, #ffffff);
+    --color-accent-soft: color-mix(in srgb, var(--color-accent-mint) 24%, #141218);
     --color-danger: #f2b8b5;
     --color-danger-soft: #311111;
     --glass-bg: rgba(29, 27, 32, 0.7);
@@ -152,12 +160,42 @@ button, a, input, textarea, select { font: inherit; }
 
 a, button, input, select, textarea {
   transition:
-    background-color 0.2s ease,
-    color 0.15s ease,
-    border-color 0.15s ease,
-    box-shadow 0.15s ease,
-    opacity 0.2s ease;
+    background-color 0.2s var(--ease),
+    color 0.2s var(--ease),
+    border-color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease),
+    transform 0.25s var(--ease),
+    opacity 0.2s var(--ease);
 }
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* ===== HATCH PATTERN (planned / empty days) ===== */
+.hatch {
+  background-image: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--color-text-muted) 35%, transparent) 0 2px,
+    transparent 2px 7px
+  );
+}
+
+/* ===== DIALOG SCALE-IN ===== */
+@keyframes dlg-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.dlg-in { animation: dlg-in 0.35s var(--ease) both; }
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up { animation: fade-up 0.45s var(--ease) both; }
 
 /* ===== LOADING BAR GLOW ===== */
 @keyframes loading-glow {

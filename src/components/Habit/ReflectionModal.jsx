@@ -37,8 +37,8 @@ export default function ReflectionModal({
         className="
           fixed inset-0 z-[100]
 
-          bg-black/50
-          backdrop-blur-md
+          bg-black/45
+          backdrop-blur-[8px]
 
           flex
           items-end
