@@ -16,6 +16,7 @@ export default defineConfig([
       globals: {
         ...globals.browser,
         process: true,
+        global: true,
       },
       parserOptions: {
         ecmaVersion: 'latest',
