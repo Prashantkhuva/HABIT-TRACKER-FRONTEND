@@ -8,14 +8,6 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion"],
   },
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "https://habit-tracker-t0o0.onrender.com/api/:path*",
-      },
-    ];
-  },
   async headers() {
     return [
       {
