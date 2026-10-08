@@ -135,17 +135,19 @@ function compareEndpoint(label, localRes, legacyRes) {
 
   if (typeOf(lb) !== typeOf(gb)) {
     deltas.push(`body: local=${typeOf(lb)} legacy=${typeOf(gb)}`);
-    if (deltas.length) {
-      mismatches += 1;
-      console.log(`FAIL ${label}`);
-      for (const d of deltas) console.log(`  ${d}`);
-      console.log(`  local body:   ${JSON.stringify(lb)}`);
-      console.log(`  legacy body:  ${JSON.stringify(gb)}`);
-    }
+    mismatches += 1;
+    console.log(`FAIL ${label}`);
+    for (const d of deltas) console.log(`  ${d}`);
+    console.log(`  local body:   ${JSON.stringify(lb)}`);
+    console.log(`  legacy body:  ${JSON.stringify(gb)}`);
     return;
   }
 
-  if (lb && gb) {
+  if (lb === null && gb === null) {
+    deltas.push(
+      `body: unparseable JSON on both bases (status local=${localRes.status} legacy=${legacyRes.status})`,
+    );
+  } else if (lb && gb) {
     if (lb.success !== gb.success) {
       deltas.push(
         `success: local=${JSON.stringify(lb.success)} legacy=${JSON.stringify(gb.success)}`,
@@ -157,6 +159,11 @@ function compareEndpoint(label, localRes, legacyRes) {
       );
     }
     diffValues("data", lb.data, gb.data, deltas);
+    if (lb.data == null && gb.data == null) {
+      console.log(
+        `WARN ${label}: data is null/undefined on both bases — data shape not verified (status ${localRes.status})`,
+      );
+    }
   }
 
   if (deltas.length === 0) {
@@ -169,6 +176,50 @@ function compareEndpoint(label, localRes, legacyRes) {
   mismatches += 1;
   console.log(`FAIL ${label}`);
   for (const d of deltas) console.log(`  ${d}`);
+}
+
+async function cleanup(seedHabitId, cookie, runAlreadyFailed) {
+  const problems = [];
+
+  if (seedHabitId) {
+    if (cookie) {
+      const delHabit = await call(
+        LOCAL,
+        "DELETE",
+        `/habits/delete-habit/${seedHabitId}`,
+        { cookie },
+      );
+      if (delHabit.status !== 200) {
+        problems.push(
+          `delete-habit status ${delHabit.status}: ${JSON.stringify(delHabit.body)}`,
+        );
+      } else {
+        console.log("PASS cleanup delete-habit (seed habit removed)");
+      }
+    } else {
+      problems.push("delete-habit skipped: no local auth token available");
+    }
+  }
+
+  if (cookie) {
+    const del = await call(LOCAL, "DELETE", "/users/delete-account", {
+      cookie,
+    });
+    if (del.status !== 200) {
+      problems.push(
+        `delete-account status ${del.status}: ${JSON.stringify(del.body)}`,
+      );
+    } else {
+      console.log("PASS cleanup delete-account (disposable user removed)");
+    }
+  } else {
+    problems.push("delete-account skipped: no local auth token available");
+  }
+
+  if (problems.length === 0) return;
+  const level = runAlreadyFailed ? "WARN" : "FAIL";
+  for (const p of problems) console.log(`${level} cleanup: ${p}`);
+  if (!runAlreadyFailed) mismatches += 1;
 }
 
 async function main() {
@@ -188,114 +239,89 @@ async function main() {
     body: { username, email, password },
   });
   if (reg.status !== 200 || reg.body?.success !== true) {
+    // non-200 register = user not created, nothing to clean up
     console.log(
       `FAIL register (local status ${reg.status}): ${JSON.stringify(reg.body)}`,
     );
     process.exit(1);
   }
 
-  const loginLocal = await call(LOCAL, "POST", "/users/login", {
-    body: { email, password },
-  });
-  const loginLegacy = await call(LEGACY, "POST", "/users/login", {
-    body: { email, password },
-  });
+  // post-register: everything runs inside try/catch/finally so the disposable
+  // user is best-effort deleted on EVERY exit path
+  let cookieLocal = "";
+  let cookieLegacy = "";
+  let seedHabitId = null;
+  let fatal = null;
 
-  if (
-    loginLocal.status !== 200 ||
-    loginLegacy.status !== 200 ||
-    loginLocal.error ||
-    loginLegacy.error
-  ) {
-    console.log(
-      `FAIL login: local=${loginLocal.status} ${loginLocal.error || ""} legacy=${loginLegacy.status} ${loginLegacy.error || ""}`,
-    );
-    // best-effort cleanup
-    const cleanupCookie = authCookieFrom(loginLocal.setCookies);
-    if (cleanupCookie) {
-      await call(LOCAL, "DELETE", "/users/delete-account", {
-        cookie: cleanupCookie,
-      });
-    }
-    process.exit(1);
-  }
-
-  const cookieLocal = authCookieFrom(loginLocal.setCookies);
-  const cookieLegacy = authCookieFrom(loginLegacy.setCookies);
-  if (!cookieLocal || !cookieLegacy) {
-    console.log(
-      `FAIL login cookies: local=${Boolean(cookieLocal)} legacy=${Boolean(cookieLegacy)}`,
-    );
-    process.exit(1);
-  }
-
-  // 3. seed ONE habit locally so reads return real data (same DB → both bases see it)
-  const seed = await call(LOCAL, "POST", "/habits/create-habit", {
-    cookie: cookieLocal,
-    body: {
-      title: "Parity Seed Habit",
-      description: "parity diff seed",
-      category: "Health",
-      frequency: "daily",
-      color: "#4F6F64",
-      type: "boolean",
-    },
-  });
-  if (seed.status !== 201 || !seed.body?.data?._id) {
-    console.log(
-      `FAIL seed habit (local status ${seed.status}): ${JSON.stringify(seed.body)}`,
-    );
-    await call(LOCAL, "DELETE", "/users/delete-account", {
-      cookie: cookieLocal,
+  try {
+    const loginLocal = await call(LOCAL, "POST", "/users/login", {
+      body: { email, password },
     });
+    cookieLocal = authCookieFrom(loginLocal.setCookies);
+
+    const loginLegacy = await call(LEGACY, "POST", "/users/login", {
+      body: { email, password },
+    });
+    cookieLegacy = authCookieFrom(loginLegacy.setCookies);
+
+    if (
+      loginLocal.status !== 200 ||
+      loginLegacy.status !== 200 ||
+      loginLocal.error ||
+      loginLegacy.error
+    ) {
+      fatal = `FAIL login: local=${loginLocal.status} ${loginLocal.error || ""} legacy=${loginLegacy.status} ${loginLegacy.error || ""}`;
+    } else if (!cookieLocal || !cookieLegacy) {
+      fatal = `FAIL login cookies: local=${Boolean(cookieLocal)} legacy=${Boolean(cookieLegacy)}`;
+    }
+
+    if (!fatal) {
+      // 3. seed ONE habit locally so reads return real data (same DB → both bases see it)
+      const seed = await call(LOCAL, "POST", "/habits/create-habit", {
+        cookie: cookieLocal,
+        body: {
+          title: "Parity Seed Habit",
+          description: "parity diff seed",
+          category: "Health",
+          frequency: "daily",
+          color: "#4F6F64",
+          type: "boolean",
+        },
+      });
+      if (seed.status !== 201 || !seed.body?.data?._id) {
+        fatal = `FAIL seed habit (local status ${seed.status}): ${JSON.stringify(seed.body)}`;
+      } else {
+        seedHabitId = seed.body.data._id;
+
+        // 4. authenticated reads on both bases, SAME account (same DB → same data)
+        const habitsLocal = await call(LOCAL, "GET", "/habits/get-habits", {
+          cookie: cookieLocal,
+        });
+        const habitsLegacy = await call(LEGACY, "GET", "/habits/get-habits", {
+          cookie: cookieLegacy,
+        });
+        compareEndpoint("GET /habits/get-habits", habitsLocal, habitsLegacy);
+
+        const statsLocal = await call(LOCAL, "GET", "/dashboard/getstats", {
+          cookie: cookieLocal,
+        });
+        const statsLegacy = await call(LEGACY, "GET", "/dashboard/getstats", {
+          cookie: cookieLegacy,
+        });
+        compareEndpoint("GET /dashboard/getstats", statsLocal, statsLegacy);
+      }
+    }
+  } catch (err) {
+    fatal = `FAIL parity-diff script error: ${err.message}`;
+  } finally {
+    // 5. cleanup on every path (local access token from whichever login gave one)
+    await cleanup(seedHabitId, cookieLocal, Boolean(fatal) || mismatches > 0);
+  }
+
+  if (fatal) {
+    console.log(fatal);
     process.exit(1);
   }
-  const seedHabitId = seed.body.data._id;
-
-  // 4. authenticated reads on both bases with the SAME account (same DB → same data)
-  const habitsLocal = await call(LOCAL, "GET", "/habits/get-habits", {
-    cookie: cookieLocal,
-  });
-  const habitsLegacy = await call(LEGACY, "GET", "/habits/get-habits", {
-    cookie: cookieLegacy,
-  });
-  compareEndpoint("GET /habits/get-habits", habitsLocal, habitsLegacy);
-
-  const statsLocal = await call(LOCAL, "GET", "/dashboard/getstats", {
-    cookie: cookieLocal,
-  });
-  const statsLegacy = await call(LEGACY, "GET", "/dashboard/getstats", {
-    cookie: cookieLegacy,
-  });
-  compareEndpoint("GET /dashboard/getstats", statsLocal, statsLegacy);
-
-  // 5. cleanup: remove seed habit + account locally (shared DB → removes everywhere)
-  const delHabit = await call(
-    LOCAL,
-    "DELETE",
-    `/habits/delete-habit/${seedHabitId}`,
-    { cookie: cookieLocal },
-  );
-  if (delHabit.status !== 200) {
-    console.log(
-      `FAIL cleanup delete-habit status ${delHabit.status}: ${JSON.stringify(delHabit.body)}`,
-    );
-    mismatches += 1;
-  } else {
-    console.log("PASS cleanup delete-habit (seed habit removed)");
-  }
-  const del = await call(LOCAL, "DELETE", "/users/delete-account", {
-    cookie: cookieLocal,
-  });
-  if (del.status !== 200) {
-    console.log(
-      `FAIL cleanup delete-account status ${del.status}: ${JSON.stringify(del.body)}`,
-    );
-    mismatches += 1;
-  } else {
-    console.log("PASS cleanup delete-account (disposable user removed)");
-  }
-
   if (mismatches > 0) {
     console.error(`${mismatches} parity mismatch(es)`);
     process.exit(1);
