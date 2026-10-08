@@ -66,13 +66,13 @@ Expected: added to package.json.
 
 - [ ] **Step 2: Append backend secrets to `.env`**
 
-Append (values copied verbatim from `D:\PROJECTS\HABIT TRACKER BACKEND\.env`):
+Append (values copied verbatim from `D:\PROJECTS\HABIT TRACKER BACKEND\.env` — see that file directly; secrets intentionally not duplicated here):
 
 ```
 MONGODB_URL=<from backend .env>
-ACCESS_TOKEN_SECRET=<from backend .env>
+ACCESS_TOKEN_SECRET=<from backend .env><from backend .env>
 ACCESS_TOKEN_EXPIRE=1d
-REFRESH_TOKEN_SECRET=<from backend .env>
+REFRESH_TOKEN_SECRET=<from backend .env><from backend .env>
 REFRESH_TOKEN_EXPIRE=7d
 ```
 

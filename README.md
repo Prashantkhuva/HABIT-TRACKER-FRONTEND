@@ -114,6 +114,13 @@ Create a `.env` file:
 NEXT_PUBLIC_API_URL=/api/v1
 NEXT_PUBLIC_ADMIN_EMAIL=admin@example.com
 NEXT_PUBLIC_SITE_URL=https://habitflow.indevs.in
+
+# Server-only (API routes; do not prefix with NEXT_PUBLIC_)
+MONGODB_URL=<mongodb+srv connection string>
+ACCESS_TOKEN_SECRET=<64-hex secret>
+ACCESS_TOKEN_EXPIRE=1d
+REFRESH_TOKEN_SECRET=<64-hex secret>
+REFRESH_TOKEN_EXPIRE=7d
 ```
 
 The API is served by this app itself at `/api/v1` (same-origin) — no external backend URL needed. To roll back to the legacy Render backend, set `NEXT_PUBLIC_API_URL=https://habit-tracker-t0o0.onrender.com/api/v1`.
