@@ -724,6 +724,273 @@ async function habitlogScope() {
   check("habitlog delete-account 200", del.status === 200);
 }
 
+async function dashboardScope() {
+  const stamp = Date.now();
+  const username = `smoked${stamp}`;
+  const email = `smoked+${stamp}@test.dev`;
+  const password = "secret123";
+
+  // 1. unauthorized (verifyJWT before handler)
+  const u1 = await call("GET", "/dashboard/getstats");
+  check("getstats no cookie 401", u1.status === 401);
+  check(
+    "getstats no cookie message",
+    u1.body?.message === "Unauthorized: No token provided",
+  );
+
+  const u2 = await call("GET", "/dashboard/weeklydata");
+  check("weeklydata no cookie 401", u2.status === 401);
+
+  const u3 = await call("GET", "/dashboard/longest-streak");
+  check("longest-streak no cookie 401", u3.status === 401);
+
+  const u4 = await call("GET", "/dashboard/heatmap");
+  check("heatmap no cookie 401", u4.status === 401);
+
+  // 2. register disposable user + login
+  const r1 = await call("POST", "/users/register", {
+    body: { username, email, password },
+  });
+  check("dashboard register 200", r1.status === 200);
+
+  const r2 = await call("POST", "/users/login", { body: { email, password } });
+  check("dashboard login 200", r2.status === 200);
+  const accessToken = cookiePair(r2.setCookies, "accessToken");
+  const refreshToken = cookiePair(r2.setCookies, "refreshToken");
+  check("dashboard login sets cookies", Boolean(accessToken && refreshToken));
+  const authCookie = [accessToken, refreshToken].filter(Boolean).join("; ");
+
+  // 3. empty state before any habits/logs
+  const e1 = await call("GET", "/dashboard/getstats", { cookie: authCookie });
+  check("getstats empty 200", e1.status === 200);
+  check(
+    "getstats empty message",
+    e1.body?.message === "Dashboard stats fetched successfully",
+  );
+  check("getstats empty totalHabits 0", e1.body?.data?.totalHabits === 0);
+  check("getstats empty completedToday 0", e1.body?.data?.completedToday === 0);
+  check(
+    "getstats empty totalCompletions 0",
+    e1.body?.data?.totalCompletions === 0,
+  );
+  check("getstats empty completionRate 0", e1.body?.data?.completionRate === 0);
+
+  const e2 = await call("GET", "/dashboard/longest-streak", {
+    cookie: authCookie,
+  });
+  check("longest-streak empty 200", e2.status === 200);
+  check(
+    "longest-streak empty message",
+    e2.body?.message === "Streak calculated successfully",
+  );
+  check(
+    "longest-streak empty zeros",
+    e2.body?.data?.currentStreak === 0 && e2.body?.data?.longestStreak === 0,
+  );
+
+  const e3 = await call("GET", "/dashboard/heatmap", { cookie: authCookie });
+  check("heatmap empty 200", e3.status === 200);
+  check(
+    "heatmap empty message",
+    e3.body?.message === "Heatmap data fetched successfully",
+  );
+  check(
+    "heatmap empty array",
+    Array.isArray(e3.body?.data) && e3.body.data.length === 0,
+  );
+
+  // 4. create two habits
+  const c1 = await call("POST", "/habits/create-habit", {
+    cookie: authCookie,
+    body: {
+      title: "Dashboard Smoke A",
+      description: "smoke description",
+      category: "Health",
+      frequency: "daily",
+      color: "#4F6F64",
+      type: "boolean",
+    },
+  });
+  check("dashboard create-habit 1 (201)", c1.status === 201);
+  const habitId = c1.body?.data?._id;
+  check("dashboard create-habit 1 returns _id", Boolean(habitId));
+
+  const c2 = await call("POST", "/habits/create-habit", {
+    cookie: authCookie,
+    body: {
+      title: "Dashboard Smoke B",
+      description: "smoke description",
+      category: "Health",
+      frequency: "daily",
+      color: "#4F6F64",
+      type: "boolean",
+    },
+  });
+  check("dashboard create-habit 2 (201)", c2.status === 201);
+  const habitId2 = c2.body?.data?._id;
+  check("dashboard create-habit 2 returns _id", Boolean(habitId2));
+
+  // 5. complete habit 1 today → today's count = 1
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const d1 = await call("POST", `/habitlog/${habitId}/complete`, {
+    cookie: authCookie,
+    body: {},
+  });
+  check("dashboard complete 200", d1.status === 200);
+  check(
+    "dashboard complete message",
+    d1.body?.message === "Habit completed successfully",
+  );
+
+  // 6. getstats numbers
+  const s1 = await call("GET", "/dashboard/getstats", { cookie: authCookie });
+  check("getstats 200", s1.status === 200);
+  check(
+    "getstats message",
+    s1.body?.message === "Dashboard stats fetched successfully",
+  );
+  check("getstats totalHabits 2", s1.body?.data?.totalHabits === 2);
+  check("getstats completedToday 1", s1.body?.data?.completedToday === 1);
+  check("getstats totalCompletions 1", s1.body?.data?.totalCompletions === 1);
+  check("getstats completionRate 50", s1.body?.data?.completionRate === 50);
+
+  // 7. weeklydata array shape, length 7, today counted once
+  const w1 = await call("GET", "/dashboard/weeklydata", { cookie: authCookie });
+  check("weeklydata 200", w1.status === 200);
+  check(
+    "weeklydata message",
+    w1.body?.message === "Weekly data fetched successfully",
+  );
+  const wArr = w1.body?.data;
+  check("weeklydata array length 7", Array.isArray(wArr) && wArr.length === 7);
+  check(
+    "weeklydata shape day string + count number",
+    Array.isArray(wArr) &&
+      wArr.every(
+        (e) => typeof e.day === "string" && typeof e.count === "number",
+      ),
+  );
+  check(
+    "weeklydata sum counts 1",
+    Array.isArray(wArr) && wArr.reduce((acc, e) => acc + e.count, 0) === 1,
+  );
+  check(
+    "weeklydata exactly one day holds the count",
+    Array.isArray(wArr) && wArr.filter((e) => e.count === 1).length === 1,
+  );
+
+  // 8. longest-streak global (today's log → 1)
+  const g1 = await call("GET", "/dashboard/longest-streak", {
+    cookie: authCookie,
+  });
+  check("longest-streak 200", g1.status === 200);
+  check(
+    "longest-streak message",
+    g1.body?.message === "Streak calculated successfully",
+  );
+  check("longest-streak currentStreak 1", g1.body?.data?.currentStreak === 1);
+  check("longest-streak longestStreak 1", g1.body?.data?.longestStreak === 1);
+
+  // 9. longest-streak/:habitId with a log
+  const h1 = await call("GET", `/dashboard/longest-streak/${habitId}`, {
+    cookie: authCookie,
+  });
+  check("longest-streak/:habitId 200", h1.status === 200);
+  check(
+    "longest-streak/:habitId currentStreak 1",
+    h1.body?.data?.currentStreak === 1,
+  );
+  check(
+    "longest-streak/:habitId longestStreak 1",
+    h1.body?.data?.longestStreak === 1,
+  );
+
+  // 10. longest-streak/:habitId without logs → zeros
+  const h2 = await call("GET", `/dashboard/longest-streak/${habitId2}`, {
+    cookie: authCookie,
+  });
+  check("longest-streak/:habitId no logs 200", h2.status === 200);
+  check(
+    "longest-streak/:habitId no logs zeros",
+    h2.body?.data?.currentStreak === 0 && h2.body?.data?.longestStreak === 0,
+  );
+
+  // 11. query fallback habitId (source: req.params.habitId || req.query.habitId)
+  const q1 = await call("GET", `/dashboard/longest-streak?habitId=${habitId}`, {
+    cookie: authCookie,
+  });
+  check("longest-streak query habitId 1", q1.body?.data?.currentStreak === 1);
+
+  const q2 = await call(
+    "GET",
+    `/dashboard/longest-streak?habitId=${habitId2}`,
+    { cookie: authCookie },
+  );
+  check(
+    "longest-streak query habitId zeros",
+    q2.body?.data?.currentStreak === 0 && q2.body?.data?.longestStreak === 0,
+  );
+
+  // 12. heatmap entries
+  const hm = await call("GET", "/dashboard/heatmap", { cookie: authCookie });
+  check("heatmap 200", hm.status === 200);
+  check(
+    "heatmap message",
+    hm.body?.message === "Heatmap data fetched successfully",
+  );
+  const hmArr = hm.body?.data;
+  check("heatmap array length 1", Array.isArray(hmArr) && hmArr.length === 1);
+  check("heatmap entry count 1", hmArr?.[0]?.count === 1);
+  check(
+    "heatmap entry _id YYYY-MM-DD",
+    /^\d{4}-\d{2}-\d{2}$/.test(hmArr?.[0]?._id ?? ""),
+  );
+
+  // 13. dispatcher 404 shape (unknown path / extra segment / wrong method)
+  const n1 = await call("GET", "/dashboard/nope", { cookie: authCookie });
+  check("unknown dashboard route 404", n1.status === 404);
+  check(
+    "unknown dashboard route message",
+    n1.body?.message === "Route not found",
+  );
+  check(
+    "unknown dashboard route errors empty",
+    Array.isArray(n1.body?.errors) && n1.body.errors.length === 0,
+  );
+
+  const n2 = await call("GET", "/dashboard/getstats/extra", {
+    cookie: authCookie,
+  });
+  check("getstats extra segment 404", n2.status === 404);
+
+  const n3 = await call("POST", "/dashboard/getstats", { cookie: authCookie });
+  check("POST getstats 404", n3.status === 404);
+
+  const n4 = await call("GET", "/dashboard/longest-streak/x/y", {
+    cookie: authCookie,
+  });
+  check("longest-streak 3 segments 404", n4.status === 404);
+
+  // 14. cleanup: delete habits (cascades logs), logout, delete-account
+  const del1 = await call("DELETE", `/habits/delete-habit/${habitId}`, {
+    cookie: authCookie,
+  });
+  check("dashboard delete-habit 1 200", del1.status === 200);
+  const del2 = await call("DELETE", `/habits/delete-habit/${habitId2}`, {
+    cookie: authCookie,
+  });
+  check("dashboard delete-habit 2 200", del2.status === 200);
+
+  const out = await call("POST", "/users/logout", { cookie: authCookie });
+  check("dashboard logout 200", out.status === 200);
+  const del = await call("DELETE", "/users/delete-account", {
+    cookie: authCookie,
+  });
+  check("dashboard delete-account 200", del.status === 200);
+}
+
 async function main() {
   const scope = process.argv[2] || "healthcheck";
 
@@ -735,6 +1002,8 @@ async function main() {
     await habitsScope();
   } else if (scope === "habitlog") {
     await habitlogScope();
+  } else if (scope === "dashboard") {
+    await dashboardScope();
   } else {
     console.error(`FAIL unknown scope: ${scope}`);
     process.exit(2);
