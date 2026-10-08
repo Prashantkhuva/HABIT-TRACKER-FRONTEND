@@ -1,10 +1,16 @@
 const BASE_URL = process.env.SMOKE_URL || "http://localhost:3000/api/v1";
 
 let failures = 0;
+let scopeChecks = 0;
+let scopeFails = 0;
 
 export function check(name, cond) {
   const status = cond ? "PASS" : "FAIL";
-  if (!cond) failures += 1;
+  scopeChecks += 1;
+  if (!cond) {
+    failures += 1;
+    scopeFails += 1;
+  }
   console.log(`${status} ${name}`);
 }
 
@@ -1346,24 +1352,45 @@ async function blogScope() {
   check("healthcheck from blog scope success", h.body?.success === true);
 }
 
-async function main() {
-  const scope = process.argv[2] || "healthcheck";
+const SCOPES = [
+  ["healthcheck", healthcheckScope],
+  ["users", usersScope],
+  ["habits", habitsScope],
+  ["habitlog", habitlogScope],
+  ["dashboard", dashboardScope],
+  ["blog", blogScope],
+];
 
-  if (scope === "healthcheck") {
-    await healthcheckScope();
-  } else if (scope === "users") {
-    await usersScope();
-  } else if (scope === "habits") {
-    await habitsScope();
-  } else if (scope === "habitlog") {
-    await habitlogScope();
-  } else if (scope === "dashboard") {
-    await dashboardScope();
-  } else if (scope === "blog") {
-    await blogScope();
-  } else {
-    console.error(`FAIL unknown scope: ${scope}`);
-    process.exit(2);
+async function main() {
+  const arg = process.argv[2];
+
+  let targets = SCOPES;
+  if (arg) {
+    targets = SCOPES.filter(([name]) => name === arg);
+    if (targets.length === 0) {
+      console.error(`FAIL unknown scope: ${arg}`);
+      process.exit(2);
+    }
+  }
+
+  let totalChecks = 0;
+  let totalFails = 0;
+
+  for (const [name, run] of targets) {
+    scopeChecks = 0;
+    scopeFails = 0;
+    await run();
+    totalChecks += scopeChecks;
+    totalFails += scopeFails;
+    console.log(
+      `SCOPE ${name}: ${scopeChecks - scopeFails}/${scopeChecks} checks passed`,
+    );
+  }
+
+  if (targets.length > 1) {
+    console.log(
+      `TOTAL: ${totalChecks - totalFails}/${totalChecks} checks passed`,
+    );
   }
 
   if (failures > 0) {
