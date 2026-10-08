@@ -36,10 +36,15 @@ function cookiePair(setCookies, name) {
 }
 
 async function healthcheckScope() {
-  const body = await fetch(`${BASE_URL}/healthcheck`)
-    .then((res) => res.json())
-    .catch(() => null);
+  const res = await fetch(`${BASE_URL}/healthcheck`);
+  const body = await res.json().catch(() => null);
+  check("GET /healthcheck 200", res.status === 200);
   check("GET /healthcheck returns success: true", body?.success === true);
+  check(
+    "GET /healthcheck data source parity",
+    body?.data === "Server is running fine",
+  );
+  check("GET /healthcheck message", body?.message === "Success");
 }
 
 async function usersScope() {
@@ -991,6 +996,356 @@ async function dashboardScope() {
   check("dashboard delete-account 200", del.status === 200);
 }
 
+async function blogScope() {
+  const stamp = Date.now();
+  const username = `smokeb${stamp}`;
+  const email = `smokeb+${stamp}@test.dev`;
+  const password = "secret123";
+  const unknownId = "64b000000000000000000000";
+
+  // 1. public reads without auth
+  const p1 = await call("GET", "/blog/posts");
+  check("posts list 200", p1.status === 200);
+  check(
+    "posts list message",
+    p1.body?.message === "Blog posts fetched successfully",
+  );
+  check("posts list data.posts array", Array.isArray(p1.body?.data?.posts));
+  check(
+    "posts list pagination defaults",
+    p1.body?.data?.pagination?.limit === 20 &&
+      p1.body?.data?.pagination?.currentPage === 1,
+  );
+
+  const p2 = await call("GET", "/blog/posts/smoke-missing-slug");
+  check("posts missing slug 404", p2.status === 404);
+  check(
+    "posts missing slug message",
+    p2.body?.message === "Blog post not found",
+  );
+
+  // 2. protected routes without auth → 401 (verifyJWT before handler)
+  const u1 = await call("POST", "/blog/posts", {
+    body: { title: "x", content: "y" },
+  });
+  check("posts no cookie 401", u1.status === 401);
+  check(
+    "posts no cookie message",
+    u1.body?.message === "Unauthorized: No token provided",
+  );
+
+  const u2 = await call("GET", `/blog/post/${unknownId}`);
+  check("post id no cookie 401", u2.status === 401);
+
+  const u3 = await call("PATCH", `/blog/post/${unknownId}`, {
+    body: { title: "nope" },
+  });
+  check("post patch no cookie 401", u3.status === 401);
+
+  const u4 = await call("DELETE", `/blog/post/${unknownId}`);
+  check("post delete no cookie 401", u4.status === 401);
+
+  // 3. register + login disposable user
+  const r1 = await call("POST", "/users/register", {
+    body: { username, email, password },
+  });
+  check("blog register 200", r1.status === 200);
+
+  const r2 = await call("POST", "/users/login", { body: { email, password } });
+  check("blog login 200", r2.status === 200);
+  const accessToken = cookiePair(r2.setCookies, "accessToken");
+  const refreshToken = cookiePair(r2.setCookies, "refreshToken");
+  check("blog login sets cookies", Boolean(accessToken && refreshToken));
+  const authCookie = [accessToken, refreshToken].filter(Boolean).join("; ");
+
+  // 4. create validation: missing title+content → all checks fire (express parity)
+  const v1 = await call("POST", "/blog/posts", {
+    cookie: authCookie,
+    body: {},
+  });
+  check("create post validation 422", v1.status === 422);
+  check(
+    "create post validation message",
+    v1.body?.message === "Received data is not valid",
+  );
+  check(
+    "create post validation errors exact",
+    JSON.stringify(v1.body?.errors) ===
+      JSON.stringify([
+        { title: "Title is required" },
+        { title: "Title must be at least 3 characters" },
+        { content: "Content is required" },
+        { content: "Content must be at least 10 characters" },
+      ]),
+  );
+
+  // 5. create with bad slug → single slug error
+  const v2 = await call("POST", "/blog/posts", {
+    cookie: authCookie,
+    body: { title: "Valid title", content: "Valid content", slug: "Bad Slug" },
+  });
+  check("create post bad slug 422", v2.status === 422);
+  check(
+    "create post bad slug errors exact",
+    JSON.stringify(v2.body?.errors) ===
+      JSON.stringify([{ slug: "Slug must be lowercase with hyphens only" }]),
+  );
+
+  // 6. create post A (slug derived from title)
+  const titleA = "Smoke Post Alpha";
+  const c1 = await call("POST", "/blog/posts", {
+    cookie: authCookie,
+    body: {
+      title: titleA,
+      content: "Smoke content alpha body",
+      description: "alpha desc",
+    },
+  });
+  check("create post 201", c1.status === 201);
+  check(
+    "create post message",
+    c1.body?.message === "Blog post created successfully",
+  );
+  check("create post data.title", c1.body?.data?.title === titleA);
+  check("create post derived slug", c1.body?.data?.slug === "smoke-post-alpha");
+  check(
+    "create post published date",
+    /^\d{4}-\d{2}-\d{2}$/.test(c1.body?.data?.published ?? ""),
+  );
+  check(
+    "create post lastmod date",
+    /^\d{4}-\d{2}-\d{2}$/.test(c1.body?.data?.lastmod ?? ""),
+  );
+  check("create post image default", c1.body?.data?.image === "/og-image.png");
+  const postA = c1.body?.data?._id;
+  check("create post returns _id", Boolean(postA));
+
+  // 7. create post B with explicit slug
+  const c2 = await call("POST", "/blog/posts", {
+    cookie: authCookie,
+    body: {
+      title: "Smoke Post Beta",
+      content: "Smoke content beta body",
+      slug: "smoke-beta",
+    },
+  });
+  check("create post B 201", c2.status === 201);
+  check("create post B slug", c2.body?.data?.slug === "smoke-beta");
+  const postB = c2.body?.data?._id;
+  check("create post B returns _id", Boolean(postB));
+
+  // 8. duplicate slug → 409
+  const c3 = await call("POST", "/blog/posts", {
+    cookie: authCookie,
+    body: { title: titleA, content: "Smoke content alpha body" },
+  });
+  check("create duplicate slug 409", c3.status === 409);
+  check(
+    "create duplicate slug message",
+    c3.body?.message === "A post with this slug already exists",
+  );
+
+  // 9. list contains both posts, content excluded (select -content)
+  const l1 = await call("GET", "/blog/posts");
+  check("posts list after create 200", l1.status === 200);
+  const lA = (l1.body?.data?.posts ?? []).find(
+    (post) => post.slug === "smoke-post-alpha",
+  );
+  const lB = (l1.body?.data?.posts ?? []).find(
+    (post) => post.slug === "smoke-beta",
+  );
+  check("posts list contains A", Boolean(lA));
+  check("posts list contains B", Boolean(lB));
+  check(
+    "posts list excludes content",
+    Boolean(lA) && Boolean(lB) && lA.content === undefined,
+  );
+  check(
+    "posts list totalPosts at least 2",
+    l1.body?.data?.pagination?.totalPosts >= 2,
+  );
+
+  // 10. pagination: limit honored + capped at 100
+  const l2 = await call("GET", "/blog/posts?limit=1");
+  check("posts list limit 1", l2.body?.data?.pagination?.limit === 1);
+  const l3 = await call("GET", "/blog/posts?limit=500");
+  check(
+    "posts list limit capped 100",
+    l3.body?.data?.pagination?.limit === 100,
+  );
+
+  // 11. single post by slug → full doc with content
+  const s1 = await call("GET", "/blog/posts/smoke-post-alpha");
+  check("post by slug 200", s1.status === 200);
+  check(
+    "post by slug message",
+    s1.body?.message === "Blog post fetched successfully",
+  );
+  check("post by slug data.slug", s1.body?.data?.slug === "smoke-post-alpha");
+  check(
+    "post by slug includes content",
+    s1.body?.data?.content === "Smoke content alpha body",
+  );
+
+  // 12. get by id (authed) → 200; unknown id → 404
+  const g1 = await call("GET", `/blog/post/${postA}`, { cookie: authCookie });
+  check("post by id 200", g1.status === 200);
+  check(
+    "post by id message",
+    g1.body?.message === "Blog post fetched successfully",
+  );
+
+  const g2 = await call("GET", `/blog/post/${unknownId}`, {
+    cookie: authCookie,
+  });
+  check("post by unknown id 404", g2.status === 404);
+  check(
+    "post by unknown id message",
+    g2.body?.message === "Blog post not found",
+  );
+
+  // 13. patch title → 200, lastmod refreshed
+  const newTitle = "Smoke Post Alpha Renamed";
+  const pa = await call("PATCH", `/blog/post/${postA}`, {
+    cookie: authCookie,
+    body: { title: newTitle },
+  });
+  check("patch post 200", pa.status === 200);
+  check(
+    "patch post message",
+    pa.body?.message === "Blog post updated successfully",
+  );
+  check("patch post data.title", pa.body?.data?.title === newTitle);
+  check(
+    "patch post lastmod date",
+    /^\d{4}-\d{2}-\d{2}$/.test(pa.body?.data?.lastmod ?? ""),
+  );
+
+  // 14. patch validation: short content → 422 single error
+  const v3 = await call("PATCH", `/blog/post/${postA}`, {
+    cookie: authCookie,
+    body: { content: "short" },
+  });
+  check("patch post validation 422", v3.status === 422);
+  check(
+    "patch post validation errors exact",
+    JSON.stringify(v3.body?.errors) ===
+      JSON.stringify([{ content: "Content must be at least 10 characters" }]),
+  );
+
+  // 15. patch slug conflict with post B → 409
+  const pb = await call("PATCH", `/blog/post/${postA}`, {
+    cookie: authCookie,
+    body: { slug: "smoke-beta" },
+  });
+  check("patch post slug conflict 409", pb.status === 409);
+  check(
+    "patch post slug conflict message",
+    pb.body?.message === "A post with this slug already exists",
+  );
+
+  // 16. patch unknown id → 404
+  const pc = await call("PATCH", `/blog/post/${unknownId}`, {
+    cookie: authCookie,
+    body: { title: "nope" },
+  });
+  check("patch unknown post 404", pc.status === 404);
+  check(
+    "patch unknown post message",
+    pc.body?.message === "Blog post not found",
+  );
+
+  // 17. slug rename → 200, old slug gone, new slug live
+  const pd = await call("PATCH", `/blog/post/${postA}`, {
+    cookie: authCookie,
+    body: { slug: "smoke-alpha-renamed" },
+  });
+  check("patch slug rename 200", pd.status === 200);
+  check(
+    "patch slug rename data.slug",
+    pd.body?.data?.slug === "smoke-alpha-renamed",
+  );
+
+  const s2 = await call("GET", "/blog/posts/smoke-post-alpha");
+  check("old slug 404 after rename", s2.status === 404);
+
+  const s3 = await call("GET", "/blog/posts/smoke-alpha-renamed");
+  check("new slug 200 after rename", s3.status === 200);
+
+  // 18. route shape: no id / extra segments / wrong method → 404
+  const n1 = await call("GET", "/blog/post");
+  check("GET post without id 404", n1.status === 404);
+  check("GET post without id message", n1.body?.message === "Route not found");
+
+  const n2 = await call("GET", "/blog/posts/smoke-beta/extra");
+  check("posts extra segment 404", n2.status === 404);
+
+  const n3 = await call("PATCH", "/blog/posts/smoke-beta", {
+    cookie: authCookie,
+    body: {},
+  });
+  check("PATCH posts slug 404", n3.status === 404);
+
+  const n4 = await call("DELETE", "/blog/posts");
+  check("DELETE posts 404", n4.status === 404);
+
+  const n5 = await call("GET", "/blog/nope");
+  check("unknown blog route 404", n5.status === 404);
+  check("unknown blog route message", n5.body?.message === "Route not found");
+  check(
+    "unknown blog route errors empty",
+    Array.isArray(n5.body?.errors) && n5.body.errors.length === 0,
+  );
+
+  // 19. delete A → 200; public slug 404; delete again → 404
+  const d1 = await call("DELETE", `/blog/post/${postA}`, {
+    cookie: authCookie,
+  });
+  check("delete post 200", d1.status === 200);
+  check(
+    "delete post message",
+    d1.body?.message === "Blog post deleted successfully",
+  );
+  check(
+    "delete post data empty object",
+    JSON.stringify(d1.body?.data) === "{}",
+  );
+
+  const s4 = await call("GET", "/blog/posts/smoke-alpha-renamed");
+  check("post by slug after delete 404", s4.status === 404);
+  check(
+    "post by slug after delete message",
+    s4.body?.message === "Blog post not found",
+  );
+
+  const d2 = await call("DELETE", `/blog/post/${postA}`, {
+    cookie: authCookie,
+  });
+  check("delete post again 404", d2.status === 404);
+  check(
+    "delete post again message",
+    d2.body?.message === "Blog post not found",
+  );
+
+  // 20. cleanup: delete B, logout, delete-account
+  const d3 = await call("DELETE", `/blog/post/${postB}`, {
+    cookie: authCookie,
+  });
+  check("delete post B 200", d3.status === 200);
+
+  const out = await call("POST", "/users/logout", { cookie: authCookie });
+  check("blog logout 200", out.status === 200);
+  const del = await call("DELETE", "/users/delete-account", {
+    cookie: authCookie,
+  });
+  check("blog delete-account 200", del.status === 200);
+
+  // 21. healthcheck asserted from blog scope too (brief step 4)
+  const h = await call("GET", "/healthcheck");
+  check("healthcheck from blog scope 200", h.status === 200);
+  check("healthcheck from blog scope success", h.body?.success === true);
+}
+
 async function main() {
   const scope = process.argv[2] || "healthcheck";
 
@@ -1004,6 +1359,8 @@ async function main() {
     await habitlogScope();
   } else if (scope === "dashboard") {
     await dashboardScope();
+  } else if (scope === "blog") {
+    await blogScope();
   } else {
     console.error(`FAIL unknown scope: ${scope}`);
     process.exit(2);
