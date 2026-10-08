@@ -178,43 +178,52 @@ function compareEndpoint(label, localRes, legacyRes) {
   for (const d of deltas) console.log(`  ${d}`);
 }
 
-async function cleanup(seedHabitId, cookie, runAlreadyFailed) {
+// Best-effort cleanup against whichever base/token works: both bases share the
+// same Atlas DB, so a delete via LOCAL+cookieLocal or LEGACY+cookieLegacy both
+// remove the data. Every attempt is logged; `problems` only collects TOTAL
+// failures (all available token/base combos failed, or no token at all).
+async function cleanup(
+  seedHabitId,
+  cookieLocal,
+  cookieLegacy,
+  runAlreadyFailed,
+) {
   const problems = [];
+  const tokens = [];
+  if (cookieLocal) {
+    tokens.push({ name: "local", base: LOCAL, cookie: cookieLocal });
+  }
+  if (cookieLegacy) {
+    tokens.push({ name: "legacy", base: LEGACY, cookie: cookieLegacy });
+  }
+
+  async function attemptAll(label, path) {
+    if (tokens.length === 0) {
+      problems.push(`${label} skipped: no auth token from either login`);
+      return;
+    }
+    for (const t of tokens) {
+      const res = await call(t.base, "DELETE", path, { cookie: t.cookie });
+      if (res.status === 200) {
+        console.log(`PASS cleanup ${label} via ${t.name} base`);
+        return;
+      }
+      console.log(
+        `cleanup ${label} via ${t.name} base failed (status ${res.status}): ${JSON.stringify(res.body)} — trying next token`,
+      );
+    }
+    problems.push(
+      `${label} failed on all available tokens (${tokens.map((t) => t.name).join(", ")})`,
+    );
+  }
 
   if (seedHabitId) {
-    if (cookie) {
-      const delHabit = await call(
-        LOCAL,
-        "DELETE",
-        `/habits/delete-habit/${seedHabitId}`,
-        { cookie },
-      );
-      if (delHabit.status !== 200) {
-        problems.push(
-          `delete-habit status ${delHabit.status}: ${JSON.stringify(delHabit.body)}`,
-        );
-      } else {
-        console.log("PASS cleanup delete-habit (seed habit removed)");
-      }
-    } else {
-      problems.push("delete-habit skipped: no local auth token available");
-    }
+    await attemptAll(
+      "delete-habit (seed habit)",
+      `/habits/delete-habit/${seedHabitId}`,
+    );
   }
-
-  if (cookie) {
-    const del = await call(LOCAL, "DELETE", "/users/delete-account", {
-      cookie,
-    });
-    if (del.status !== 200) {
-      problems.push(
-        `delete-account status ${del.status}: ${JSON.stringify(del.body)}`,
-      );
-    } else {
-      console.log("PASS cleanup delete-account (disposable user removed)");
-    }
-  } else {
-    problems.push("delete-account skipped: no local auth token available");
-  }
+  await attemptAll("delete-account (disposable user)", "/users/delete-account");
 
   if (problems.length === 0) return;
   const level = runAlreadyFailed ? "WARN" : "FAIL";
@@ -314,8 +323,14 @@ async function main() {
   } catch (err) {
     fatal = `FAIL parity-diff script error: ${err.message}`;
   } finally {
-    // 5. cleanup on every path (local access token from whichever login gave one)
-    await cleanup(seedHabitId, cookieLocal, Boolean(fatal) || mismatches > 0);
+    // 5. cleanup on EVERY path, using whichever login token(s) succeeded
+    //    (local-first, legacy fallback — same DB, either base deletes the row)
+    await cleanup(
+      seedHabitId,
+      cookieLocal,
+      cookieLegacy,
+      Boolean(fatal) || mismatches > 0,
+    );
   }
 
   if (fatal) {
