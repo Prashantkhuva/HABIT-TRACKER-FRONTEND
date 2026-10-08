@@ -1,13 +1,12 @@
 import BlogListing from "@/views/blog/BlogListing";
 import { BLOG_POSTS } from "@/lib/blog";
+import { serverApiBase } from "@/lib/api-url";
 
 export const revalidate = 3600;
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 async function getPosts() {
   try {
-    const res = await fetch(`${API_URL}/blog/posts`, {
+    const res = await fetch(`${serverApiBase()}/blog/posts`, {
       next: { revalidate: 300 },
     });
     if (res.ok) {

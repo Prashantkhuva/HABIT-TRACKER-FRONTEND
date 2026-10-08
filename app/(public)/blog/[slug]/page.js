@@ -1,15 +1,14 @@
 import { SITE_URL } from "@/lib/seo-config";
 import { getBlogPost, ALL_SLUGS, getRelatedPosts } from "@/lib/blog";
+import { serverApiBase } from "@/lib/api-url";
 import BlogPostReader from "@/views/blog/BlogPostReader";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const revalidate = 3600;
 export const dynamicParams = true;
 
 async function getPost(slug) {
   try {
-    const res = await fetch(`${API_URL}/blog/posts/${slug}`, {
+    const res = await fetch(`${serverApiBase()}/blog/posts/${slug}`, {
       next: { revalidate: 300 },
     });
     if (res.ok) {
@@ -28,7 +27,7 @@ async function getPost(slug) {
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch(`${API_URL}/blog/posts?limit=1000`, {
+    const res = await fetch(`${serverApiBase()}/blog/posts?limit=1000`, {
       next: { revalidate: 3600 },
     });
     if (res.ok) {

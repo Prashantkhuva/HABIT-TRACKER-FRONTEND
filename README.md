@@ -62,13 +62,13 @@ HabitFlow is a design-driven habit tracker focused on clarity, consistency, and 
 - **Lucide Icons**
 
 ### Backend
-- Node.js / Express.js
+- API runs in-app at `/api/v1` (Next.js route handlers)
 - MongoDB (Mongoose)
 - JWT Authentication (HTTP-only cookies)
+- Legacy backend repo archived (rollback: set `NEXT_PUBLIC_API_URL=https://habit-tracker-t0o0.onrender.com/api/v1`)
 
 ### Deployment
-- Frontend: Vercel
-- Backend: Render
+- Deploy = Vercel only (single-server: frontend + API)
 
 ---
 
@@ -78,7 +78,7 @@ HabitFlow is a design-driven habit tracker focused on clarity, consistency, and 
 app/                    # Next.js App Router pages
   (protected)/          # Authenticated routes (dashboard, rituals, statistics, settings, blog-admin)
   (public)/             # Public routes (landing, signin, signup, blog)
-  api/                  # API routes (sitemap, ping-google)
+  api/                  # API routes (v1 handlers, sitemap, ping-google)
   layout.js             # Root layout with fonts & metadata
 
 src/
@@ -111,10 +111,12 @@ npm install
 Create a `.env` file:
 
 ```env
-NEXT_PUBLIC_API_URL=https://your-backend-url.com/api/v1
+NEXT_PUBLIC_API_URL=/api/v1
 NEXT_PUBLIC_ADMIN_EMAIL=admin@example.com
 NEXT_PUBLIC_SITE_URL=https://habitflow.indevs.in
 ```
+
+The API is served by this app itself at `/api/v1` (same-origin) — no external backend URL needed. To roll back to the legacy Render backend, set `NEXT_PUBLIC_API_URL=https://habit-tracker-t0o0.onrender.com/api/v1`.
 
 ### Run
 

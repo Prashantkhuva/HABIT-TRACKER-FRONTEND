@@ -1,7 +1,6 @@
 import { SITE_URL } from "@/lib/seo-config";
 import { ALL_SLUGS } from "@/lib/blog";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+import { serverApiBase } from "@/lib/api-url";
 
 export const revalidate = 3600;
 
@@ -14,7 +13,7 @@ const STATIC_PAGES = [
 
 async function getBlogSlugs() {
   try {
-    const res = await fetch(`${API_URL}/blog/posts?limit=1000`, {
+    const res = await fetch(`${serverApiBase()}/blog/posts?limit=1000`, {
       next: { revalidate: 300 },
     });
     if (res.ok) {
