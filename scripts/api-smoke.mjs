@@ -490,6 +490,240 @@ async function habitsScope() {
   check("habits delete-account 200", del.status === 200);
 }
 
+async function habitlogScope() {
+  const stamp = Date.now();
+  const username = `smokel${stamp}`;
+  const email = `smokel+${stamp}@test.dev`;
+  const password = "secret123";
+  const unknownId = "64b000000000000000000000";
+
+  // 1. unauthorized checks (verifyJWT before handler)
+  const u1 = await call("POST", `/habitlog/${unknownId}/complete`, {
+    body: { note: "nope" },
+  });
+  check("complete no cookie 401", u1.status === 401);
+  check(
+    "complete no cookie message",
+    u1.body?.message === "Unauthorized: No token provided",
+  );
+
+  const u2 = await call("GET", "/habitlog/all");
+  check("all no cookie 401", u2.status === 401);
+
+  const u3 = await call("GET", `/habitlog/${unknownId}/logs`);
+  check("logs no cookie 401", u3.status === 401);
+
+  // 2. register disposable user
+  const r1 = await call("POST", "/users/register", {
+    body: { username, email, password },
+  });
+  check("habitlog register 200", r1.status === 200);
+
+  // 3. login
+  const r2 = await call("POST", "/users/login", { body: { email, password } });
+  check("habitlog login 200", r2.status === 200);
+  const accessToken = cookiePair(r2.setCookies, "accessToken");
+  const refreshToken = cookiePair(r2.setCookies, "refreshToken");
+  check("habitlog login sets cookies", Boolean(accessToken && refreshToken));
+  const authCookie = [accessToken, refreshToken].filter(Boolean).join("; ");
+
+  // 4. create habit
+  const c1 = await call("POST", "/habits/create-habit", {
+    cookie: authCookie,
+    body: {
+      title: "Habitlog Smoke",
+      description: "smoke description",
+      category: "Health",
+      frequency: "daily",
+      color: "#4F6F64",
+      type: "boolean",
+    },
+  });
+  check("habitlog create-habit 201", c1.status === 201);
+  const habitId = c1.body?.data?._id;
+  check("habitlog create-habit returns _id", Boolean(habitId));
+
+  // 5. unknown habitId → 404 exact source message
+  const n1 = await call("GET", `/habitlog/${unknownId}/logs`, {
+    cookie: authCookie,
+  });
+  check("logs unknown habit 404", n1.status === 404);
+  check(
+    "logs unknown habit message",
+    n1.body?.message === "Habit not found or unauthorized",
+  );
+
+  const n2 = await call("GET", `/habitlog/${unknownId}/streak`, {
+    cookie: authCookie,
+  });
+  check("streak unknown habit 404", n2.status === 404);
+  check(
+    "streak unknown habit message",
+    n2.body?.message === "Habit not found or unauthorized",
+  );
+
+  const n3 = await call("POST", `/habitlog/${unknownId}/complete`, {
+    cookie: authCookie,
+    body: {},
+  });
+  check("complete unknown habit 404", n3.status === 404);
+  check(
+    "complete unknown habit message",
+    n3.body?.message === "Habit not found or unauthorized",
+  );
+
+  // 6. unknown route → 404 dispatcher shape
+  const n4 = await call("GET", "/habitlog/nope", { cookie: authCookie });
+  check("unknown habitlog route 404", n4.status === 404);
+  check(
+    "unknown habitlog route message",
+    n4.body?.message === "Route not found",
+  );
+  check(
+    "unknown habitlog route errors empty",
+    Array.isArray(n4.body?.errors) && n4.body.errors.length === 0,
+  );
+
+  // 7. streak before any log → source "No streak yet"
+  const s0 = await call("GET", `/habitlog/${habitId}/streak`, {
+    cookie: authCookie,
+  });
+  check("streak no logs 200", s0.status === 200);
+  check("streak no logs message", s0.body?.message === "No streak yet");
+  check("streak no logs currentStreak 0", s0.body?.data?.currentStreak === 0);
+
+  // 8. complete → log created, streak 1
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const dayTs = today.getTime();
+
+  const d1 = await call("POST", `/habitlog/${habitId}/complete`, {
+    cookie: authCookie,
+    body: {},
+  });
+  check("complete 200", d1.status === 200);
+  check(
+    "complete message",
+    d1.body?.message === "Habit completed successfully",
+  );
+  check("complete data.completed true", d1.body?.data?.completed === true);
+  check("complete data.date today start", d1.body?.data?.date === dayTs);
+  check("complete data.note empty", d1.body?.data?.note === "");
+
+  // 9. duplicate complete same day → source idempotency guard 400
+  const d2 = await call("POST", `/habitlog/${habitId}/complete`, {
+    cookie: authCookie,
+    body: {},
+  });
+  check("complete duplicate 400", d2.status === 400);
+  check(
+    "complete duplicate message",
+    d2.body?.message === "Habit already completed today",
+  );
+
+  // 10. logs returns it with pagination defaults
+  const l1 = await call("GET", `/habitlog/${habitId}/logs`, {
+    cookie: authCookie,
+  });
+  check("logs 200", l1.status === 200);
+  check("logs message", l1.body?.message === "Habit log fetched successfully");
+  check("logs length 1", (l1.body?.data?.logs ?? []).length === 1);
+  check(
+    "logs pagination.totalLogs 1",
+    l1.body?.data?.pagination?.totalLogs === 1,
+  );
+  check(
+    "logs pagination.currentPage 1",
+    l1.body?.data?.pagination?.currentPage === 1,
+  );
+  check("logs pagination.limit 10", l1.body?.data?.pagination?.limit === 10);
+
+  // 11. logs query params honored
+  const l2 = await call("GET", `/habitlog/${habitId}/logs?page=1&limit=1`, {
+    cookie: authCookie,
+  });
+  check("logs limit query honored", l2.body?.data?.pagination?.limit === 1);
+
+  // 12. streak ≥ 1
+  const s1 = await call("GET", `/habitlog/${habitId}/streak`, {
+    cookie: authCookie,
+  });
+  check("streak 200", s1.status === 200);
+  check(
+    "streak message",
+    s1.body?.message === "Habit streak fetched successfully",
+  );
+  check("streak currentStreak 1", s1.body?.data?.currentStreak === 1);
+
+  // 13. all contains habit id + pagination defaults
+  const a1 = await call("GET", "/habitlog/all", { cookie: authCookie });
+  check("all 200", a1.status === 200);
+  check("all message", a1.body?.message === "All logs fetched");
+  check(
+    "all contains habit id",
+    (a1.body?.data?.logs ?? []).some((log) =>
+      typeof log.habit === "object" && log.habit !== null
+        ? log.habit._id === habitId
+        : log.habit === habitId,
+    ),
+  );
+  check(
+    "all pagination.totalLogs 1",
+    a1.body?.data?.pagination?.totalLogs === 1,
+  );
+  check("all pagination.limit 50", a1.body?.data?.pagination?.limit === 50);
+
+  // 14. all limit capped at 200 (source: Math.min(..., 200))
+  const a2 = await call("GET", "/habitlog/all?limit=500", {
+    cookie: authCookie,
+  });
+  check("all limit capped 200", a2.body?.data?.pagination?.limit === 200);
+
+  // 15. wrong method on complete → 404
+  const w1 = await call("GET", `/habitlog/${habitId}/complete`, {
+    cookie: authCookie,
+  });
+  check("GET complete 404", w1.status === 404);
+
+  // 16. second habit: note body ported verbatim
+  const c2 = await call("POST", "/habits/create-habit", {
+    cookie: authCookie,
+    body: {
+      title: "Habitlog Note Smoke",
+      description: "smoke description",
+      category: "Health",
+      frequency: "daily",
+    },
+  });
+  check("habitlog create-habit 2 (201)", c2.status === 201);
+  const habitId2 = c2.body?.data?._id;
+  check("habitlog create-habit 2 returns _id", Boolean(habitId2));
+
+  const d3 = await call("POST", `/habitlog/${habitId2}/complete`, {
+    cookie: authCookie,
+    body: { note: "with note" },
+  });
+  check("complete with note 200", d3.status === 200);
+  check("complete with note data.note", d3.body?.data?.note === "with note");
+
+  // 17. cleanup: delete habits (cascades logs), logout, delete-account
+  const h1 = await call("DELETE", `/habits/delete-habit/${habitId}`, {
+    cookie: authCookie,
+  });
+  check("habitlog delete-habit 1 200", h1.status === 200);
+  const h2 = await call("DELETE", `/habits/delete-habit/${habitId2}`, {
+    cookie: authCookie,
+  });
+  check("habitlog delete-habit 2 200", h2.status === 200);
+
+  const out = await call("POST", "/users/logout", { cookie: authCookie });
+  check("habitlog logout 200", out.status === 200);
+  const del = await call("DELETE", "/users/delete-account", {
+    cookie: authCookie,
+  });
+  check("habitlog delete-account 200", del.status === 200);
+}
+
 async function main() {
   const scope = process.argv[2] || "healthcheck";
 
@@ -499,6 +733,8 @@ async function main() {
     await usersScope();
   } else if (scope === "habits") {
     await habitsScope();
+  } else if (scope === "habitlog") {
+    await habitlogScope();
   } else {
     console.error(`FAIL unknown scope: ${scope}`);
     process.exit(2);
