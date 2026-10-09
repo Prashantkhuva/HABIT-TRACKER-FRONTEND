@@ -1,6 +1,5 @@
 "use client";
 
-export const THEME_KEY = "habitflow-theme";
 export const ACCENT_KEY = "habitflow-accent";
 export const ACCENT_STYLE_ID = "habitflow-accent-style";
 
@@ -11,21 +10,7 @@ export const ACCENTS = [
   { id: "ember", label: "Ember", mint: "#c2410c", soft: "#fdeee6" },
 ];
 
-export function resolveTheme(stored) {
-  if (stored === "dark" || stored === "light") return stored;
-  if (
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-  )
-    return "dark";
-  return "light";
-}
-
-export function applyTheme(theme) {
-  document.documentElement.classList.toggle("dark", theme === "dark");
-}
-
-/** Injects :root + .dark accent vars — dark mode lifts mint, dims soft. */
+/** Injects :root accent vars. Light-only — no theme variants. */
 export function applyAccent(id) {
   const accent = ACCENTS.find((a) => a.id === id) || ACCENTS[0];
   let style = document.getElementById(ACCENT_STYLE_ID);
@@ -35,19 +20,7 @@ export function applyAccent(id) {
     document.head.appendChild(style);
   }
   style.textContent = `
-:root { --color-accent-mint: ${accent.mint}; --color-accent-soft: ${accent.soft}; }
-.dark {
-  --color-accent-mint: color-mix(in srgb, ${accent.mint} 72%, #ffffff);
-  --color-accent-soft: color-mix(in srgb, ${accent.mint} 24%, #141218);
-}`;
-}
-
-export function readStoredTheme() {
-  try {
-    return localStorage.getItem(THEME_KEY) || "system";
-  } catch {
-    return "system";
-  }
+:root { --color-accent-mint: ${accent.mint}; --color-accent-soft: ${accent.soft}; }`;
 }
 
 export function readStoredAccent() {

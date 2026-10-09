@@ -94,7 +94,7 @@ export default function RootLayout({ children }) {
         />
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("habitflow-theme");var dark=t==="dark"||(t===null||t==="system")&&window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",dark);var id=localStorage.getItem("habitflow-accent")||"forest";var m={forest:"#4b6b63",ocean:"#2b6cb0",plum:"#7c3aed",ember:"#c2410c"};var c=m[id]||m.forest;var s=document.createElement("style");s.id="habitflow-accent-style";s.textContent=":root{--color-accent-mint:"+c+";}";document.head.appendChild(s);}catch(e){}})();`,
+            __html: `(function(){try{var id=localStorage.getItem("habitflow-accent")||"forest";var m={forest:{mint:"#4b6b63",soft:"#eef4f2"},ocean:{mint:"#2b6cb0",soft:"#e8f1fb"},plum:{mint:"#7c3aed",soft:"#f3ecfe"},ember:{mint:"#c2410c",soft:"#fdeee6"}};var a=m[id]||m.forest;var s=document.createElement("style");s.id="habitflow-accent-style";s.textContent=":root{--color-accent-mint:"+a.mint+";--color-accent-soft:"+a.soft+";}";document.head.appendChild(s);}catch(e){}})();`,
           }}
         />
       </head>

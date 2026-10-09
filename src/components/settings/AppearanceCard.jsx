@@ -1,15 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useTheme } from "@/hooks/useTheme";
 import { Check } from "lucide-react";
 
-const OPTIONS = ["light", "dark", "system"];
-
 export default function AppearanceCard() {
-  const { theme, accent, setTheme, setAccent, accents } = useTheme();
-
-  const activeIndex = Math.max(0, OPTIONS.indexOf(theme));
+  const { accent, setAccent, accents } = useTheme();
 
   return (
     <div className="app-surface flex h-full flex-col rounded-2xl p-6">
@@ -18,42 +13,9 @@ export default function AppearanceCard() {
         <h2 className="font-heading text-2xl font-semibold tracking-[-0.04em] text-text-primary">
           appearance
         </h2>
-      </div>
-
-      {/* Theme segmented control */}
-      <div
-        role="radiogroup"
-        aria-label="Theme"
-        className="relative mt-6 grid grid-cols-3 rounded-full bg-surface-dim p-1"
-      >
-        <motion.div
-          layout
-          transition={{ type: "spring", stiffness: 260, damping: 22 }}
-          className="absolute bottom-1 top-1 rounded-full bg-primary shadow-sm"
-          style={{
-            width: "calc(100% / 3 - 6px)",
-            left: `calc(${activeIndex * 33.333}% + 4px)`,
-          }}
-        />
-        {OPTIONS.map((opt) => {
-          const isActive = theme === opt;
-          return (
-            <button
-              key={opt}
-              type="button"
-              role="radio"
-              aria-checked={isActive}
-              onClick={() => setTheme(opt)}
-              className={`relative z-10 rounded-full py-2 text-xs tracking-wide transition-colors duration-200 ${
-                isActive
-                  ? "font-medium text-background"
-                  : "text-text-muted hover:text-text-primary"
-              }`}
-            >
-              {opt.toUpperCase()}
-            </button>
-          );
-        })}
+        <p className="mt-1 text-sm text-text-muted">
+          The accent re-tints the whole app, and is remembered on this device.
+        </p>
       </div>
 
       {/* Accent swatches */}

@@ -16,7 +16,6 @@ import {
   CornerDownLeft,
   FileText,
 } from "lucide-react";
-import { useTheme } from "@/hooks/useTheme";
 
 const PAGE_ITEMS = [
   {
@@ -77,7 +76,6 @@ export default function CommandPalette() {
   const router = useRouter();
   const dispatch = useDispatch();
   const habits = useSelector((state) => state.habit.habits);
-  const { theme, setTheme } = useTheme();
 
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -102,17 +100,9 @@ export default function CommandPalette() {
         icon: Plus,
         run: () => router.push("/create-habit"),
       },
-      {
-        id: "a-theme",
-        label:
-          theme === "dark" ? "Switch to light mode" : "Switch to dark mode",
-        hint: "Action",
-        icon: Settings,
-        run: () => setTheme(theme === "dark" ? "light" : "dark"),
-      },
     ];
     return [...PAGE_ITEMS, ...habitItems, ...actionItems];
-  }, [habits, theme, router, setTheme]);
+  }, [habits, router]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
