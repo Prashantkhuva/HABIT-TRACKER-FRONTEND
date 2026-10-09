@@ -26,8 +26,10 @@
   --r-lg: 26px;
   --r-md: 20px;
   --r-sm: 14px;
-  --shadow-card: 0 1px 2px rgba(26, 26, 26, 0.04), 0 8px 24px -12px rgba(26, 26, 26, 0.1);
-  --focus-ring: 0 0 0 3px var(--color-surface), 0 0 0 5px var(--color-accent-mint);
+  --shadow-card:
+    0 1px 2px rgba(26, 26, 26, 0.04), 0 8px 24px -12px rgba(26, 26, 26, 0.1);
+  --focus-ring:
+    0 0 0 3px var(--color-surface), 0 0 0 5px var(--color-accent-mint);
 
   /* === PREMIUM GLASS === */
   --glass-bg: rgba(255, 255, 255, 0.6);
@@ -50,13 +52,25 @@
     --color-background: #141218;
     --color-surface: #1d1b20;
     --color-surface-dim: #0f0d13;
-    --color-surface-mint: color-mix(in srgb, var(--color-accent-mint) 30%, #1d1b20);
+    --color-surface-mint: color-mix(
+      in srgb,
+      var(--color-accent-mint) 30%,
+      #1d1b20
+    );
     --color-text-primary: #e6e1e5;
     --color-text-muted: #938f99;
     --color-border-subtle: #49454f;
     --color-primary: var(--color-accent-mint);
-    --color-primary-soft: color-mix(in srgb, var(--color-accent-mint) 80%, #ffffff);
-    --color-accent-soft: color-mix(in srgb, var(--color-accent-mint) 24%, #141218);
+    --color-primary-soft: color-mix(
+      in srgb,
+      var(--color-accent-mint) 80%,
+      #ffffff
+    );
+    --color-accent-soft: color-mix(
+      in srgb,
+      var(--color-accent-mint) 24%,
+      #141218
+    );
     --color-danger: #f2b8b5;
     --color-danger-soft: #311111;
     --glass-bg: rgba(29, 27, 32, 0.7);
@@ -70,7 +84,9 @@
   width: 4px;
   height: 4px;
 }
-::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-track {
+  background: transparent;
+}
 ::-webkit-scrollbar-thumb {
   background: var(--color-border-subtle);
   border-radius: 999px;
@@ -94,13 +110,22 @@ body {
   text-rendering: geometricPrecision;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: var(--font-heading);
   color: var(--color-text-primary);
   letter-spacing: -0.035em;
 }
 
-button, a, input, textarea, select { font: inherit; }
+button,
+a,
+input,
+textarea,
+select {
+  font: inherit;
+}
 
 ::selection {
   background: var(--color-primary);
@@ -110,13 +135,17 @@ button, a, input, textarea, select { font: inherit; }
 /* ===== PREMIUM UTILITIES ===== */
 .app-surface {
   background: var(--color-surface);
-  border: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
-  box-shadow: 0 4px 24px -8px rgba(26, 26, 26, 0.08);
+  border: 1px solid
+    color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
+  box-shadow:
+    0 1px 2px rgba(19, 26, 21, 0.04),
+    0 8px 24px -12px rgba(19, 26, 21, 0.14);
 }
 
 .app-surface-muted {
   background: var(--color-surface-dim);
-  border: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
 }
 
 .app-glass {
@@ -142,9 +171,13 @@ button, a, input, textarea, select { font: inherit; }
   line-height: 0.92;
 }
 
-.app-muted { color: var(--color-text-muted); }
+.app-muted {
+  color: var(--color-text-muted);
+}
 
-.app-text-balance { text-wrap: balance; }
+.app-text-balance {
+  text-wrap: balance;
+}
 
 /* ===== SCROLL ===== */
 .custom-scroll-x {
@@ -155,10 +188,16 @@ button, a, input, textarea, select { font: inherit; }
 /* ===== TRANSITIONS ===== */
 /* Custom cursor — hide native cursor on mouse devices */
 @media (pointer: fine) {
-  * { cursor: none !important; }
+  * {
+    cursor: none !important;
+  }
 }
 
-a, button, input, select, textarea {
+a,
+button,
+input,
+select,
+textarea {
   transition:
     background-color 0.2s var(--ease),
     color 0.2s var(--ease),
@@ -184,28 +223,53 @@ a, button, input, select, textarea {
 
 /* ===== DIALOG SCALE-IN ===== */
 @keyframes dlg-in {
-  from { opacity: 0; transform: translateY(10px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
-.dlg-in { animation: dlg-in 0.35s var(--ease) both; }
+.dlg-in {
+  animation: dlg-in 0.35s var(--ease) both;
+}
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.fade-up { animation: fade-up 0.45s var(--ease) both; }
+.fade-up {
+  animation: fade-up 0.45s var(--ease) both;
+}
 
 /* ===== LOADING BAR GLOW ===== */
 @keyframes loading-glow {
-  0%, 100% { transform: translateX(-100%); }
-  50% { transform: translateX(200%); }
+  0%,
+  100% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(200%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;

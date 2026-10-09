@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toPng } from "html-to-image";
 import {
   Flame,
   TrendingUp,
@@ -20,6 +21,7 @@ import {
   Target,
   Timer,
   Download,
+  ImageDown,
 } from "lucide-react";
 
 import {
@@ -28,12 +30,16 @@ import {
   getLongestStreak,
   getHeatmapData,
 } from "../api/dashboard-api";
-import { getAllHabitLogs } from "../api/habits-api";
+import { getAllHabitLogs, getHabits } from "../api/habits-api";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setReduxHabits } from "../store/habitSlice";
 import WeeklyChart from "../components/stats/WeeklyChart";
 import Heatmap from "../components/stats/Heatmap";
 import StreakPanel from "../components/stats/StreakPanel";
+import Sparkline from "../components/stats/Sparkline";
+import MilestonesCard from "../components/stats/MilestonesCard";
+import TimeOfDayCard from "../components/stats/TimeOfDayCard";
 import { categoryMap } from "../components/Habit/categoryMap";
 import { getTimeInsights, getTextColor, getBestDay } from "../lib/habit-utils";
 import { exportAsCSV } from "../lib/data-export";
@@ -73,6 +79,14 @@ function BentoCard({ children, className = "", as = "div", ...props }) {
   );
 }
 
+const DAY_MS = 86400000;
+
+function localMidnight(ts) {
+  const d = new Date(ts);
+  d.setHours(0, 0, 0, 0);
+  return d.getTime();
+}
+
 /* ─── page ─────────────────────────────────────────────────── */
 export default function StatisticsPage() {
   const [stats, setStats] = useState(null);
@@ -80,6 +94,7 @@ export default function StatisticsPage() {
   const [streak, setStreak] = useState({});
   const [heatmap, setHeatmap] = useState([]);
   const reduxHabits = useSelector((state) => state.habit.habits);
+  const dispatch = useDispatch();
   const [logs, setLogs] = useState([]);
   const [habits, setHabits] = useState([]);
   const [showDetails, setShowDetails] = useState(false);
@@ -116,6 +131,94 @@ export default function StatisticsPage() {
     return { current, previous, delta };
   }, [logs, period]);
 
+  const heroRef = useRef(null);
+  const [exportingPng, setExportingPng] = useState(false);
+
+  // Per-tile mini series (last 7 local days + all-time weekday split)
+  const tileSeries = useMemo(() => {
+    const base = localMidnight(Date.now());
+    const midnights = Array.from(
+      { length: 7 },
+      (_, i) => base - (6 - i) * DAY_MS,
+    );
+    const perDay = Array(7).fill(0);
+    const doneDays = new Set();
+    const weekday = Array(7).fill(0);
+
+    (logs || []).forEach((l) => {
+      if (l.completed === false) return;
+      const t = Number(l.date);
+      if (Number.isNaN(t)) return;
+      const key = localMidnight(t);
+      doneDays.add(key);
+      const idx = midnights.indexOf(key);
+      if (idx >= 0) perDay[idx]++;
+      weekday[(new Date(t).getDay() + 6) % 7]++;
+    });
+
+    const total = stats?.totalHabits || 0;
+    const completion = perDay.map((c) =>
+      total ? Math.round((c / total) * 100) : 0,
+    );
+    const streakDays = midnights.map((m) => {
+      let d = m;
+      let run = 0;
+      while (doneDays.has(d)) {
+        run++;
+        d -= DAY_MS;
+      }
+      return run;
+    });
+    const totalSeries = midnights.map(
+      (m) =>
+        (habits || []).filter(
+          (h) =>
+            h.createdAt && new Date(h.createdAt).getTime() <= m + DAY_MS - 1,
+        ).length,
+    );
+    return { completion, streakDays, weekday, totalSeries };
+  }, [logs, habits, stats]);
+
+  // Previous calendar week (Mon–Sun) completions, for the dashed overlay
+  const prevWeekly = useMemo(() => {
+    const base = localMidnight(Date.now());
+    const dow = (new Date(base).getDay() + 6) % 7;
+    const thisMon = base - dow * DAY_MS;
+    const prevMon = thisMon - 7 * DAY_MS;
+    const out = Array(7).fill(0);
+    (logs || []).forEach((l) => {
+      if (l.completed === false) return;
+      const t = Number(l.date);
+      if (Number.isNaN(t)) return;
+      if (t >= prevMon && t < thisMon) {
+        out[(new Date(t).getDay() + 6) % 7]++;
+      }
+    });
+    return out;
+  }, [logs]);
+
+  const exportPng = async () => {
+    if (!heroRef.current || exportingPng) return;
+    setExportingPng(true);
+    try {
+      const dataUrl = await toPng(heroRef.current, {
+        pixelRatio: 2,
+        backgroundColor:
+          getComputedStyle(document.documentElement)
+            .getPropertyValue("--color-background")
+            .trim() || "#FAFAF5",
+      });
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = "habitflow-rhythm.png";
+      a.click();
+    } catch (err) {
+      console.error("[StatisticsPage] PNG export failed:", err);
+    } finally {
+      setExportingPng(false);
+    }
+  };
+
   useEffect(() => {
     const fetchAll = async () => {
       try {
@@ -134,8 +237,20 @@ export default function StatisticsPage() {
       } catch (err) {
         console.error("[StatisticsPage] Fetch error:", err);
       }
+      // Direct navigation: redux habit list may be empty (Dashboard not mounted)
+      if (!reduxHabits?.length) {
+        try {
+          const res = await getHabits();
+          const raw = res.data.data;
+          const list = Array.isArray(raw) ? raw : (raw?.habits ?? []);
+          dispatch(setReduxHabits(list));
+        } catch (err) {
+          console.error("[StatisticsPage] Habits fetch error:", err);
+        }
+      }
     };
     fetchAll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -285,6 +400,16 @@ export default function StatisticsPage() {
                 </span>
               </div>
 
+              {/* Export hero as PNG */}
+              <button
+                onClick={exportPng}
+                disabled={exportingPng}
+                className="flex items-center gap-1.5 rounded-full border border-border-subtle/60 bg-surface-dim px-3.5 py-2 text-[10px] font-bold uppercase tracking-widest text-text-muted transition-colors duration-200 hover:border-accent-mint/40 hover:text-accent-mint disabled:opacity-50"
+              >
+                <ImageDown size={13} />
+                {exportingPng ? "..." : "PNG"}
+              </button>
+
               {/* Export journal logs */}
               <button
                 onClick={() => {
@@ -309,34 +434,45 @@ export default function StatisticsPage() {
 
         {/* Section A: Hero + mini metrics */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-5">
-          {/* Hero card — spans 7 cols */}
+          {/* Hero card — spans 7 cols (dark, Fernly-style featured) */}
           <BentoCard
+            ref={heroRef}
             custom={1}
             className="relative overflow-hidden lg:col-span-7"
+            style={{
+              background: "var(--color-primary)",
+              borderColor: "transparent",
+              color: "var(--color-background)",
+            }}
           >
             <motion.div
               animate={{ y: [0, -16, 0] }}
               transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-              className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-accent-mint/[0.07] blur-3xl"
+              className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-accent-mint/20 blur-3xl"
             />
-            <div className="absolute inset-0 opacity-[0.02] pointer-events-none [background-image:linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [background-size:32px_32px]" />
+            <div className="absolute inset-0 opacity-[0.06] pointer-events-none [background-image:linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [background-size:32px_32px]" />
 
             <div className="relative z-10">
               <div className="flex items-center gap-2 mb-6">
                 <span className="h-2 w-2 rounded-full bg-accent-mint" />
-                <p className="app-label">Today's Rhythm</p>
+                <p
+                  className="app-label"
+                  style={{ color: "rgba(250,250,245,0.55)" }}
+                >
+                  Today's Rhythm
+                </p>
               </div>
 
               <div className="flex items-end gap-3 mb-2">
-                <span className="font-heading text-[88px] sm:text-[112px] font-black leading-none tracking-[-0.08em] text-text-primary">
+                <span className="font-heading text-[88px] sm:text-[112px] font-black leading-none tracking-[-0.08em] text-background">
                   {stats.completedToday}
                 </span>
-                <span className="pb-4 text-2xl font-medium text-text-muted/50">
+                <span className="pb-4 text-2xl font-medium text-background/50">
                   / {stats.totalHabits}
                 </span>
               </div>
 
-              <p className="max-w-md text-sm leading-relaxed text-text-muted mb-8">
+              <p className="max-w-md text-sm leading-relaxed text-background/60 mb-8">
                 Your consistency compounds daily. Every completed ritual
                 strengthens your long-term rhythm and personal momentum.
               </p>
@@ -345,7 +481,7 @@ export default function StatisticsPage() {
                 {["Flow Active", "Synced", "Streak Intact"].map((t) => (
                   <span
                     key={t}
-                    className="flex items-center gap-1.5 rounded-full border border-border-subtle bg-surface-dim px-3.5 py-1.5 text-[10px] uppercase tracking-[0.16em] text-text-muted"
+                    className="flex items-center gap-1.5 rounded-full border border-background/15 bg-background/5 px-3.5 py-1.5 text-[10px] uppercase tracking-[0.16em] text-background/70"
                   >
                     <span className="h-1 w-1 rounded-full bg-accent-mint" />
                     {t}
@@ -358,29 +494,34 @@ export default function StatisticsPage() {
             <div className="relative z-10 mt-10">
               <div className="flex justify-between items-end mb-4">
                 <div>
-                  <p className="app-label mb-1.5">Daily Progress</p>
+                  <p
+                    className="app-label mb-1.5"
+                    style={{ color: "rgba(250,250,245,0.55)" }}
+                  >
+                    Daily Progress
+                  </p>
                   <div className="flex items-baseline gap-1.5">
-                    <span className="font-heading text-3xl font-black leading-none tracking-[-0.04em] text-text-primary">
+                    <span className="font-heading text-3xl font-black leading-none tracking-[-0.04em] text-background">
                       {completionPct}%
                     </span>
-                    <span className="text-[11px] text-text-muted">
+                    <span className="text-[11px] text-background/60">
                       complete
                     </span>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="flex items-center gap-1.5 rounded-lg bg-accent-mint/10 px-3 py-1.5">
+                  <div className="flex items-center gap-1.5 rounded-lg bg-accent-mint/15 px-3 py-1.5">
                     <span className="font-heading text-lg font-black leading-none tracking-[-0.03em] text-accent-mint">
                       {stats.completedToday}
                     </span>
-                    <span className="text-[10px] text-text-muted">
+                    <span className="text-[10px] text-background/70">
                       / {stats.totalHabits}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="relative h-[10px] w-full overflow-hidden rounded-full bg-border-subtle/60">
+              <div className="relative h-[10px] w-full overflow-hidden rounded-full bg-background/15">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${completionPct}%` }}
@@ -411,7 +552,7 @@ export default function StatisticsPage() {
                 </motion.div>
               </div>
 
-              <div className="mt-3 flex justify-between text-[10px] text-text-muted/60">
+              <div className="mt-3 flex justify-between text-[10px] text-background/40">
                 <span>0%</span>
                 <span>50%</span>
                 <span>100%</span>
@@ -428,6 +569,8 @@ export default function StatisticsPage() {
                 icon: Target,
                 sub: "rate",
                 accent: true,
+                spark: { points: tileSeries.completion, variant: "line" },
+                delta: periodStats.delta,
               },
               {
                 label: "Best Streak",
@@ -435,6 +578,7 @@ export default function StatisticsPage() {
                 icon: Flame,
                 sub: "days",
                 accent: false,
+                spark: { points: tileSeries.streakDays, variant: "line" },
               },
               {
                 label: "Peak Day",
@@ -442,6 +586,7 @@ export default function StatisticsPage() {
                 icon: Zap,
                 sub: "highest activity",
                 accent: false,
+                spark: { points: tileSeries.weekday, variant: "bars" },
               },
               {
                 label: "Total Habits",
@@ -449,55 +594,89 @@ export default function StatisticsPage() {
                 icon: Layers,
                 sub: "active",
                 accent: false,
+                spark: { points: tileSeries.totalSeries, variant: "line" },
               },
-            ].map(({ label, value, icon: Icon, sub, accent }, i) => (
-              <motion.div
-                key={label}
-                variants={scaleIn}
-                initial="hidden"
-                animate="show"
-                custom={i}
-                whileHover={{ y: -4, scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 300, damping: 18 }}
-                className={`relative overflow-hidden rounded-[24px] border p-5 sm:p-6 transition-all duration-300 ${
-                  accent
-                    ? "border-accent-mint/20 bg-accent-mint/10"
-                    : "app-surface"
-                }`}
-              >
+            ].map(
+              ({ label, value, icon: Icon, sub, accent, spark, delta }, i) => (
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.4 }}
-                  className="absolute -inset-4 pointer-events-none"
+                  key={label}
+                  variants={scaleIn}
+                  initial="hidden"
+                  animate="show"
+                  custom={i}
+                  whileHover={{ y: -4, scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                  className={`relative overflow-hidden rounded-[24px] border p-5 sm:p-6 transition-all duration-300 ${
+                    accent
+                      ? "border-accent-mint/20 bg-accent-mint/10"
+                      : "app-surface"
+                  }`}
                 >
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] bg-accent-mint/5 blur-[50px] rounded-full" />
-                </motion.div>
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-4">
-                    <p className="app-label">{label}</p>
-                    <div
-                      className={`flex items-center justify-center w-8 h-8 rounded-xl ${accent ? "bg-accent-mint/15" : "bg-surface-dim"}`}
-                    >
-                      <Icon
-                        size={14}
-                        className={
-                          accent ? "text-accent-mint" : "text-text-muted"
-                        }
-                      />
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
+                    transition={{ duration: 0.4 }}
+                    className="absolute -inset-4 pointer-events-none"
+                  >
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] bg-accent-mint/5 blur-[50px] rounded-full" />
+                  </motion.div>
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-4">
+                      <p className="app-label">{label}</p>
+                      <div
+                        className={`flex items-center justify-center w-8 h-8 rounded-xl ${accent ? "bg-accent-mint/15" : "bg-surface-dim"}`}
+                      >
+                        <Icon
+                          size={14}
+                          className={
+                            accent ? "text-accent-mint" : "text-text-muted"
+                          }
+                        />
+                      </div>
                     </div>
+                    <div className="flex items-center gap-2">
+                      <p className="font-heading text-[32px] font-black leading-none tracking-[-0.05em] text-text-primary">
+                        {value}
+                      </p>
+                      {typeof delta === "number" && delta !== 0 && (
+                        <span
+                          className={`flex items-center gap-0.5 rounded-full px-2 py-1 text-[10px] font-bold ${
+                            delta > 0
+                              ? "bg-accent-mint/15 text-accent-mint"
+                              : "bg-red-500/10 text-red-500"
+                          }`}
+                          title={`vs previous ${period} days`}
+                        >
+                          {delta > 0 ? (
+                            <ArrowUpRight size={11} />
+                          ) : (
+                            <ArrowDownRight size={11} />
+                          )}
+                          {delta > 0 ? "+" : ""}
+                          {delta}%
+                        </span>
+                      )}
+                    </div>
+                    {sub && (
+                      <p className="mt-1.5 text-[10px] uppercase tracking-[0.15em] text-text-muted">
+                        {sub}
+                      </p>
+                    )}
+                    {spark && spark.points.length > 0 && (
+                      <div
+                        className={`mt-4 ${accent ? "text-accent-mint" : "text-accent-mint/60"}`}
+                      >
+                        <Sparkline
+                          points={spark.points}
+                          variant={spark.variant}
+                          delay={0.3 + i * 0.1}
+                        />
+                      </div>
+                    )}
                   </div>
-                  <p className="font-heading text-[32px] font-black leading-none tracking-[-0.05em] text-text-primary">
-                    {value}
-                  </p>
-                  {sub && (
-                    <p className="mt-1.5 text-[10px] uppercase tracking-[0.15em] text-text-muted">
-                      {sub}
-                    </p>
-                  )}
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ),
+            )}
           </div>
         </div>
 
@@ -517,7 +696,11 @@ export default function StatisticsPage() {
               </span>
             </div>
             <div className="mt-auto flex min-h-52 flex-col justify-end sm:min-h-64">
-              <WeeklyChart data={weekly} />
+              <WeeklyChart
+                data={weekly}
+                prev={prevWeekly}
+                planned={stats.totalHabits}
+              />
             </div>
           </BentoCard>
 
@@ -760,12 +943,22 @@ export default function StatisticsPage() {
           </BentoCard>
         </div>
 
+        {/* Section D: Milestones + Time-of-day */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-5">
+          <BentoCard custom={11} className="lg:col-span-7">
+            <MilestonesCard stats={stats} logs={logs} habits={habits} />
+          </BentoCard>
+          <BentoCard custom={12} className="lg:col-span-5">
+            <TimeOfDayCard logs={logs} />
+          </BentoCard>
+        </div>
+
         {/* ── RHYTHM JOURNAL ───────────────────────────── */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          custom={11}
+          custom={13}
           className="app-surface relative overflow-hidden rounded-[36px] p-6 sm:p-8"
         >
           <div className="pointer-events-none absolute -right-32 -bottom-32 h-80 w-80 rounded-full bg-accent-mint/5 blur-3xl" />

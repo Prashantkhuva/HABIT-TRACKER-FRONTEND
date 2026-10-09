@@ -1,6 +1,11 @@
 import { motion } from "framer-motion";
 
-export default function StatCard({ title, value, subtitle, variant = "default" }) {
+export default function StatCard({
+  title,
+  value,
+  subtitle,
+  variant = "default",
+}) {
   const styles = {
     default: {
       card: "bg-surface text-text-primary border border-border-subtle/50",
@@ -30,7 +35,9 @@ export default function StatCard({ title, value, subtitle, variant = "default" }
         transition={{ duration: 0.4 }}
         className="absolute -inset-4 pointer-events-none"
       >
-        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] ${styles[variant].glow} blur-[50px] rounded-full`} />
+        <div
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] ${styles[variant].glow} blur-[50px] rounded-full`}
+        />
       </motion.div>
 
       <div className="relative z-10">

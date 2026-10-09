@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import { Flame, Trophy, Zap, Medal } from "lucide-react";
+import { Flame, Trophy, Zap, Medal, ArrowUpRight } from "lucide-react";
 import { getLongestStreak } from "../../api/dashboard-api";
 import gsap from "gsap";
 
@@ -31,18 +32,23 @@ export default function StreakPanel() {
               };
             }),
         );
-        const sorted = results.sort((a, b) => b.currentStreak - a.currentStreak).slice(0, 3);
+        const sorted = results
+          .sort((a, b) => b.currentStreak - a.currentStreak)
+          .slice(0, 3);
         setHabitStreaks(sorted);
-      } catch (err) { console.error("[StreakPanel] Streak fetch:", err); }
+      } catch (err) {
+        console.error("[StreakPanel] Streak fetch:", err);
+      }
     };
     if (habits.length > 0) fetchAll();
   }, [habits]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(panelRef.current,
+      gsap.fromTo(
+        panelRef.current,
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
       );
     }, panelRef);
     return () => ctx.revert();
@@ -57,11 +63,15 @@ export default function StreakPanel() {
           <h2 className="font-heading text-lg font-bold tracking-[-0.03em] text-text-primary">
             ritual streaks
           </h2>
-          <p className="text-[11px] text-text-muted mt-0.5">top performing habits</p>
+          <p className="text-[11px] text-text-muted mt-0.5">
+            top performing habits
+          </p>
         </div>
         <div className="flex items-center gap-1.5 rounded-full bg-surface-dim px-3 py-1.5">
           <Flame size={12} className="text-[#D4BB06]" />
-          <span className="text-[10px] font-bold text-text-muted">leaderboard</span>
+          <span className="text-[10px] font-bold text-text-muted">
+            leaderboard
+          </span>
         </div>
       </div>
 
@@ -69,10 +79,18 @@ export default function StreakPanel() {
 
       <div className="flex flex-col gap-3">
         {habitStreaks.length === 0 ? (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center py-8 text-center">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex flex-col items-center justify-center py-8 text-center"
+          >
             <Flame size={24} className="text-[#D4BB06]/30 mb-3" />
-            <p className="text-sm font-medium text-text-muted">No streaks yet.</p>
-            <p className="text-[11px] text-text-muted/60 mt-1">Complete rituals to build your streak.</p>
+            <p className="text-sm font-medium text-text-muted">
+              No streaks yet.
+            </p>
+            <p className="text-[11px] text-text-muted/60 mt-1">
+              Complete rituals to build your streak.
+            </p>
           </motion.div>
         ) : (
           habitStreaks.map((habit, i) => {
@@ -81,44 +99,74 @@ export default function StreakPanel() {
             const barWidth = Math.max(ratio * 100, 8);
 
             return (
-              <motion.div
+              <Link
                 key={habit._id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                whileHover={{ y: -3, scale: 1.01 }}
-                className="group relative overflow-hidden rounded-2xl border border-border-subtle bg-surface p-4 transition-all duration-300 hover:shadow-lg"
+                href={`/statistics/${habit._id}`}
+                aria-label={`View statistics for ${habit.title}`}
+                className="block"
               >
-                {/* Hover glow */}
-                <div className="absolute -inset-2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-full bg-accent-mint/5 blur-[60px] rounded-full" />
-                </div>
+                <motion.div
+                  key={habit._id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  whileHover={{ y: -3, scale: 1.01 }}
+                  className="group relative overflow-hidden rounded-2xl border border-border-subtle bg-surface p-4 transition-all duration-300 hover:shadow-lg"
+                >
+                  {/* Hover glow */}
+                  <div className="absolute -inset-2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-full bg-accent-mint/5 blur-[60px] rounded-full" />
+                  </div>
 
-                <div className="relative z-10 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: `${rankColors[i]}20` }}>
-                      <MedalIcon size={18} style={{ color: rankColors[i] }} />
+                  <div className="relative z-10 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="flex h-10 w-10 items-center justify-center rounded-xl"
+                        style={{ background: `${rankColors[i]}20` }}
+                      >
+                        <MedalIcon size={18} style={{ color: rankColors[i] }} />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-text-primary">
+                          {habit.title}
+                        </p>
+                        <p className="text-[10px] font-medium text-text-muted tracking-wider uppercase">
+                          {medalLabels[i]} · {habit.frequency}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-sm font-bold text-text-primary">{habit.title}</p>
-                      <p className="text-[10px] font-medium text-text-muted tracking-wider uppercase">{medalLabels[i]} · {habit.frequency}</p>
+                    <div className="text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        <p className="font-heading text-2xl font-black tracking-[-0.04em] text-text-primary">
+                          {habit.currentStreak}
+                        </p>
+                        <ArrowUpRight
+                          size={13}
+                          className="text-text-muted opacity-0 transition-opacity group-hover:opacity-100"
+                        />
+                      </div>
+                      <p className="text-[9px] font-bold tracking-wider text-text-muted uppercase">
+                        days
+                      </p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-heading text-2xl font-black tracking-[-0.04em] text-text-primary">{habit.currentStreak}</p>
-                    <p className="text-[9px] font-bold tracking-wider text-text-muted uppercase">days</p>
+                  <div className="relative z-10 mt-3 h-1.5 w-full overflow-hidden rounded-full bg-border-subtle/50">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${barWidth}%` }}
+                      transition={{
+                        duration: 1,
+                        delay: 0.3 + i * 0.1,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                      className="h-full rounded-full"
+                      style={{
+                        background: `linear-gradient(90deg, ${rankColors[i]}, ${rankColors[i]}88)`,
+                      }}
+                    />
                   </div>
-                </div>
-                <div className="relative z-10 mt-3 h-1.5 w-full overflow-hidden rounded-full bg-border-subtle/50">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${barWidth}%` }}
-                    transition={{ duration: 1, delay: 0.3 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                    className="h-full rounded-full"
-                    style={{ background: `linear-gradient(90deg, ${rankColors[i]}, ${rankColors[i]}88)` }}
-                  />
-                </div>
-              </motion.div>
+                </motion.div>
+              </Link>
             );
           })
         )}
