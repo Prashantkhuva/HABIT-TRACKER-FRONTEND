@@ -49,7 +49,7 @@ export default function StatCard({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="font-heading text-5xl font-bold leading-none text-inherit tracking-[-0.04em]"
+          className="font-heading text-[36px] font-semibold leading-none text-inherit tracking-[-0.035em]"
         >
           {value}
         </motion.h2>

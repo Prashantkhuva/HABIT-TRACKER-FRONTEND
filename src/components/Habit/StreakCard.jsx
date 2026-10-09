@@ -4,7 +4,11 @@ import { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Plus, Flame } from "lucide-react";
 import { categoryMap } from "./categoryMap";
-import { getTextColor, getIconBg, getButtonColors } from "../../lib/habit-utils";
+import {
+  getTextColor,
+  getIconBg,
+  getButtonColors,
+} from "../../lib/habit-utils";
 import { getHabitStreak as fetchStreak } from "../../api/habits-api";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
@@ -19,7 +23,8 @@ export default function StreakCard({
   const Icon = categoryMap[habit.category];
   const textColor = getTextColor(habit.color);
   const iconBg = getIconBg(habit.color);
-  const subColor = textColor === "#FAFAF5" ? "rgba(255,255,255,0.55)" : "rgba(0,0,0,0.35)";
+  const subColor =
+    textColor === "#FAFAF5" ? "rgba(255,255,255,0.55)" : "rgba(0,0,0,0.35)";
   const { plusBg, plusIcon, checkBg, checkIcon } = getButtonColors(habit.color);
   const router = useRouter();
   const [streak, setStreak] = useState(0);
@@ -27,14 +32,17 @@ export default function StreakCard({
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(cardRef.current,
+      gsap.fromTo(
+        cardRef.current,
         { opacity: 0, y: 40, scale: 0.95 },
         {
-          opacity: 1, y: 0, scale: 1,
+          opacity: 1,
+          y: 0,
+          scale: 1,
           duration: 0.7,
           delay: index * 0.08,
           ease: "power3.out",
-        }
+        },
       );
     }, cardRef);
     return () => ctx.revert();
@@ -47,7 +55,9 @@ export default function StreakCard({
         const data = res.data.data;
         const count = data?.currentStreak ?? data?.streak ?? 0;
         setStreak(count);
-      } catch (err) { console.error("[StreakCard] Streak fetch:", err); }
+      } catch (err) {
+        console.error("[StreakCard] Streak fetch:", err);
+      }
     };
     loadStreak();
   }, [isDone, habit._id]);
@@ -57,7 +67,7 @@ export default function StreakCard({
       ref={cardRef}
       whileHover={{ y: -6 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="relative w-[80vw] sm:w-80 h-64 rounded-[28px] p-6 flex flex-col justify-between shrink-0 snap-start overflow-hidden group cursor-pointer"
+      className="relative w-[80vw] sm:w-72 h-56 rounded-[20px] p-5 flex flex-col justify-between shrink-0 snap-start overflow-hidden group cursor-pointer"
       style={{ background: habit.color || "#1A1A1A" }}
       onClick={() => router.push(`/rituals/${habit._id}`)}
     >
@@ -65,26 +75,47 @@ export default function StreakCard({
       <div className="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-white/5 blur-3xl" />
 
       <div className="relative z-10 flex justify-between items-start">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center backdrop-blur-sm" style={{ background: iconBg }}>
+        <div
+          className="w-10 h-10 rounded-xl flex items-center justify-center backdrop-blur-sm"
+          style={{ background: iconBg }}
+        >
           {Icon && <Icon size={18} color={textColor} />}
         </div>
-        <span className="text-[10px] font-bold tracking-[0.18em] uppercase" style={{ color: subColor }}>
+        <span
+          className="text-[10px] font-medium tracking-[0.06em] uppercase"
+          style={{ color: subColor }}
+        >
           0{index + 1}
         </span>
       </div>
 
       <div className="relative z-10">
         <div className="flex items-center gap-2 mb-2">
-          <p className="text-xl font-bold leading-tight tracking-[-0.03em]" style={{ fontFamily: "Epilogue, sans-serif", color: textColor }}>
+          <p
+            className="text-[17px] font-medium leading-tight tracking-[-0.02em]"
+            style={{
+              fontFamily: "var(--font-heading, sans-serif)",
+              color: textColor,
+            }}
+          >
             {habit.title}
           </p>
-          {streak >= 3 && <Flame size={18} className="text-[#D4BB06]" />}
+          {streak >= 3 && <Flame size={16} className="text-[#D4BB06]" />}
         </div>
 
-        <p className="text-6xl font-black leading-none tracking-[-0.06em]" style={{ fontFamily: "Epilogue, sans-serif", color: textColor }}>
+        <p
+          className="text-[42px] font-semibold leading-none tracking-[-0.05em]"
+          style={{
+            fontFamily: "var(--font-heading, sans-serif)",
+            color: textColor,
+          }}
+        >
           {streak}
         </p>
-        <p className="text-[10px] font-bold tracking-[0.15em] uppercase mt-1" style={{ color: subColor }}>
+        <p
+          className="text-[10px] font-medium tracking-[0.06em] uppercase mt-1"
+          style={{ color: subColor }}
+        >
           {streak === 1 ? "day streak" : "day streak"}
         </p>
       </div>
@@ -102,10 +133,19 @@ export default function StreakCard({
             if (!isDone) onComplete(habit);
           }}
           className="absolute bottom-6 right-6 w-12 h-12 rounded-full flex items-center justify-center shadow-lg z-10"
-          style={{ background: isDone ? checkBg : plusBg, color: isDone ? checkIcon : plusIcon }}
+          style={{
+            background: isDone ? checkBg : plusBg,
+            color: isDone ? checkIcon : plusIcon,
+          }}
         >
           {completing === habit._id ? (
-            <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }} className="text-sm">●</motion.span>
+            <motion.span
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
+              className="text-sm"
+            >
+              ●
+            </motion.span>
           ) : isDone ? (
             <Check size={20} />
           ) : (

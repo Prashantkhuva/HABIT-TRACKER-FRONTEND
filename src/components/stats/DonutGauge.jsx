@@ -75,7 +75,7 @@ export default function DonutGauge({
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="font-heading text-3xl font-black tracking-[-0.05em] text-text-primary sm:text-4xl">
+          <span className="font-heading text-[28px] font-semibold tracking-[-0.035em] text-text-primary sm:text-[32px]">
             {Math.round(pct)}%
           </span>
           <span className="app-label mt-0.5">{label}</span>

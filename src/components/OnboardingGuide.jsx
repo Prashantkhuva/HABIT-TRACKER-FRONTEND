@@ -40,7 +40,7 @@ export default function OnboardingGuide({ onDismiss }) {
         initial={{ scale: 0.92, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 260, damping: 22 }}
-        className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-border-subtle/60 bg-surface p-8 shadow-2xl"
+        className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-border-subtle/60 bg-surface p-6 shadow-2xl"
       >
         <div className="flex items-center gap-2 mb-6">
           {STEPS.map((_, i) => (
@@ -61,7 +61,7 @@ export default function OnboardingGuide({ onDismiss }) {
           <current.icon size={32} className="text-accent-mint" />
         </div>
 
-        <h2 className="font-heading text-2xl font-bold tracking-[-0.04em] text-text-primary mb-3">
+        <h2 className="font-heading text-[22px] font-semibold tracking-[-0.02em] text-text-primary mb-3">
           {current.title}
         </h2>
         <p className="text-sm leading-relaxed text-text-muted mb-8">
@@ -83,7 +83,7 @@ export default function OnboardingGuide({ onDismiss }) {
                 setStep((s) => s + 1);
               }
             }}
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-xs font-bold tracking-wider text-background transition-all hover:bg-primary-soft"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-[13px] font-medium tracking-normal text-background transition-all hover:bg-primary-soft"
           >
             {isLast ? "Get started" : "Next"}
             <svg

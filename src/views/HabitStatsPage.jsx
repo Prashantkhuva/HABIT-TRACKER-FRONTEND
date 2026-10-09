@@ -67,7 +67,7 @@ function KpiTile({ label, value, sub, icon: Icon, accent, i }) {
       animate="show"
       custom={i + 1}
       whileHover={{ y: -4 }}
-      className={`app-surface relative overflow-hidden rounded-[24px] p-5 sm:p-6 ${
+      className={`app-surface relative overflow-hidden rounded-[20px] p-5 ${
         accent ? "border-accent-mint/20 bg-accent-mint/10" : ""
       }`}
     >
@@ -84,10 +84,10 @@ function KpiTile({ label, value, sub, icon: Icon, accent, i }) {
           />
         </div>
       </div>
-      <p className="font-heading text-[32px] font-black leading-none tracking-[-0.05em] text-text-primary">
+      <p className="font-heading text-[28px] font-semibold leading-none tracking-[-0.035em] text-text-primary">
         {value}
       </p>
-      <p className="mt-1.5 text-[10px] uppercase tracking-[0.15em] text-text-muted">
+      <p className="mt-1.5 text-[11px] uppercase tracking-[0.06em] text-text-muted">
         {sub}
       </p>
     </motion.div>
@@ -230,12 +230,12 @@ export default function HabitStatsPage() {
   if (notFound || !habit) {
     return (
       <div className="flex min-h-[60vh] w-full min-w-0 flex-col items-center justify-center gap-5 text-center">
-        <p className="font-heading text-3xl font-black tracking-[-0.05em] text-text-primary">
+        <p className="font-heading text-[26px] font-semibold tracking-[-0.035em] text-text-primary">
           ritual not found.
         </p>
         <Link
           href="/statistics"
-          className="flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-[11px] font-bold uppercase tracking-widest text-background"
+          className="flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-[12px] font-medium uppercase tracking-[0.06em] text-background"
         >
           <ArrowLeft size={14} />
           Back to statistics
@@ -256,13 +256,13 @@ export default function HabitStatsPage() {
         animate="show"
         className="mb-5"
       >
-        <div className="app-surface relative overflow-hidden rounded-[36px] p-6 sm:p-8">
+        <div className="app-surface relative overflow-hidden rounded-[26px] p-5 sm:p-6">
           <div className="pointer-events-none absolute -right-32 -bottom-32 h-80 w-80 rounded-full bg-accent-mint/5 blur-3xl" />
           <div className="relative z-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div>
               <Link
                 href="/statistics"
-                className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-border-subtle bg-surface-dim px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-text-muted transition-colors hover:border-accent-mint/40 hover:text-accent-mint"
+                className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-border-subtle bg-surface-dim px-3.5 py-1.5 text-[10px] font-medium uppercase tracking-[0.06em] text-text-muted transition-colors hover:border-accent-mint/40 hover:text-accent-mint"
               >
                 <ArrowLeft size={12} />
                 All statistics
@@ -279,7 +279,7 @@ export default function HabitStatsPage() {
                 </span>
                 <div>
                   <p className="app-label mb-1">Habit Breakdown</p>
-                  <h1 className="font-heading text-3xl sm:text-4xl font-black tracking-[-0.05em] text-text-primary">
+                  <h1 className="font-heading text-[28px] sm:text-[32px] font-semibold tracking-[-0.035em] text-text-primary">
                     {habit.title.toLowerCase()}.
                   </h1>
                 </div>
@@ -346,16 +346,16 @@ export default function HabitStatsPage() {
           initial="hidden"
           animate="show"
           custom={5}
-          className="app-surface rounded-[28px] p-6 sm:p-8 lg:col-span-7"
+          className="app-surface rounded-[20px] p-5 sm:p-6 lg:col-span-7"
         >
           <div className="mb-6 flex items-end justify-between gap-4">
             <div>
               <p className="app-label mb-2">Daily Pulse</p>
-              <h2 className="font-heading text-xl font-black tracking-[-0.04em] text-text-primary">
+              <h2 className="font-heading text-[19px] font-medium tracking-[-0.02em] text-text-primary">
                 last 30 days
               </h2>
             </div>
-            <span className="rounded-full bg-surface-dim px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-text-muted">
+            <span className="rounded-full bg-surface-dim px-3.5 py-1.5 text-[10px] font-medium uppercase tracking-[0.06em] text-text-muted">
               {derived.daily30.reduce((a, b) => a + b, 0)} done
             </span>
           </div>
@@ -367,7 +367,7 @@ export default function HabitStatsPage() {
               className="h-24"
             />
           </div>
-          <div className="mt-3 flex justify-between text-[9px] font-bold tracking-wider text-text-muted">
+          <div className="mt-3 flex justify-between text-[9px] font-medium tracking-wider text-text-muted">
             <span>30d ago</span>
             <span>today</span>
           </div>
@@ -383,13 +383,13 @@ export default function HabitStatsPage() {
                       initial={{ height: 0 }}
                       animate={{ height: `${pct}%` }}
                       transition={{ delay: 0.4 + i * 0.05, duration: 0.5 }}
-                      className="w-full rounded-md bg-accent-mint/70"
+                      className="w-full rounded-full bg-accent-mint/70"
                     />
                   </div>
-                  <span className="text-[8px] font-bold tracking-wider text-text-muted">
+                  <span className="text-[8px] font-medium tracking-wider text-text-muted">
                     {d}
                   </span>
-                  <span className="text-[9px] font-bold text-text-primary">
+                  <span className="text-[9px] font-medium text-text-primary">
                     {derived.weekday[i]}
                   </span>
                 </div>
@@ -403,7 +403,7 @@ export default function HabitStatsPage() {
           initial="hidden"
           animate="show"
           custom={6}
-          className="app-surface rounded-[28px] p-6 sm:p-8 lg:col-span-5"
+          className="app-surface rounded-[20px] p-5 sm:p-6 lg:col-span-5"
         >
           <TimeOfDayCard logs={myLogs} />
         </motion.div>
@@ -415,12 +415,12 @@ export default function HabitStatsPage() {
         initial="hidden"
         animate="show"
         custom={7}
-        className="app-surface mb-5 rounded-[28px] p-6 sm:p-8"
+        className="app-surface mb-5 rounded-[20px] p-5 sm:p-6"
       >
         <div className="mb-6 flex items-end justify-between gap-4">
           <div>
             <p className="app-label mb-2">Consistency</p>
-            <h2 className="font-heading text-xl font-black tracking-[-0.04em] text-text-primary">
+            <h2 className="font-heading text-[19px] font-medium tracking-[-0.02em] text-text-primary">
               activity map
             </h2>
           </div>
@@ -436,13 +436,13 @@ export default function HabitStatsPage() {
         initial="hidden"
         animate="show"
         custom={8}
-        className="app-surface rounded-[28px] p-6 sm:p-8"
+        className="app-surface rounded-[20px] p-5 sm:p-6"
       >
         <div className="mb-6 flex items-center gap-3">
           <BookOpen size={16} className="text-accent-mint" />
           <div>
             <p className="app-label mb-1">Reflections</p>
-            <h2 className="font-heading text-xl font-black tracking-[-0.04em] text-text-primary">
+            <h2 className="font-heading text-[19px] font-medium tracking-[-0.02em] text-text-primary">
               recent notes
             </h2>
           </div>
@@ -458,7 +458,7 @@ export default function HabitStatsPage() {
                 key={i}
                 className="rounded-2xl border border-border-subtle/60 bg-surface-dim/40 p-4"
               >
-                <div className="mb-1.5 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-text-muted">
+                <div className="mb-1.5 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.06em] text-text-muted">
                   <Calendar size={11} />
                   {new Date(Number(n.date)).toLocaleDateString("en-IN", {
                     day: "numeric",

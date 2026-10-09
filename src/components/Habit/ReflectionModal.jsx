@@ -77,8 +77,8 @@ export default function ReflectionModal({
             w-full
             sm:w-[540px]
 
-            rounded-t-[36px]
-            sm:rounded-[36px]
+            rounded-t-[26px]
+            sm:rounded-[26px]
 
             overflow-hidden
 
@@ -91,8 +91,8 @@ export default function ReflectionModal({
 
             shadow-[0_20px_80px_rgba(0,0,0,0.25)]
 
-            p-6
-            sm:p-8
+            p-5
+            sm:p-6
           "
         >
           {/* BACKGROUND GLOW */}
@@ -150,18 +150,17 @@ export default function ReflectionModal({
                   className="
                     mt-4
 
-                    text-2xl
-                    sm:text-3xl
+                    text-[22px]
 
-                    font-black
+                    font-semibold
 
-                    tracking-[-0.04em]
+                    tracking-[-0.02em]
 
                     text-[#1A1A1A]
                     dark:text-[#FAFAF5]
                   "
                   style={{
-                    fontFamily: "Epilogue, sans-serif",
+                    fontFamily: "var(--font-heading, sans-serif)",
                   }}
                 >
                   {habit?.title} completed
@@ -222,7 +221,7 @@ export default function ReflectionModal({
 
                   resize-none
 
-                  rounded-[28px]
+                  rounded-[14px]
 
                   border
                   border-[#E8E4DC]

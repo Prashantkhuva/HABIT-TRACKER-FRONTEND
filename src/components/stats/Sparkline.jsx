@@ -30,7 +30,7 @@ export default function Sparkline({
               delay: delay + i * 0.05,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="flex-1 rounded-sm bg-current opacity-70"
+            className="flex-1 rounded-full bg-current opacity-70"
           />
         ))}
       </div>

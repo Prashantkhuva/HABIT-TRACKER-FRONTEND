@@ -8,7 +8,15 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { motion, AnimatePresence } from "framer-motion";
 
-import { Plus, Check, Trash2, Pause, Play, Archive, Pencil } from "lucide-react";
+import {
+  Plus,
+  Check,
+  Trash2,
+  Pause,
+  Play,
+  Archive,
+  Pencil,
+} from "lucide-react";
 
 import {
   completeHabit,
@@ -118,9 +126,7 @@ export default function HabitDetailPage() {
 
       setStreak(streakRes.data.data.currentStreak || 0);
 
-      const doneToday = logsData.some(
-        (l) => l.completed && isLogFromToday(l),
-      );
+      const doneToday = logsData.some((l) => l.completed && isLogFromToday(l));
 
       setIsDoneToday(doneToday);
     } catch (err) {
@@ -311,9 +317,7 @@ export default function HabitDetailPage() {
         <p className="text-sm text-text-muted">
           this ritual doesn’t exist or may have been deleted.
         </p>
-        <Button onClick={() => router.push("/rituals")}>
-          BACK TO RITUALS
-        </Button>
+        <Button onClick={() => router.push("/rituals")}>BACK TO RITUALS</Button>
       </div>
     );
   }
@@ -372,18 +376,20 @@ export default function HabitDetailPage() {
           {/* TITLE */}
           <h1
             className="
-              text-3xl
-              sm:text-5xl
+              text-[28px]
+              sm:text-[32px]
 
-              font-bold
+              font-semibold
 
               mb-8
+
+              tracking-[-0.035em]
 
               text-[#1A1A1A]
               dark:text-[#E6E1E5]
             "
             style={{
-              fontFamily: "Epilogue, sans-serif",
+              fontFamily: "var(--font-heading, sans-serif)",
             }}
           >
             {habit.title}
@@ -462,7 +468,7 @@ export default function HabitDetailPage() {
               "
               style={{
                 color: textColor,
-                fontFamily: "Epilogue, sans-serif",
+                fontFamily: "var(--font-heading, sans-serif)",
               }}
             >
               {weeklyCompleted}
@@ -672,14 +678,16 @@ export default function HabitDetailPage() {
             <h2
               className="
                 mt-2
-                text-2xl
-                font-bold
+                text-[19px]
+                font-medium
+
+                tracking-[-0.02em]
 
                 text-[#1A1A1A]
                 dark:text-[#E6E1E5]
               "
               style={{
-                fontFamily: "Epilogue, sans-serif",
+                fontFamily: "var(--font-heading, sans-serif)",
               }}
             >
               History & Reflections

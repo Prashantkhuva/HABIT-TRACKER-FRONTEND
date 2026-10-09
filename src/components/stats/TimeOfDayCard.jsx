@@ -58,11 +58,11 @@ export default function TimeOfDayCard({ logs = [] }) {
       <div className="flex items-end justify-between gap-4 mb-5">
         <div>
           <p className="app-label mb-2">Rhythm Clock</p>
-          <h2 className="font-heading text-xl font-black tracking-[-0.04em] text-text-primary">
+          <h2 className="font-heading text-[19px] font-medium tracking-[-0.02em] text-text-primary">
             time of day
           </h2>
         </div>
-        <span className="shrink-0 rounded-full bg-surface-dim px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-text-muted">
+        <span className="shrink-0 rounded-full bg-surface-dim px-3.5 py-1.5 text-[10px] font-medium uppercase tracking-[0.06em] text-text-muted">
           {total > 0 ? `peak ${peakHour}:00` : "no data"}
         </span>
       </div>
@@ -92,7 +92,7 @@ export default function TimeOfDayCard({ logs = [] }) {
                   duration: 0.5,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className={`w-full rounded-t-[3px] transition-colors duration-200 ${
+                className={`w-full rounded-t-full transition-colors duration-200 ${
                   count > 0
                     ? hoveredHour != null && hoveredHour === h
                       ? "bg-primary"
@@ -136,7 +136,7 @@ export default function TimeOfDayCard({ logs = [] }) {
                   {hint}
                 </span>
               </div>
-              <p className="mt-1.5 font-heading text-xl font-black leading-none tracking-[-0.04em] text-text-primary">
+              <p className="mt-1.5 font-heading text-[17px] font-semibold leading-none tracking-[-0.02em] text-text-primary">
                 {pct}%
               </p>
               <p className="mt-0.5 text-[9px] uppercase tracking-[0.14em] text-text-muted">

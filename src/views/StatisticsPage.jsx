@@ -71,7 +71,7 @@ function BentoCard({ children, className = "", as = "div", ...props }) {
       variants={fadeUp}
       initial="hidden"
       animate="show"
-      className={`app-surface rounded-[28px] p-6 sm:p-8 ${className}`}
+      className={`app-surface rounded-[20px] p-5 sm:p-6 ${className}`}
       {...props}
     >
       {children}
@@ -347,7 +347,7 @@ export default function StatisticsPage() {
               <span className="w-1.5 h-1.5 rounded-full bg-accent-mint" />
               Analytics
             </p>
-            <h1 className="font-heading text-[clamp(36px,5vw,64px)] font-black leading-[0.9] tracking-[-0.06em] text-text-primary">
+            <h1 className="font-heading text-[clamp(30px,3.5vw,42px)] font-semibold leading-[1.05] tracking-[-0.035em] text-text-primary">
               ritual
               <br />
               intelligence.
@@ -366,7 +366,7 @@ export default function StatisticsPage() {
                   <button
                     key={d}
                     onClick={() => setPeriod(d)}
-                    className={`rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest transition-colors duration-200 ${
+                    className={`rounded-full px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-widest transition-colors duration-200 ${
                       period === d
                         ? "bg-primary text-background"
                         : "text-text-muted hover:text-text-primary"
@@ -379,7 +379,7 @@ export default function StatisticsPage() {
 
               {/* Delta vs previous period */}
               <div
-                className={`flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[11px] font-bold ${
+                className={`flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[11px] font-semibold ${
                   periodStats.delta > 0
                     ? "bg-accent-mint/10 text-accent-mint"
                     : periodStats.delta < 0
@@ -404,7 +404,7 @@ export default function StatisticsPage() {
               <button
                 onClick={exportPng}
                 disabled={exportingPng}
-                className="flex items-center gap-1.5 rounded-full border border-border-subtle/60 bg-surface-dim px-3.5 py-2 text-[10px] font-bold uppercase tracking-widest text-text-muted transition-colors duration-200 hover:border-accent-mint/40 hover:text-accent-mint disabled:opacity-50"
+                className="flex items-center gap-1.5 rounded-full border border-border-subtle/60 bg-surface-dim px-3.5 py-2 text-[10px] font-semibold uppercase tracking-widest text-text-muted transition-colors duration-200 hover:border-accent-mint/40 hover:text-accent-mint disabled:opacity-50"
               >
                 <ImageDown size={13} />
                 {exportingPng ? "..." : "PNG"}
@@ -421,7 +421,7 @@ export default function StatisticsPage() {
                   }));
                   exportAsCSV(rows, "habitflow-journal.csv");
                 }}
-                className="flex items-center gap-1.5 rounded-full border border-border-subtle/60 bg-surface-dim px-3.5 py-2 text-[10px] font-bold uppercase tracking-widest text-text-muted transition-colors duration-200 hover:border-accent-mint/40 hover:text-accent-mint"
+                className="flex items-center gap-1.5 rounded-full border border-border-subtle/60 bg-surface-dim px-3.5 py-2 text-[10px] font-semibold uppercase tracking-widest text-text-muted transition-colors duration-200 hover:border-accent-mint/40 hover:text-accent-mint"
               >
                 <Download size={13} />
                 CSV
@@ -464,7 +464,7 @@ export default function StatisticsPage() {
               </div>
 
               <div className="flex items-end gap-3 mb-2">
-                <span className="font-heading text-[88px] sm:text-[112px] font-black leading-none tracking-[-0.08em] text-background">
+                <span className="font-heading text-[56px] sm:text-[72px] font-semibold leading-none tracking-[-0.05em] text-background">
                   {stats.completedToday}
                 </span>
                 <span className="pb-4 text-2xl font-medium text-background/50">
@@ -501,7 +501,7 @@ export default function StatisticsPage() {
                     Daily Progress
                   </p>
                   <div className="flex items-baseline gap-1.5">
-                    <span className="font-heading text-3xl font-black leading-none tracking-[-0.04em] text-background">
+                    <span className="font-heading text-[28px] font-semibold leading-none tracking-[-0.035em] text-background">
                       {completionPct}%
                     </span>
                     <span className="text-[11px] text-background/60">
@@ -511,7 +511,7 @@ export default function StatisticsPage() {
                 </div>
                 <div className="text-right">
                   <div className="flex items-center gap-1.5 rounded-lg bg-accent-mint/15 px-3 py-1.5">
-                    <span className="font-heading text-lg font-black leading-none tracking-[-0.03em] text-accent-mint">
+                    <span className="font-heading text-lg font-semibold leading-none tracking-[-0.03em] text-accent-mint">
                       {stats.completedToday}
                     </span>
                     <span className="text-[10px] text-background/70">
@@ -635,12 +635,12 @@ export default function StatisticsPage() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <p className="font-heading text-[32px] font-black leading-none tracking-[-0.05em] text-text-primary">
+                      <p className="font-heading text-[28px] font-semibold leading-none tracking-[-0.035em] text-text-primary">
                         {value}
                       </p>
                       {typeof delta === "number" && delta !== 0 && (
                         <span
-                          className={`flex items-center gap-0.5 rounded-full px-2 py-1 text-[10px] font-bold ${
+                          className={`flex items-center gap-0.5 rounded-full px-2 py-1 text-[10px] font-semibold ${
                             delta > 0
                               ? "bg-accent-mint/15 text-accent-mint"
                               : "bg-red-500/10 text-red-500"
@@ -687,7 +687,7 @@ export default function StatisticsPage() {
             <div className="flex items-start justify-between gap-4 mb-8">
               <div>
                 <p className="app-label mb-2">Weekly Flow</p>
-                <h2 className="font-heading text-xl font-black tracking-[-0.04em] text-text-primary">
+                <h2 className="font-heading text-[19px] font-medium tracking-[-0.02em] text-text-primary">
                   Completion Activity
                 </h2>
               </div>
@@ -712,7 +712,7 @@ export default function StatisticsPage() {
                 <p className="app-label">Insights</p>
               </div>
 
-              <h3 className="font-heading mb-2 text-xl font-black leading-tight tracking-[-0.03em] text-text-primary">
+              <h3 className="font-heading mb-2 text-[19px] font-medium leading-tight tracking-[-0.02em] text-text-primary">
                 {title}
               </h3>
 
@@ -749,7 +749,7 @@ export default function StatisticsPage() {
                       {label}
                     </span>
                     <span
-                      className={`text-xs font-bold ${accent ? "text-accent-mint" : "text-text-primary"}`}
+                      className={`text-xs font-semibold ${accent ? "text-accent-mint" : "text-text-primary"}`}
                     >
                       {value}
                     </span>
@@ -790,7 +790,7 @@ export default function StatisticsPage() {
                       </div>
                       <div>
                         <p className="app-label mb-0.5">{label}</p>
-                        <p className="font-heading text-lg font-black leading-none tracking-[-0.03em] text-text-primary">
+                        <p className="font-heading text-lg font-semibold leading-none tracking-[-0.03em] text-text-primary">
                           {val}
                         </p>
                         <p className="mt-0.5 text-[10px] text-text-muted">
@@ -806,7 +806,7 @@ export default function StatisticsPage() {
                 whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={() => setShowDetails(!showDetails)}
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-primary text-background py-3 text-[10px] font-bold uppercase tracking-[0.2em] shadow-[0_12px_28px_-16px_rgba(26,26,26,0.7)] transition-colors hover:bg-primary-soft"
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-primary text-background py-3 text-[10px] font-semibold uppercase tracking-[0.2em] shadow-[0_12px_28px_-16px_rgba(26,26,26,0.7)] transition-colors hover:bg-primary-soft"
               >
                 {showDetails ? "Hide Time Breakdown" : "View Time Breakdown"}
                 <ArrowUpRight size={12} />
@@ -858,7 +858,7 @@ export default function StatisticsPage() {
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="font-heading text-base font-bold text-text-primary">
+                            <p className="font-heading text-base font-semibold text-text-primary">
                               {val}
                             </p>
                             <p className="text-[9px] uppercase tracking-[0.18em] text-text-muted">
@@ -883,7 +883,7 @@ export default function StatisticsPage() {
               <div className="flex flex-col gap-4 sm:max-w-48">
                 <div>
                   <p className="app-label mb-2">Consistency Map</p>
-                  <h2 className="font-heading text-xl font-black tracking-[-0.04em] text-text-primary">
+                  <h2 className="font-heading text-[19px] font-medium tracking-[-0.02em] text-text-primary">
                     Monthly Rhythm
                   </h2>
                 </div>
@@ -899,13 +899,13 @@ export default function StatisticsPage() {
                 <div className="h-px w-8 bg-border-subtle" />
                 <div className="flex gap-8">
                   <div>
-                    <p className="font-heading text-2xl font-black tracking-[-0.04em] text-text-primary">
+                    <p className="font-heading text-xl font-semibold tracking-[-0.035em] text-text-primary">
                       {activeDays}
                     </p>
                     <p className="app-label mt-1">Active Days</p>
                   </div>
                   <div>
-                    <p className="font-heading text-2xl font-black tracking-[-0.04em] text-text-primary">
+                    <p className="font-heading text-xl font-semibold tracking-[-0.035em] text-text-primary">
                       {totalHeatmapLogs}
                     </p>
                     <p className="app-label mt-1">Total Logs</p>
@@ -959,7 +959,7 @@ export default function StatisticsPage() {
           initial="hidden"
           animate="show"
           custom={13}
-          className="app-surface relative overflow-hidden rounded-[36px] p-6 sm:p-8"
+          className="app-surface relative overflow-hidden rounded-[26px] p-5 sm:p-6"
         >
           <div className="pointer-events-none absolute -right-32 -bottom-32 h-80 w-80 rounded-full bg-accent-mint/5 blur-3xl" />
           <div className="absolute inset-0 opacity-[0.02] pointer-events-none [background-image:linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [background-size:30px_30px]" />
@@ -972,7 +972,7 @@ export default function StatisticsPage() {
                   <BookOpen size={13} className="text-accent-mint" />
                   <p className="app-label">The Written Record</p>
                 </div>
-                <h2 className="font-heading text-2xl sm:text-3xl font-black tracking-[-0.05em] text-text-primary">
+                <h2 className="font-heading text-[22px] sm:text-[26px] font-semibold tracking-[-0.03em] text-text-primary">
                   rhythm journal.
                 </h2>
                 <p className="mt-2 max-w-xl text-sm leading-relaxed text-text-muted">
@@ -1011,7 +1011,7 @@ export default function StatisticsPage() {
                       setSelectedCategoryFilter(e.target.value);
                       setVisibleCount(6);
                     }}
-                    className="rounded-full border border-border-subtle bg-surface px-3.5 py-2 text-[10px] font-bold text-text-primary outline-none transition-all hover:bg-surface-dim cursor-pointer"
+                    className="rounded-full border border-border-subtle bg-surface px-3.5 py-2 text-[10px] font-semibold text-text-primary outline-none transition-all hover:bg-surface-dim cursor-pointer"
                   >
                     <option value="ALL">All Categories</option>
                     <option value="Health">Health</option>
@@ -1030,7 +1030,7 @@ export default function StatisticsPage() {
                       setSelectedHabitFilter("ALL");
                       setVisibleCount(6);
                     }}
-                    className={`rounded-full px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-widest transition-all ${
+                    className={`rounded-full px-3.5 py-1.5 text-[9px] font-semibold uppercase tracking-widest transition-all ${
                       selectedHabitFilter === "ALL"
                         ? "bg-primary text-background shadow-sm"
                         : "border border-border-subtle bg-surface text-text-muted hover:bg-surface-dim hover:text-text-primary"
@@ -1047,7 +1047,7 @@ export default function StatisticsPage() {
                           setSelectedHabitFilter(h._id);
                           setVisibleCount(6);
                         }}
-                        className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-widest transition-all ${
+                        className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[9px] font-semibold uppercase tracking-widest transition-all ${
                           selectedHabitFilter === h._id
                             ? "bg-primary text-background shadow-sm"
                             : "border border-border-subtle bg-surface text-text-muted hover:bg-surface-dim hover:text-text-primary"
@@ -1076,7 +1076,7 @@ export default function StatisticsPage() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-mint/10">
                     <BookOpen size={22} className="text-accent-mint" />
                   </div>
-                  <h3 className="font-heading text-base font-black tracking-tight text-text-primary">
+                  <h3 className="font-heading text-base font-semibold tracking-tight text-text-primary">
                     The journal is blank
                   </h3>
                   <p className="mt-1.5 max-w-xs text-xs leading-relaxed text-text-muted">
@@ -1127,7 +1127,7 @@ export default function StatisticsPage() {
                                 <Icon size={11} />
                               </div>
                               <div>
-                                <p className="text-[9px] font-bold uppercase tracking-widest text-text-primary truncate max-w-[120px]">
+                                <p className="text-[9px] font-semibold uppercase tracking-widest text-text-primary truncate max-w-[120px]">
                                   {log.habitDetails?.title}
                                 </p>
                                 <p className="text-[8px] uppercase tracking-wider text-text-muted">
@@ -1172,7 +1172,7 @@ export default function StatisticsPage() {
                           </p>
                         </div>
 
-                        <div className="relative z-10 mt-4 flex items-center justify-end text-[7px] font-bold tracking-widest text-text-muted/30 group-hover:text-accent-mint uppercase transition-colors">
+                        <div className="relative z-10 mt-4 flex items-center justify-end text-[7px] font-semibold tracking-widest text-text-muted/30 group-hover:text-accent-mint uppercase transition-colors">
                           Ritual Complete
                         </div>
                       </motion.div>
@@ -1188,7 +1188,7 @@ export default function StatisticsPage() {
                   whileHover={{ y: -1 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => setVisibleCount((prev) => prev + 6)}
-                  className="flex items-center gap-2 rounded-full border border-border-subtle bg-surface px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-text-primary shadow-sm transition-all hover:bg-surface-dim"
+                  className="flex items-center gap-2 rounded-full border border-border-subtle bg-surface px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-text-primary shadow-sm transition-all hover:bg-surface-dim"
                 >
                   <span>Show More</span>
                   <ArrowUpRight size={12} className="text-text-muted" />

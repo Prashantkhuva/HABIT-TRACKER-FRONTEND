@@ -53,11 +53,11 @@ export default function MilestonesCard({ stats, logs = [], habits = [] }) {
       <div className="flex items-end justify-between gap-4 mb-5">
         <div>
           <p className="app-label mb-2">Milestones</p>
-          <h2 className="font-heading text-xl font-black tracking-[-0.04em] text-text-primary">
+          <h2 className="font-heading text-[19px] font-medium tracking-[-0.02em] text-text-primary">
             earned badges
           </h2>
         </div>
-        <span className="shrink-0 rounded-full bg-surface-dim px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-text-muted">
+        <span className="shrink-0 rounded-full bg-surface-dim px-3.5 py-1.5 text-[10px] font-medium uppercase tracking-[0.06em] text-text-muted">
           {unlocked}/{achievements.length}
         </span>
       </div>
@@ -100,7 +100,7 @@ export default function MilestonesCard({ stats, logs = [], habits = [] }) {
                 )}
               </div>
               <p
-                className={`text-[11px] font-bold uppercase tracking-wider ${
+                className={`text-[11px] font-medium uppercase tracking-[0.06em] ${
                   a.unlocked ? "text-text-primary" : "text-text-muted/70"
                 }`}
               >

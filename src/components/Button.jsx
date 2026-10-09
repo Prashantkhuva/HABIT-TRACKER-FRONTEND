@@ -44,7 +44,7 @@ function Button({
       className={`
         inline-flex items-center justify-center gap-2.5 rounded-full
         px-5 py-3 sm:px-6 sm:py-3.5
-        text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.16em]
+        text-[13px] sm:text-[13.5px] font-medium
         outline-none transition-all duration-200
         focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2
         focus-visible:ring-offset-background

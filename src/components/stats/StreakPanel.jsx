@@ -60,7 +60,7 @@ export default function StreakPanel() {
     <div ref={panelRef} className="h-full flex flex-col gap-5">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-heading text-lg font-bold tracking-[-0.03em] text-text-primary">
+          <h2 className="font-heading text-lg font-medium tracking-[-0.03em] text-text-primary">
             ritual streaks
           </h2>
           <p className="text-[11px] text-text-muted mt-0.5">
@@ -69,7 +69,7 @@ export default function StreakPanel() {
         </div>
         <div className="flex items-center gap-1.5 rounded-full bg-surface-dim px-3 py-1.5">
           <Flame size={12} className="text-[#D4BB06]" />
-          <span className="text-[10px] font-bold text-text-muted">
+          <span className="text-[10px] font-medium text-text-muted">
             leaderboard
           </span>
         </div>
@@ -127,7 +127,7 @@ export default function StreakPanel() {
                         <MedalIcon size={18} style={{ color: rankColors[i] }} />
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-text-primary">
+                        <p className="text-sm font-medium text-text-primary">
                           {habit.title}
                         </p>
                         <p className="text-[10px] font-medium text-text-muted tracking-wider uppercase">
@@ -137,7 +137,7 @@ export default function StreakPanel() {
                     </div>
                     <div className="text-right">
                       <div className="flex items-center justify-end gap-1">
-                        <p className="font-heading text-2xl font-black tracking-[-0.04em] text-text-primary">
+                        <p className="font-heading text-[22px] font-semibold tracking-[-0.035em] text-text-primary">
                           {habit.currentStreak}
                         </p>
                         <ArrowUpRight
@@ -145,7 +145,7 @@ export default function StreakPanel() {
                           className="text-text-muted opacity-0 transition-opacity group-hover:opacity-100"
                         />
                       </div>
-                      <p className="text-[9px] font-bold tracking-wider text-text-muted uppercase">
+                      <p className="text-[9px] font-medium tracking-wider text-text-muted uppercase">
                         days
                       </p>
                     </div>

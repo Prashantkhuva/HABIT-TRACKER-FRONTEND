@@ -100,15 +100,15 @@ function KpiCard({
       <div className="flex items-start justify-between gap-2">
         <div>
           <p
-            className={`text-[10px] font-bold uppercase tracking-[0.16em] ${featured ? "text-background/70" : "text-text-muted"}`}
+            className={`text-[10px] font-medium uppercase tracking-[0.06em] ${featured ? "text-background/70" : "text-text-muted"}`}
           >
             {label}
           </p>
           <p
-            className={`mt-2 font-heading text-3xl font-black tracking-[-0.05em] sm:text-4xl ${featured ? "" : "text-text-primary"}`}
+            className={`mt-2 font-heading text-[28px] font-semibold tracking-[-0.035em] sm:text-[32px] ${featured ? "" : "text-text-primary"}`}
           >
             {typeof value === "number" ? counted : value}
-            {suffix && <span className="text-lg font-bold">{suffix}</span>}
+            {suffix && <span className="text-lg font-medium">{suffix}</span>}
           </p>
           <p
             className={`mt-1 text-[11px] font-medium ${featured ? "text-background/70" : "text-text-muted"}`}

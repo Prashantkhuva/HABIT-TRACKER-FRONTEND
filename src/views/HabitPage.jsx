@@ -5,7 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Archive, Trash2, X, CheckSquare } from "lucide-react";
-import { getHabits, getHabitLogs, deleteHabit, archiveHabit } from "../api/habits-api";
+import {
+  getHabits,
+  getHabitLogs,
+  deleteHabit,
+  archiveHabit,
+} from "../api/habits-api";
 import { setReduxHabits, deleteReduxHabit } from "../store/habitSlice";
 import HabitListCard from "../components/Habit/HabitListCard";
 import EditHabit from "../components/Habit/EditHabit";
@@ -42,7 +47,7 @@ export default function HabitsPage() {
       try {
         const res = await getHabits();
         const raw = res.data.data;
-        const fetchedHabits = Array.isArray(raw) ? raw : raw?.habits ?? [];
+        const fetchedHabits = Array.isArray(raw) ? raw : (raw?.habits ?? []);
         dispatch(setReduxHabits(fetchedHabits));
 
         const doneIds = [];
@@ -53,13 +58,16 @@ export default function HabitsPage() {
                 const logRes = await getHabitLogs(habit._id, 1, 5);
                 const logs = logRes.data.data.logs;
                 if (logs.some(isLogFromToday)) doneIds.push(habit._id);
-              } catch (err) { console.error("[HabitsPage] Log fetch error:", err); }
+              } catch (err) {
+                console.error("[HabitsPage] Log fetch error:", err);
+              }
             }),
           );
         }
         setCompletedIds(doneIds);
       } catch (err) {
-        const msg = err?.response?.data?.message || err?.message || "Unknown error";
+        const msg =
+          err?.response?.data?.message || err?.message || "Unknown error";
         console.error("[HabitsPage] Failed to fetch habits:", msg);
       } finally {
         setLoading(false);
@@ -71,7 +79,8 @@ export default function HabitsPage() {
   const filteredHabits = useMemo(() => {
     return habits.filter((h) => {
       if (activeFilter === "ACTIVE" && h.status !== "active") return false;
-      if (activeFilter === "COMPLETED" && !completedIds.includes(h._id)) return false;
+      if (activeFilter === "COMPLETED" && !completedIds.includes(h._id))
+        return false;
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         if (!h.title.toLowerCase().includes(q)) return false;
@@ -87,17 +96,26 @@ export default function HabitsPage() {
       <div className="mb-8 flex items-start justify-between gap-5">
         <div>
           <p className="app-label mb-1">OVERVIEW</p>
-          <h1 className="app-heading text-text-primary" style={{ fontSize: "clamp(2.2rem, 4.5vw, 3.5rem)" }}>
+          <h1
+            className="app-heading text-text-primary"
+            style={{ fontSize: "clamp(2.2rem, 4.5vw, 3.5rem)" }}
+          >
             my habits
           </h1>
         </div>
-        <Button onClick={() => router.push("/create-habit")} className="mt-2 px-4 py-2 sm:px-6 sm:py-3 text-[10px]">
+        <Button
+          onClick={() => router.push("/create-habit")}
+          className="mt-2 px-4 py-2 sm:px-6 sm:py-3 text-[10px]"
+        >
           ADD NEW
         </Button>
       </div>
 
       <div className="relative mb-6">
-        <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
+        <Search
+          size={15}
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted"
+        />
         <input
           type="text"
           placeholder="Search rituals..."
@@ -118,27 +136,40 @@ export default function HabitsPage() {
                 if (filter === "ACTIVE") router.push("/rituals/active");
                 if (filter === "COMPLETED") router.push("/rituals/completed");
               }}
-              className={`relative pb-3 text-xs font-bold tracking-[0.16em] transition-all duration-200 ${
-                activeFilter === filter ? "text-text-primary" : "text-text-muted"
+              className={`relative pb-3 text-xs font-medium tracking-[0.16em] transition-all duration-200 ${
+                activeFilter === filter
+                  ? "text-text-primary"
+                  : "text-text-muted"
               }`}
             >
               {filter}
               {activeFilter === filter && (
-                <motion.div layoutId="filterLine" className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-primary" />
+                <motion.div
+                  layoutId="filterLine"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-primary"
+                />
               )}
             </button>
           ))}
         </div>
         <button
           onClick={() => {
-            setSelectedIds(selectedIds.length === filteredHabits.length ? [] : filteredHabits.map((h) => h._id));
+            setSelectedIds(
+              selectedIds.length === filteredHabits.length
+                ? []
+                : filteredHabits.map((h) => h._id),
+            );
           }}
-          className={`flex items-center gap-1.5 pb-3 text-[10px] font-bold tracking-wider transition-colors ${
-            selectedIds.length > 0 ? "text-accent-mint" : "text-text-muted hover:text-text-primary"
+          className={`flex items-center gap-1.5 pb-3 text-[10px] font-medium tracking-wider transition-colors ${
+            selectedIds.length > 0
+              ? "text-accent-mint"
+              : "text-text-muted hover:text-text-primary"
           }`}
         >
           <CheckSquare size={13} />
-          {selectedIds.length > 0 ? `${selectedIds.length} selected` : "Select all"}
+          {selectedIds.length > 0
+            ? `${selectedIds.length} selected`
+            : "Select all"}
         </button>
       </div>
 
@@ -160,16 +191,24 @@ export default function HabitsPage() {
                 try {
                   await Promise.all(selectedIds.map((id) => archiveHabit(id)));
                   selectedIds.forEach((id) => dispatch(deleteReduxHabit(id)));
-                  addToast({ type: "success", title: "Archived", message: `${selectedIds.length} habits archived` });
+                  addToast({
+                    type: "success",
+                    title: "Archived",
+                    message: `${selectedIds.length} habits archived`,
+                  });
                   setSelectedIds([]);
                 } catch (err) {
-                  addToast({ type: "error", title: "Failed", message: "Could not archive habits" });
+                  addToast({
+                    type: "error",
+                    title: "Failed",
+                    message: "Could not archive habits",
+                  });
                 } finally {
                   setBulkLoading(false);
                 }
               }}
               disabled={bulkLoading}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border-subtle bg-surface px-4 py-2 text-[10px] font-bold tracking-wider text-text-primary transition-all hover:bg-surface disabled:opacity-40"
+              className="inline-flex items-center gap-1.5 rounded-full border border-border-subtle bg-surface px-4 py-2 text-[10px] font-medium tracking-wider text-text-primary transition-all hover:bg-surface disabled:opacity-40"
             >
               <Archive size={13} />
               Archive
@@ -181,16 +220,24 @@ export default function HabitsPage() {
                 try {
                   await Promise.all(selectedIds.map((id) => deleteHabit(id)));
                   selectedIds.forEach((id) => dispatch(deleteReduxHabit(id)));
-                  addToast({ type: "success", title: "Deleted", message: `${selectedIds.length} habits deleted` });
+                  addToast({
+                    type: "success",
+                    title: "Deleted",
+                    message: `${selectedIds.length} habits deleted`,
+                  });
                   setSelectedIds([]);
                 } catch (err) {
-                  addToast({ type: "error", title: "Failed", message: "Could not delete habits" });
+                  addToast({
+                    type: "error",
+                    title: "Failed",
+                    message: "Could not delete habits",
+                  });
                 } finally {
                   setBulkLoading(false);
                 }
               }}
               disabled={bulkLoading}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border-subtle bg-surface px-4 py-2 text-[10px] font-bold tracking-wider text-danger transition-all hover:bg-danger-soft disabled:opacity-40"
+              className="inline-flex items-center gap-1.5 rounded-full border border-border-subtle bg-surface px-4 py-2 text-[10px] font-medium tracking-wider text-danger transition-all hover:bg-danger-soft disabled:opacity-40"
             >
               <Trash2 size={13} />
               Delete
@@ -210,21 +257,30 @@ export default function HabitsPage() {
           <div className="text-center">
             {searchQuery.trim() || activeFilter !== "ALL" ? (
               <>
-                <p className="font-heading mb-2 text-3xl font-bold tracking-[-0.04em] text-text-primary">
+                <p className="font-heading mb-2 text-[26px] font-semibold tracking-[-0.035em] text-text-primary">
                   no matching rituals.
                 </p>
-                <p className="text-sm text-text-muted">try a different search or filter.</p>
+                <p className="text-sm text-text-muted">
+                  try a different search or filter.
+                </p>
               </>
             ) : (
               <>
-                <p className="font-heading mb-2 text-3xl font-bold tracking-[-0.04em] text-text-primary">
+                <p className="font-heading mb-2 text-[26px] font-semibold tracking-[-0.035em] text-text-primary">
                   no rituals yet.
                 </p>
-                <p className="text-sm text-text-muted">design your first daily rhythm.</p>
+                <p className="text-sm text-text-muted">
+                  design your first daily rhythm.
+                </p>
               </>
             )}
           </div>
-          <Button variant="primary" onClick={() => router.push("/create-habit")}>NEW RITUAL</Button>
+          <Button
+            variant="primary"
+            onClick={() => router.push("/create-habit")}
+          >
+            NEW RITUAL
+          </Button>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -237,7 +293,9 @@ export default function HabitsPage() {
               isSelected={selectedIds.includes(habit._id)}
               onToggleSelect={(id) =>
                 setSelectedIds((prev) =>
-                  prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+                  prev.includes(id)
+                    ? prev.filter((x) => x !== id)
+                    : [...prev, id],
                 )
               }
             />

@@ -84,7 +84,7 @@ function WeeklySummary({ stats }) {
   return (
     <motion.div
       ref={cardRef}
-      className="overflow-hidden rounded-3xl border border-border-subtle/60 bg-gradient-to-br from-accent-soft via-surface to-surface-dim p-6 sm:p-8"
+      className="overflow-hidden rounded-[20px] border border-border-subtle/60 bg-gradient-to-br from-accent-soft via-surface to-surface-dim p-5 sm:p-6"
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
@@ -92,10 +92,10 @@ function WeeklySummary({ stats }) {
             <TrendingUp size={20} className="text-accent-mint" />
           </div>
           <div>
-            <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-accent-mint">
+            <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-accent-mint">
               this week
             </p>
-            <p className="mt-1.5 font-heading text-xl font-bold tracking-[-0.04em] text-text-primary sm:text-2xl">
+            <p className="mt-1.5 font-heading text-[19px] font-medium tracking-[-0.02em] text-text-primary sm:text-[22px]">
               {done}/{total} rituals completed
             </p>
             <p className="mt-1 text-sm text-text-muted">
@@ -108,10 +108,10 @@ function WeeklySummary({ stats }) {
           </div>
         </div>
         <div className="text-right shrink-0">
-          <p className="font-heading text-3xl font-black tracking-[-0.06em] text-accent-mint sm:text-4xl">
+          <p className="font-heading text-[42px] font-semibold tracking-[-0.05em] text-accent-mint sm:text-[48px]">
             {pct}%
           </p>
-          <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-text-muted">
+          <p className="text-[10px] font-semibold tracking-[0.15em] uppercase text-text-muted">
             completion
           </p>
         </div>
@@ -294,7 +294,7 @@ export default function Dashboard() {
             <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-accent-mint/8">
               <Sparkles size={32} className="text-accent-mint" />
             </div>
-            <p className="font-heading mb-3 text-3xl font-bold tracking-[-0.05em] text-text-primary sm:text-4xl">
+            <p className="font-heading mb-3 text-[26px] font-semibold tracking-[-0.035em] text-text-primary sm:text-[30px]">
               no rituals yet.
             </p>
             <p className="text-base text-text-muted">
@@ -312,7 +312,7 @@ export default function Dashboard() {
 
             <button
               onClick={() => setShowTemplates(!showTemplates)}
-              className="text-[11px] font-bold tracking-[0.15em] uppercase text-text-muted hover:text-text-primary transition-colors"
+              className="text-[11px] font-semibold tracking-[0.15em] uppercase text-text-muted hover:text-text-primary transition-colors"
             >
               {showTemplates ? "hide templates" : "or start with a template"}
             </button>
@@ -382,7 +382,7 @@ export default function Dashboard() {
                       <div className="relative z-10">
                         <div className="mb-4 flex items-center gap-3">
                           <div
-                            className="h-10 w-10 rounded-xl flex items-center justify-center text-sm font-bold"
+                            className="h-10 w-10 rounded-xl flex items-center justify-center text-sm font-semibold"
                             style={{
                               background: t.color + "20",
                               color: t.color,
@@ -392,13 +392,13 @@ export default function Dashboard() {
                           </div>
                           <span className="app-label">{t.category}</span>
                         </div>
-                        <p className="text-sm font-bold text-text-primary group-hover:text-accent-mint transition-colors">
+                        <p className="text-sm font-semibold text-text-primary group-hover:text-accent-mint transition-colors">
                           {t.title}
                         </p>
                         <p className="mt-1.5 text-[10px] leading-relaxed text-text-muted/70">
                           {t.description}
                         </p>
-                        <div className="mt-3 flex items-center gap-1.5 text-[9px] font-bold tracking-wider text-accent-mint opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="mt-3 flex items-center gap-1.5 text-[9px] font-semibold tracking-wider text-accent-mint opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <span>ADD RITUAL</span>
                           <span>→</span>
                         </div>
@@ -449,14 +449,14 @@ export default function Dashboard() {
               className="mb-8 flex items-center gap-2"
             >
               <Target size={16} className="text-accent-mint" />
-              <span className="text-[11px] font-bold tracking-[0.12em] uppercase text-accent-mint">
+              <span className="text-[11px] font-semibold tracking-[0.12em] uppercase text-accent-mint">
                 milestones
               </span>
               <div className="flex gap-2">
                 {streakMilestones.map((m) => (
                   <span
                     key={m.at}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-accent-mint/10 px-3 py-1.5 text-[10px] font-bold text-accent-mint"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-accent-mint/10 px-3 py-1.5 text-[10px] font-semibold text-accent-mint"
                   >
                     {m.label}
                   </span>
@@ -546,7 +546,7 @@ export default function Dashboard() {
                         )}
                       </div>
                       <span
-                        className="text-[11px] font-bold tracking-wide"
+                        className="text-[11px] font-semibold tracking-wide"
                         style={{ color: a.color }}
                       >
                         {a.label}
@@ -561,7 +561,7 @@ export default function Dashboard() {
           {completedHabits.length > 0 && (
             <div className="mt-20">
               <div className="mb-8 flex items-center justify-between">
-                <h2 className="font-heading text-xl font-bold tracking-[-0.04em] text-text-primary sm:text-2xl">
+                <h2 className="font-heading text-xl font-semibold tracking-[-0.04em] text-text-primary sm:text-2xl">
                   habits completed
                 </h2>
                 <button

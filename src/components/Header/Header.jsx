@@ -48,7 +48,7 @@ function Header() {
             <span className="hidden text-xs font-medium md:inline">
               Search rituals &amp; pages
             </span>
-            <kbd className="hidden rounded-md border border-border-subtle bg-surface-dim px-1.5 py-0.5 text-[10px] font-bold text-text-muted md:inline">
+            <kbd className="hidden rounded-md border border-border-subtle bg-surface-dim px-1.5 py-0.5 text-[10px] font-medium text-text-muted md:inline">
               Ctrl K
             </kbd>
           </button>

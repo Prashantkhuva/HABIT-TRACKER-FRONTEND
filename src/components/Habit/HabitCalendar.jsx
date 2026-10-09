@@ -46,7 +46,9 @@ export default function HabitCalendar({ logs }) {
   return (
     <div className="p-6 bg-[#F4F4EF] dark:bg-[#0F0D13] rounded-3xl border border-[#E8E4DC] dark:border-[#49454F]">
       {/* TITLE */}
-      <h2 className="text-xl font-semibold mb-4 text-[#1A1A1A] dark:text-[#E6E1E5]">monthly rhythm</h2>
+      <h2 className="text-xl font-semibold mb-4 text-[#1A1A1A] dark:text-[#E6E1E5]">
+        monthly rhythm
+      </h2>
 
       {/* DAY NAMES */}
       <div className="grid grid-cols-7 gap-1 sm:gap-3 text-xs text-[#888888] dark:text-[#938F99] mb-3">
@@ -61,7 +63,9 @@ export default function HabitCalendar({ logs }) {
       <div className="grid grid-cols-7 gap-1 sm:gap-3">
         {days.map((day, i) => {
           if (!day) {
-            return <div key={`empty-${i}`} className="w-8 h-8 sm:w-10 sm:h-10" />;
+            return (
+              <div key={`empty-${i}`} className="w-8 h-8 sm:w-10 sm:h-10" />
+            );
           }
 
           const key = `${year}-${month}-${day}`;
@@ -90,11 +94,17 @@ export default function HabitCalendar({ logs }) {
       {/* FOOTER */}
       <div className="flex justify-between items-end mt-8">
         <div>
-          <p className="text-xs text-[#888888] dark:text-[#938F99] tracking-widest">BEST MONTH</p>
-          <p className="text-lg font-semibold text-[#1A1A1A] dark:text-[#E6E1E5]">{bestmonth}</p>
+          <p className="text-xs text-[#888888] dark:text-[#938F99] tracking-widest">
+            BEST MONTH
+          </p>
+          <p className="text-lg font-semibold text-[#1A1A1A] dark:text-[#E6E1E5]">
+            {bestmonth}
+          </p>
         </div>
 
-        <p className="text-3xl font-bold text-[#1A1A1A] dark:text-[#D0BCFF]">{percentage}%</p>
+        <p className="text-[26px] font-semibold text-[#1A1A1A] dark:text-[#D0BCFF]">
+          {percentage}%
+        </p>
       </div>
     </div>
   );

@@ -1,18 +1,13 @@
-import { Epilogue, Manrope } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import ClientBody from "./client-body";
 import { getStructuredData, getFAQStructuredData } from "@/lib/seo-config";
 
-const epilogue = Epilogue({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-epilogue",
-  display: "swap",
-});
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-manrope",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-jakarta",
   display: "swap",
 });
 
@@ -63,11 +58,7 @@ export default function RootLayout({ children }) {
   const faqData = getFAQStructuredData();
 
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${epilogue.variable} ${manrope.variable}`}
-    >
+    <html lang="en" suppressHydrationWarning className={`${jakarta.variable}`}>
       <head>
         <link rel="preconnect" href="https://habit-tracker-t0o0.onrender.com" />
         <link

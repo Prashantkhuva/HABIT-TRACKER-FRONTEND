@@ -12,7 +12,9 @@ export default function CompletedHabit({ habit, index }) {
         const res = await getHabitLogs(habit._id, 1, 7);
         const logs = res.data.data.logs;
         setWeeklyCount(logs.filter((l) => l.completed).length);
-      } catch (err) { console.error("[CompletedHabit] Log fetch:", err); }
+      } catch (err) {
+        console.error("[CompletedHabit] Log fetch:", err);
+      }
     };
     fetchLogs();
   }, [habit._id]);
@@ -29,10 +31,10 @@ export default function CompletedHabit({ habit, index }) {
       </div>
 
       <div className="flex-1">
-        <p className="font-heading text-base font-bold text-text-primary">
+        <p className="font-heading text-base font-medium text-text-primary">
           {habit.title}
         </p>
-        <p className="text-[11px] font-bold tracking-wider text-text-muted uppercase mt-0.5">
+        <p className="text-[11px] font-medium tracking-wider text-text-muted uppercase mt-0.5">
           COMPLETED TODAY
         </p>
       </div>

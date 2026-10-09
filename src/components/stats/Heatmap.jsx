@@ -83,7 +83,7 @@ export default function Heatmap({ data }) {
               setRange(r);
               setHovered(null);
             }}
-            className={`rounded-full px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest transition-colors duration-200 ${
+            className={`rounded-full px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.06em] transition-colors duration-200 ${
               range === r
                 ? "bg-primary text-background"
                 : "text-text-muted hover:text-text-primary"
@@ -122,7 +122,7 @@ export default function Heatmap({ data }) {
             {DAY_LABELS.map((l, i) => (
               <div
                 key={i}
-                className="flex h-3 items-center text-[8px] font-bold text-text-muted"
+                className="flex h-3 items-center text-[8px] font-medium text-text-muted"
               >
                 {i % 2 === 1 ? l : ""}
               </div>
@@ -136,7 +136,7 @@ export default function Heatmap({ data }) {
                 return (
                   <div
                     key={i}
-                    className="w-3 text-center text-[8px] font-bold text-text-muted"
+                    className="w-3 text-center text-[8px] font-medium text-text-muted"
                   >
                     {showLabel ? MONTH_LABELS[first.getMonth()] : ""}
                   </div>
@@ -182,7 +182,7 @@ export default function Heatmap({ data }) {
             </div>
           </div>
         </div>
-        <div className="mt-4 flex items-center justify-end gap-2 text-[9px] font-bold uppercase tracking-wider text-text-muted">
+        <div className="mt-4 flex items-center justify-end gap-2 text-[9px] font-medium uppercase tracking-wider text-text-muted">
           Less
           {[0, 1, 2, 3, 4].map((i) => (
             <span
@@ -211,7 +211,7 @@ export default function Heatmap({ data }) {
         {DAY_LABELS.map((label, i) => (
           <div
             key={`label-${i}`}
-            className="flex size-8 items-center justify-center text-[9px] font-bold text-text-muted sm:size-10"
+            className="flex size-8 items-center justify-center text-[9px] font-medium text-text-muted sm:size-10"
           >
             {label}
           </div>

@@ -154,7 +154,7 @@ export default function WeeklyChart({ data, prev = [], planned = 0 }) {
                   }}
                   className={[
                     gradient,
-                    "relative z-10 w-full rounded-t-lg rounded-b-sm transition-all duration-300 overflow-hidden",
+                    "relative z-10 w-full rounded-t-full rounded-b-sm transition-all duration-300 overflow-hidden",
                     hovered === i && slot.count > 0
                       ? "scale-[1.04] shadow-lg"
                       : "",
@@ -183,7 +183,7 @@ export default function WeeklyChart({ data, prev = [], planned = 0 }) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 + i * 0.08 }}
                     style={{ bottom: `calc(${heightPct}% + 5px)` }}
-                    className="absolute inset-x-0 z-10 text-center text-[9px] font-bold text-accent-mint"
+                    className="absolute inset-x-0 z-10 text-center text-[9px] font-medium text-accent-mint"
                   >
                     {slot.count}
                   </motion.span>
@@ -218,7 +218,7 @@ export default function WeeklyChart({ data, prev = [], planned = 0 }) {
         {/* Empty state */}
         {isEmpty && (
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-1.5">
-            <p className="rounded-full border border-border-subtle bg-surface px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-text-muted shadow-sm">
+            <p className="rounded-full border border-border-subtle bg-surface px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.06em] text-text-muted shadow-sm">
               No completions yet
             </p>
             <p className="text-[10px] text-text-muted/70">
@@ -232,7 +232,7 @@ export default function WeeklyChart({ data, prev = [], planned = 0 }) {
         {slots.map((slot) => (
           <span
             key={`label-${slot.label}`}
-            className={`flex-1 text-center text-[9px] sm:text-[10px] font-bold tracking-wider ${
+            className={`flex-1 text-center text-[9px] sm:text-[10px] font-medium tracking-wider ${
               slot.isToday ? "text-accent-mint" : "text-text-muted"
             }`}
           >
@@ -242,7 +242,7 @@ export default function WeeklyChart({ data, prev = [], planned = 0 }) {
       </div>
 
       {/* Legend */}
-      <div className="mt-4 flex flex-wrap items-center gap-4 text-[9px] font-bold uppercase tracking-[0.15em] text-text-muted">
+      <div className="mt-4 flex flex-wrap items-center gap-4 text-[9px] font-medium uppercase tracking-[0.06em] text-text-muted">
         <span className="flex items-center gap-1.5">
           <span className="h-2 w-4 rounded-sm bg-gradient-to-t from-accent-mint to-[#9EC9BE]" />
           This week
