@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import {
   Sparkles,
-  TrendingUp,
   Target,
   Search,
   Trophy,
@@ -17,6 +16,9 @@ import {
   BookOpen,
   Award,
   Crown,
+  CheckCircle2,
+  ChevronRight,
+  Zap,
 } from "lucide-react";
 import {
   getHabits,
@@ -24,7 +26,11 @@ import {
   completeHabit,
   getHabitLogs,
 } from "../api/habits-api";
-import { getDashboardStats, getWeeklyData } from "../api/dashboard-api";
+import {
+  getDashboardStats,
+  getWeeklyData,
+  getLongestStreak,
+} from "../api/dashboard-api";
 import { setReduxHabits, addReduxHabit } from "../store/habitSlice";
 import HabitCard from "./Habit/HabitCard";
 import CompletedHabit from "./Habit/CompletedHabit";
@@ -37,8 +43,9 @@ import { fireConfetti } from "../lib/confetti";
 import { getAchievements } from "../lib/achievements";
 import OnboardingGuide from "./OnboardingGuide";
 import KpiRow from "./stats/KpiRow";
-import DonutGauge from "./stats/DonutGauge";
-import gsap from "gsap";
+import WeeklyChart from "./stats/WeeklyChart";
+import SemicircleGauge from "./stats/SemicircleGauge";
+import { categoryMap } from "./Habit/categoryMap";
 
 const TEMPLATES = [
   {
@@ -61,70 +68,16 @@ const TEMPLATES = [
   },
 ];
 
-function WeeklySummary({ stats }) {
-  const cardRef = useRef(null);
-
-  useEffect(() => {
-    if (!stats) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        cardRef.current,
-        { opacity: 0, y: 20, scale: 0.98 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power3.out" },
-      );
-    }, cardRef);
-    return () => ctx.revert();
-  }, [stats]);
-
-  if (!stats) return null;
-  const pct = stats.completionRate || 0;
-  const done = stats.completedToday || 0;
-  const total = stats.totalHabits || 0;
-
+function CardShell({ children, className = "" }) {
   return (
-    <motion.div
-      ref={cardRef}
-      className="overflow-hidden rounded-[20px] border border-border-subtle/60 bg-gradient-to-br from-accent-soft via-surface to-surface-dim p-5 sm:p-6"
+    <motion.section
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className={`app-surface rounded-[var(--r-md)] p-5 sm:p-6 ${className}`}
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex items-start gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent-mint/12">
-            <TrendingUp size={20} className="text-accent-mint" />
-          </div>
-          <div>
-            <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-accent-mint">
-              this week
-            </p>
-            <p className="mt-1.5 font-heading text-[19px] font-medium tracking-[-0.02em] text-text-primary sm:text-[22px]">
-              {done}/{total} rituals completed
-            </p>
-            <p className="mt-1 text-sm text-text-muted">
-              {pct >= 70
-                ? "Strong rhythm — keep the momentum going"
-                : pct >= 40
-                  ? "Building consistency — you're on track"
-                  : "Early days — start with one ritual today"}
-            </p>
-          </div>
-        </div>
-        <div className="text-right shrink-0">
-          <p className="font-heading text-[42px] font-semibold tracking-[-0.05em] text-accent-mint sm:text-[48px]">
-            {pct}%
-          </p>
-          <p className="text-[10px] font-semibold tracking-[0.15em] uppercase text-text-muted">
-            completion
-          </p>
-        </div>
-      </div>
-      <div className="mt-5 h-2 w-full overflow-hidden rounded-full bg-border-subtle/60">
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: `${pct}%` }}
-          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-          className="h-full rounded-full bg-gradient-to-r from-accent-mint via-accent-mint to-accent-mint/60"
-        />
-      </div>
-    </motion.div>
+      {children}
+    </motion.section>
   );
 }
 
@@ -142,6 +95,8 @@ export default function Dashboard() {
   const [showTemplates, setShowTemplates] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [dashboardSearch, setDashboardSearch] = useState("");
+  const [bestStreak, setBestStreak] = useState(0);
+  const [habitStreaks, setHabitStreaks] = useState({});
   const { addToast } = useToast();
 
   useEffect(() => {
@@ -159,15 +114,30 @@ export default function Dashboard() {
         getWeeklyData()
           .then((r) => setWeeklyData(r.data.data))
           .catch(() => {});
+        getLongestStreak()
+          .then((r) => setBestStreak(r.data.data?.longestStreak || 0))
+          .catch(() => {});
 
         if (fetchedHabits.length > 0) {
+          const active = fetchedHabits.filter((h) => h.status === "active");
           Promise.all(
-            fetchedHabits.map(async (habit) => {
+            active.map(async (habit) => {
               try {
-                const logRes = await getHabitLogs(habit._id, 1, 5);
+                const [logRes, streakRes] = await Promise.all([
+                  getHabitLogs(habit._id, 1, 5),
+                  getLongestStreak(habit._id).catch(() => null),
+                ]);
                 const logs = logRes.data.data.logs;
                 if (logs.some(isLogFromToday)) {
                   setCompletedIds((prev) => [...prev, habit._id]);
+                }
+                if (streakRes) {
+                  const cs = streakRes.data.data?.currentStreak || 0;
+                  const ls = streakRes.data.data?.longestStreak || 0;
+                  setHabitStreaks((prev) => ({
+                    ...prev,
+                    [habit._id]: { current: cs, longest: ls },
+                  }));
                 }
               } catch (err) {
                 console.error("[Dashboard] Log fetch:", err);
@@ -248,8 +218,12 @@ export default function Dashboard() {
   const completedHabits = activeHabits.filter((h) =>
     completedIds.includes(h._id),
   );
+  const pendingHabits = activeHabits.filter(
+    (h) => !completedIds.includes(h._id),
+  );
 
   const doneCount = completedHabits.length;
+  const remainingCount = Math.max(activeHabits.length - doneCount, 0);
   const streakMilestones = useMemo(() => {
     const ms = [];
     if (doneCount >= 1)
@@ -260,6 +234,26 @@ export default function Dashboard() {
       ms.push({ at: 7, label: "perfect week", reached: true });
     return ms;
   }, [doneCount]);
+
+  const topRituals = useMemo(() => {
+    return activeHabits
+      .map((h) => ({
+        ...h,
+        streak: habitStreaks[h._id]?.current || 0,
+        doneToday: completedIds.includes(h._id),
+      }))
+      .sort((a, b) => b.streak - a.streak)
+      .slice(0, 5);
+  }, [activeHabits, habitStreaks, completedIds]);
+
+  const bestStreakHabit = useMemo(() => {
+    return activeHabits
+      .map((h) => ({
+        title: h.title,
+        streak: habitStreaks[h._id]?.current || 0,
+      }))
+      .sort((a, b) => b.streak - a.streak)[0];
+  }, [activeHabits, habitStreaks]);
 
   const filteredHabits = useMemo(() => {
     if (!dashboardSearch.trim()) return activeHabits;
@@ -415,49 +409,241 @@ export default function Dashboard() {
           <KpiRow
             stats={stats}
             weeklyData={weeklyData}
-            achievements={achievements}
+            streak={bestStreak}
             onNavigate={(href) => router.push(href)}
           />
 
-          <div className="mb-10 grid gap-4 lg:grid-cols-[1.7fr_1fr]">
-            <WeeklySummary stats={stats} />
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{
-                duration: 0.7,
-                ease: [0.22, 1, 0.36, 1],
-                delay: 0.1,
-              }}
-              className="flex flex-col items-center justify-center rounded-3xl border border-border-subtle/60 bg-surface p-6"
-            >
-              <p className="app-label mb-4 self-start">TODAY&apos;S RHYTHM</p>
-              <DonutGauge
-                value={stats?.completionRate || 0}
-                caption={`${stats?.completedToday || 0} done · ${Math.max(
-                  (stats?.totalHabits || 0) - (stats?.completedToday || 0),
-                  0,
-                )} remaining`}
-              />
-            </motion.div>
+          {/* Fernly row: bars + today's focus */}
+          <div className="mb-4 grid gap-4 lg:grid-cols-12">
+            <CardShell className="lg:col-span-7 flex flex-col">
+              <div className="card__head">
+                <div>
+                  <h2 className="card__title">Weekly flow</h2>
+                  <p className="card__sub">Completions this week</p>
+                </div>
+                <span className="chip">Last 7 days</span>
+              </div>
+              <div className="mt-auto flex min-h-44 flex-col justify-end sm:min-h-52">
+                <WeeklyChart
+                  data={weeklyData}
+                  planned={stats?.totalHabits || 0}
+                />
+              </div>
+            </CardShell>
+
+            <CardShell className="lg:col-span-5 flex flex-col">
+              <div className="card__head">
+                <div>
+                  <h2 className="card__title">Today&apos;s focus</h2>
+                  <p className="card__sub">
+                    {pendingHabits.length > 0
+                      ? `${pendingHabits.length} left to complete`
+                      : "All done for today"}
+                  </p>
+                </div>
+                <span
+                  className={`chip ${pendingHabits.length === 0 ? "trend-up" : ""}`}
+                >
+                  {doneCount}/{activeHabits.length}
+                </span>
+              </div>
+              {pendingHabits.length === 0 ? (
+                <div className="app-empty flex-1">
+                  <CheckCircle2 size={22} className="text-accent-mint" />
+                  <p>Every ritual checked off — enjoy the momentum</p>
+                </div>
+              ) : (
+                <ul className="flex flex-col gap-1">
+                  {pendingHabits.slice(0, 6).map((habit) => {
+                    const Icon = categoryMap[habit.category] || Zap;
+                    return (
+                      <li key={habit._id}>
+                        <div className="group flex items-center gap-3 rounded-[var(--r-sm)] px-2 py-2 transition-colors hover:bg-surface-dim">
+                          <span
+                            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+                            style={{
+                              background: habit.color
+                                ? `${habit.color}18`
+                                : "var(--color-surface-dim)",
+                              color: habit.color || "var(--color-text-muted)",
+                            }}
+                          >
+                            <Icon size={14} />
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate text-[13px] font-medium text-text-primary">
+                              {habit.title}
+                            </span>
+                            <span className="block text-[10px] text-text-muted">
+                              {habit.category}
+                            </span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => handleComplete(habit)}
+                            disabled={completing === habit._id}
+                            aria-label={`Complete ${habit.title}`}
+                            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border-subtle bg-surface text-text-muted transition-all hover:border-accent-mint hover:bg-accent-mint hover:text-background disabled:opacity-50"
+                          >
+                            <CheckCircle2 size={14} />
+                          </button>
+                        </div>
+                      </li>
+                    );
+                  })}
+                  {pendingHabits.length > 6 && (
+                    <li className="px-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => router.push("/rituals")}
+                        className="flex items-center gap-1 text-[11px] font-medium text-text-muted hover:text-accent-mint"
+                      >
+                        +{pendingHabits.length - 6} more
+                        <ChevronRight size={12} />
+                      </button>
+                    </li>
+                  )}
+                </ul>
+              )}
+            </CardShell>
+          </div>
+
+          {/* Fernly row: rituals + gauge + streak tracker */}
+          <div className="mb-4 grid gap-4 lg:grid-cols-12">
+            <CardShell className="lg:col-span-5 flex flex-col">
+              <div className="card__head">
+                <div>
+                  <h2 className="card__title">Your rituals</h2>
+                  <p className="card__sub">Top by streak</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => router.push("/rituals")}
+                  className="chip transition-colors hover:text-text-primary"
+                >
+                  View all
+                </button>
+              </div>
+              <ul className="flex flex-col gap-1">
+                {topRituals.map((habit) => {
+                  const Icon = categoryMap[habit.category] || Zap;
+                  return (
+                    <li key={habit._id}>
+                      <button
+                        type="button"
+                        onClick={() => router.push(`/rituals/${habit._id}`)}
+                        className="group flex w-full items-center gap-3 rounded-[var(--r-sm)] px-2 py-2 text-left transition-colors hover:bg-surface-dim"
+                      >
+                        <span
+                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+                          style={{
+                            background: habit.color
+                              ? `${habit.color}18`
+                              : "var(--color-surface-dim)",
+                            color: habit.color || "var(--color-text-muted)",
+                          }}
+                        >
+                          <Icon size={14} />
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-[13px] font-medium text-text-primary">
+                            {habit.title}
+                          </span>
+                          <span className="block text-[10px] text-text-muted">
+                            {habit.category}
+                          </span>
+                        </span>
+                        <span className="flex shrink-0 items-center gap-1.5">
+                          {habit.streak > 0 && (
+                            <span className="flex items-center gap-1 rounded-full bg-accent-mint/10 px-2 py-0.5 text-[10px] font-semibold text-accent-mint">
+                              <Flame size={10} />
+                              {habit.streak}
+                            </span>
+                          )}
+                          <span
+                            className={`chip ${habit.doneToday ? "trend-up" : ""}`}
+                            style={{ padding: "4px 10px" }}
+                          >
+                            {habit.doneToday ? "Done" : "Pending"}
+                          </span>
+                        </span>
+                        <ChevronRight
+                          size={14}
+                          className="shrink-0 text-text-muted opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100"
+                        />
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </CardShell>
+
+            <CardShell className="lg:col-span-4 flex flex-col">
+              <div className="card__head">
+                <div>
+                  <h2 className="card__title">Today&apos;s split</h2>
+                  <p className="card__sub">Done vs remaining</p>
+                </div>
+              </div>
+              <div className="flex flex-1 items-center">
+                <SemicircleGauge
+                  done={doneCount}
+                  remaining={remainingCount}
+                  planned={stats?.totalHabits || activeHabits.length}
+                  size={200}
+                />
+              </div>
+            </CardShell>
+
+            <CardShell className="lg:col-span-3 flex flex-col">
+              <div className="card__head">
+                <div>
+                  <h2 className="card__title">Streak</h2>
+                  <p className="card__sub">Best run</p>
+                </div>
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent-mint/10">
+                  <Flame size={16} className="text-accent-mint" />
+                </span>
+              </div>
+              <div className="flex flex-1 flex-col justify-center gap-1">
+                <p className="font-heading text-[40px] font-semibold leading-none tracking-[-0.045em] text-text-primary sm:text-[48px]">
+                  {bestStreak}
+                </p>
+                <p className="text-[11px] font-medium text-text-muted">
+                  day{bestStreak === 1 ? "" : "s"} consistency
+                </p>
+                {bestStreakHabit?.streak > 0 && (
+                  <p className="mt-3 truncate text-[11px] text-text-muted">
+                    Now:{" "}
+                    <span className="font-medium text-text-primary">
+                      {bestStreakHabit.title}
+                    </span>{" "}
+                    · {bestStreakHabit.streak}d
+                  </p>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => router.push("/statistics")}
+                className="mt-4 flex items-center gap-1 text-[11px] font-medium text-text-muted transition-colors hover:text-accent-mint"
+              >
+                Streak analytics
+                <ChevronRight size={12} />
+              </button>
+            </CardShell>
           </div>
 
           {streakMilestones.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-8 flex items-center gap-2"
+              className="mb-6 flex items-center gap-2"
             >
               <Target size={16} className="text-accent-mint" />
-              <span className="text-[11px] font-semibold tracking-[0.12em] uppercase text-accent-mint">
-                milestones
-              </span>
-              <div className="flex gap-2">
+              <span className="app-label">milestones</span>
+              <div className="flex flex-wrap gap-2">
                 {streakMilestones.map((m) => (
-                  <span
-                    key={m.at}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-accent-mint/10 px-3 py-1.5 text-[10px] font-semibold text-accent-mint"
-                  >
+                  <span key={m.at} className="trend trend-up">
                     {m.label}
                   </span>
                 ))}

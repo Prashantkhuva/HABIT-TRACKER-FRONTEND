@@ -142,17 +142,10 @@ function KpiCard({
   );
 }
 
-export default function KpiRow({
-  stats,
-  weeklyData,
-  achievements,
-  onNavigate,
-}) {
+export default function KpiRow({ stats, weeklyData, streak = 0, onNavigate }) {
   const done = stats?.completedToday ?? 0;
   const total = stats?.totalHabits ?? 0;
   const rate = stats?.completionRate ?? 0;
-  const unlocked = achievements?.filter((a) => a.unlocked).length ?? 0;
-  const all = achievements?.length ?? 0;
   const points = Array.isArray(weeklyData)
     ? weeklyData.map((d) => d?.count ?? 0)
     : [];
@@ -160,11 +153,11 @@ export default function KpiRow({
   const go = (href) => href && onNavigate?.(href);
 
   return (
-    <div className="mb-8 grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+    <div className="mb-5 grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
       <KpiCard
         index={0}
         featured
-        label="rituals today"
+        label="today's done"
         value={`${done}/${total}`}
         sub={
           done >= total && total > 0
@@ -177,6 +170,16 @@ export default function KpiRow({
       />
       <KpiCard
         index={1}
+        label="current streak"
+        value={streak}
+        suffix={streak === 1 ? " day" : " days"}
+        sub="best run"
+        icon={Flame}
+        href="/statistics"
+        onGo={go}
+      />
+      <KpiCard
+        index={2}
         label="completion"
         value={rate}
         suffix="%"
@@ -187,21 +190,12 @@ export default function KpiRow({
         onGo={go}
       />
       <KpiCard
-        index={2}
+        index={3}
         label="active rituals"
         value={total}
         sub="in rotation"
-        icon={Flame}
-        href="/rituals"
-        onGo={go}
-      />
-      <KpiCard
-        index={3}
-        label="achievements"
-        value={`${unlocked}/${all}`}
-        sub="unlocked"
         icon={Trophy}
-        href="/statistics"
+        href="/rituals"
         onGo={go}
       />
     </div>

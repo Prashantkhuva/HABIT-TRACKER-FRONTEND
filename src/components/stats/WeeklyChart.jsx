@@ -118,7 +118,7 @@ export default function WeeklyChart({ data, prev = [], planned = 0 }) {
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 4 }}
-                      className="absolute -top-12 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-xl bg-primary/95 px-3 py-2 text-[11px] font-semibold text-background shadow-xl backdrop-blur-xl"
+                      className="absolute -top-11 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-xl bg-primary px-3 py-1.5 text-[11px] font-medium text-background shadow-[var(--shadow-card)]"
                     >
                       <span className="text-accent-mint">{slot.count}</span>{" "}
                       done

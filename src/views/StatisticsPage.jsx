@@ -34,7 +34,9 @@ import { getAllHabitLogs, getHabits } from "../api/habits-api";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setReduxHabits } from "../store/habitSlice";
-import WeeklyChart from "../components/stats/WeeklyChart";
+import ThroughputChart from "../components/stats/ThroughputChart";
+import CategoryDonut from "../components/stats/CategoryDonut";
+import TopRituals from "../components/stats/TopRituals";
 import Heatmap from "../components/stats/Heatmap";
 import StreakPanel from "../components/stats/StreakPanel";
 import Sparkline from "../components/stats/Sparkline";
@@ -131,6 +133,95 @@ export default function StatisticsPage() {
     return { current, previous, delta };
   }, [logs, period]);
 
+  // Fernly throughput: daily series for current + previous period
+  const throughput = useMemo(() => {
+    const dayMs = 86400000;
+    const today = localMidnight(Date.now());
+    const series = Array(period).fill(0);
+    const prevSeries = Array(period).fill(0);
+    const labels = Array(period).fill("");
+
+    (logs || []).forEach((l) => {
+      if (l.completed === false) return;
+      const t = Number(l.date);
+      if (Number.isNaN(t)) return;
+      const age = Math.round((today - localMidnight(t)) / dayMs);
+      if (age >= 0 && age < period) series[period - 1 - age]++;
+      else if (age >= period && age < period * 2)
+        prevSeries[period * 2 - 1 - age]++;
+    });
+
+    for (let i = 0; i < period; i++) {
+      const d = new Date(today - (period - 1 - i) * dayMs);
+      labels[i] =
+        period <= 7
+          ? d.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase()
+          : d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    }
+    return { series, prevSeries, labels };
+  }, [logs, period]);
+
+  // Completions by category (current period)
+  const categorySlices = useMemo(() => {
+    const counts = {};
+    const resolveId = (h) => (typeof h === "object" && h !== null ? h._id : h);
+    (logs || []).forEach((l) => {
+      if (l.completed === false) return;
+      const t = Number(l.date);
+      if (Number.isNaN(t)) return;
+      if (t < Date.now() - period * 86400000) return;
+      const habitId = resolveId(l.habit);
+      const habit = (habits || []).find((h) => h._id === habitId);
+      const cat = habit?.category || "Other";
+      counts[cat] = (counts[cat] || 0) + 1;
+    });
+    const COLORS = {
+      Health: "#4b6b63",
+      Fitness: "#c85a2a",
+      Learning: "#2f66c9",
+      Productivity: "#7d52c4",
+      Mindfulness: "#5dbd8b",
+      Other: "#888888",
+    };
+    return Object.entries(counts)
+      .map(([label, value]) => ({
+        label,
+        value,
+        color: COLORS[label] || COLORS.Other,
+      }))
+      .sort((a, b) => b.value - a.value);
+  }, [logs, habits, period]);
+
+  // Top rituals by completions (current period)
+  const topRitualItems = useMemo(() => {
+    const counts = {};
+    const resolveId = (h) => (typeof h === "object" && h !== null ? h._id : h);
+    (logs || []).forEach((l) => {
+      if (l.completed === false) return;
+      const t = Number(l.date);
+      if (Number.isNaN(t)) return;
+      if (t < Date.now() - period * 86400000) return;
+      const habitId = resolveId(l.habit);
+      counts[habitId] = (counts[habitId] || 0) + 1;
+    });
+    return Object.entries(counts)
+      .map(([id, count]) => {
+        const habit = (habits || []).find((h) => h._id === id);
+        return habit
+          ? {
+              _id: habit._id,
+              title: habit.title,
+              color: habit.color,
+              category: habit.category,
+              count,
+            }
+          : null;
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 6);
+  }, [logs, habits, period]);
+
   const heroRef = useRef(null);
   const [exportingPng, setExportingPng] = useState(false);
 
@@ -178,24 +269,6 @@ export default function StatisticsPage() {
     );
     return { completion, streakDays, weekday, totalSeries };
   }, [logs, habits, stats]);
-
-  // Previous calendar week (Mon–Sun) completions, for the dashed overlay
-  const prevWeekly = useMemo(() => {
-    const base = localMidnight(Date.now());
-    const dow = (new Date(base).getDay() + 6) % 7;
-    const thisMon = base - dow * DAY_MS;
-    const prevMon = thisMon - 7 * DAY_MS;
-    const out = Array(7).fill(0);
-    (logs || []).forEach((l) => {
-      if (l.completed === false) return;
-      const t = Number(l.date);
-      if (Number.isNaN(t)) return;
-      if (t >= prevMon && t < thisMon) {
-        out[(new Date(t).getDay() + 6) % 7]++;
-      }
-    });
-    return out;
-  }, [logs]);
 
   const exportPng = async () => {
     if (!heroRef.current || exportingPng) return;
@@ -680,26 +753,23 @@ export default function StatisticsPage() {
           </div>
         </div>
 
-        {/* Section B: Chart + Insights + Footer metrics */}
+        {/* Section B: Throughput + Insights */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-5">
-          {/* Chart — spans 7 cols */}
+          {/* Throughput — spans 7 cols (Fernly line+area) */}
           <BentoCard custom={5} className="lg:col-span-7 flex flex-col">
-            <div className="flex items-start justify-between gap-4 mb-8">
+            <div className="card__head mb-8">
               <div>
-                <p className="app-label mb-2">Weekly Flow</p>
-                <h2 className="font-heading text-[19px] font-medium tracking-[-0.02em] text-text-primary">
-                  Completion Activity
-                </h2>
+                <p className="app-label mb-2">Throughput</p>
+                <h2 className="card__title">Completion trend</h2>
               </div>
-              <span className="shrink-0 rounded-full bg-surface-dim px-3.5 py-1.5 text-[10px] uppercase tracking-[0.18em] text-text-muted">
-                Last 7 days
-              </span>
+              <span className="chip">Last {period} days</span>
             </div>
             <div className="mt-auto flex min-h-52 flex-col justify-end sm:min-h-64">
-              <WeeklyChart
-                data={weekly}
-                prev={prevWeekly}
-                planned={stats.totalHabits}
+              <ThroughputChart
+                series={throughput.series}
+                prevSeries={throughput.prevSeries}
+                labels={throughput.labels}
+                height={220}
               />
             </div>
           </BentoCard>
@@ -871,6 +941,35 @@ export default function StatisticsPage() {
                   </motion.div>
                 )}
               </AnimatePresence>
+            </div>
+          </BentoCard>
+        </div>
+
+        {/* Section B2: Category donut + Top rituals (Fernly leaders) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-5">
+          <BentoCard custom={7} className="lg:col-span-5 flex flex-col">
+            <div className="card__head">
+              <div>
+                <p className="app-label mb-2">Mix</p>
+                <h2 className="card__title">By category</h2>
+              </div>
+              <span className="chip">{period}d</span>
+            </div>
+            <div className="flex flex-1 items-center">
+              <CategoryDonut slices={categorySlices} label="completions" />
+            </div>
+          </BentoCard>
+
+          <BentoCard custom={8} className="lg:col-span-7 flex flex-col">
+            <div className="card__head">
+              <div>
+                <p className="app-label mb-2">Leaders</p>
+                <h2 className="card__title">Top rituals</h2>
+              </div>
+              <span className="chip">Last {period} days</span>
+            </div>
+            <div className="flex flex-1 flex-col justify-center">
+              <TopRituals items={topRitualItems} periodLabel={`${period}d`} />
             </div>
           </BentoCard>
         </div>
