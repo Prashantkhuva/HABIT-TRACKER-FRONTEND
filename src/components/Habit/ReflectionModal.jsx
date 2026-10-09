@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { NotebookPen, Sparkles, ArrowRight } from "lucide-react";
 
@@ -22,7 +23,7 @@ export default function ReflectionModal({
 
   if (!open) return null;
 
-  return (
+  return createPortal(
     <AnimatePresence>
       <motion.div
         initial={{
@@ -322,6 +323,7 @@ export default function ReflectionModal({
           </div>
         </motion.div>
       </motion.div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import { Sparkles, Target, BarChart2 } from "lucide-react";
 
@@ -28,7 +29,7 @@ export default function OnboardingGuide({ onDismiss }) {
   const current = STEPS[step];
   const isLast = step === STEPS.length - 1;
 
-  return (
+  return createPortal(
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -46,7 +47,11 @@ export default function OnboardingGuide({ onDismiss }) {
             <div
               key={i}
               className={`h-1.5 flex-1 rounded-full transition-colors ${
-                i === step ? "bg-primary" : i < step ? "bg-accent-mint" : "bg-border-subtle"
+                i === step
+                  ? "bg-primary"
+                  : i < step
+                    ? "bg-accent-mint"
+                    : "bg-border-subtle"
               }`}
             />
           ))}
@@ -81,10 +86,23 @@ export default function OnboardingGuide({ onDismiss }) {
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-xs font-bold tracking-wider text-background transition-all hover:bg-primary-soft"
           >
             {isLast ? "Get started" : "Next"}
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
           </button>
         </div>
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body,
   );
 }
