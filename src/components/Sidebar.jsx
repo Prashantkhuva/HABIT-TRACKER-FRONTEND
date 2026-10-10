@@ -64,7 +64,7 @@ export default function Sidebar() {
     >
       <div className="flex flex-col px-6 pb-6 pt-8">
         <Link href="/dashboard" prefetch={true}>
-          <h1 className="font-heading text-[22px] font-semibold lowercase tracking-[-0.035em] text-text-primary">
+          <h1 className="wordmark font-[Epilogue] text-3xl font-bold lowercase tracking-[-0.06em] text-text-primary">
             habitflow
           </h1>
         </Link>

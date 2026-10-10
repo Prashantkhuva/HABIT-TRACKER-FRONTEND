@@ -1,8 +1,14 @@
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Epilogue, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import ClientBody from "./client-body";
 import { getStructuredData, getFAQStructuredData } from "@/lib/seo-config";
+
+const epilogue = Epilogue({
+  subsets: ["latin"],
+  variable: "--font-epilogue",
+  display: "swap",
+});
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -58,7 +64,11 @@ export default function RootLayout({ children }) {
   const faqData = getFAQStructuredData();
 
   return (
-    <html lang="en" suppressHydrationWarning className={`${jakarta.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${epilogue.variable} ${jakarta.variable}`}
+    >
       <head>
         <link rel="preconnect" href="https://habit-tracker-t0o0.onrender.com" />
         <link

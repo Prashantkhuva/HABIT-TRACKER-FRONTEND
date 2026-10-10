@@ -128,6 +128,21 @@ h1 {
   letter-spacing: -0.035em;
 }
 
+/* habitflow text wordmark — keep original Epilogue logo look above heading rules */
+.wordmark {
+  font-family: var(--font-epilogue), sans-serif;
+  letter-spacing: -0.035em;
+}
+
+h1.wordmark {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+h2.wordmark {
+  font-weight: 400;
+}
+
 button,
 a,
 input,
